@@ -11,7 +11,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
-        <div class="container navbar-container">
+        <section class="container navbar-container">
             <a href="painel-adestrador.html" class="logo">
                 🐾 Pet Mania <span class="adestrador-badge">Adestrador</span>
             </a>
@@ -25,30 +25,30 @@
                 <li><a href="planosadestrador.html"><i class="fas fa-star"></i> Planos</a></li>
                 <li><a href="index.html" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
             </ul>
-        </div>
+        </section>
     </nav>
 
     <!-- Main Content -->
     <main class="main-content">
-        <div class="container">
-            <div class="page-header">
+        <section class="container">
+            <section class="page-header">
                 <h1><i class="fas fa-user-friends"></i> Gerenciamento de Clientes</h1>
-                <div class="header-actions">
-                    <div class="search-container">
+                <section class="header-actions">
+                    <section class="search-container">
                         <input type="text" id="clienteSearch" placeholder="Buscar cliente..." class="search-input">
                         <button class="btn btn-search"><i class="fas fa-search"></i></button>
-                    </div>
+                    </section>
                     <button class="btn btn-primary" id="addClienteBtn"><i class="fas fa-plus"></i> Novo Cliente</button>
-                </div>
-            </div>
+                </section>
+            </section>
 
            <!-- Filters and Statistics -->
-            <div class="filters-section">
-                <div class="filters">
+            <section class="filters-section">
+                <section class="filters">
                     <!-- Status Filter with Visual Options -->
-                    <div class="filter-group">
+                    <section class="filter-group">
                         <label for="filterStatus">Status</label>
-                        <div class="status-filter-options">
+                        <section class="status-filter-options">
                             <label class="status-option active-status" id="statusActive">
                                 <input type="checkbox" name="status[]" value="active">
                                 <i class="fas fa-check-circle"></i> Ativos
@@ -65,11 +65,11 @@
                                 <input type="checkbox" name="status[]" value="inactive">
                                 <i class="fas fa-times-circle"></i> Inativos
                             </label>
-                        </div>
-                    </div>
+                        </section>
+                    </section>
                     
                     <!-- Service Filter -->
-                    <div class="filter-group">
+                    <section class="filter-group">
                         <label for="filterServico">Serviço</label>
                         <select id="filterServico" class="filter-select">
                             <option value="todos">Todos os serviços</option>
@@ -79,7 +79,7 @@
                             <option value="problemas">Correção de Problemas</option>
                             <option value="outros">Outros</option>
                         </select>
-                    </div>
+                    </section>
                     
                     <!-- Toggle for Advanced Filters -->
                     <button type="button" class="filter-toggle" id="advancedFilterToggle">
@@ -87,8 +87,8 @@
                     </button>
                     
                     <!-- Advanced Filters (Hidden by Default) -->
-                    <div class="advanced-filters" style="display: none;">
-                        <div class="filter-group">
+                    <section class="advanced-filters" style="display: none;">
+                        <section class="filter-group">
                             <label for="filterBreed">Raça do Pet</label>
                             <select id="filterBreed" class="filter-select">
                                 <option value="todos">Todas as raças</option>
@@ -98,9 +98,9 @@
                                 <option value="border">Border Collie</option>
                                 <option value="outros">Outras raças</option>
                             </select>
-                        </div>
+                        </section>
                         
-                        <div class="filter-group">
+                        <section class="filter-group">
                             <label for="filterAge">Idade do Pet</label>
                             <select id="filterAge" class="filter-select">
                                 <option value="todos">Todas as idades</option>
@@ -109,18 +109,18 @@
                                 <option value="adulto">Adulto (3-8 anos)</option>
                                 <option value="senior">Sênior (8+ anos)</option>
                             </select>
-                        </div>
+                        </section>
                         
-                        <div class="filter-group">
+                        <section class="filter-group">
                             <label>Período de Início</label>
-                            <div class="date-range">
+                            <section class="date-range">
                                 <input type="date" id="filterStartDate" placeholder="De">
                                 <span>até</span>
                                 <input type="date" id="filterEndDate" placeholder="Até">
-                            </div>
-                        </div>
+                            </section>
+                        </section>
                         
-                        <div class="filter-group">
+                        <section class="filter-group">
                             <label for="filterProgress">Progresso</label>
                             <select id="filterProgress" class="filter-select">
                                 <option value="todos">Qualquer progresso</option>
@@ -129,35 +129,35 @@
                                 <option value="quase-completo">Quase completo (>70%)</option>
                                 <option value="completo">Completo</option>
                             </select>
-                        </div>
-                    </div>
+                        </section>
+                    </section>
                     
                     <!-- Active Filters (appears when filters are applied) -->
-                    <div class="active-filters">
+                    <section class="active-filters">
                         <!-- Active filter tags will be added here dynamically -->
-                    </div>
-                </div>
+                    </section>
+                </section>
                 
-                <div class="filter-actions">
+                <section class="filter-actions">
                     <button class="btn-filter reset" id="resetFilters">
                         <i class="fas fa-undo"></i> Limpar
                     </button>
                     <button class="btn-filter apply" id="applyFilters">
                         <i class="fas fa-filter"></i> Aplicar Filtros
                     </button>
-                </div>
-            </div>
+                </section>
+            </section>
 
             <!-- Client List -->
             <section class="card clients-section full-width">
-                <div class="card-header">
+                <section class="card-header">
                     <h2>Lista de Clientes</h2>
-                    <div class="view-controls">
+                    <section class="view-controls">
                         <button class="view-btn active" data-view="list"><i class="fas fa-list"></i></button>
                         <button class="view-btn" data-view="grid"><i class="fas fa-th-large"></i></button>
-                    </div>
-                </div>
-                <div class="clients-table-wrapper">
+                    </section>
+                </section>
+                <section class="clients-table-wrapper">
                     <table class="clients-table">
                         <thead>
                             <tr>
@@ -174,11 +174,11 @@
                             <!-- Client rows will be populated here -->
                             <tr data-id="1" class="client-row">
                                 <td class="client-info-cell">
-                                    <div class="client-avatar"></div>
-                                    <div class="client-basic-info">
+                                    <section class="client-avatar"></section>
+                                    <section class="client-basic-info">
                                         <h4>Amanda Silva</h4>
                                         <p><i class="fas fa-phone"></i> (11) 98765-4321</p>
-                                    </div>
+                                    </section>
                                 </td>
                                 <td>
                                     <span class="pet-tag dog">Rex</span>
@@ -188,9 +188,9 @@
                                 <td>28/02/2025</td>
                                 <td><span class="status-badge new">Novo</span></td>
                                 <td>
-                                    <div class="progress-bar">
-                                        <div class="progress" style="width: 10%;"></div>
-                                    </div>
+                                    <section class="progress-bar">
+                                        <section class="progress" style="width: 10%;"></section>
+                                    </section>
                                     <span class="progress-text">1/10 sessões</span>
                                 </td>
                                 <td class="actions-cell">
@@ -201,11 +201,11 @@
                             </tr>
                             <tr data-id="2" class="client-row">
                                 <td class="client-info-cell">
-                                    <div class="client-avatar"></div>
-                                    <div class="client-basic-info">
+                                    <section class="client-avatar"></section>
+                                    <section class="client-basic-info">
                                         <h4>Pedro Mendes</h4>
                                         <p><i class="fas fa-phone"></i> (11) 97654-3210</p>
-                                    </div>
+                                    </section>
                                 </td>
                                 <td>
                                     <span class="pet-tag dog">Luna</span>
@@ -215,9 +215,9 @@
                                 <td>15/01/2025</td>
                                 <td><span class="status-badge active">Ativo</span></td>
                                 <td>
-                                    <div class="progress-bar">
-                                        <div class="progress" style="width: 60%;"></div>
-                                    </div>
+                                    <section class="progress-bar">
+                                        <section class="progress" style="width: 60%;"></section>
+                                    </section>
                                     <span class="progress-text">6/10 sessões</span>
                                 </td>
                                 <td class="actions-cell">
@@ -228,11 +228,11 @@
                             </tr>
                             <tr data-id="3" class="client-row">
                                 <td class="client-info-cell">
-                                    <div class="client-avatar"></div>
-                                    <div class="client-basic-info">
+                                    <section class="client-avatar"></section>
+                                    <section class="client-basic-info">
                                         <h4>Mariana Costa</h4>
                                         <p><i class="fas fa-phone"></i> (11) 95432-1098</p>
-                                    </div>
+                                    </section>
                                 </td>
                                 <td>
                                     <span class="pet-tag dog">Max</span>
@@ -242,9 +242,9 @@
                                 <td>05/02/2025</td>
                                 <td><span class="status-badge active">Ativo</span></td>
                                 <td>
-                                    <div class="progress-bar">
-                                        <div class="progress" style="width: 40%;"></div>
-                                    </div>
+                                    <section class="progress-bar">
+                                        <section class="progress" style="width: 40%;"></section>
+                                    </section>
                                     <span class="progress-text">4/10 sessões</span>
                                 </td>
                                 <td class="actions-cell">
@@ -255,11 +255,11 @@
                             </tr>
                             <tr data-id="4" class="client-row">
                                 <td class="client-info-cell">
-                                    <div class="client-avatar"></div>
-                                    <div class="client-basic-info">
+                                    <section class="client-avatar"></section>
+                                    <section class="client-basic-info">
                                         <h4>Rodrigo Alves</h4>
                                         <p><i class="fas fa-phone"></i> (11) 98765-1234</p>
-                                    </div>
+                                    </section>
                                 </td>
                                 <td>
                                     <span class="pet-tag dog">Thor</span>
@@ -269,9 +269,9 @@
                                 <td>25/02/2025</td>
                                 <td><span class="status-badge pending">Pendente</span></td>
                                 <td>
-                                    <div class="progress-bar">
-                                        <div class="progress" style="width: 0%;"></div>
-                                    </div>
+                                    <section class="progress-bar">
+                                        <section class="progress" style="width: 0%;"></section>
+                                    </section>
                                     <span class="progress-text">0/10 sessões</span>
                                 </td>
                                 <td class="actions-cell">
@@ -282,68 +282,68 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                </section>
 
                 <!-- Grid View (Hidden by default) -->
-                <div class="clients-grid" style="display: none;">
+                <section class="clients-grid" style="display: none;">
                     <!-- Grid content -->
-                </div>
+                </section>
 
-                <div class="pagination">
+                <section class="pagination">
                     <button class="pagination-btn" disabled><i class="fas fa-chevron-left"></i></button>
                     <button class="pagination-btn active">1</button>
                     <button class="pagination-btn">2</button>
                     <button class="pagination-btn">3</button>
                     <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
-                </div>
+                </section>
             </section>
-        </div>
+        </section>
     </main>
 
     <!-- Client Details Modal -->
-    <div class="modal" id="clienteDetailsModal">
-        <div class="modal-content">
-            <div class="modal-header">
+    <section class="modal" id="clienteDetailsModal">
+        <section class="modal-content">
+            <section class="modal-header">
                 <h2>Detalhes do Cliente</h2>
                 <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
+            </section>
+            <section class="modal-body">
                 <!-- Modal content for client details -->
-            </div>
-            <div class="modal-footer">
+            </section>
+            <section class="modal-footer">
                 <button class="btn btn-secondary" id="closeDetailsBtn">Fechar</button>
                 <button class="btn btn-primary">Agendar Sessão</button>
                 <button class="btn btn-outlined">Enviar Mensagem</button>
-            </div>
-        </div>
-    </div>
+            </section>
+        </section>
+    </section>
 
     <!-- Add/Edit Client Modal -->
-    <div class="modal" id="clienteFormModal">
-        <div class="modal-content">
-            <div class="modal-header">
+    <section class="modal" id="clienteFormModal">
+        <section class="modal-content">
+            <section class="modal-header">
                 <h2 id="formModalTitle">Adicionar Novo Cliente</h2>
                 <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
+            </section>
+            <section class="modal-body">
                 <form id="clienteForm">
-                    <div class="form-tabs">
+                    <section class="form-tabs">
                         <button type="button" class="form-tab-btn active" data-tab="cliente-info">Informações do Cliente</button>
                         <button type="button" class="form-tab-btn" data-tab="pet-info">Informações do Pet</button>
                         <button type="button" class="form-tab-btn" data-tab="servico-info">Serviço</button>
-                    </div>
+                    </section>
                     
-                    <div class="form-tab-content active" id="cliente-info-tab">
+                    <section class="form-tab-content active" id="cliente-info-tab">
                         <!-- Client info form fields -->
-                    </div>
+                    </section>
                     
-                    <div class="form-tab-content" id="pet-info-tab">
+                    <section class="form-tab-content" id="pet-info-tab">
                         <!-- Pet info form fields -->
-                    </div>
+                    </section>
                     
-                    <div class="form-tab-content" id="servico-info-tab">
-                        <div class="form-row">
-                            <div class="form-group">
+                    <section class="form-tab-content" id="servico-info-tab">
+                        <section class="form-row">
+                            <section class="form-group">
                                 <label for="tipoServico">Tipo de Serviço*</label>
                                 <select id="tipoServico" name="tipoServico" required>
                                     <option value="">Selecione</option>
@@ -353,18 +353,18 @@
                                     <option value="problemas">Correção de Problemas Específicos</option>
                                     <option value="outro">Outro</option>
                                 </select>
-                            </div>
-                            <div class="form-group">
+                            </section>
+                            <section class="form-group">
                                 <label for="totalSessoes">Total de Sessões*</label>
                                 <input type="number" id="totalSessoes" name="totalSessoes" min="1" value="10" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
+                            </section>
+                        </section>
+                        <section class="form-row">
+                            <section class="form-group">
                                 <label for="dataInicio">Data de Início*</label>
                                 <input type="date" id="dataInicio" name="dataInicio" required>
-                            </div>
-                            <div class="form-group">
+                            </section>
+                            <section class="form-group">
                                 <label for="frequencia">Frequência*</label>
                                 <select id="frequencia" name="frequencia" required>
                                     <option value="semanal">Semanal</option>
@@ -372,52 +372,52 @@
                                     <option value="mensal">Mensal</option>
                                     <option value="personalizado">Personalizado</option>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
+                            </section>
+                        </section>
+                        <section class="form-row">
+                            <section class="form-group">
                                 <label for="valorSessao">Valor por Sessão (R$)*</label>
                                 <input type="number" id="valorSessao" name="valorSessao" min="0" step="0.01" required>
-                            </div>
-                            <div class="form-group">
+                            </section>
+                            <section class="form-group">
                                 <label for="formaPagamento">Forma de Pagamento*</label>
                                 <select id="formaPagamento" name="formaPagamento" required>
                                     <option value="individual">Por Sessão</option>
                                     <option value="pacote">Pacote Completo</option>
                                     <option value="mensal">Mensalidade</option>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
+                            </section>
+                        </section>
+                        <section class="form-group">
                             <label for="observacoesServico">Detalhes do Serviço/Problemas a Tratar</label>
                             <textarea id="observacoesServico" name="observacoesServico" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
+                        </section>
+                        <section class="form-group">
                             <label>Objetivos do Treinamento</label>
-                            <div class="checkbox-group">
+                            <section class="checkbox-group">
                                 <label><input type="checkbox" name="objetivos" value="comandos"> Comandos Básicos</label>
                                 <label><input type="checkbox" name="objetivos" value="puxar"> Parar de Puxar na Coleira</label>
                                 <label><input type="checkbox" name="objetivos" value="socializacao"> Socialização com Outros Cães</label>
                                 <label><input type="checkbox" name="objetivos" value="ansiedade"> Redução de Ansiedade</label>
                                 <label><input type="checkbox" name="objetivos" value="agressividade"> Controle de Agressividade</label>
                                 <label><input type="checkbox" name="objetivos" value="destruicao"> Comportamento Destrutivo</label>
-                            </div>
-                        </div>
-                    </div>
+                            </section>
+                        </section>
+                    </section>
                 </form>
-            </div>
-            <div class="modal-footer">
+            </section>
+            <section class="modal-footer">
                 <button class="btn btn-secondary modal-close-btn">Cancelar</button>
                 <button class="btn btn-primary" id="saveClienteBtn">Salvar</button>
-            </div>
-        </div>
-    </div>
+            </section>
+        </section>
+    </section>
 
     <!-- Floating Notification Button -->
-    <div class="notification-float">
+    <section class="notification-float">
         <i class="fas fa-bell"></i>
         <span class="notif-count">3</span>
-    </div>
+    </section>
 
     <script src="script-adestradorcliente.js"></script>
 </body>

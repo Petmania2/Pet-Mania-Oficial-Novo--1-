@@ -1,0 +1,148 @@
+/* Inherit styles from main stylesheet */
+@import url('style-adestrador.css');
+
+/* Scheduling Page Specific Styles */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.scheduling-filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.scheduling-filters select,
+.scheduling-filters input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.scheduling-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.scheduling-item {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.scheduling-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 6px;
+    margin-right: 15px;
+}
+
+.scheduling-date .day {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.scheduling-date .month {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #666;
+}
+
+.scheduling-details {
+    flex-grow: 1;
+}
+
+.scheduling-details h4 {
+    margin-bottom: 5px;
+}
+
+.scheduling-details .dog-type {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.scheduling-status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-right: 15px;
+}
+
+.scheduling-status.confirmado {
+    background-color: #e6f3e6;
+    color: #2c742c;
+}
+
+.scheduling-status.pendente {
+    background-color: #fff4e6;
+    color: #b8860b;
+}
+
+.scheduling-status.cancelado {
+    background-color: #f3e6e6;
+    color: #b22222;
+}
+
+.scheduling-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}

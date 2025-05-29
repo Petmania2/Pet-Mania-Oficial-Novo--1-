@@ -1,0 +1,474 @@
+/* Estilos específicos para a página de perfil */
+
+/* Layout do perfil */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Cabeçalho do perfil */
+.profile-header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-avatar {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 20px;
+    background-color: #f0f0f0;
+}
+
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-placeholder i {
+    font-size: 40px;
+    color: #999;
+}
+
+.change-avatar-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.change-avatar-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.profile-name {
+    flex: 1;
+}
+
+.profile-name h2 {
+    margin: 0 0 5px 0;
+    font-size: 24px;
+}
+
+.profile-type {
+    color: #666;
+    margin: 0 0 10px 0;
+}
+
+.profile-rating {
+    display: flex;
+    align-items: center;
+    color: #ffa41b;
+}
+
+.profile-rating i {
+    margin-right: 2px;
+}
+
+.profile-rating span {
+    margin-left: 5px;
+    color: #666;
+    font-size: 14px;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Tabs de perfil */
+.profile-tabs {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+}
+
+.tab-btn {
+    padding: 15px 20px;
+    border: none;
+    background: none;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+}
+
+.tab-btn.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color);
+}
+
+/* Conteúdo das tabs */
+.profile-tab-content {
+    padding: 25px;
+    display: none;
+}
+
+.profile-tab-content.active {
+    display: block;
+}
+
+/* Formulários */
+.profile-form {
+    width: 100%;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Checkbox grupos */
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.checkbox-item input {
+    margin-right: 8px;
+    width: auto;
+}
+
+/* Serviços */
+.services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.service-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 15px;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+.service-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.service-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.service-price {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.service-details {
+    margin-top: 10px;
+    display: flex;
+    gap: 15px;
+    color: #666;
+    font-size: 14px;
+}
+
+.service-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-add-service {
+    margin-top: 10px;
+    background-color: #f5f5f5;
+    border: 1px dashed #ccc;
+    color: #666;
+    padding: 12px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.btn-add-service:hover {
+    background-color: #eaeaea;
+    color: var(--primary-color);
+}
+
+/* Senha e segurança */
+.password-strength {
+    margin: 15px 0 20px;
+}
+
+.strength-meter {
+    display: flex;
+    gap: 5px;
+    margin: 8px 0;
+}
+
+.strength-segment {
+    height: 5px;
+    flex: 1;
+    background-color: #ddd;
+    border-radius: 2px;
+}
+
+.strength-text {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+}
+
+.toggle-switch {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-switch input {
+    display: none;
+}
+
+.toggle-switch label {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+    background-color: #ccc;
+    border-radius: 13px;
+    transition: all 0.3s;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.toggle-switch label::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: white;
+    top: 2px;
+    left: 2px;
+    transition: all 0.3s;
+}
+
+.toggle-switch input:checked + label {
+    background-color: var(--primary-color);
+}
+
+.toggle-switch input:checked + label::after {
+    transform: translateX(24px);
+}
+
+.toggle-label {
+    font-size: 14px;
+}
+
+/* Estatísticas do perfil */
+.profile-stats-section {
+    padding: 20px;
+}
+
+.profile-stats-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.stat-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 5px 0;
+    color: var(--primary-color);
+}
+
+.stat-period {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Completude do perfil */
+.profile-completion-section {
+    padding: 20px;
+}
+
+.profile-completion-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.completion-progress {
+    margin-bottom: 15px;
+}
+
+.progress-bar {
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 4px;
+}
+
+.progress-text {
+    text-align: right;
+    font-size: 14px;
+    color: #666;
+}
+
+.completion-tasks {
+    margin-top: 15px;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 14px;
+}
+
+.task-item i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.task-item.completed i {
+    color: var(--primary-color);
+}
+
+.task-item:not(.completed) i {
+    color: #ccc;
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .checkbox-group {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .profile-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}

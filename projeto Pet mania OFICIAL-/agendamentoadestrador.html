@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Mania - Agendamentos</title>
+  <link rel="stylesheet" href="style-agendamentos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <section class="container navbar-container">
+      <a href="painel-adestrador.html" class="logo">
+        🐾 Pet Mania <span class="adestrador-badge">Adestrador</span>
+      </a>
+      <button class="mobile-menu-btn" id="menuBtn">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="paineladestrador.html"><i class="fas fa-home"></i> Início</a></li>
+        <li><a href="clientesadestrador.html"><i class="fas fa-user-friends"></i> Clientes</a></li>
+        <li><a href="mensagensadestrador.html"><i class="fas fa-comments"></i> Mensagens <span class="notif-badge">3</span></a></li>
+        <li><a href="agendamentos.html" class="active"><i class="fas fa-calendar-alt"></i> Agendamentos</a></li>
+        <li><a href="perfiladestrador.html"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
+        <li><a href="planosadestrador.html"><i class="fas fa-star"></i> Planos</a></li>
+        <li><a href="index.html" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+      </ul>
+    </section>
+  </nav>
+
+  <main class="main-content">
+    <section class="container">
+      <section class="page-header">
+        <h1><i class="fas fa-calendar-alt"></i> Agendamentos</h1>
+        <button class="btn btn-primary" id="novoAgendamento">
+          <i class="fas fa-plus"></i> Novo Agendamento
+        </button>
+      </section>
+
+      <section class="scheduling-filters">
+        <select id="statusFilter">
+          <option value="todos">Todos os Status</option>
+          <option value="confirmado">Confirmado</option>
+          <option value="pendente">Pendente</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+        <input type="date" id="dateFilter">
+        <button class="btn btn-secondary" id="aplicarFiltros">Aplicar Filtros</button>
+      </section>
+
+      <section class="scheduling-list">
+        <section class="scheduling-item">
+          <section class="scheduling-date">
+            <span class="day">29</span>
+            <span class="month">Fev</span>
+          </section>
+          <section class="scheduling-details">
+            <h4>Amanda Silva <span class="dog-type">Golden Retriever</span></h4>
+            <p><i class="fas fa-clock"></i> 09:00 - 10:30 · <i class="fas fa-map-marker-alt"></i> Residência do Cliente</p>
+            <p class="scheduling-type">Obediência Básica · 1ª Sessão</p>
+          </section>
+          <section class="scheduling-status confirmado">Confirmado</section>
+          <section class="scheduling-actions">
+            <button class="btn btn-small"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-small btn-secondary"><i class="fas fa-trash"></i></button>
+          </section>
+        </section>
+
+        <!-- Repetição de agendamentos abaixo (mais dois exemplos) -->
+
+        <section class="scheduling-item">
+          <section class="scheduling-date">
+            <span class="day">01</span>
+            <span class="month">Mar</span>
+          </section>
+          <section class="scheduling-details">
+            <h4>Pedro Mendes <span class="dog-type">Border Collie</span></h4>
+            <p><i class="fas fa-clock"></i> 14:00 - 15:30 · <i class="fas fa-map-marker-alt"></i> Parque Municipal</p>
+            <p class="scheduling-type">Comportamento Avançado · 3ª Sessão</p>
+          </section>
+          <section class="scheduling-status pendente">Pendente</section>
+          <section class="scheduling-actions">
+            <button class="btn btn-small"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-small btn-secondary"><i class="fas fa-trash"></i></button>
+          </section>
+        </section>
+
+        <section class="scheduling-item">
+          <section class="scheduling-date">
+            <span class="day">03</span>
+            <span class="month">Mar</span>
+          </section>
+          <section class="scheduling-details">
+            <h4>Mariana Costa <span class="dog-type">Labrador</span></h4>
+            <p><i class="fas fa-clock"></i> 10:00 - 11:30 · <i class="fas fa-map-marker-alt"></i> Residência do Cliente</p>
+            <p class="scheduling-type">Socialização · 2ª Sessão</p>
+          </section>
+          <section class="scheduling-status cancelado">Cancelado</section>
+          <section class="scheduling-actions">
+            <button class="btn btn-small"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-small btn-secondary"><i class="fas fa-trash"></i></button>
+          </section>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <section class="notification-float">
+    <i class="fas fa-bell"></i>
+    <span class="notif-count">3</span>
+  </section>
+
+  <section class="modal" id="novoAgendamentoModal">
+    <section class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Novo Agendamento</h2>
+      <form id="novoAgendamentoForm">
+        <section class="form-group">
+          <label for="cliente">Cliente</label>
+          <select id="cliente" required>
+            <option value="">Selecione um Cliente</option>
+            <option>Amanda Silva</option>
+            <option>Pedro Mendes</option>
+            <option>Mariana Costa</option>
+          </select>
+        </section>
+        <section class="form-group">
+          <label for="data">Data</label>
+          <input type="date" id="data" required>
+        </section>
+        <section class="form-group">
+          <label for="horario">Horário</label>
+          <input type="time" id="horario" required>
+        </section>
+        <section class="form-group">
+          <label for="tipoSessao">Tipo de Sessão</label>
+          <select id="tipoSessao" required>
+            <option value="">Selecione o Tipo de Sessão</option>
+            <option>Obediência Básica</option>
+            <option>Comportamento Avançado</option>
+            <option>Socialização</option>
+          </select>
+        </section>
+        <section class="form-group">
+          <label for="local">Local</label>
+          <input type="text" id="local" placeholder="Local da Sessão" required>
+        </section>
+        <button type="submit" class="btn btn-primary">Agendar</button>
+      </form>
+    </section>
+  </section>
+
+  <script src="script-agendamentos.js"></script>
+</body>
+</html>

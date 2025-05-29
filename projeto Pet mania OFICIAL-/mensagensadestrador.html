@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Mania - Mensagens do Adestrador</title>
+    <link rel="stylesheet" href="style-mensagens.css">
+    <link rel="stylesheet" href="style-adestrador.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="paineladestrador.html" class="logo">
+                🐾 Pet Mania <span class="adestrador-badge">Adestrador</span>
+            </a>
+            <button class="mobile-menu-btn" id="menuBtn">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="paineladestrador.html"><i class="fas fa-home"></i> Início</a></li>
+                <li><a href="clientesadestrador.html"><i class="fas fa-user-friends"></i> Clientes</a></li>
+                <li><a href="mensagensadestrador.html" class="active"><i class="fas fa-comments"></i> Mensagens <span class="notif-badge">3</span></a></li>
+                <li><a href="agendamentoadestrador.html"><i class="fas fa-calendar-alt"></i> Agendamentos</a></li>
+                <li><a href="perfiladestrador.html"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
+                <li><a href="planosadestrador.html"><i class="fas fa-star"></i> Planos</a></li>
+                <li><a href="index.html" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="messages-container">
+                <!-- Contacts Sidebar -->
+                <div class="contacts-sidebar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar conversas..." id="searchContacts">
+                    </div>
+                    
+                    <div class="contacts-list">
+                        <div class="contact-item active" data-contact="amanda">
+                            <div class="contact-avatar" style="background-image: url('https://i.pravatar.cc/150?img=5')"></div>
+                            <div class="contact-info">
+                                <h4>Amanda Silva</h4>
+                                <p class="last-message">Olá Carlos, estou ansiosa para nossa sessão amanhã!</p>
+                                <span class="message-time">Hoje, 14:32</span>
+                            </div>
+                            <div class="contact-status">
+                                <span class="status-badge new">Nova</span>
+                            </div>
+                        </div>
+
+                        <div class="contact-item" data-contact="rodrigo">
+                            <div class="contact-avatar" style="background-image: url('https://i.pravatar.cc/150?img=8')"></div>
+                            <div class="contact-info">
+                                <h4>Rodrigo Alves</h4>
+                                <p class="last-message">Bom dia! Gostaria de agendar uma avaliação para o meu filhote.</p>
+                                <span class="message-time">Hoje, 11:15</span>
+                            </div>
+                            <div class="contact-status">
+                                <span class="status-badge new">Nova</span>
+                            </div>
+                        </div>
+
+                        <div class="contact-item" data-contact="mariana">
+                            <div class="contact-avatar" style="background-image: url('https://i.pravatar.cc/150?img=9')"></div>
+                            <div class="contact-info">
+                                <h4>Mariana Costa</h4>
+                                <p class="last-message">Muito obrigada pela última sessão! O comportamento do Max já...</p>
+                                <span class="message-time">Ontem, 18:45</span>
+                            </div>
+                        </div>
+
+                        <div class="contact-item" data-contact="fernanda">
+                            <div class="contact-avatar" style="background-image: url('https://i.pravatar.cc/150?img=26')"></div>
+                            <div class="contact-info">
+                                <h4>Fernanda Lima</h4>
+                                <p class="last-message">Consegui aplicar as técnicas que você ensinou e meu cachorro está...</p>
+                                <span class="message-time">27/02/2025</span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item" data-contact="carlos">
+                            <div class="contact-avatar" style="background-image: url('https://i.pravatar.cc/150?img=15')"></div>
+                            <div class="contact-info">
+                                <h4>Carlos Eduardo</h4>
+                                <p class="last-message">Meu cão não está atendendo bem aos comandos básicos...</p>
+                                <span class="message-time">25/02/2025</span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item" data-contact="patricia">
+                            <div class="contact-avatar" style="background-image: url('https://i.pravatar.cc/150?img=20')"></div>
+                            <div class="contact-info">
+                                <h4>Patrícia Santos</h4>
+                                <p class="last-message">Gostaria de marcar uma nova aula para semana que vem...</p>
+                                <span class="message-time">22/02/2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Area -->
+                <div class="chat-area">
+                    <!-- Chat Header -->
+                    <div class="chat-header">
+                        <div class="contact-info">
+                            <div class="contact-avatar" style="background-image: url('https://i.pravatar.cc/150?img=5')"></div>
+                            <div>
+                                <h3 id="chatContactName">Amanda Silva</h3>
+                                <p><span class="status-indicator online"></span> Online</p>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="btn-icon"><i class="fas fa-phone"></i></button>
+                            <button class="btn-icon"><i class="fas fa-video"></i></button>
+                            <button class="btn-icon"><i class="fas fa-info-circle"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Messages will be loaded dynamically based on selected contact -->
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="chat-input">
+                        <button class="btn-icon" id="emojiBtn"><i class="far fa-smile"></i></button>
+                        <button class="btn-icon" id="attachBtn"><i class="fas fa-paperclip"></i></button>
+                        <input type="text" placeholder="Digite sua mensagem..." id="messageInput">
+                        <button class="btn btn-send" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                    
+                    <!-- File Upload Dialog (Hidden by default) -->
+                    <div class="file-upload-dialog" id="fileUploadDialog">
+                        <div class="file-upload-header">
+                            <h4>Anexar Arquivo</h4>
+                            <button class="btn-close" id="closeFileDialog"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="file-upload-content">
+                            <div class="file-upload-option">
+                                <i class="fas fa-image"></i>
+                                <span>Imagem</span>
+                            </div>
+                            <div class="file-upload-option">
+                                <i class="fas fa-file-pdf"></i>
+                                <span>Documento</span>
+                            </div>
+                            <div class="file-upload-option">
+                                <i class="fas fa-camera"></i>
+                                <span>Câmera</span>
+                            </div>
+                            <div class="file-upload-option">
+                                <i class="fas fa-file"></i>
+                                <span>Outro arquivo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Emoji Picker (Hidden by default) -->
+                    <div class="emoji-picker" id="emojiPicker">
+                        <div class="emoji-header">
+                            <h4>Emojis</h4>
+                            <button class="btn-close" id="closeEmojiPicker"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="emoji-categories">
+                            <button class="emoji-category active"><i class="far fa-smile"></i></button>
+                            <button class="emoji-category"><i class="fas fa-paw"></i></button>
+                            <button class="emoji-category"><i class="fas fa-utensils"></i></button>
+                            <button class="emoji-category"><i class="fas fa-football-ball"></i></button>
+                            <button class="emoji-category"><i class="fas fa-lightbulb"></i></button>
+                        </div>
+                        <div class="emoji-list">
+                            <span class="emoji">😀</span>
+                            <span class="emoji">😃</span>
+                            <span class="emoji">😄</span>
+                            <span class="emoji">😁</span>
+                            <span class="emoji">😆</span>
+                            <span class="emoji">😅</span>
+                            <span class="emoji">😂</span>
+                            <span class="emoji">🤣</span>
+                            <span class="emoji">😊</span>
+                            <span class="emoji">😇</span>
+                            <span class="emoji">🙂</span>
+                            <span class="emoji">🙃</span>
+                            <span class="emoji">😉</span>
+                            <span class="emoji">😌</span>
+                            <span class="emoji">😍</span>
+                            <span class="emoji">🥰</span>
+                            <span class="emoji">😘</span>
+                            <span class="emoji">😗</span>
+                            <span class="emoji">😙</span>
+                            <span class="emoji">😚</span>
+                            <span class="emoji">😋</span>
+                            <span class="emoji">😛</span>
+                            <span class="emoji">😝</span>
+                            <span class="emoji">😜</span>
+                            <span class="emoji">🤪</span>
+                            <span class="emoji">🤨</span>
+                            <span class="emoji">🧐</span>
+                            <span class="emoji">🤓</span>
+                            <span class="emoji">😎</span>
+                            <span class="emoji">🤩</span>
+                            <span class="emoji">🥳</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Info Sidebar (initially hidden) -->
+                <div class="contact-info-sidebar" id="contactInfoSidebar">
+                    <div class="contact-info-header">
+                        <h3>Detalhes do Contato</h3>
+                        <button class="btn-close" id="closeContactInfo"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="contact-profile">
+                        <div class="contact-avatar large" style="background-image: url('https://i.pravatar.cc/150?img=5')"></div>
+                        <h3 id="sidebarContactName">Amanda Silva</h3>
+                        <p><span class="status-indicator online"></span> Online</p>
+                    </div>
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Pet:</span>
+                            <span class="detail-value" id="contactPet">Rex - Golden Retriever, 2 anos</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Telefone:</span>
+                            <span class="detail-value">(11) 98765-4321</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">amanda.silva@email.com</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Endereço:</span>
+                            <span class="detail-value">Rua das Flores, 123 - São Paulo, SP</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Próxima Sessão:</span>
+                            <span class="detail-value" id="nextSession">29/02/2025 - 09:00</span>
+                        </div>
+                    </div>
+                    <div class="contact-actions">
+                        <button class="btn btn-block"><i class="fas fa-calendar-plus"></i> Agendar Sessão</button>
+                        <button class="btn btn-block btn-secondary"><i class="fas fa-file-alt"></i> Ver Relatórios</button>
+                    </div>
+                    <div class="shared-files">
+                        <h4>Arquivos Compartilhados</h4>
+                        <div class="file-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <div class="file-info">
+                                <p class="file-name">Plano_de_Treinamento.pdf</p>
+                                <p class="file-date">25/02/2025</p>
+                            </div>
+                            <button class="btn-icon small"><i class="fas fa-download"></i></button>
+                        </div>
+                        <div class="file-item">
+                            <i class="fas fa-file-image"></i>
+                            <div class="file-info">
+                                <p class="file-name">Rex_Progresso.jpg</p>
+                                <p class="file-date">20/02/2025</p>
+                            </div>
+                            <button class="btn-icon small"><i class="fas fa-download"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Notification Button -->
+    <div class="notification-float">
+        <i class="fas fa-bell"></i>
+        <span class="notif-count">3</span>
+    </div>
+
+    <script src="script-mensagens.js"></script>
+</body>
+</html>

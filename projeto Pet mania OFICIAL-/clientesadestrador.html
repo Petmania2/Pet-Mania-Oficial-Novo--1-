@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Mania - Clientes</title>
+    <link rel="stylesheet" href="style-adestrador.css">
+    <link rel="stylesheet" href="style-clientesadestrador.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="painel-adestrador.html" class="logo">
+                🐾 Pet Mania <span class="adestrador-badge">Adestrador</span>
+            </a>
+            <button class="mobile-menu-btn" id="menuBtn">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="paineladestrador.html"><i class="fas fa-home"></i> Início</a></li>
+                <li><a href="clientesadestrador.html" class="active"><i class="fas fa-user-friends"></i> Clientes</a></li>
+                <li><a href="mensagensadestrador.html"><i class="fas fa-comments"></i> Mensagens <span class="notif-badge">3</span></a></li>
+                <li><a href="agendamentoadestrador.html"><i class="fas fa-calendar-alt"></i> Agendamentos</a></li>
+                <li><a href="perfiladestrador.html"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
+                <li><a href="planosadestrador.html"><i class="fas fa-star"></i> Planos</a></li>
+                <li><a href="index.html" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-user-friends"></i> Gerenciamento de Clientes</h1>
+                <div class="header-actions">
+                    <div class="search-container">
+                        <input type="text" id="clienteSearch" placeholder="Buscar cliente..." class="search-input">
+                        <button class="btn btn-search"><i class="fas fa-search"></i></button>
+                    </div>
+                    <button class="btn btn-primary" id="addClienteBtn"><i class="fas fa-plus"></i> Novo Cliente</button>
+                </div>
+            </div>
+
+           <!-- Filters and Statistics -->
+            <div class="filters-section">
+                <div class="filters">
+                    <!-- Status Filter with Visual Options -->
+                    <div class="filter-group">
+                        <label for="filterStatus">Status</label>
+                        <div class="status-filter-options">
+                            <label class="status-option active-status" id="statusActive">
+                                <input type="checkbox" name="status[]" value="active">
+                                <i class="fas fa-check-circle"></i> Ativos
+                            </label>
+                            <label class="status-option pending-status" id="statusPending">
+                                <input type="checkbox" name="status[]" value="pending">
+                                <i class="fas fa-clock"></i> Pendentes
+                            </label>
+                            <label class="status-option new-status" id="statusNew">
+                                <input type="checkbox" name="status[]" value="new">
+                                <i class="fas fa-star"></i> Novos
+                            </label>
+                            <label class="status-option inactive-status" id="statusInactive">
+                                <input type="checkbox" name="status[]" value="inactive">
+                                <i class="fas fa-times-circle"></i> Inativos
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Service Filter -->
+                    <div class="filter-group">
+                        <label for="filterServico">Serviço</label>
+                        <select id="filterServico" class="filter-select">
+                            <option value="todos">Todos os serviços</option>
+                            <option value="obediencia">Obediência Básica</option>
+                            <option value="comportamento">Comportamento Avançado</option>
+                            <option value="socializacao">Socialização</option>
+                            <option value="problemas">Correção de Problemas</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Toggle for Advanced Filters -->
+                    <button type="button" class="filter-toggle" id="advancedFilterToggle">
+                        <i class="fas fa-chevron-down"></i> Filtros avançados
+                    </button>
+                    
+                    <!-- Advanced Filters (Hidden by Default) -->
+                    <div class="advanced-filters" style="display: none;">
+                        <div class="filter-group">
+                            <label for="filterBreed">Raça do Pet</label>
+                            <select id="filterBreed" class="filter-select">
+                                <option value="todos">Todas as raças</option>
+                                <option value="labrador">Labrador</option>
+                                <option value="golden">Golden Retriever</option>
+                                <option value="pastor">Pastor Alemão</option>
+                                <option value="border">Border Collie</option>
+                                <option value="outros">Outras raças</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="filterAge">Idade do Pet</label>
+                            <select id="filterAge" class="filter-select">
+                                <option value="todos">Todas as idades</option>
+                                <option value="filhote">Filhote (até 1 ano)</option>
+                                <option value="jovem">Jovem (1-3 anos)</option>
+                                <option value="adulto">Adulto (3-8 anos)</option>
+                                <option value="senior">Sênior (8+ anos)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Período de Início</label>
+                            <div class="date-range">
+                                <input type="date" id="filterStartDate" placeholder="De">
+                                <span>até</span>
+                                <input type="date" id="filterEndDate" placeholder="Até">
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="filterProgress">Progresso</label>
+                            <select id="filterProgress" class="filter-select">
+                                <option value="todos">Qualquer progresso</option>
+                                <option value="nao-iniciado">Não iniciado</option>
+                                <option value="em-andamento">Em andamento</option>
+                                <option value="quase-completo">Quase completo (>70%)</option>
+                                <option value="completo">Completo</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Active Filters (appears when filters are applied) -->
+                    <div class="active-filters">
+                        <!-- Active filter tags will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="filter-actions">
+                    <button class="btn-filter reset" id="resetFilters">
+                        <i class="fas fa-undo"></i> Limpar
+                    </button>
+                    <button class="btn-filter apply" id="applyFilters">
+                        <i class="fas fa-filter"></i> Aplicar Filtros
+                    </button>
+                </div>
+            </div>
+
+            <!-- Client List -->
+            <section class="card clients-section full-width">
+                <div class="card-header">
+                    <h2>Lista de Clientes</h2>
+                    <div class="view-controls">
+                        <button class="view-btn active" data-view="list"><i class="fas fa-list"></i></button>
+                        <button class="view-btn" data-view="grid"><i class="fas fa-th-large"></i></button>
+                    </div>
+                </div>
+                <div class="clients-table-wrapper">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Pet</th>
+                                <th>Serviço</th>
+                                <th>Data Início</th>
+                                <th>Status</th>
+                                <th>Progresso</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientesTableBody">
+                            <!-- Client rows will be populated here -->
+                            <tr data-id="1" class="client-row">
+                                <td class="client-info-cell">
+                                    <div class="client-avatar"></div>
+                                    <div class="client-basic-info">
+                                        <h4>Amanda Silva</h4>
+                                        <p><i class="fas fa-phone"></i> (11) 98765-4321</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="pet-tag dog">Rex</span>
+                                    <p class="pet-breed">Golden Retriever, 2 anos</p>
+                                </td>
+                                <td>Obediência Básica</td>
+                                <td>28/02/2025</td>
+                                <td><span class="status-badge new">Novo</span></td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 10%;"></div>
+                                    </div>
+                                    <span class="progress-text">1/10 sessões</span>
+                                </td>
+                                <td class="actions-cell">
+                                    <button class="btn btn-small btn-icon" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-small btn-icon" title="Editar"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-small btn-icon" title="Mensagem"><i class="fas fa-comment"></i></button>
+                                </td>
+                            </tr>
+                            <tr data-id="2" class="client-row">
+                                <td class="client-info-cell">
+                                    <div class="client-avatar"></div>
+                                    <div class="client-basic-info">
+                                        <h4>Pedro Mendes</h4>
+                                        <p><i class="fas fa-phone"></i> (11) 97654-3210</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="pet-tag dog">Luna</span>
+                                    <p class="pet-breed">Border Collie, 1 ano</p>
+                                </td>
+                                <td>Comportamento Avançado</td>
+                                <td>15/01/2025</td>
+                                <td><span class="status-badge active">Ativo</span></td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 60%;"></div>
+                                    </div>
+                                    <span class="progress-text">6/10 sessões</span>
+                                </td>
+                                <td class="actions-cell">
+                                    <button class="btn btn-small btn-icon" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-small btn-icon" title="Editar"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-small btn-icon" title="Mensagem"><i class="fas fa-comment"></i></button>
+                                </td>
+                            </tr>
+                            <tr data-id="3" class="client-row">
+                                <td class="client-info-cell">
+                                    <div class="client-avatar"></div>
+                                    <div class="client-basic-info">
+                                        <h4>Mariana Costa</h4>
+                                        <p><i class="fas fa-phone"></i> (11) 95432-1098</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="pet-tag dog">Max</span>
+                                    <p class="pet-breed">Labrador, 3 anos</p>
+                                </td>
+                                <td>Socialização</td>
+                                <td>05/02/2025</td>
+                                <td><span class="status-badge active">Ativo</span></td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 40%;"></div>
+                                    </div>
+                                    <span class="progress-text">4/10 sessões</span>
+                                </td>
+                                <td class="actions-cell">
+                                    <button class="btn btn-small btn-icon" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-small btn-icon" title="Editar"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-small btn-icon" title="Mensagem"><i class="fas fa-comment"></i></button>
+                                </td>
+                            </tr>
+                            <tr data-id="4" class="client-row">
+                                <td class="client-info-cell">
+                                    <div class="client-avatar"></div>
+                                    <div class="client-basic-info">
+                                        <h4>Rodrigo Alves</h4>
+                                        <p><i class="fas fa-phone"></i> (11) 98765-1234</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="pet-tag dog">Thor</span>
+                                    <p class="pet-breed">Pastor Alemão, 8 meses</p>
+                                </td>
+                                <td>Obediência Básica</td>
+                                <td>25/02/2025</td>
+                                <td><span class="status-badge pending">Pendente</span></td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 0%;"></div>
+                                    </div>
+                                    <span class="progress-text">0/10 sessões</span>
+                                </td>
+                                <td class="actions-cell">
+                                    <button class="btn btn-small btn-accept" title="Aceitar"><i class="fas fa-check"></i></button>
+                                    <button class="btn btn-small btn-reject" title="Recusar"><i class="fas fa-times"></i></button>
+                                    <button class="btn btn-small btn-icon" title="Mensagem"><i class="fas fa-comment"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Grid View (Hidden by default) -->
+                <div class="clients-grid" style="display: none;">
+                    <!-- Grid content -->
+                </div>
+
+                <div class="pagination">
+                    <button class="pagination-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Client Details Modal -->
+    <div class="modal" id="clienteDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalhes do Cliente</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content for client details -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeDetailsBtn">Fechar</button>
+                <button class="btn btn-primary">Agendar Sessão</button>
+                <button class="btn btn-outlined">Enviar Mensagem</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Client Modal -->
+    <div class="modal" id="clienteFormModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="formModalTitle">Adicionar Novo Cliente</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="clienteForm">
+                    <div class="form-tabs">
+                        <button type="button" class="form-tab-btn active" data-tab="cliente-info">Informações do Cliente</button>
+                        <button type="button" class="form-tab-btn" data-tab="pet-info">Informações do Pet</button>
+                        <button type="button" class="form-tab-btn" data-tab="servico-info">Serviço</button>
+                    </div>
+                    
+                    <div class="form-tab-content active" id="cliente-info-tab">
+                        <!-- Client info form fields -->
+                    </div>
+                    
+                    <div class="form-tab-content" id="pet-info-tab">
+                        <!-- Pet info form fields -->
+                    </div>
+                    
+                    <div class="form-tab-content" id="servico-info-tab">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tipoServico">Tipo de Serviço*</label>
+                                <select id="tipoServico" name="tipoServico" required>
+                                    <option value="">Selecione</option>
+                                    <option value="obediencia">Obediência Básica</option>
+                                    <option value="comportamento">Comportamento Avançado</option>
+                                    <option value="socializacao">Socialização</option>
+                                    <option value="problemas">Correção de Problemas Específicos</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="totalSessoes">Total de Sessões*</label>
+                                <input type="number" id="totalSessoes" name="totalSessoes" min="1" value="10" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dataInicio">Data de Início*</label>
+                                <input type="date" id="dataInicio" name="dataInicio" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="frequencia">Frequência*</label>
+                                <select id="frequencia" name="frequencia" required>
+                                    <option value="semanal">Semanal</option>
+                                    <option value="quinzenal">Quinzenal</option>
+                                    <option value="mensal">Mensal</option>
+                                    <option value="personalizado">Personalizado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="valorSessao">Valor por Sessão (R$)*</label>
+                                <input type="number" id="valorSessao" name="valorSessao" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="formaPagamento">Forma de Pagamento*</label>
+                                <select id="formaPagamento" name="formaPagamento" required>
+                                    <option value="individual">Por Sessão</option>
+                                    <option value="pacote">Pacote Completo</option>
+                                    <option value="mensal">Mensalidade</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="observacoesServico">Detalhes do Serviço/Problemas a Tratar</label>
+                            <textarea id="observacoesServico" name="observacoesServico" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Objetivos do Treinamento</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="objetivos" value="comandos"> Comandos Básicos</label>
+                                <label><input type="checkbox" name="objetivos" value="puxar"> Parar de Puxar na Coleira</label>
+                                <label><input type="checkbox" name="objetivos" value="socializacao"> Socialização com Outros Cães</label>
+                                <label><input type="checkbox" name="objetivos" value="ansiedade"> Redução de Ansiedade</label>
+                                <label><input type="checkbox" name="objetivos" value="agressividade"> Controle de Agressividade</label>
+                                <label><input type="checkbox" name="objetivos" value="destruicao"> Comportamento Destrutivo</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close-btn">Cancelar</button>
+                <button class="btn btn-primary" id="saveClienteBtn">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Notification Button -->
+    <div class="notification-float">
+        <i class="fas fa-bell"></i>
+        <span class="notif-count">3</span>
+    </div>
+
+    <script src="script-adestradorcliente.js"></script>
+</body>
+</html>

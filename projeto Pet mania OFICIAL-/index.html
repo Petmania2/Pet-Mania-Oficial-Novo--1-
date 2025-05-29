@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Mania - Conectando Adestradores e Donos de Cães</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <section class="container navbar-container">
+            <a href="#" class="logo">
+                🐾 Pet Mania
+            </a>
+            <button class="mobile-menu-btn" id="menuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="nav-item">Home</a></li>
+                <li><a href="#find-trainer" class="nav-item">Encontrar</a></li>
+                <li><a href="#trainers" class="nav-item">Adestradores</a></li>
+                <li><a href="#how-it-works" class="nav-item">Como Funciona</a></li>
+                <li><a href="#contact" class="nav-item">Contato</a></li>
+                <li><a href="login.html" class="btn btn-outline">Entrar</a></li>
+            </ul>
+        </section>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <section class="hero-overlay"></section>
+        <section class="container hero-content">
+            <section class="hero-text">
+                <h1>Transforme o Comportamento do seu Pet</h1>
+                <p>Encontre os melhores adestradores profissionais para seu cão. Treinamento personalizado e resultados garantidos.</p>
+                <section class="hero-buttons">
+                    <a href="cadastro-cliente.html" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Cadastrar como Cliente
+                    </a>
+                    <a href="cadastro-adestrador.html" class="btn btn-secondary">
+                        <i class="fas fa-paw"></i> Cadastrar como Adestrador
+                    </a>
+                </section>
+            </section>
+            <section class="hero-image">
+                <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Cão feliz com seu treinador">
+            </section>
+        </section>
+      
+    </section>
+
+    <!-- Encontre um Adestrador Section -->
+    <section class="find-trainer" id="find-trainer">
+        <section class="container">
+            <h2 class="section-title">📍 Encontre um Adestrador Perto de Você</h2>
+            
+            <section class="location-search">
+                <section class="location-search-form">
+                    <section class="form-content">
+                        <h3>Busque por Localização</h3>
+                        <p>Digite sua cidade ou estado para encontrar adestradores próximos a você</p>
+                        
+                        <section class="search-group">
+                            <section class="input-wrapper">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <input type="text" id="locationInput" placeholder="Digite sua cidade ou estado">
+                            </section>
+                            <button class="btn btn-primary" id="findLocationBtn">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                        </section>
+                        
+                        <section class="popular-locations">
+                            <p>Locais populares:</p>
+                            <section class="location-tags">
+                                <span class="location-tag">São Paulo</span>
+                                <span class="location-tag">Rio de Janeiro</span>
+                                <span class="location-tag">Belo Horizonte</span>
+                                <span class="location-tag">Curitiba</span>
+                            </section>
+                        </section>
+                    </section>
+                </section>
+                
+                <section class="location-map">
+                    <section class="map-container">
+                        <section class="map-placeholder">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <p>Mapa de Adestradores</p>
+                            <span>Busque pelo seu endereço para visualizar adestradores na sua região</span>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            
+            <section class="location-benefits">
+                <section class="benefit-card">
+                    <section class="benefit-icon">
+                        <i class="fas fa-walking"></i>
+                    </section>
+                    <h3>Adestradores Próximos</h3>
+                    <p>Encontre profissionais que podem atender em sua residência ou região</p>
+                </section>
+                
+                <section class="benefit-card">
+                    <section class="benefit-icon">
+                        <i class="fas fa-star"></i>
+                    </section>
+                    <h3>Avaliações Verificadas</h3>
+                    <p>Veja feedback de clientes anteriores para escolher o melhor</p>
+                </section>
+                
+                <section class="benefit-card">
+                    <section class="benefit-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </section>
+                    <h3>Agendamento Fácil</h3>
+                    <p>Marque sessões conforme sua disponibilidade e necessidade</p>
+                </section>
+            </section>
+        </section>
+    </section>
+
+    <!-- Trainers Section -->
+    <section class="trainers" id="trainers">
+        <section class="container">
+            <h2 class="section-title">Adestradores em Destaque</h2>
+            
+            <section class="search-filters">
+                <section class="search-bar">
+                    <input type="text" placeholder="Busque por nome ou especialidade..." id="searchInput">
+                    <button id="searchBtn"><i class="fas fa-search"></i> Buscar</button>
+                </section>
+                <section class="filters">
+                    <select class="filter-select" id="cityFilter">
+                        <option value="">Todas as Cidades</option>
+                        <option value="sao-paulo">São Paulo</option>
+                        <option value="rio-de-janeiro">Rio de Janeiro</option>
+                        <option value="belo-horizonte">Belo Horizonte</option>
+                        <option value="curitiba">Curitiba</option>
+                    </select>
+                    <select class="filter-select" id="priceFilter">
+                        <option value="">Todos os Preços</option>
+                        <option value="ate-100">Até R$ 100</option>
+                        <option value="100-200">R$ 100 - R$ 200</option>
+                        <option value="200-300">R$ 200 - R$ 300</option>
+                        <option value="acima-300">Acima de R$ 300</option>
+                    </select>
+                    <select class="filter-select" id="trainingFilter">
+                        <option value="">Todos os Treinamentos</option>
+                        <option value="obediencia-basica">Obediência Básica</option>
+                        <option value="comportamento">Problemas de Comportamento</option>
+                        <option value="truques">Truques e Comandos</option>
+                        <option value="agressividade">Controle de Agressividade</option>
+                    </select>
+                </section>
+            </section>
+            
+            <section class="trainers-grid">
+                <article class="trainer-card">
+                    <section class="trainer-header">
+                        <section class="trainer-rating">
+                            <i class="fas fa-star"></i> 5.0
+                        </section>
+                        <section class="trainer-badge">
+                            <i class="fas fa-medal"></i> Top Adestrador
+                        </section>
+                    </section>
+                    <section class="trainer-img">
+                        <img src="https://images.unsplash.com/photo-1560525821-d5615ef80c69?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Ricardo Almeida">
+                    </section>
+                    <section class="trainer-info">
+                        <h3 class="trainer-name">Ricardo Almeida</h3>
+                        <p class="trainer-specialty"><i class="fas fa-certificate"></i> Especialista em Obediência Básica</p>
+                        <p class="trainer-location"><i class="fas fa-map-marker-alt"></i> São Paulo, SP</p>
+                        <p class="trainer-experience"><i class="fas fa-clock"></i> 8 anos de experiência</p>
+                        <section class="trainer-reviews">
+                            <section class="stars">⭐⭐⭐⭐⭐</section>
+                            <span>(57 avaliações)</span>
+                        </section>
+                        <section class="trainer-price-info">
+                            <span class="price-label">Preço por sessão:</span>
+                            <span class="price-value">R$ 150</span>
+                        </section>
+                        <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
+                    </section>
+                </article>
+                
+                <article class="trainer-card">
+                    <section class="trainer-header">
+                        <section class="trainer-rating">
+                            <i class="fas fa-star"></i> 4.9
+                        </section>
+                    </section>
+                    <section class="trainer-img">
+                        <img src="https://images.unsplash.com/photo-1536766768598-e09213fdcf22?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Juliana Costa">
+                    </section>
+                    <section class="trainer-info">
+                        <h3 class="trainer-name">Juliana Costa</h3>
+                        <p class="trainer-specialty"><i class="fas fa-certificate"></i> Comportamento Canino</p>
+                        <p class="trainer-location"><i class="fas fa-map-marker-alt"></i> Rio de Janeiro, RJ</p>
+                        <p class="trainer-experience"><i class="fas fa-clock"></i> 10 anos de experiência</p>
+                        <section class="trainer-reviews">
+                            <section class="stars">⭐⭐⭐⭐⭐</section>
+                            <span>(43 avaliações)</span>
+                        </section>
+                        <section class="trainer-price-info">
+                            <span class="price-label">Preço por sessão:</span>
+                            <span class="price-value">R$ 180</span>
+                        </section>
+                        <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
+                    </section>
+                </article>
+                
+                <article class="trainer-card">
+                    <section class="trainer-header">
+                        <section class="trainer-rating">
+                            <i class="fas fa-star"></i> 4.8
+                        </section>
+                        <section class="trainer-badge">
+                            <i class="fas fa-award"></i> Especialista
+                        </section>
+                    </section>
+                    <section class="trainer-img">
+                        <img src="https://images.unsplash.com/photo-1605152276897-4f618f831968?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="Carlos Mendes">
+                    </section>
+                    <section class="trainer-info">
+                        <h3 class="trainer-name">Carlos Mendes</h3>
+                        <p class="trainer-specialty"><i class="fas fa-certificate"></i> Controle de Agressividade</p>
+                        <p class="trainer-location"><i class="fas fa-map-marker-alt"></i> Belo Horizonte, MG</p>
+                        <p class="trainer-experience"><i class="fas fa-clock"></i> 12 anos de experiência</p>
+                        <section class="trainer-reviews">
+                            <section class="stars">⭐⭐⭐⭐</section>
+                            <span>(38 avaliações)</span>
+                        </section>
+                        <section class="trainer-price-info">
+                            <span class="price-label">Preço por sessão:</span>
+                            <span class="price-value">R$ 220</span>
+                        </section>
+                        <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
+                    </section>
+                </article>
+                
+                <article class="trainer-card">
+                    <section class="trainer-header">
+                        <section class="trainer-rating">
+                            <i class="fas fa-star"></i> 4.7
+                        </section>
+                    </section>
+                    <section class="trainer-img">
+                        <img src="https://images.unsplash.com/photo-1602084969888-8d5c1bc1395b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Ana Silva">
+                    </section>
+                    <section class="trainer-info">
+                        <h3 class="trainer-name">Ana Silva</h3>
+                        <p class="trainer-specialty"><i class="fas fa-certificate"></i> Truques e Comandos Avançados</p>
+                        <p class="trainer-location"><i class="fas fa-map-marker-alt"></i> Curitiba, PR</p>
+                        <p class="trainer-experience"><i class="fas fa-clock"></i> 6 anos de experiência</p>
+                        <section class="trainer-reviews">
+                            <section class="stars">⭐⭐⭐⭐</section>
+                            <span>(31 avaliações)</span>
+                        </section>
+                        <section class="trainer-price-info">
+                            <span class="price-label">Preço por sessão:</span>
+                            <span class="price-value">R$ 160</span>
+                        </section>
+                        <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
+                    </section>
+                </article>
+            </section>
+            
+            <section class="see-more-container">
+                <a href="#" class="btn btn-outline-primary">Ver Mais Adestradores</a>
+            </section>
+        </section>
+    </section>
+
+    <!-- Como Funciona Section -->
+    <section class="how-it-works" id="how-it-works">
+        <section class="container">
+            <h2 class="section-title">Como Funciona?</h2>
+            <section class="steps-container">
+                <article class="step">
+                    <section class="step-icon">
+                        <i class="fas fa-search"></i>
+                    </section>
+                    <h3>1. Escolha um Adestrador</h3>
+                    <p>Encontre o profissional perfeito de acordo com sua localização, especialidade e avaliações de outros clientes.</p>
+                </article>
+                <article class="step">
+                    <section class="step-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </section>
+                    <h3>2. Agende uma Sessão</h3>
+                    <p>Escolha a data e horário mais convenientes para você através do nosso calendário interativo.</p>
+                </article>
+                <article class="step">
+                    <section class="step-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </section>
+                    <h3>3. Pague Online</h3>
+                    <p>Realize o pagamento de forma segura através de Pix, Cartão de Crédito ou Boleto.</p>
+                </article>
+                <article class="step">
+                    <section class="step-icon">
+                        <i class="fas fa-dog"></i>
+                    </section>
+                    <h3>4. Comece o Treinamento</h3>
+                    <p>Inicie as sessões de adestramento e veja a transformação do comportamento do seu cão.</p>
+                </article>
+            </section>
+        </section>
+        <section class="how-it-works-wave">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#222" fill-opacity="1" d="M0,160L48,144C96,128,192,96,288,106.7C384,117,480,171,576,186.7C672,203,768,181,864,165.3C960,149,1056,139,1152,154.7C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+        </section>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer" id="contact">
+        <section class="container">
+            <section class="footer-container">
+                <section class="footer-info">
+                    <section class="footer-logo">
+                        🐾 Pet Mania
+                    </section>
+                    <p>Conectando donos de cães a adestradores profissionais qualificados. Transforme o comportamento do seu pet com treinamento personalizado e eficiente.</p>
+                    <section class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </section>
+                </section>
+                
+                <section class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#find-trainer">Encontrar</a></li>
+                        <li><a href="#trainers">Adestradores</a></li>
+                        <li><a href="#how-it-works">Como Funciona</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="login.html">Entrar</a></li>
+                    </ul>
+                </section>
+                
+                <section class="footer-links">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Central de Ajuda</a></li>
+                    </ul>
+                </section>
+                
+                <section class="footer-contact">
+                    <h3>Contato</h3>
+                    <section class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Av. Paulista, 1000, São Paulo - SP</p>
+                    </section>
+                    <section class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <p>(11) 99999-9999</p>
+                    </section>
+                    <section class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>contato@petmania.com.br</p>
+                    </section>
+                </section>
+            </section>
+            
+            <section class="footer-bottom">
+                <p>&copy; 2025 Pet Mania. Todos os direitos reservados.</p>
+            </section>
+        </section>
+    </footer>
+
+    <a href="https://wa.me/5511999999999" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <a href="#home" class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>

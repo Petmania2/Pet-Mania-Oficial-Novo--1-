@@ -1,332 +1,596 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Mania - Meu Perfil</title>
-    <link rel="stylesheet" href="style-adestrador.css">
-    <link rel="stylesheet" href="style-perfil.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar" id="navbar">
-        <div class="container navbar-container">
-            <a href="painel-adestrador.html" class="logo">
-                🐾 Pet Mania <span class="adestrador-badge">Adestrador</span>
-            </a>
-            <button class="mobile-menu-btn" id="menuBtn">☰</button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="paineladestrador.html" class="active"><i class="fas fa-home"></i> Início</a></li>
-                <li><a href="clientesadestrador.html"><i class="fas fa-user-friends"></i> Clientes</a></li>
-                <li><a href="mensagensadestrador.html"><i class="fas fa-comments"></i> Mensagens <span class="notif-badge">3</span></a></li>
-                <li><a href="agendamentoadestrador.html"><i class="fas fa-calendar-alt"></i> Agendamentos</a></li>
-                <li><a href="perfiladestrador.html" class="active"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
-                <li><a href="planosadestrador.html"><i class="fas fa-star"></i> Planos</a></li>
-                <li><a href="index.html" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <div class="welcome-section">
-                <h1>Meu Perfil</h1>
-                <p class="current-date">Sexta-feira, 28 de Fevereiro de 2025</p>
-            </div>
-
-            <div class="profile-grid">
-                <!-- Profile Info Section -->
-                <section class="card profile-info-section">
-                    <div class="profile-header">
-                        <div class="profile-avatar">
-                            <div class="avatar-placeholder">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <button class="change-avatar-btn">
-                                <i class="fas fa-camera"></i>
-                            </button>
-                        </div>
-                        <div class="profile-name">
-                            <h2>Carlos Oliveira</h2>
-                            <p class="profile-type">Adestrador Profissional</p>
-                            <div class="profile-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                                <span>4.8 (38 avaliações)</span>
-                            </div>
-                        </div>
-                        <div class="profile-actions">
-                            <button class="btn btn-primary"><i class="fas fa-eye"></i> Ver como cliente</button>
-                        </div>
-                    </div>
-
-                    <div class="profile-tabs">
-                        <button class="tab-btn active" data-tab="personal">Dados Pessoais</button>
-                        <button class="tab-btn" data-tab="professional">Perfil Profissional</button>
-                        <button class="tab-btn" data-tab="services">Serviços</button>
-                        <button class="tab-btn" data-tab="security">Segurança</button>
-                    </div>
-
-                    <div class="profile-tab-content active" id="personal-tab">
-                        <form class="profile-form">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="name">Nome Completo</label>
-                                    <input type="text" id="name" value="Carlos Oliveira">
-                                </div>
-                                <div class="form-group">
-                                    <label for="cpf">CPF</label>
-                                    <input type="text" id="cpf" value="123.456.789-00" disabled>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="email">E-mail</label>
-                                    <input type="email" id="email" value="carlos.adestrador@email.com">
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone">Telefone</label>
-                                    <input type="text" id="phone" value="(11) 98765-4321">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="birth">Data de Nascimento</label>
-                                    <input type="date" id="birth" value="1985-06-15">
-                                </div>
-                                <div class="form-group">
-                                    <label for="gender">Gênero</label>
-                                    <select id="gender">
-                                        <option value="male" selected>Masculino</option>
-                                        <option value="female">Feminino</option>
-                                        <option value="other">Outro</option>
-                                        <option value="prefer-not">Prefiro não informar</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Endereço</label>
-                                <input type="text" id="address" value="Rua das Flores, 123 - Jardim Primavera">
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="city">Cidade</label>
-                                    <input type="text" id="city" value="São Paulo">
-                                </div>
-                                <div class="form-group">
-                                    <label for="state">Estado</label>
-                                    <input type="text" id="state" value="SP">
-                                </div>
-                                <div class="form-group">
-                                    <label for="cep">CEP</label>
-                                    <input type="text" id="cep" value="01234-567">
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <button type="button" class="btn btn-primary btn-save">Salvar Alterações</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="profile-tab-content" id="professional-tab">
-                        <form class="profile-form">
-                            <div class="form-group">
-                                <label for="prof-title">Título Profissional</label>
-                                <input type="text" id="prof-title" value="Adestrador Canino Especialista em Comportamento">
-                            </div>
-                            <div class="form-group">
-                                <label for="experience">Anos de Experiência</label>
-                                <input type="number" id="experience" value="8">
-                            </div>
-                            <div class="form-group">
-                                <label for="bio">Biografia</label>
-                                <textarea id="bio" rows="5">Sou um adestrador profissional com mais de 8 anos de experiência. Especializado em modificação comportamental para cães com problemas de agressividade, ansiedade e socialização. Formado em Zootecnia com especialização em Comportamento Animal.</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="certifications">Certificações e Formação</label>
-                                <textarea id="certifications" rows="3">- Bacharelado em Zootecnia (USP)
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Pet Mania - Meu Perfil
+  </title>
+  <link href="style-adestrador.css" rel="stylesheet"/>
+  <link href="style-perfil.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+   <section class="container navbar-container">
+    <a class="logo" href="painel-adestrador.html">
+     🐾 Pet Mania
+     <span class="adestrador-badge">
+      Adestrador
+     </span>
+    </a>
+    <button class="mobile-menu-btn" id="menuBtn">
+     ☰
+    </button>
+    <ul class="nav-links" id="navLinks">
+     <li>
+      <a class="active" href="paineladestrador.html">
+       <i class="fas fa-home">
+       </i>
+       Início
+      </a>
+     </li>
+     <li>
+      <a href="clientesadestrador.html">
+       <i class="fas fa-user-friends">
+       </i>
+       Clientes
+      </a>
+     </li>
+     <li>
+      <a href="mensagensadestrador.html">
+       <i class="fas fa-comments">
+       </i>
+       Mensagens
+       <span class="notif-badge">
+        3
+       </span>
+      </a>
+     </li>
+     <li>
+      <a href="agendamentoadestrador.html">
+       <i class="fas fa-calendar-alt">
+       </i>
+       Agendamentos
+      </a>
+     </li>
+     <li>
+      <a class="active" href="perfiladestrador.html">
+       <i class="fas fa-user-circle">
+       </i>
+       Meu Perfil
+      </a>
+     </li>
+     <li>
+      <a href="planosadestrador.html">
+       <i class="fas fa-star">
+       </i>
+       Planos
+      </a>
+     </li>
+     <li>
+      <a class="btn btn-logout" href="index.html">
+       <i class="fas fa-sign-out-alt">
+       </i>
+       Sair
+      </a>
+     </li>
+    </ul>
+   </section>
+  </nav>
+  <!-- Main Content -->
+  <main class="main-content">
+   <section class="container">
+    <section class="welcome-section">
+     <h1>
+      Meu Perfil
+     </h1>
+     <p class="current-date">
+      Sexta-feira, 28 de Fevereiro de 2025
+     </p>
+    </section>
+    <section class="profile-grid">
+     <!-- Profile Info Section -->
+     <section class="card profile-info-section">
+      <section class="profile-header">
+       <section class="profile-avatar">
+        <section class="avatar-placeholder">
+         <i class="fas fa-user">
+         </i>
+        </section>
+        <button class="change-avatar-btn">
+         <i class="fas fa-camera">
+         </i>
+        </button>
+       </section>
+       <section class="profile-name">
+        <h2>
+         Carlos Oliveira
+        </h2>
+        <p class="profile-type">
+         Adestrador Profissional
+        </p>
+        <section class="profile-rating">
+         <i class="fas fa-star">
+         </i>
+         <i class="fas fa-star">
+         </i>
+         <i class="fas fa-star">
+         </i>
+         <i class="fas fa-star">
+         </i>
+         <i class="fas fa-star-half-alt">
+         </i>
+         <span>
+          4.8 (38 avaliações)
+         </span>
+        </section>
+       </section>
+       <section class="profile-actions">
+        <button class="btn btn-primary">
+         <i class="fas fa-eye">
+         </i>
+         Ver como cliente
+        </button>
+       </section>
+      </section>
+      <section class="profile-tabs">
+       <button class="tab-btn active" data-tab="personal">
+        Dados Pessoais
+       </button>
+       <button class="tab-btn" data-tab="professional">
+        Perfil Profissional
+       </button>
+       <button class="tab-btn" data-tab="services">
+        Serviços
+       </button>
+       <button class="tab-btn" data-tab="security">
+        Segurança
+       </button>
+      </section>
+      <section class="profile-tab-content active" id="personal-tab">
+       <form class="profile-form">
+        <section class="form-row">
+         <section class="form-group">
+          <label for="name">
+           Nome Completo
+          </label>
+          <input id="name" type="text" value="Carlos Oliveira"/>
+         </section>
+         <section class="form-group">
+          <label for="cpf">
+           CPF
+          </label>
+          <input disabled="" id="cpf" type="text" value="123.456.789-00"/>
+         </section>
+        </section>
+        <section class="form-row">
+         <section class="form-group">
+          <label for="email">
+           E-mail
+          </label>
+          <input id="email" type="email" value="carlos.adestrador@email.com"/>
+         </section>
+         <section class="form-group">
+          <label for="phone">
+           Telefone
+          </label>
+          <input id="phone" type="text" value="(11) 98765-4321"/>
+         </section>
+        </section>
+        <section class="form-row">
+         <section class="form-group">
+          <label for="birth">
+           Data de Nascimento
+          </label>
+          <input id="birth" type="date" value="1985-06-15"/>
+         </section>
+         <section class="form-group">
+          <label for="gender">
+           Gênero
+          </label>
+          <select id="gender">
+           <option selected="" value="male">
+            Masculino
+           </option>
+           <option value="female">
+            Feminino
+           </option>
+           <option value="other">
+            Outro
+           </option>
+           <option value="prefer-not">
+            Prefiro não informar
+           </option>
+          </select>
+         </section>
+        </section>
+        <section class="form-group">
+         <label for="address">
+          Endereço
+         </label>
+         <input id="address" type="text" value="Rua das Flores, 123 - Jardim Primavera"/>
+        </section>
+        <section class="form-row">
+         <section class="form-group">
+          <label for="city">
+           Cidade
+          </label>
+          <input id="city" type="text" value="São Paulo"/>
+         </section>
+         <section class="form-group">
+          <label for="state">
+           Estado
+          </label>
+          <input id="state" type="text" value="SP"/>
+         </section>
+         <section class="form-group">
+          <label for="cep">
+           CEP
+          </label>
+          <input id="cep" type="text" value="01234-567"/>
+         </section>
+        </section>
+        <section class="form-actions">
+         <button class="btn btn-primary btn-save" type="button">
+          Salvar Alterações
+         </button>
+        </section>
+       </form>
+      </section>
+      <section class="profile-tab-content" id="professional-tab">
+       <form class="profile-form">
+        <section class="form-group">
+         <label for="prof-title">
+          Título Profissional
+         </label>
+         <input id="prof-title" type="text" value="Adestrador Canino Especialista em Comportamento"/>
+        </section>
+        <section class="form-group">
+         <label for="experience">
+          Anos de Experiência
+         </label>
+         <input id="experience" type="number" value="8"/>
+        </section>
+        <section class="form-group">
+         <label for="bio">
+          Biografia
+         </label>
+         <textarea id="bio" rows="5">Sou um adestrador profissional com mais de 8 anos de experiência. Especializado em modificação comportamental para cães com problemas de agressividade, ansiedade e socialização. Formado em Zootecnia com especialização em Comportamento Animal.</textarea>
+        </section>
+        <section class="form-group">
+         <label for="certifications">
+          Certificações e Formação
+         </label>
+         <textarea id="certifications" rows="3">- Bacharelado em Zootecnia (USP)
 - Especialização em Comportamento Animal (UFMG)
 - Certificado em Técnicas de Adestramento Positivo (ABAC)</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Especialidades</label>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-item"><input type="checkbox" checked> Obediência Básica</label>
-                                    <label class="checkbox-item"><input type="checkbox" checked> Problemas Comportamentais</label>
-                                    <label class="checkbox-item"><input type="checkbox" checked> Socialização</label>
-                                    <label class="checkbox-item"><input type="checkbox" checked> Treinamento Avançado</label>
-                                    <label class="checkbox-item"><input type="checkbox"> Treinamento para Competições</label>
-                                    <label class="checkbox-item"><input type="checkbox" checked> Adestramento de Filhotes</label>
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <button type="button" class="btn btn-primary btn-save">Salvar Alterações</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="profile-tab-content" id="services-tab">
-                        <div class="services-list">
-                            <div class="service-item">
-                                <div class="service-header">
-                                    <h3>Sessão de Obediência Básica</h3>
-                                    <div class="service-price">R$ 120,00</div>
-                                </div>
-                                <p>Treinamento de comandos básicos como sentar, deitar, ficar e vir. Ideal para cães de todas as idades.</p>
-                                <div class="service-details">
-                                    <span><i class="fas fa-clock"></i> 1h30min</span>
-                                    <span><i class="fas fa-map-marker-alt"></i> Residência ou Parque</span>
-                                </div>
-                                <div class="service-actions">
-                                    <button class="btn btn-small btn-outline"><i class="fas fa-edit"></i> Editar</button>
-                                    <button class="btn btn-small btn-danger"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="service-item">
-                                <div class="service-header">
-                                    <h3>Pacote de Socialização</h3>
-                                    <div class="service-price">R$ 450,00</div>
-                                </div>
-                                <p>Pacote com 4 sessões focadas na socialização do cão com outros animais e pessoas. Reduz problemas de agressividade e medo.</p>
-                                <div class="service-details">
-                                    <span><i class="fas fa-clock"></i> 1h30min por sessão</span>
-                                    <span><i class="fas fa-map-marker-alt"></i> Parques e áreas públicas</span>
-                                </div>
-                                <div class="service-actions">
-                                    <button class="btn btn-small btn-outline"><i class="fas fa-edit"></i> Editar</button>
-                                    <button class="btn btn-small btn-danger"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="service-item">
-                                <div class="service-header">
-                                    <h3>Consultoria Comportamental</h3>
-                                    <div class="service-price">R$ 150,00</div>
-                                </div>
-                                <p>Avaliação e diagnóstico de problemas comportamentais, com plano personalizado de treinamento.</p>
-                                <div class="service-details">
-                                    <span><i class="fas fa-clock"></i> 2h</span>
-                                    <span><i class="fas fa-map-marker-alt"></i> Residência do cliente</span>
-                                </div>
-                                <div class="service-actions">
-                                    <button class="btn btn-small btn-outline"><i class="fas fa-edit"></i> Editar</button>
-                                    <button class="btn btn-small btn-danger"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-
-                            <button class="btn btn-add-service"><i class="fas fa-plus"></i> Adicionar Serviço</button>
-                        </div>
-                    </div>
-
-                    <div class="profile-tab-content" id="security-tab">
-                        <form class="profile-form">
-                            <div class="form-group">
-                                <label for="current-password">Senha Atual</label>
-                                <input type="password" id="current-password">
-                            </div>
-                            <div class="form-group">
-                                <label for="new-password">Nova Senha</label>
-                                <input type="password" id="new-password">
-                            </div>
-                            <div class="form-group">
-                                <label for="confirm-password">Confirmar Nova Senha</label>
-                                <input type="password" id="confirm-password">
-                            </div>
-                            <div class="password-strength">
-                                <p>Força da senha:</p>
-                                <div class="strength-meter">
-                                    <div class="strength-segment"></div>
-                                    <div class="strength-segment"></div>
-                                    <div class="strength-segment"></div>
-                                    <div class="strength-segment"></div>
-                                </div>
-                                <p class="strength-text">Digite uma nova senha</p>
-                            </div>
-                            <div class="form-group">
-                                <label>Autenticação de Dois Fatores</label>
-                                <div class="toggle-switch">
-                                    <input type="checkbox" id="two-factor">
-                                    <label for="two-factor"></label>
-                                    <span class="toggle-label">Desativado</span>
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <button type="button" class="btn btn-primary btn-save">Salvar Alterações</button>
-                            </div>
-                        </form>
-                    </div>
-                </section>
-
-                <!-- Sidebar Sections -->
-                <div class="profile-sidebar">
-                    <section class="card profile-stats-section">
-                        <h3><i class="fas fa-chart-pie"></i> Estatísticas do Perfil</h3>
-                        <div class="stat-item">
-                            <div class="stat-label">Visualizações do Perfil</div>
-                            <div class="stat-value">432</div>
-                            <div class="stat-period">Últimos 30 dias</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Taxa de Resposta</div>
-                            <div class="stat-value">98%</div>
-                            <div class="stat-period">Tempo médio: 1h12min</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Taxa de Conversão</div>
-                            <div class="stat-value">76%</div>
-                            <div class="stat-period">Contatos → Clientes</div>
-                        </div>
-                    </section>
-
-                    <section class="card profile-completion-section">
-                        <h3><i class="fas fa-tasks"></i> Completude do Perfil</h3>
-                        <div class="completion-progress">
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 85%;"></div>
-                            </div>
-                            <div class="progress-text">85% Completo</div>
-                        </div>
-                        <div class="completion-tasks">
-                            <div class="task-item completed">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Informações básicas</span>
-                            </div>
-                            <div class="task-item completed">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Serviços oferecidos</span>
-                            </div>
-                            <div class="task-item completed">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Biografia profissional</span>
-                            </div>
-                            <div class="task-item">
-                                <i class="fas fa-circle"></i>
-                                <span>Adicionar foto de perfil</span>
-                            </div>
-                            <div class="task-item">
-                                <i class="fas fa-circle"></i>
-                                <span>Verificar telefone</span>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Floating Notification Button -->
-    <div class="notification-float">
-        <i class="fas fa-bell"></i>
-        <span class="notif-count">3</span>
-    </div>
-
-    <script src="script-adestrador.js"></script>
-    <script src="script-perfil.js"></script>
-</body>
+        </section>
+        <section class="form-group">
+         <label>
+          Especialidades
+         </label>
+         <section class="checkbox-group">
+          <label class="checkbox-item">
+           <input checked="" type="checkbox"/>
+           Obediência Básica
+          </label>
+          <label class="checkbox-item">
+           <input checked="" type="checkbox"/>
+           Problemas Comportamentais
+          </label>
+          <label class="checkbox-item">
+           <input checked="" type="checkbox"/>
+           Socialização
+          </label>
+          <label class="checkbox-item">
+           <input checked="" type="checkbox"/>
+           Treinamento Avançado
+          </label>
+          <label class="checkbox-item">
+           <input type="checkbox"/>
+           Treinamento para Competições
+          </label>
+          <label class="checkbox-item">
+           <input checked="" type="checkbox"/>
+           Adestramento de Filhotes
+          </label>
+         </section>
+        </section>
+        <section class="form-actions">
+         <button class="btn btn-primary btn-save" type="button">
+          Salvar Alterações
+         </button>
+        </section>
+       </form>
+      </section>
+      <section class="profile-tab-content" id="services-tab">
+       <section class="services-list">
+        <section class="service-item">
+         <section class="service-header">
+          <h3>
+           Sessão de Obediência Básica
+          </h3>
+          <section class="service-price">
+           R$ 120,00
+          </section>
+         </section>
+         <p>
+          Treinamento de comandos básicos como sentar, deitar, ficar e vir. Ideal para cães de todas as idades.
+         </p>
+         <section class="service-details">
+          <span>
+           <i class="fas fa-clock">
+           </i>
+           1h30min
+          </span>
+          <span>
+           <i class="fas fa-map-marker-alt">
+           </i>
+           Residência ou Parque
+          </span>
+         </section>
+         <section class="service-actions">
+          <button class="btn btn-small btn-outline">
+           <i class="fas fa-edit">
+           </i>
+           Editar
+          </button>
+          <button class="btn btn-small btn-danger">
+           <i class="fas fa-trash">
+           </i>
+          </button>
+         </section>
+        </section>
+        <section class="service-item">
+         <section class="service-header">
+          <h3>
+           Pacote de Socialização
+          </h3>
+          <section class="service-price">
+           R$ 450,00
+          </section>
+         </section>
+         <p>
+          Pacote com 4 sessões focadas na socialização do cão com outros animais e pessoas. Reduz problemas de agressividade e medo.
+         </p>
+         <section class="service-details">
+          <span>
+           <i class="fas fa-clock">
+           </i>
+           1h30min por sessão
+          </span>
+          <span>
+           <i class="fas fa-map-marker-alt">
+           </i>
+           Parques e áreas públicas
+          </span>
+         </section>
+         <section class="service-actions">
+          <button class="btn btn-small btn-outline">
+           <i class="fas fa-edit">
+           </i>
+           Editar
+          </button>
+          <button class="btn btn-small btn-danger">
+           <i class="fas fa-trash">
+           </i>
+          </button>
+         </section>
+        </section>
+        <section class="service-item">
+         <section class="service-header">
+          <h3>
+           Consultoria Comportamental
+          </h3>
+          <section class="service-price">
+           R$ 150,00
+          </section>
+         </section>
+         <p>
+          Avaliação e diagnóstico de problemas comportamentais, com plano personalizado de treinamento.
+         </p>
+         <section class="service-details">
+          <span>
+           <i class="fas fa-clock">
+           </i>
+           2h
+          </span>
+          <span>
+           <i class="fas fa-map-marker-alt">
+           </i>
+           Residência do cliente
+          </span>
+         </section>
+         <section class="service-actions">
+          <button class="btn btn-small btn-outline">
+           <i class="fas fa-edit">
+           </i>
+           Editar
+          </button>
+          <button class="btn btn-small btn-danger">
+           <i class="fas fa-trash">
+           </i>
+          </button>
+         </section>
+        </section>
+        <button class="btn btn-add-service">
+         <i class="fas fa-plus">
+         </i>
+         Adicionar Serviço
+        </button>
+       </section>
+      </section>
+      <section class="profile-tab-content" id="security-tab">
+       <form class="profile-form">
+        <section class="form-group">
+         <label for="current-password">
+          Senha Atual
+         </label>
+         <input id="current-password" type="password"/>
+        </section>
+        <section class="form-group">
+         <label for="new-password">
+          Nova Senha
+         </label>
+         <input id="new-password" type="password"/>
+        </section>
+        <section class="form-group">
+         <label for="confirm-password">
+          Confirmar Nova Senha
+         </label>
+         <input id="confirm-password" type="password"/>
+        </section>
+        <section class="password-strength">
+         <p>
+          Força da senha:
+         </p>
+         <section class="strength-meter">
+          <section class="strength-segment">
+          </section>
+          <section class="strength-segment">
+          </section>
+          <section class="strength-segment">
+          </section>
+          <section class="strength-segment">
+          </section>
+         </section>
+         <p class="strength-text">
+          Digite uma nova senha
+         </p>
+        </section>
+        <section class="form-group">
+         <label>
+          Autenticação de Dois Fatores
+         </label>
+         <section class="toggle-switch">
+          <input id="two-factor" type="checkbox"/>
+          <label for="two-factor">
+          </label>
+          <span class="toggle-label">
+           Desativado
+          </span>
+         </section>
+        </section>
+        <section class="form-actions">
+         <button class="btn btn-primary btn-save" type="button">
+          Salvar Alterações
+         </button>
+        </section>
+       </form>
+      </section>
+     </section>
+     <!-- Sidebar Sections -->
+     <section class="profile-sidebar">
+      <section class="card profile-stats-section">
+       <h3>
+        <i class="fas fa-chart-pie">
+        </i>
+        Estatísticas do Perfil
+       </h3>
+       <section class="stat-item">
+        <section class="stat-label">
+         Visualizações do Perfil
+        </section>
+        <section class="stat-value">
+         432
+        </section>
+        <section class="stat-period">
+         Últimos 30 dias
+        </section>
+       </section>
+       <section class="stat-item">
+        <section class="stat-label">
+         Taxa de Resposta
+        </section>
+        <section class="stat-value">
+         98%
+        </section>
+        <section class="stat-period">
+         Tempo médio: 1h12min
+        </section>
+       </section>
+       <section class="stat-item">
+        <section class="stat-label">
+         Taxa de Conversão
+        </section>
+        <section class="stat-value">
+         76%
+        </section>
+        <section class="stat-period">
+         Contatos → Clientes
+        </section>
+       </section>
+      </section>
+      <section class="card profile-completion-section">
+       <h3>
+        <i class="fas fa-tasks">
+        </i>
+        Completude do Perfil
+       </h3>
+       <section class="completion-progress">
+        <section class="progress-bar">
+         <section class="progress-fill" style="width: 85%;">
+         </section>
+        </section>
+        <section class="progress-text">
+         85% Completo
+        </section>
+       </section>
+       <section class="completion-tasks">
+        <section class="task-item completed">
+         <i class="fas fa-check-circle">
+         </i>
+         <span>
+          Informações básicas
+         </span>
+        </section>
+        <section class="task-item completed">
+         <i class="fas fa-check-circle">
+         </i>
+         <span>
+          Serviços oferecidos
+         </span>
+        </section>
+        <section class="task-item completed">
+         <i class="fas fa-check-circle">
+         </i>
+         <span>
+          Biografia profissional
+         </span>
+        </section>
+        <section class="task-item">
+         <i class="fas fa-circle">
+         </i>
+         <span>
+          Adicionar foto de perfil
+         </span>
+        </section>
+        <section class="task-item">
+         <i class="fas fa-circle">
+         </i>
+         <span>
+          Verificar telefone
+         </span>
+        </section>
+       </section>
+      </section>
+     </section>
+    </section>
+   </section>
+  </main>
+  <!-- Floating Notification Button -->
+  <section class="notification-float">
+   <i class="fas fa-bell">
+   </i>
+   <span class="notif-count">
+    3
+   </span>
+  </section>
+  <script src="script-adestrador.js">
+  </script>
+  <script src="script-perfil.js">
+  </script>
+ </body>
 </html>

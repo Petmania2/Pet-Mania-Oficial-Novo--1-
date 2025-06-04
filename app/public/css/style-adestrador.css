@@ -562,11 +562,16 @@ img {
 
 .client-item {
     display: flex;
-    padding: 15px;
+    padding: 20px 15px;
     background-color: var(--light-color);
     border-radius: var(--border-radius);
     align-items: center;
-    justify-content: center
+    justify-content: flex-start;
+    transition: var(--transition);
+}
+
+.client-item:hover {
+    background-color: #f0f0f0;
 }
 
 .client-avatar {
@@ -574,29 +579,53 @@ img {
     height: 50px;
     border-radius: 50%;
     background-color: #ddd;
-    margin-right: 15px;
+    margin-right: 20px;
     flex-shrink: 0;
     background: url('/api/placeholder/50/50') center/cover;
 }
 
 .client-info {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .client-info h4 {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: left;
 }
 
 .client-info p {
     font-size: 0.9rem;
     color: #666;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.client-info p:last-child {
+    margin-bottom: 0;
+}
+
+.client-info p i {
+    margin-right: 8px;
+    width: 16px;
+    color: var(--primary-color);
+    text-align: center;
 }
 
 .client-status {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     font-size: 0.8rem;
+    text-align: center;
+    margin-left: 15px;
 }
 
 .status-indicator {
@@ -733,3 +762,4 @@ img {
         margin-right: 5px;
     }
 }
+

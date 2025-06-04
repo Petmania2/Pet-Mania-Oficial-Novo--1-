@@ -63,6 +63,12 @@ router.get("/clientesadestrador.ejs",
     res.render("pages/clientesadestrador.ejs");    
 });
 
+router.get("/index.ejs", 
+    function (req, res) {
+    res.render("pages/index.ejs");    
+});
+
+
 
 
 

@@ -16,16 +16,15 @@
                 🐾 Pet Mania <span class="adestrador-badge">Adestrador</span>
             </a>
             <button class="mobile-menu-btn" id="menuBtn">☰</button>
-              <button class="mobile-menu-btn" id="menuBtn">☰</button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="paineladestrador.ejs"><i class="fas fa-home"></i> Início</a></li>
-        <li><a href="clientesadestrador.ejs"><i class="fas fa-user-friends"></i> Clientes</a></li>
-        <li><a href="mensagensadestrador.ejs"><i class="fas fa-comments"></i> Mensagens <span class="notif-badge">3</span></a></li>
-        <li><a href="agendamentoadestrador.ejs" class="active"><i class="fas fa-calendar-alt"></i> Agendamentos</a></li>
-        <li><a href="perfiladestrador.ejs"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
-        <li><a href="planosadestrador.ejs"><i class="fas fa-star"></i> Planos</a></li>
-        <li><a href="index.ejs" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
-      </ul>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="paineladestrador.ejs"><i class="fas fa-home"></i> Início</a></li>
+                <li><a href="clientesadestrador.ejs" class="active"><i class="fas fa-user-friends"></i> Clientes</a></li>
+                <li><a href="mensagensadestrador.ejs"><i class="fas fa-comments"></i> Mensagens <span class="notif-badge">3</span></a></li>
+                <li><a href="agendamentoadestrador.ejs"><i class="fas fa-calendar-alt"></i> Agendamentos</a></li>
+                <li><a href="perfiladestrador.ejs"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
+                <li><a href="planosadestrador.ejs"><i class="fas fa-star"></i> Planos</a></li>
+                <li><a href="index.ejs" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
         </section>
     </nav>
 
@@ -37,7 +36,7 @@
                 <section class="header-actions">
                     <section class="search-container">
                         <input type="text" id="clienteSearch" placeholder="Buscar cliente..." class="search-input">
-                        <button class="btn btn-search"><i class="fas fa-search"></i></button>
+                        <button class="btn btn-search" id="searchBtn"><i class="fas fa-search"></i></button>
                     </section>
                     <button class="btn btn-primary" id="addClienteBtn"><i class="fas fa-plus"></i> Novo Cliente</button>
                 </section>
@@ -50,19 +49,19 @@
                     <section class="filter-group">
                         <label for="filterStatus">Status</label>
                         <section class="status-filter-options">
-                            <label class="status-option active-status" id="statusActive">
+                            <label class="status-option active-status" data-status="active">
                                 <input type="checkbox" name="status[]" value="active">
                                 <i class="fas fa-check-circle"></i> Ativos
                             </label>
-                            <label class="status-option pending-status" id="statusPending">
+                            <label class="status-option pending-status" data-status="pending">
                                 <input type="checkbox" name="status[]" value="pending">
                                 <i class="fas fa-clock"></i> Pendentes
                             </label>
-                            <label class="status-option new-status" id="statusNew">
+                            <label class="status-option new-status" data-status="new">
                                 <input type="checkbox" name="status[]" value="new">
                                 <i class="fas fa-star"></i> Novos
                             </label>
-                            <label class="status-option inactive-status" id="statusInactive">
+                            <label class="status-option inactive-status" data-status="inactive">
                                 <input type="checkbox" name="status[]" value="inactive">
                                 <i class="fas fa-times-circle"></i> Inativos
                             </label>
@@ -88,7 +87,7 @@
                     </button>
                     
                     <!-- Advanced Filters (Hidden by Default) -->
-                    <section class="advanced-filters" style="display: none;">
+                    <section class="advanced-filters" id="advancedFilters" style="display: none;">
                         <section class="filter-group">
                             <label for="filterBreed">Raça do Pet</label>
                             <select id="filterBreed" class="filter-select">
@@ -134,7 +133,7 @@
                     </section>
                     
                     <!-- Active Filters (appears when filters are applied) -->
-                    <section class="active-filters">
+                    <section class="active-filters" id="activeFilters">
                         <!-- Active filter tags will be added here dynamically -->
                     </section>
                 </section>
@@ -173,9 +172,9 @@
                         </thead>
                         <tbody id="clientesTableBody">
                             <!-- Client rows will be populated here -->
-                            <tr data-id="1" class="client-row">
+                            <tr data-id="1" class="client-row" data-status="new" data-service="obediencia">
                                 <td class="client-info-cell">
-                                    <section class="client-avatar"></section>
+                                    <section class="client-avatar" style="background-image: url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face');"></section>
                                     <section class="client-basic-info">
                                         <h4>Amanda Silva</h4>
                                         <p><i class="fas fa-phone"></i> (11) 98765-4321</p>
@@ -195,14 +194,14 @@
                                     <span class="progress-text">1/10 sessões</span>
                                 </td>
                                 <td class="actions-cell">
-                                    <button class="btn btn-small btn-icon" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-small btn-icon" title="Editar"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-small btn-icon" title="Mensagem"><i class="fas fa-comment"></i></button>
+                                    <button class="btn btn-small btn-icon view-details-btn" title="Ver Detalhes" data-id="1"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-small btn-icon edit-client-btn" title="Editar" data-id="1"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-small btn-icon message-client-btn" title="Mensagem" data-id="1"><i class="fas fa-comment"></i></button>
                                 </td>
                             </tr>
-                            <tr data-id="2" class="client-row">
+                            <tr data-id="2" class="client-row" data-status="active" data-service="comportamento">
                                 <td class="client-info-cell">
-                                    <section class="client-avatar"></section>
+                                    <section class="client-avatar" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face');"></section>
                                     <section class="client-basic-info">
                                         <h4>Pedro Mendes</h4>
                                         <p><i class="fas fa-phone"></i> (11) 97654-3210</p>
@@ -222,14 +221,14 @@
                                     <span class="progress-text">6/10 sessões</span>
                                 </td>
                                 <td class="actions-cell">
-                                    <button class="btn btn-small btn-icon" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-small btn-icon" title="Editar"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-small btn-icon" title="Mensagem"><i class="fas fa-comment"></i></button>
+                                    <button class="btn btn-small btn-icon view-details-btn" title="Ver Detalhes" data-id="2"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-small btn-icon edit-client-btn" title="Editar" data-id="2"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-small btn-icon message-client-btn" title="Mensagem" data-id="2"><i class="fas fa-comment"></i></button>
                                 </td>
                             </tr>
-                            <tr data-id="3" class="client-row">
+                            <tr data-id="3" class="client-row" data-status="active" data-service="socializacao">
                                 <td class="client-info-cell">
-                                    <section class="client-avatar"></section>
+                                    <section class="client-avatar" style="background-image: url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face');"></section>
                                     <section class="client-basic-info">
                                         <h4>Mariana Costa</h4>
                                         <p><i class="fas fa-phone"></i> (11) 95432-1098</p>
@@ -249,14 +248,14 @@
                                     <span class="progress-text">4/10 sessões</span>
                                 </td>
                                 <td class="actions-cell">
-                                    <button class="btn btn-small btn-icon" title="Ver Detalhes"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-small btn-icon" title="Editar"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-small btn-icon" title="Mensagem"><i class="fas fa-comment"></i></button>
+                                    <button class="btn btn-small btn-icon view-details-btn" title="Ver Detalhes" data-id="3"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-small btn-icon edit-client-btn" title="Editar" data-id="3"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-small btn-icon message-client-btn" title="Mensagem" data-id="3"><i class="fas fa-comment"></i></button>
                                 </td>
                             </tr>
-                            <tr data-id="4" class="client-row">
+                            <tr data-id="4" class="client-row" data-status="pending" data-service="obediencia">
                                 <td class="client-info-cell">
-                                    <section class="client-avatar"></section>
+                                    <section class="client-avatar" style="background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face');"></section>
                                     <section class="client-basic-info">
                                         <h4>Rodrigo Alves</h4>
                                         <p><i class="fas fa-phone"></i> (11) 98765-1234</p>
@@ -276,9 +275,9 @@
                                     <span class="progress-text">0/10 sessões</span>
                                 </td>
                                 <td class="actions-cell">
-                                    <button class="btn btn-small btn-accept" title="Aceitar"><i class="fas fa-check"></i></button>
-                                    <button class="btn btn-small btn-reject" title="Recusar"><i class="fas fa-times"></i></button>
-                                    <button class="btn btn-small btn-icon" title="Mensagem"><i class="fas fa-comment"></i></button>
+                                    <button class="btn btn-small btn-accept accept-client-btn" title="Aceitar" data-id="4"><i class="fas fa-check"></i></button>
+                                    <button class="btn btn-small btn-reject reject-client-btn" title="Recusar" data-id="4"><i class="fas fa-times"></i></button>
+                                    <button class="btn btn-small btn-icon message-client-btn" title="Mensagem" data-id="4"><i class="fas fa-comment"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -286,8 +285,8 @@
                 </section>
 
                 <!-- Grid View (Hidden by default) -->
-                <section class="clients-grid" style="display: none;">
-                    <!-- Grid content -->
+                <section class="clients-grid" id="clientsGrid" style="display: none;">
+                    <!-- Grid content will be populated dynamically -->
                 </section>
 
                 <section class="pagination">
@@ -306,10 +305,11 @@
         <section class="modal-content">
             <section class="modal-header">
                 <h2>Detalhes do Cliente</h2>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" id="closeDetailsModal">&times;</button>
             </section>
-            <section class="modal-body">
+            <section class="modal-body" id="clientDetailsContent">
                 <!-- Modal content for client details -->
+                <p>Carregando detalhes do cliente...</p>
             </section>
             <section class="modal-footer">
                 <button class="btn btn-secondary" id="closeDetailsBtn">Fechar</button>
@@ -324,7 +324,7 @@
         <section class="modal-content">
             <section class="modal-header">
                 <h2 id="formModalTitle">Adicionar Novo Cliente</h2>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" id="closeFormModal">&times;</button>
             </section>
             <section class="modal-body">
                 <form id="clienteForm">
@@ -335,11 +335,53 @@
                     </section>
                     
                     <section class="form-tab-content active" id="cliente-info-tab">
-                        <!-- Client info form fields -->
+                        <section class="form-row">
+                            <section class="form-group">
+                                <label for="nomeCliente">Nome Completo*</label>
+                                <input type="text" id="nomeCliente" name="nomeCliente" required>
+                            </section>
+                            <section class="form-group">
+                                <label for="telefoneCliente">Telefone*</label>
+                                <input type="tel" id="telefoneCliente" name="telefoneCliente" required>
+                            </section>
+                        </section>
+                        <section class="form-row">
+                            <section class="form-group">
+                                <label for="emailCliente">Email*</label>
+                                <input type="email" id="emailCliente" name="emailCliente" required>
+                            </section>
+                            <section class="form-group">
+                                <label for="enderecoCliente">Endereço</label>
+                                <input type="text" id="enderecoCliente" name="enderecoCliente">
+                            </section>
+                        </section>
                     </section>
                     
                     <section class="form-tab-content" id="pet-info-tab">
-                        <!-- Pet info form fields -->
+                        <section class="form-row">
+                            <section class="form-group">
+                                <label for="nomePet">Nome do Pet*</label>
+                                <input type="text" id="nomePet" name="nomePet" required>
+                            </section>
+                            <section class="form-group">
+                                <label for="racaPet">Raça*</label>
+                                <input type="text" id="racaPet" name="racaPet" required>
+                            </section>
+                        </section>
+                        <section class="form-row">
+                            <section class="form-group">
+                                <label for="idadePet">Idade*</label>
+                                <input type="text" id="idadePet" name="idadePet" placeholder="Ex: 2 anos" required>
+                            </section>
+                            <section class="form-group">
+                                <label for="tipoPet">Tipo*</label>
+                                <select id="tipoPet" name="tipoPet" required>
+                                    <option value="">Selecione</option>
+                                    <option value="dog">Cão</option>
+                                    <option value="cat">Gato</option>
+                                </select>
+                            </section>
+                        </section>
                     </section>
                     
                     <section class="form-tab-content" id="servico-info-tab">
@@ -408,18 +450,14 @@
                 </form>
             </section>
             <section class="modal-footer">
-                <button class="btn btn-secondary modal-close-btn">Cancelar</button>
+                <button class="btn btn-secondary modal-close-btn" id="cancelFormBtn">Cancelar</button>
                 <button class="btn btn-primary" id="saveClienteBtn">Salvar</button>
             </section>
         </section>
     </section>
 
-    <!-- Floating Notification Button -->
-    <section class="notification-float">
-        <i class="fas fa-bell"></i>
-        <span class="notif-count">3</span>
-    </section>
-
     <script src="/js/script-adestradorcliente.js"></script>
+
+       
 </body>
 </html>

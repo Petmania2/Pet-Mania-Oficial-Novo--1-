@@ -223,7 +223,11 @@
     font-size: 0.9rem;
 }
 
-/* Estilos para os badges de status dentro dos filtros */
+/* Estilos aprimorados para os badges de status dentro dos filtros */
+.status-filter-group {
+    margin-bottom: 1rem;
+}
+
 .status-filter-options {
     display: flex;
     flex-wrap: wrap;
@@ -235,52 +239,120 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
+    padding: 0.6rem 1rem;
+    border-radius: 25px;
     font-size: 0.85rem;
     cursor: pointer;
     border: 2px solid transparent;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
 }
 
 .status-option input[type="checkbox"] {
     display: none;
 }
 
-.status-option.active {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.status-option.active:hover {
-    opacity: 0.9;
-}
-
-.status-option:not(.active):hover {
-    background-color: #f5f5f5;
-}
-
+/* Estados padrão dos badges de status */
 .status-option.active-status {
-    background-color: #ebf7f0;
-    color: #28a745;
-    border-color: #d4edda;
+    background-color: #f0f9f4;
+    color: #166534;
+    border-color: #bbf7d0;
 }
 
 .status-option.pending-status {
-    background-color: #fff8e6;
-    color: #ffc107;
-    border-color: #fff3cd;
+    background-color: #fffbeb;
+    color: #92400e;
+    border-color: #fde68a;
 }
 
 .status-option.inactive-status {
-    background-color: #f5f5f5;
-    color: #6c757d;
-    border-color: #e9ecef;
+    background-color: #f8f9fa;
+    color: #374151;
+    border-color: #e5e7eb;
 }
 
 .status-option.new-status {
-    background-color: #e7f3ff;
-    color: #0d6efd;
-    border-color: #cce5ff;
+    background-color: #eff6ff;
+    color: #1e40af;
+    border-color: #bfdbfe;
+}
+
+/* Estados quando selecionados (com checkbox marcado) */
+.status-option.selected,
+.status-option input[type="checkbox"]:checked + .status-option {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 600;
+}
+
+.status-option.selected.active-status {
+    background-color: #22c55e;
+    color: white;
+    border-color: #16a34a;
+}
+
+.status-option.selected.pending-status {
+    background-color: #f59e0b;
+    color: white;
+    border-color: #d97706;
+}
+
+.status-option.selected.inactive-status {
+    background-color: #6b7280;
+    color: white;
+    border-color: #4b5563;
+}
+
+.status-option.selected.new-status {
+    background-color: #3b82f6;
+    color: white;
+    border-color: #2563eb;
+}
+
+/* Efeito hover para status não selecionados */
+.status-option:not(.selected):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-option.active-status:not(.selected):hover {
+    background-color: #dcfce7;
+    border-color: #86efac;
+}
+
+.status-option.pending-status:not(.selected):hover {
+    background-color: #fef3c7;
+    border-color: #fcd34d;
+}
+
+.status-option.inactive-status:not(.selected):hover {
+    background-color: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.status-option.new-status:not(.selected):hover {
+    background-color: #dbeafe;
+    border-color: #93c5fd;
+}
+
+/* Indicador visual para opções selecionadas */
+.status-option.selected::before {
+    content: '✓';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsividade para filtros */
@@ -313,6 +385,10 @@
         flex: 1;
         justify-content: center;
     }
+    
+    .status-filter-options {
+        justify-content: center;
+    }
 }
 
 @media (max-width: 576px) {
@@ -327,6 +403,15 @@
     
     .date-range input {
         width: 100%;
+    }
+    
+    .status-filter-options {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .status-option {
+        justify-content: center;
     }
 }
 
@@ -401,13 +486,67 @@
     gap: 0.75rem;
 }
 
+/* Avatar melhorado com fallback */
 .client-avatar {
     width: 40px;
     height: 40px;
-    background-color: #e0e0e0;
     border-radius: 50%;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    font-size: 0.9rem;
+    border: 2px solid #e0e0e0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Fallback quando não há imagem */
+.client-avatar:not([style*="background-image"]),
+.client-avatar[style*="background-image: none"],
+.client-avatar[style*="background-image: ''"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Variações de cores para avatars sem foto */
+.client-avatar.avatar-blue {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.client-avatar.avatar-green {
+    background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+}
+
+.client-avatar.avatar-orange {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+}
+
+.client-avatar.avatar-purple {
+    background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+}
+
+.client-avatar.avatar-red {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+}
+
+/* Efeito de loading para imagens */
+.client-avatar.loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
 
 .client-basic-info h4 {
@@ -498,40 +637,111 @@
     white-space: nowrap;
 }
 
+/* Botões de ação melhorados */
 .btn-small {
-    padding: 0.3rem 0.6rem;
+    padding: 0.4rem 0.8rem;
     font-size: 0.85rem;
     margin-right: 0.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 .btn-icon {
-    background-color: #f5f5f5;
-    color: #555;
-    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    color: #495057;
+    border-color: #dee2e6;
 }
 
 .btn-icon:hover {
     background-color: #e9ecef;
+    border-color: #adb5bd;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon:active {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 .btn-accept {
     background-color: #28a745;
     color: white;
-    border: none;
+    border-color: #28a745;
 }
 
 .btn-accept:hover {
     background-color: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-accept:active {
+    background-color: #1e7e34;
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 .btn-reject {
     background-color: #dc3545;
     color: white;
-    border: none;
+    border-color: #dc3545;
 }
 
 .btn-reject:hover {
     background-color: #c82333;
+    border-color: #bd2130;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.btn-reject:active {
+    background-color: #bd2130;
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Estados de loading para botões */
+.btn-small.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.btn-small.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Estados de sucesso e erro */
+.btn-small.success {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.btn-small.error {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
 }
 
 /* Grid view */

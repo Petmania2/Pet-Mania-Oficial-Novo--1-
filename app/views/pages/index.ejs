@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pet Mania - Conectando Adestradores e Donos de Cães</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -37,10 +37,10 @@
                 <h1>Transforme o Comportamento do seu Pet</h1>
                 <p>Encontre os melhores adestradores profissionais para seu cão. Treinamento personalizado e resultados garantidos.</p>
                 <section class="hero-buttons">
-                    <a href="cadastro-cliente.html" class="btn btn-primary">
+                    <a href="/cliente.ejs" class="btn btn-primary">
                         <i class="fas fa-user-plus"></i> Cadastrar como Cliente
                     </a>
-                    <a href="cadastro-adestrador.html" class="btn btn-secondary">
+                    <a href="/Cadastroadestrador.ejs" class="btn btn-secondary">
                         <i class="fas fa-paw"></i> Cadastrar como Adestrador
                     </a>
                 </section>
@@ -269,6 +269,61 @@
                         <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
                     </section>
                 </article>
+
+                <article class="trainer-card">
+                    <section class="trainer-header">
+                        <section class="trainer-rating">
+                            <i class="fas fa-star"></i> 4.9
+                        </section>
+                        <section class="trainer-badge">
+                            <i class="fas fa-medal"></i> Certificado
+                        </section>
+                    </section>
+                    <section class="trainer-img">
+                        <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Pedro Santos">
+                    </section>
+                    <section class="trainer-info">
+                        <h3 class="trainer-name">Pedro Santos</h3>
+                        <p class="trainer-specialty"><i class="fas fa-certificate"></i> Adestramento para Filhotes</p>
+                        <p class="trainer-location"><i class="fas fa-map-marker-alt"></i> Porto Alegre, RS</p>
+                        <p class="trainer-experience"><i class="fas fa-clock"></i> 9 anos de experiência</p>
+                        <section class="trainer-reviews">
+                            <section class="stars">⭐⭐⭐⭐⭐</section>
+                            <span>(64 avaliações)</span>
+                        </section>
+                        <section class="trainer-price-info">
+                            <span class="price-label">Preço por sessão:</span>
+                            <span class="price-value">R$ 140</span>
+                        </section>
+                        <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
+                    </section>
+                </article>
+
+                <article class="trainer-card">
+                    <section class="trainer-header">
+                        <section class="trainer-rating">
+                            <i class="fas fa-star"></i> 4.6
+                        </section>
+                    </section>
+                    <section class="trainer-img">
+                        <img src="https://images.unsplash.com/photo-1551717743-49959800b1f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Mariana Lima">
+                    </section>
+                    <section class="trainer-info">
+                        <h3 class="trainer-name">Mariana Lima</h3>
+                        <p class="trainer-specialty"><i class="fas fa-certificate"></i> Socialização Canina</p>
+                        <p class="trainer-location"><i class="fas fa-map-marker-alt"></i> Brasília, DF</p>
+                        <p class="trainer-experience"><i class="fas fa-clock"></i> 7 anos de experiência</p>
+                        <section class="trainer-reviews">
+                            <section class="stars">⭐⭐⭐⭐</section>
+                            <span>(42 avaliações)</span>
+                        </section>
+                        <section class="trainer-price-info">
+                            <span class="price-label">Preço por sessão:</span>
+                            <span class="price-value">R$ 170</span>
+                        </section>
+                        <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
+                    </section>
+                </article>
             </section>
             
             <section class="see-more-container">
@@ -311,9 +366,6 @@
                     <p>Inicie as sessões de adestramento e veja a transformação do comportamento do seu cão.</p>
                 </article>
             </section>
-        </section>
-        <section class="how-it-works-wave">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#222" fill-opacity="1" d="M0,160L48,144C96,128,192,96,288,106.7C384,117,480,171,576,186.7C672,203,768,181,864,165.3C960,149,1056,139,1152,154.7C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
         </section>
     </section>
 
@@ -387,6 +439,6 @@
         <i class="fas fa-arrow-up"></i>
     </a>
 
-    <script src="script.js"></script>
+    <script src="/js/javascript.js"></script>
 </body>
 </html>

@@ -179,9 +179,6 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-
-
-
 .hero-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -711,22 +708,6 @@ body {
 .step p {
     line-height: 1.6;
     opacity: 0.9;
-}
-
-.how-it-works-wave {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-}
-
-.how-it-works-wave svg {
-    position: relative;
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 150px;
 }
 
 /* Footer */

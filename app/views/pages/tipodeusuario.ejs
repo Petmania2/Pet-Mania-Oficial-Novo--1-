@@ -98,12 +98,16 @@
         z-index: 1000;
         padding: 15px 0;
         transition: var(--transition);
-    }
-
-    .navbar-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
     }
 
     .logo {
@@ -153,10 +157,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        text-align: center;
     }
 
-    .selection-container {
-        text-align: center;
+    .user-type-section .container {
         max-width: 800px;
         margin: 0 auto;
     }
@@ -181,6 +185,7 @@
         gap: 30px;
         justify-content: center;
         flex-wrap: wrap;
+        margin-bottom: 40px;
     }
 
     .user-type-card {
@@ -223,7 +228,6 @@
     }
 
     .login-link {
-        margin-top: 40px;
         font-size: 1.1rem;
     }
 
@@ -275,7 +279,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
-        <div class="container navbar-container">
+        <section class="container">
             <a href="index.html" class="logo">
                 🐾 Pet Mania
             </a>
@@ -287,36 +291,34 @@
                 <li><a href="index.html#blog">Blog</a></li>
                 <li><a href="index.html#contact">Contato</a></li>
             </ul>
-        </div>
+        </section>
     </nav>
 
     <!-- User Type Selection Section -->
     <section class="user-type-section">
-        <div class="container">
-            <div class="selection-container">
-                <div class="selection-header">
-                    <h2>Qual é o seu perfil?</h2>
-                    <p>Escolha como você deseja participar da Pet Mania</p>
-                </div>
-                <div class="user-types">
-                    <div class="user-type-card">
-                        <div class="user-type-icon trainer-icon">🧑‍🏫</div>
-                        <h3>Sou Adestrador</h3>
-                        <p>Quero oferecer meus serviços de adestramento e encontrar novos clientes.</p>
-                        <a href="cadastro-adestrador.html" class="btn btn-primary">Cadastrar como Adestrador</a>
-                    </div>
-                    <div class="user-type-card">
-                        <div class="user-type-icon dog-owner-icon">🐕</div>
-                        <h3>Tenho um Pet</h3>
-                        <p>Quero encontrar um adestrador profissional para o meu pet.</p>
-                        <a href="cadastro-cliente.html" class="btn btn-secondary">Cadastrar como Cliente</a>
-                    </div>
-                </div>
-                <p class="login-link">
-                    Já tem uma conta? <a href="login.html">Faça login</a>
-                </p>
-            </div>
-        </div>
+        <section class="container">
+            <section class="selection-header">
+                <h2>Qual é o seu perfil?</h2>
+                <p>Escolha como você deseja participar da Pet Mania</p>
+            </section>
+            <section class="user-types">
+                <section class="user-type-card">
+                    <section class="user-type-icon trainer-icon">🧑‍🏫</section>
+                    <h3>Sou Adestrador</h3>
+                    <p>Quero oferecer meus serviços de adestramento e encontrar novos clientes.</p>
+                    <a href="Cadastroadestrador.ejs" class="btn btn-primary">Cadastrar como Adestrador</a>
+                </section>
+                <section class="user-type-card">
+                    <section class="user-type-icon dog-owner-icon">🐕</section>
+                    <h3>Tenho um Pet</h3>
+                    <p>Quero encontrar um adestrador profissional para o meu pet.</p>
+                    <a href="cliente.ejs" class="btn btn-secondary">Cadastrar como Cliente</a>
+                </section>
+            </section>
+            <p class="login-link">
+                Já tem uma conta? <a href="login.html">Faça login</a>
+            </p>
+        </section>
     </section>
 
     <script>

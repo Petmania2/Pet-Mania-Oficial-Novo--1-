@@ -502,7 +502,89 @@ router.get("/logout", (req, res) => {
     });
 });
 
-// Rotas existentes (mantidas)
+// ==========================================
+// ROTAS CRUD PARA TAREFAS
+// ==========================================
+
+// SELECT - Listar todas as tarefas
+router.get("/select", function (req, res) {
+    conexao.query("SELECT * FROM tarefas", function (error, results) {
+        console.log(results);
+        console.log(error);
+        if (error) {
+            return res.json({ erro: error });
+        }
+        res.json({ tarefas: results });
+    });
+});
+
+// INSERT - Criar nova tarefa
+router.get("/insert", function (req, res) {
+    const dadosParaInserir = {
+        "nome_tarefa": "Formatar PC do Cliente 3",
+        "prazo_tarefa": "2022-06-25",
+        "situacao_tarefa": 1
+    };
+    
+    conexao.query("INSERT INTO tarefas SET ?", [dadosParaInserir], function (error, results) {
+        console.log(results);
+        console.log(error);
+        if (error) {
+            return res.json({ erro: error });
+        }
+        res.json({ tarefas: results });
+    });
+});
+
+// UPDATE - Atualizar tarefa
+router.get("/update", function (req, res) {
+    const dadosParaAlterar = {
+        "nome_tarefa": "Formatar PC do Cliente 3.1",
+        "prazo_tarefa": "2023-12-25",
+        "situacao_tarefa": 0
+    };
+    
+    const id_tarefa = 5;
+    conexao.query("UPDATE tarefas SET ? WHERE id_tarefa = ?", [dadosParaAlterar, id_tarefa], function (error, results) {
+        console.log(results);
+        console.log(error);
+        if (error) {
+            return res.json({ erro: error });
+        }
+        res.json({ tarefas: results });
+    });
+});
+
+// DELETE - Deletar tarefa por ID
+router.get("/delete-1", function (req, res) {
+    const id_tarefa = 3;
+    conexao.query("UPDATE tarefas SET status_tarefa = 0 WHERE id_tarefa = ?", [id_tarefa], function (error, results) {
+        console.log(results);
+        console.log(error);
+        if (error) {
+            return res.json({ erro: error });
+        }
+        res.json({ tarefas: results });
+    });
+});
+
+// DELETE - Deletar tarefa permanentemente
+router.get("/delete-f", function (req, res) {
+    const id_tarefa = 6;
+    conexao.query("DELETE FROM tarefas WHERE id_tarefa = ?", [id_tarefa], function (error, results) {
+        console.log(results);
+        console.log(error);
+        if (error) {
+            return res.json({ erro: error });
+        }
+        res.json({ tarefas: results });
+    });
+});
+
+// ==========================================
+// ROTAS EXISTENTES (mantidas)
+// ==========================================
+
 router.post("/exibir", 
     function (req, res) {
         var nome = req.body.nome;
@@ -520,7 +602,6 @@ router.post("/", (req, res) => {
 });
 
 module.exports = router;
-
 
 
 

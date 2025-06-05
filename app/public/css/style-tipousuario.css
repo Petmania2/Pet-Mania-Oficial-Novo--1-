@@ -1,0 +1,268 @@
+ :root {
+        --primary-color: #3498db; /* Azul */
+        --secondary-color: #2ecc71; /* Verde */
+        --text-color: #333;
+        --light-color: #f9f9f9;
+        --dark-color: #2c3e50;
+        --border-radius: 8px;
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
+
+    /* Reset e Estilos Gerais */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Nunito', 'Segoe UI', sans-serif;
+        color: var(--text-color);
+        line-height: 1.6;
+        background-color: #f5f7fa;
+    }
+
+    h1, h2, h3, h4 {
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--primary-color);
+        transition: var(--transition);
+    }
+
+    a:hover {
+        color: var(--secondary-color);
+    }
+
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        border-radius: var(--border-radius);
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: center;
+        border: none;
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: var(--box-shadow);
+    }
+
+    .btn-secondary {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #27ae60;
+        transform: translateY(-2px);
+        box-shadow: var(--box-shadow);
+    }
+
+    /* Navbar */
+    .navbar {
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        padding: 15px 0;
+        transition: var(--transition);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark-color);
+    }
+
+    .logo img {
+        height: 40px;
+        margin-right: 10px;
+    }
+
+    .nav-links {
+        display: flex;
+        list-style: none;
+    }
+
+    .nav-links li {
+        margin-left: 30px;
+    }
+
+    .nav-links a {
+        color: var(--dark-color);
+        font-weight: 600;
+    }
+
+    .nav-links a:hover {
+        color: var(--primary-color);
+    }
+
+    .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--dark-color);
+    }
+
+    /* User Type Section */
+    .user-type-section {
+        padding: 120px 0 80px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .user-type-section .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .selection-header {
+        margin-bottom: 40px;
+    }
+
+    .selection-header h2 {
+        font-size: 2.2rem;
+        color: var(--dark-color);
+        margin-bottom: 15px;
+    }
+
+    .selection-header p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+
+    .user-types {
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+    }
+
+    .user-type-card {
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 30px;
+        flex: 1;
+        min-width: 280px;
+        max-width: 350px;
+        transition: var(--transition);
+    }
+
+    .user-type-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-type-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+    }
+
+    .trainer-icon {
+        color: var(--primary-color);
+    }
+
+    .dog-owner-icon {
+        color: var(--secondary-color);
+    }
+
+    .user-type-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .user-type-card p {
+        margin-bottom: 20px;
+        color: #666;
+    }
+
+    .login-link {
+        font-size: 1.1rem;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .mobile-menu-btn {
+            display: block;
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background-color: white;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+            transition: var(--transition);
+        }
+
+        .nav-links.active {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .nav-links li {
+            margin: 15px 0;
+        }
+
+        .selection-header h2 {
+            font-size: 1.8rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .user-types {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .user-type-card {
+            width: 100%;
+        }
+    }

@@ -97,5 +97,40 @@ router.post("/", (req, res)=>{
 })
 
 
+const express = require("express");
+const router = express.Router();
+const adestradorController = require("../controllers/adestradorController");
+
+// Rota para exibir página de cadastro
+router.get("/cadastro", (req, res) => {
+    res.render("pages/Cadastroadestrador", { 
+        listaErros: null, 
+        dadosNotificacao: null, 
+        valores: {} 
+    });
+});
+
+// Rota para processar cadastro (API)
+router.post("/api/cadastrar", 
+    adestradorController.regrasValidacaoCadastro, 
+    adestradorController.cadastrar
+);
+
+// Rota para listar todos os adestradores (API)
+router.get("/api/listar", adestradorController.listarTodos);
+
+// Rota para buscar adestrador por ID (API)
+router.get("/api/:id", adestradorController.buscarPorId);
+
+// Rota para buscar adestradores por cidade (API)
+router.get("/api/cidade/:cidade", adestradorController.buscarPorCidade);
+
+// Rota para buscar adestradores por especialidade (API)
+router.get("/api/especialidade/:especialidade", adestradorController.buscarPorEspecialidade);
 
 module.exports = router;
+
+
+
+
+

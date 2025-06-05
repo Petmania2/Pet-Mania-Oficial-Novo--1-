@@ -280,3 +280,212 @@ confirmPasswordInput.addEventListener('paste', function(e) {
     e.preventDefault();
     alert('Por questões de segurança, não é permitido colar no campo de confirmação de senha');
 });
+
+
+// Máscaras para formatação
+function aplicarMascaras() {
+    // Máscara CPF
+    const cpfInput = document.getElementById('cpf');
+    cpfInput.addEventListener('input', function() {
+        let value = this.value.replace(/\D/g, '');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        this.value = value;
+    });
+
+    // Máscara Telefone
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', function() {
+        let value = this.value.replace(/\D/g, '');
+        value = value.replace(/(\d{2})(\d)/, '($1) $2');
+        value = value.replace(/(\d{4,5})(\d{4})$/, '$1-$2');
+        this.value = value;
+    });
+}
+
+// Validações
+function validarFormulario(dados) {
+    const erros = [];
+
+    // Validar nome
+    if (!dados.name || dados.name.trim().length < 3) {
+        erros.push('Nome deve ter pelo menos 3 caracteres');
+    }
+
+    // Validar CPF
+    const cpfLimpo = dados.cpf.replace(/\D/g, '');
+    if (cpfLimpo.length !== 11) {
+        erros.push('CPF deve ter 11 dígitos');
+    }
+
+    // Validar email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(dados.email)) {
+        erros.push('Email inválido');
+    }
+
+    // Validar telefone
+    const phoneRegex = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
+    if (!phoneRegex.test(dados.phone)) {
+        erros.push('Telefone inválido');
+    }
+
+    // Validar especialidades
+    const especialidades = document.querySelectorAll('input[name="specialty"]:checked');
+    if (especialidades.length === 0) {
+        erros.push('Selecione pelo menos uma especialidade');
+    }
+
+    // Validar senha
+    if (dados.password.length < 8) {
+        erros.push('Senha deve ter pelo menos 8 caracteres');
+    }
+
+    // Validar confirmação de senha
+    if (dados.password !== dados.confirmPassword) {
+        erros.push('Senhas não conferem');
+    }
+
+    // Validar termos
+    if (!document.getElementById('terms').checked) {
+        erros.push('Você deve aceitar os termos');
+    }
+
+    return erros;
+}
+
+// Mostrar mensagens de erro
+function mostrarErros(erros) {
+    // Limpar erros anteriores
+    document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = 'none';
+    });
+
+    if (erros.length > 0) {
+        alert('Erros encontrados:\n' + erros.join('\n'));
+        return false;
+    }
+    return true;
+}
+
+// Mostrar loading
+function mostrarLoading(show) {
+    const submitBtn = document.querySelector('button[type="submit"]');
+    if (show) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Cadastrando...';
+    } else {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Cadastrar como Adestrador';
+    }
+}
+
+// Enviar dados para o servidor
+async function enviarCadastro(dados) {
+    try {
+        mostrarLoading(true);
+
+        const response = await fetch('/api/adestrador/cadastrar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dados)
+        });
+
+        const resultado = await response.json();
+
+        if (response.ok && resultado.success) {
+            // Sucesso
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('trainerForm').style.display = 'none';
+            
+            // Scroll para o topo
+            window.scrollTo(0, 0);
+            
+            console.log('Cadastro realizado com sucesso!');
+        } else {
+            // Erro do servidor
+            const errorMessage = resultado.message || 'Erro ao realizar cadastro';
+            
+            if (resultado.errors && resultado.errors.length > 0) {
+                const errosDetalhados = resultado.errors.map(erro => erro.msg).join('\n');
+                alert(`Erro no cadastro:\n${errorMessage}\n\nDetalhes:\n${errosDetalhados}`);
+            } else {
+                alert(`Erro no cadastro: ${errorMessage}`);
+            }
+        }
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+        alert('Erro de conexão. Verifique sua internet e tente novamente.');
+    } finally {
+        mostrarLoading(false);
+    }
+}
+
+// Event listener principal
+document.addEventListener('DOMContentLoaded', function() {
+    // Aplicar máscaras
+    aplicarMascaras();
+
+    // Menu mobile
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (menuBtn && navLinks) {
+        menuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // Formulário
+    const form = document.getElementById('trainerForm');
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Coletar dados do formulário
+        const formData = new FormData(form);
+        const dados = {};
+        
+        // Campos normais
+        for (let [key, value] of formData.entries()) {
+            if (key !== 'specialty') {
+                dados[key] = value;
+            }
+        }
+
+        // Especialidades (múltiplas)
+        const especialidades = [];
+        document.querySelectorAll('input[name="specialty"]:checked').forEach(checkbox => {
+            especialidades.push(checkbox.value);
+        });
+        dados.specialty = especialidades;
+
+        // Termos
+        dados.terms = document.getElementById('terms').checked;
+
+        console.log('Dados coletados:', dados);
+
+        // Validar
+        const erros = validarFormulario(dados);
+        if (!mostrarErros(erros)) {
+            return;
+        }
+
+        // Enviar
+        await enviarCadastro(dados);
+    });
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', function() {
+    const navbar = document.getElementById('navbar');
+    if (navbar) {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    }
+});

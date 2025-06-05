@@ -125,6 +125,24 @@ const verificarUsuNaoAutenticado = (req, res, next) => {
     next();
 };
 
+// Função auxiliar para converter status em texto
+function getStatusTexto(status) {
+    switch (status) {
+        case 0:
+            return 'Pendente';
+        case 1:
+            return 'Aprovado';
+        case 2:
+            return 'Rejeitado';
+        default:
+            return 'Desconhecido';
+    }
+}
+
+// ==========================================
+// ROTAS PRINCIPAIS E PÁGINAS
+// ==========================================
+
 // Rota principal
 router.get("/", 
     function (req, res) {
@@ -237,7 +255,138 @@ router.get("/clientesadestrador.ejs", verificarUsuAutenticado,
     }
 );
 
-// Rotas POST para processar formulários
+// ==========================================
+// ROTAS DE VALIDAÇÃO E GERENCIAMENTO DE ADESTRADORES
+// ==========================================
+
+// Rota para listar adestradores pendentes de aprovação
+router.get("/adestradores-pendentes", verificarUsuAutenticado, function (req, res) {
+    // Verifica se o usuário logado é um administrador ou adestrador aprovado
+    if (!req.session.autenticado || req.session.autenticado.tipo !== 'adestrador') {
+        return res.redirect('/Login.ejs');
+    }
+
+    const queryPendentes = `
+        SELECT id, nome, email, telefone, especialidade, created_at 
+        FROM adestradores 
+        WHERE status = 0 
+        ORDER BY created_at DESC
+    `;
+
+    conexao.query(queryPendentes, (err, results) => {
+        if (err) {
+            console.error("Erro ao buscar adestradores pendentes:", err);
+            return res.render("pages/adestradores-pendentes", {
+                autenticado: req.session.autenticado,
+                adestradores: [],
+                dadosNotificacao: {
+                    titulo: "Erro",
+                    mensagem: "Erro ao carregar adestradores pendentes",
+                    tipo: "error"
+                }
+            });
+        }
+
+        res.render("pages/adestradores-pendentes", {
+            autenticado: req.session.autenticado,
+            adestradores: results,
+            dadosNotificacao: null
+        });
+    });
+});
+
+// Rota para listar todos os adestradores com seus status
+router.get("/gerenciar-adestradores", verificarUsuAutenticado, function (req, res) {
+    // Verifica se o usuário logado tem permissão
+    if (!req.session.autenticado || req.session.autenticado.tipo !== 'adestrador') {
+        return res.redirect('/Login.ejs');
+    }
+
+    const queryTodos = `
+        SELECT id, nome, email, telefone, especialidade, status, created_at,
+               approved_at, rejected_at, rejection_reason
+        FROM adestradores 
+        ORDER BY created_at DESC
+    `;
+
+    conexao.query(queryTodos, (err, results) => {
+        if (err) {
+            console.error("Erro ao buscar adestradores:", err);
+            return res.render("pages/gerenciar-adestradores", {
+                autenticado: req.session.autenticado,
+                adestradores: [],
+                dadosNotificacao: {
+                    titulo: "Erro",
+                    mensagem: "Erro ao carregar adestradores",
+                    tipo: "error"
+                }
+            });
+        }
+
+        // Adiciona descrição do status
+        const adestradoresComStatus = results.map(adestrador => ({
+            ...adestrador,
+            statusTexto: getStatusTexto(adestrador.status)
+        }));
+
+        res.render("pages/gerenciar-adestradores", {
+            autenticado: req.session.autenticado,
+            adestradores: adestradoresComStatus,
+            dadosNotificacao: null
+        });
+    });
+});
+
+// Rota para buscar detalhes de um adestrador específico
+router.get("/adestrador-detalhes/:id", verificarUsuAutenticado, function (req, res) {
+    const adestradorId = req.params.id;
+
+    // Verifica se o usuário logado tem permissão
+    if (!req.session.autenticado || req.session.autenticado.tipo !== 'adestrador') {
+        return res.status(403).json({ 
+            sucesso: false, 
+            mensagem: "Acesso negado" 
+        });
+    }
+
+    const queryDetalhes = `
+        SELECT id, nome, email, telefone, especialidade, status, created_at,
+               approved_at, rejected_at, rejection_reason
+        FROM adestradores 
+        WHERE id = ?
+    `;
+
+    conexao.query(queryDetalhes, [adestradorId], (err, results) => {
+        if (err) {
+            console.error("Erro ao buscar detalhes do adestrador:", err);
+            return res.status(500).json({ 
+                sucesso: false, 
+                mensagem: "Erro interno do servidor" 
+            });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ 
+                sucesso: false, 
+                mensagem: "Adestrador não encontrado" 
+            });
+        }
+
+        const adestrador = {
+            ...results[0],
+            statusTexto: getStatusTexto(results[0].status)
+        };
+
+        res.json({ 
+            sucesso: true, 
+            adestrador: adestrador 
+        });
+    });
+});
+
+// ==========================================
+// ROTAS POST PARA PROCESSAR FORMULÁRIOS
+// ==========================================
 
 // Cadastro de adestrador
 router.post("/cadastrar-adestrador", async (req, res) => {
@@ -492,6 +641,127 @@ router.post("/login", async (req, res) => {
     }
 });
 
+// Rota para aprovar adestrador
+router.post("/aprovar-adestrador/:id", verificarUsuAutenticado, async (req, res) => {
+    try {
+        const adestradorId = req.params.id;
+
+        // Verifica se o usuário logado tem permissão
+        if (!req.session.autenticado || req.session.autenticado.tipo !== 'adestrador') {
+            return res.status(403).json({ 
+                sucesso: false, 
+                mensagem: "Acesso negado" 
+            });
+        }
+
+        // Verifica se o adestrador existe e está pendente
+        const queryVerificar = "SELECT * FROM adestradores WHERE id = ? AND status = 0";
+        conexao.query(queryVerificar, [adestradorId], (err, results) => {
+            if (err) {
+                console.error("Erro ao verificar adestrador:", err);
+                return res.status(500).json({ 
+                    sucesso: false, 
+                    mensagem: "Erro interno do servidor" 
+                });
+            }
+
+            if (results.length === 0) {
+                return res.status(404).json({ 
+                    sucesso: false, 
+                    mensagem: "Adestrador não encontrado ou já processado" 
+                });
+            }
+
+            // Atualiza o status para aprovado (1)
+            const queryAprovar = "UPDATE adestradores SET status = 1, approved_at = NOW() WHERE id = ?";
+            conexao.query(queryAprovar, [adestradorId], (err, result) => {
+                if (err) {
+                    console.error("Erro ao aprovar adestrador:", err);
+                    return res.status(500).json({ 
+                        sucesso: false, 
+                        mensagem: "Erro ao aprovar adestrador" 
+                    });
+                }
+
+                res.json({ 
+                    sucesso: true, 
+                    mensagem: "Adestrador aprovado com sucesso!" 
+                });
+            });
+        });
+
+    } catch (error) {
+        console.error("Erro ao aprovar adestrador:", error);
+        res.status(500).json({ 
+            sucesso: false, 
+            mensagem: "Erro interno do servidor" 
+        });
+    }
+});
+
+// Rota para rejeitar adestrador
+router.post("/rejeitar-adestrador/:id", verificarUsuAutenticado, async (req, res) => {
+    try {
+        const adestradorId = req.params.id;
+        const { motivo } = req.body;
+
+        // Verifica se o usuário logado tem permissão
+        if (!req.session.autenticado || req.session.autenticado.tipo !== 'adestrador') {
+            return res.status(403).json({ 
+                sucesso: false, 
+                mensagem: "Acesso negado" 
+            });
+        }
+
+        // Verifica se o adestrador existe e está pendente
+        const queryVerificar = "SELECT * FROM adestradores WHERE id = ? AND status = 0";
+        conexao.query(queryVerificar, [adestradorId], (err, results) => {
+            if (err) {
+                console.error("Erro ao verificar adestrador:", err);
+                return res.status(500).json({ 
+                    sucesso: false, 
+                    mensagem: "Erro interno do servidor" 
+                });
+            }
+
+            if (results.length === 0) {
+                return res.status(404).json({ 
+                    sucesso: false, 
+                    mensagem: "Adestrador não encontrado ou já processado" 
+                });
+            }
+
+            // Atualiza o status para rejeitado (2) e adiciona motivo
+            const queryRejeitar = `
+                UPDATE adestradores 
+                SET status = 2, rejected_at = NOW(), rejection_reason = ? 
+                WHERE id = ?
+            `;
+            conexao.query(queryRejeitar, [motivo || 'Não especificado', adestradorId], (err, result) => {
+                if (err) {
+                    console.error("Erro ao rejeitar adestrador:", err);
+                    return res.status(500).json({ 
+                        sucesso: false, 
+                        mensagem: "Erro ao rejeitar adestrador" 
+                    });
+                }
+
+                res.json({ 
+                    sucesso: true, 
+                    mensagem: "Adestrador rejeitado com sucesso!" 
+                });
+            });
+        });
+
+    } catch (error) {
+        console.error("Erro ao rejeitar adestrador:", error);
+        res.status(500).json({ 
+            sucesso: false, 
+            mensagem: "Erro interno do servidor" 
+        });
+    }
+});
+
 // Logout
 router.get("/logout", (req, res) => {
     req.session.destroy((err) => {
@@ -603,6 +873,63 @@ router.post("/", (req, res) => {
 
 module.exports = router;
 
+/*
+==========================================
+ALTERAÇÕES NECESSÁRIAS NO BANCO DE DADOS
+==========================================
 
+Para implementar completamente este sistema, você precisa executar os seguintes comandos SQL:
+
+-- Adicionar colunas na tabela 'adestradores':
+ALTER TABLE adestradores ADD COLUMN approved_at TIMESTAMP NULL;
+ALTER TABLE adestradores ADD COLUMN rejected_at TIMESTAMP NULL;
+ALTER TABLE adestradores ADD COLUMN rejection_reason TEXT NULL;
+
+-- Verificar se as colunas 'status' e 'created_at' existem:
+-- Se não existirem, adicione:
+ALTER TABLE adestradores ADD COLUMN status INT DEFAULT 0;
+ALTER TABLE adestradores ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+-- Também para a tabela 'clientes':
+ALTER TABLE clientes ADD COLUMN status INT DEFAULT 1;
+ALTER TABLE clientes ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+Status do adestrador:
+- 0: Pendente de aprovação
+- 1: Aprovado
+- 2: Rejeitado
+
+Status do cliente:
+- 1: Ativo (aprovado automaticamente)
+- 0: Inativo
+
+==========================================
+DEPENDÊNCIAS NECESSÁRIAS
+==========================================
+
+Certifique-se de ter instalado:
+npm install bcryptjs express express-session
+
+==========================================
+ESTRUTURA DE ARQUIVOS NECESSÁRIA
+==========================================
+
+views/pages/
+├── adestradores-pendentes.ejs
+├── gerenciar-adestradores.ejs
+├── Cadastroadestrador.ejs
+├── cliente.ejs
+├── Login.ejs
+├── tipodeusuario.ejs
+├── index.ejs
+├── agendamentoadestrador.ejs
+├── clienteadestrador.ejs
+├── mensagensadestrador.ejs
+├── paineladestrador.ejs
+├── perfiladestrador.ejs
+├── planosadestrador.ejs
+├── clientesadestrador.ejs
+└── mostrar.ejs
+*/
 
 

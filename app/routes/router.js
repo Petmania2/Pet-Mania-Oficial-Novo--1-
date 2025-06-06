@@ -81,11 +81,11 @@ router.get("/index.ejs",
 router.post("/exibir", 
     function (req, res) {
 
-    var Nome = req.body.Nome;
-    var Email = req.body.Nmail;
+    var nome = req.body.nome;
+    var nmail = req.body.email;
 
-    res.json({"nomeusuario":Nome, 
-        "emailusuario":Email
+    res.json({"nomeusuario":nome, 
+        "emailusuario":email
     })
 
 });

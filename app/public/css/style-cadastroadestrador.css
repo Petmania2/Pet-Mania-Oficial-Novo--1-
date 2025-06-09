@@ -282,3 +282,12 @@
                 padding: 20px;
             }
         }
+
+        #successMessage {
+  display: none;
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}

@@ -55,10 +55,11 @@ document.addEventListener('DOMContentLoaded', function() {
     return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(pw);
   }
 
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
     let isValid = true;
 
+    // Validações existentes...
     // Nome
     if (!nameInput.value.trim()) {
       showError(nameInput, true);
@@ -167,14 +168,50 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (isValid) {
-      // Mostrar mensagem de sucesso
-      const successMsg = document.getElementById('successMessage');
-      successMsg.style.display = 'block';
+      try {
+        // Coletar especialidades selecionadas
+        const especialidades = Array.from(specialtyCheckboxes)
+          .filter(cb => cb.checked)
+          .map(cb => cb.value);
 
-      // Limpar form (opcional)
-      form.reset();
+        // Preparar dados para envio
+        const formData = new FormData(form);
+        
+        // Remover especialidades individuais e adicionar como array
+        specialtyCheckboxes.forEach(cb => formData.delete('specialty'));
+        especialidades.forEach(esp => formData.append('specialty', esp));
 
-      // Pode fazer envio via fetch/AJAX aqui ou redirecionar se quiser
+        // Enviar dados para o servidor
+        const response = await fetch('/cadastrar-adestrador', {
+          method: 'POST',
+          body: formData
+        });
+
+        const resultado = await response.json();
+
+        if (resultado.sucesso) {
+          // Mostrar mensagem de sucesso
+          const successMsg = document.getElementById('successMessage');
+          successMsg.style.display = 'block';
+          successMsg.textContent = resultado.mensagem;
+
+          // Limpar form
+          form.reset();
+
+          // Redirecionar para login após 2 segundos
+          setTimeout(() => {
+            window.location.href = '/Login.ejs';
+          }, 2000);
+
+        } else {
+          // Mostrar erro
+          alert('Erro: ' + resultado.erro);
+        }
+
+      } catch (error) {
+        console.error('Erro ao enviar formulário:', error);
+        alert('Erro ao processar cadastro. Tente novamente.');
+      }
     }
   });
 });

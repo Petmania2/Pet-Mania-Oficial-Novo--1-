@@ -16,6 +16,7 @@
     --card-bg: white;
 }
 
+
 /* Reset e Estilos Gerais */
 * {
     margin: 0;
@@ -157,6 +158,7 @@ img {
     color: var(--primary-color);
 }
 
+
 /* Navbar */
 .navbar {
     background-color: white;
@@ -166,12 +168,14 @@ img {
     left: 0;
     right: 0;
     z-index: 1000;
-    padding: 15px 0;
+    height: 70px; /* Altura fixa */
+    display: flex;
+    align-items: center;
     transition: var(--transition);
 }
 
 .navbar.scrolled {
-    padding: 10px 0;
+    height: 60px; /* Altura fixa menor quando scrolled */
 }
 
 .navbar-container {
@@ -183,15 +187,71 @@ img {
 .logo {
     display: flex;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 1.8rem; /* Aumentado de 1.5rem para 1.8rem */
     font-weight: 700;
     color: var(--dark-color);
 }
 
 .logo img {
-    height: 40px;
-    margin-right: 10px;
+    max-height: 200px; /* Use max-height ao invés de height */
+    width: auto; /* Mantém proporção */
+    object-fit: contain; /* Garante que a imagem se ajuste sem distorcer */
+    margin-right: 15px;
 }
+
+
+
+.logo-img:hover {
+    filter: drop-shadow(3px 3px 8px rgba(0, 0, 0, 0.6)) brightness(1.1);
+    transform: translateY(-2px) scale(1.05);
+}
+
+.logo-subtle {
+    font-size: 32px;
+    font-weight: 800;
+    color: #FFA500;
+    text-decoration: none;
+    font-family: 'Nunito', sans-serif;
+    line-height: 1;
+    /* Contraste mais sutil */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+
+.logo-subtle:hover {
+    color: #FFB830;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 165, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+
+.logo-img-subtle {
+    height: 200px;
+    width: auto;
+    object-fit: contain;
+    margin-top: 7px;
+    /* Contraste mais sutil */
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.logo-img-subtle:hover {
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3)) brightness(1.05);
+    transform: translateY(-1px);
+}
+
+.logo:hover {
+    color: #FFD700; /* Cor mais clara no hover */
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
+    transform: translateY(-2px);
+    filter: drop-shadow(0 4px 8px rgba(255, 165, 0, 0.3));
+}
+
 
 .adestrador-badge {
     font-size: 0.8rem;

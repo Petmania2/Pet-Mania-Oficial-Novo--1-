@@ -68,6 +68,22 @@ router.get("/index.ejs",
     res.render("pages/index.ejs");    
 });
 
+router.get("/painelcliente.ejs", 
+    function (req, res) {
+    res.render("pages/painelcliente.ejs");    
+});
+
+router.get("/buscaradestrador.ejs", 
+    function (req, res) {
+    res.render("pages/buscaradestrador.ejs");    
+
+    router.get("/perfilcliente.ejs", 
+    function (req, res) {
+    res.render("pages/perfilcliente.ejs");    
+});
+
+});
+
 
 
 

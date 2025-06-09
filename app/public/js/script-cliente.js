@@ -25,7 +25,7 @@
                         
                         // Redirecionar após 3 segundos (simulação)
                         setTimeout(function() {
-                            window.location.href = 'login.html';
+                            window.location.href = 'painelcliente.ejs';
                         }, 3000);
                     }
                 });

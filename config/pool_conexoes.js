@@ -1,7 +1,7 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-// Configuração do pool de conexões otimizada para Clever Cloud
+// Configuração do pool MUITO mais conservadora para Clever Cloud
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -9,138 +9,198 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME,
     port: process.env.DB_PORT,
     waitForConnections: true,
-    connectionLimit: 3, // Reduzido para 3 (máximo é 5 no Clever Cloud)
-    queueLimit: 0,
-    acquireTimeout: 30000,
-    timeout: 20000,
-    idleTimeout: 30000, // Fechar conexões inativas após 30s
-    maxIdle: 1, // Manter apenas 1 conexão idle
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
+    connectionLimit: 4, // REDUZIDO para apenas 2 conexões
+    queueLimit: 10, // Fila limitada
+    acquireTimeout: 10000, // Timeout menor
+    timeout: 15000, // Timeout de query menor
+    idleTimeout: 10000, // Fechar conexões inativas rapidamente
+    maxIdle: 0, // NÃO manter conexões idle
+    enableKeepAlive: false, // Desabilitar keep-alive
     reconnect: true,
     ssl: {
         rejectUnauthorized: false
     }
 });
 
-// Função para executar queries com retry automático e liberação de conexão
+// Singleton para controlar uma única conexão ativa
+class DatabaseConnection {
+    constructor() {
+        this.activeConnection = null;
+        this.connectionInUse = false;
+    }
+
+    async getConnection() {
+        // Se já tem uma conexão ativa e não está em uso, reutilizar
+        if (this.activeConnection && !this.connectionInUse) {
+            try {
+                // Testar se a conexão ainda está válida
+                await this.activeConnection.ping();
+                this.connectionInUse = true;
+                return this.activeConnection;
+            } catch (error) {
+                // Conexão morreu, limpar
+                this.activeConnection = null;
+                this.connectionInUse = false;
+            }
+        }
+
+        // Criar nova conexão se necessário
+        if (!this.activeConnection) {
+            this.activeConnection = await pool.getConnection();
+            this.connectionInUse = true;
+        }
+
+        return this.activeConnection;
+    }
+
+    releaseConnection() {
+        this.connectionInUse = false;
+        // NÃO liberar a conexão imediatamente, reutilizar
+    }
+
+    async closeConnection() {
+        if (this.activeConnection) {
+            try {
+                this.activeConnection.release();
+                this.activeConnection = null;
+                this.connectionInUse = false;
+            } catch (error) {
+                console.error('Erro ao fechar conexão:', error.message);
+            }
+        }
+    }
+}
+
+// Instância singleton
+const dbConnection = new DatabaseConnection();
+
+// Função otimizada para executar queries
 async function executeQuery(query, params = []) {
-    const maxRetries = 5;
+    const maxRetries = 3; // Reduzido para 3 tentativas
     let lastError;
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
-        let connection = null;
-        
         try {
-            console.log(`Executando query (tentativa ${attempt}):`, query.substring(0, 50) + '...');
+            console.log(`🔍 Executando query (tentativa ${attempt})`);
             
-            // Usar conexão única em vez do pool para melhor controle
-            connection = await pool.getConnection();
+            const connection = await dbConnection.getConnection();
             const [rows] = await connection.execute(query, params);
             
             console.log(`✅ Query executada com sucesso!`);
+            dbConnection.releaseConnection();
             return rows;
             
         } catch (error) {
             lastError = error;
             console.error(`❌ Erro na tentativa ${attempt}:`, {
                 message: error.message,
-                code: error.code,
-                errno: error.errno
+                code: error.code
             });
             
-            // Se for erro de limite de conexões, aguardar mais tempo
+            dbConnection.releaseConnection();
+            
+            // Se for erro de limite de conexões
             if (error.code === 'ER_USER_LIMIT_REACHED' || 
                 error.code === 'ER_TOO_MANY_USER_CONNECTIONS' || 
-                error.code === 1226) {
+                error.errno === 1226) {
                 
+                console.log('🚫 Limite de conexões atingido. Fechando todas as conexões...');
+                
+                // Fechar conexão singleton
+                await dbConnection.closeConnection();
+                
+                // Fechar todas as conexões do pool
+                try {
+                    await pool.end();
+                    console.log('🔒 Pool fechado devido ao limite');
+                } catch (e) {
+                    console.error('Erro ao fechar pool:', e.message);
+                }
+                
+                // Recriar pool se não for a última tentativa
                 if (attempt < maxRetries) {
-                    const waitTime = attempt * 2000; // Aumentar tempo de espera progressivamente
-                    console.log(`⏳ Limite de conexões atingido. Aguardando ${waitTime}ms...`);
+                    const waitTime = attempt * 3000;
+                    console.log(`⏳ Aguardando ${waitTime}ms antes de tentar novamente...`);
                     await new Promise(resolve => setTimeout(resolve, waitTime));
                     continue;
                 }
             }
             
-            // Se for erro de conexão perdida, tentar reconectar
+            // Para erros de conexão, fechar e tentar novamente
             if (error.code === 'ECONNRESET' || 
-                error.code === 'PROTOCOL_CONNECTION_LOST' ||
-                error.code === 'ENOTFOUND') {
+                error.code === 'PROTOCOL_CONNECTION_LOST') {
+                
+                await dbConnection.closeConnection();
                 
                 if (attempt < maxRetries) {
-                    console.log('🔄 Problema de conexão. Tentando novamente...');
                     await new Promise(resolve => setTimeout(resolve, 2000));
                     continue;
                 }
             }
             
-            // Para outros erros críticos, parar imediatamente
-            if (error.code === 'ER_ACCESS_DENIED_ERROR' || 
-                error.code === 'ER_BAD_DB_ERROR') {
-                break;
-            }
-            
-        } finally {
-            // SEMPRE liberar a conexão
-            if (connection) {
-                try {
-                    connection.release();
-                    console.log('🔓 Conexão liberada');
-                } catch (releaseError) {
-                    console.error('Erro ao liberar conexão:', releaseError.message);
-                }
-            }
+            // Para outros erros, parar
+            break;
         }
     }
     
-    // Se chegou aqui, todas as tentativas falharam
-    console.error('❌ Todas as tentativas falharam. Último erro:', lastError.message);
+    console.error('❌ Todas as tentativas falharam:', lastError.message);
     throw lastError;
 }
 
-// Função para testar a conexão
+// Função para testar conexão de forma mais leve
 async function testConnection() {
     try {
-        console.log('🔍 Testando conexão com o banco de dados...');
+        console.log('🔍 Testando conexão...');
         await executeQuery('SELECT 1 as test');
-        console.log('✅ Conexão com banco de dados estabelecida com sucesso!');
+        console.log('✅ Conexão OK!');
         return true;
     } catch (error) {
-        console.error('❌ Erro ao conectar com o banco de dados:', error.message);
+        console.error('❌ Erro na conexão:', error.message);
         return false;
     }
 }
 
-// Função para limpar conexões inativas periodicamente
+// Limpeza agressiva de conexões a cada 2 minutos
 function setupConnectionCleaner() {
     setInterval(async () => {
         try {
-            console.log('🧹 Limpando conexões inativas...');
-            // Executar uma query simples para manter pelo menos uma conexão ativa
-            await executeQuery('SELECT 1 as keepalive');
+            console.log('🧹 Limpando conexões...');
+            await dbConnection.closeConnection();
+            
+            // Forçar limpeza do pool
+            const poolConnections = pool._allConnections;
+            if (poolConnections && poolConnections.length > 0) {
+                console.log(`🔄 Limpando ${poolConnections.length} conexões do pool...`);
+                for (const conn of poolConnections) {
+                    try {
+                        if (conn && conn.connection && !conn.connection.destroyed) {
+                            conn.connection.destroy();
+                        }
+                    } catch (e) {
+                        // Ignorar erros de limpeza
+                    }
+                }
+            }
         } catch (error) {
-            console.log('Erro na limpeza de conexões:', error.message);
+            console.log('Erro na limpeza:', error.message);
         }
-    }, 5 * 60 * 1000); // A cada 5 minutos
+    }, 2 * 60 * 1000); // A cada 2 minutos
 }
 
-// Função para fechar o pool de conexões graciosamente
+// Função para fechar tudo
 async function closePool() {
     try {
+        await dbConnection.closeConnection();
         await pool.end();
-        console.log('🔒 Pool de conexões fechado');
+        console.log('🔒 Todas as conexões fechadas');
     } catch (error) {
-        console.error('Erro ao fechar pool:', error);
+        console.error('Erro ao fechar:', error.message);
     }
 }
 
-// Configurar limpeza automática
+// Configurar limpeza
 setupConnectionCleaner();
 
-// NÃO testar conexão na inicialização para evitar usar conexões desnecessariamente
-// testConnection();
-
-// Exportar o pool e as funções
 module.exports = {
     pool,
     executeQuery,

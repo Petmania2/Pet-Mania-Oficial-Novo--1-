@@ -2,7 +2,50 @@ var express = require("express");
 var router = express.Router();
 const AdestradorModel = require("../models/adestradorModel");
 
-// Rotas GET existentes
+// Middleware para rate limiting simples (em memória)
+const rateLimitMap = new Map();
+
+function rateLimit(req, res, next) {
+  const ip = req.ip || req.connection.remoteAddress;
+  const now = Date.now();
+  const windowMs = 60000; // 1 minuto
+  const maxRequests = 10; // máximo 10 requests por minuto
+  
+  if (!rateLimitMap.has(ip)) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + windowMs });
+    return next();
+  }
+  
+  const clientData = rateLimitMap.get(ip);
+  
+  if (now > clientData.resetTime) {
+    clientData.count = 1;
+    clientData.resetTime = now + windowMs;
+    return next();
+  }
+  
+  if (clientData.count >= maxRequests) {
+    return res.status(429).json({
+      sucesso: false,
+      erro: "Muitas tentativas. Aguarde um minuto."
+    });
+  }
+  
+  clientData.count++;
+  next();
+}
+
+// Limpar rate limit cache periodicamente
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, data] of rateLimitMap.entries()) {
+    if (now > data.resetTime) {
+      rateLimitMap.delete(ip);
+    }
+  }
+}, 5 * 60 * 1000); // Limpeza a cada 5 minutos
+
+// Rotas GET existentes (sem alteração)
 router.get("/", function (req, res) {
   res.render("pages/index");    
 });
@@ -32,7 +75,6 @@ router.get("/mensagensadestrador.ejs", function (req, res) {
 });
 
 router.get("/paineladestrador.ejs", function (req, res) {
-  // Verificar se está logado
   if (!req.session.usuario) {
     return res.redirect("/Login.ejs");
   }
@@ -71,28 +113,35 @@ router.get("/perfilcliente.ejs", function (req, res) {
   res.render("pages/perfilcliente.ejs");    
 });
 
-// NOVAS ROTAS POST
+// ROTAS POST OTIMIZADAS
 
-// Rota para cadastro de adestrador
-router.post("/cadastrar-adestrador", async function (req, res) {
+// Rota para cadastro - OTIMIZADA
+router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
   try {
     const {
       name, cpf, email, phone, city, state, 
       experience, specialty, price, about, password
     } = req.body;
 
-    // Verificar se email já existe
-    const emailExiste = await AdestradorModel.emailExiste(email);
-    if (emailExiste) {
+    // Validação básica dos dados
+    if (!name || !cpf || !email || !password) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Campos obrigatórios não preenchidos" 
+      });
+    }
+
+    // Verificar duplicados com UMA ÚNICA query
+    const duplicados = await AdestradorModel.verificarDuplicados(email, cpf);
+    
+    if (duplicados.emailExiste) {
       return res.status(400).json({ 
         sucesso: false, 
         erro: "Este email já está cadastrado" 
       });
     }
 
-    // Verificar se CPF já existe
-    const cpfExiste = await AdestradorModel.cpfExiste(cpf);
-    if (cpfExiste) {
+    if (duplicados.cpfExiste) {
       return res.status(400).json({ 
         sucesso: false, 
         erro: "Este CPF já está cadastrado" 
@@ -107,10 +156,10 @@ router.post("/cadastrar-adestrador", async function (req, res) {
       telefone: phone,
       cidade: city,
       estado: state,
-      experiencia: parseInt(experience),
+      experiencia: parseInt(experience) || 0,
       especialidades: Array.isArray(specialty) ? specialty : [specialty],
-      preco: parseFloat(price),
-      sobre: about,
+      preco: parseFloat(price) || 0,
+      sobre: about || '',
       senha: password
     };
 
@@ -119,33 +168,60 @@ router.post("/cadastrar-adestrador", async function (req, res) {
 
     res.json({ 
       sucesso: true, 
-      mensagem: "Cadastro realizado com sucesso! Redirecionando para login..." 
+      mensagem: "Cadastro realizado com sucesso! Redirecionando..." 
     });
 
   } catch (error) {
     console.error("Erro ao cadastrar adestrador:", error);
     
-    // Tratar erro específico de limite de conexões
-    if (error.code === 'ER_TOO_MANY_USER_CONNECTIONS' || error.code === 1226) {
+    // Tratar diferentes tipos de erro
+    if (error.code === 'ER_TOO_MANY_USER_CONNECTIONS' || 
+        error.code === 'ER_USER_LIMIT_REACHED' || 
+        error.errno === 1226) {
       return res.status(503).json({ 
         sucesso: false, 
-        erro: "Servidor temporariamente sobrecarregado. Tente novamente em alguns segundos." 
+        erro: "Servidor temporariamente ocupado. Tente em alguns minutos." 
+      });
+    }
+    
+    if (error.code === 'ECONNRESET' || 
+        error.code === 'PROTOCOL_CONNECTION_LOST') {
+      return res.status(503).json({ 
+        sucesso: false, 
+        erro: "Problema de conexão. Tente novamente." 
+      });
+    }
+    
+    // Erros de validação
+    if (error.message.includes('email já está cadastrado') || 
+        error.message.includes('CPF já está cadastrado')) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: error.message 
       });
     }
     
     res.status(500).json({ 
       sucesso: false, 
-      erro: "Erro interno do servidor" 
+      erro: "Erro interno. Tente novamente mais tarde." 
     });
   }
 });
 
-// Rota para login
-router.post("/login", async function (req, res) {
+// Rota para login - OTIMIZADA
+router.post("/login", rateLimit, async function (req, res) {
   try {
     const { email, password } = req.body;
 
-    // Buscar adestrador por email
+    // Validação básica
+    if (!email || !password) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Email e senha são obrigatórios" 
+      });
+    }
+
+    // Buscar adestrador por email (query otimizada)
     const adestrador = await AdestradorModel.buscarPorEmail(email);
     
     if (!adestrador) {
@@ -182,22 +258,32 @@ router.post("/login", async function (req, res) {
   } catch (error) {
     console.error("Erro ao fazer login:", error);
     
-    // Tratar erro específico de limite de conexões
-    if (error.code === 'ER_TOO_MANY_USER_CONNECTIONS' || error.code === 1226) {
+    // Tratar erros de conexão
+    if (error.code === 'ER_TOO_MANY_USER_CONNECTIONS' || 
+        error.code === 'ER_USER_LIMIT_REACHED' || 
+        error.errno === 1226) {
       return res.status(503).json({ 
         sucesso: false, 
-        erro: "Servidor temporariamente sobrecarregado. Tente novamente em alguns segundos." 
+        erro: "Servidor ocupado. Aguarde alguns minutos e tente novamente." 
+      });
+    }
+    
+    if (error.code === 'ECONNRESET' || 
+        error.code === 'PROTOCOL_CONNECTION_LOST') {
+      return res.status(503).json({ 
+        sucesso: false, 
+        erro: "Problema de conexão. Tente novamente." 
       });
     }
     
     res.status(500).json({ 
       sucesso: false, 
-      erro: "Erro interno do servidor" 
+      erro: "Erro interno. Tente novamente mais tarde." 
     });
   }
 });
 
-// Rota para logout
+// Rota para logout - sem alteração
 router.post("/logout", function (req, res) {
   req.session.destroy((err) => {
     if (err) {
@@ -208,7 +294,7 @@ router.post("/logout", function (req, res) {
   });
 });
 
-// Rotas POST existentes
+// Rotas POST existentes (sem alteração)
 router.post("/exibir", function (req, res) {
   var nome = req.body.nome;
   var email = req.body.email;

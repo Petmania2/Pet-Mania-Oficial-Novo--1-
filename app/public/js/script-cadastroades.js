@@ -299,10 +299,12 @@ document.addEventListener('DOMContentLoaded', function() {
           // Limpar form
           form.reset();
 
-          // Redirecionar para login após 3 segundos
-          setTimeout(() => {
-            window.location.href = '/Login.ejs';
-          }, 3000);
+
+
+// Para:
+setTimeout(() => {
+  window.location.href = '/Login.ejs';
+}, 2000); // Reduzido para 2 segundos
 
         } else {
           // Mostrar erro

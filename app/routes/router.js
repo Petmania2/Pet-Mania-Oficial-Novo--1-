@@ -74,11 +74,26 @@ router.get("/mensagensadestrador.ejs", function (req, res) {
   res.render("pages/mensagensadestrador.ejs");    
 });
 
-router.get("/paineladestrador.ejs", function (req, res) {
+router.get("/paineladestrador.ejs", async function (req, res) {
   if (!req.session.usuario) {
     return res.redirect("/Login.ejs");
   }
-  res.render("pages/paineladestrador.ejs", { usuario: req.session.usuario });    
+  
+  try {
+    // Buscar dados completos do adestrador
+    const adestrador = await AdestradorModel.buscarPorId(req.session.usuario.id);
+    if (!adestrador) {
+      return res.redirect("/Login.ejs");
+    }
+    
+    res.render("pages/paineladestrador", { 
+      usuario: req.session.usuario,
+      adestrador: adestrador 
+    });
+  } catch (error) {
+    console.error("Erro ao carregar painel:", error);
+    res.redirect("/Login.ejs");
+  }
 });
 
 router.get("/perfiladestrador.ejs", function (req, res) {

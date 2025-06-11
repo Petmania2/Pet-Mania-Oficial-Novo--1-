@@ -34,7 +34,35 @@
             <section class="welcome-section">
                 <h1>Bem-vindo ao seu Painel, <span class="username">Carlos</span>!</h1>
                 <p class="current-date">Sexta-feira, 28 de Fevereiro de 2025</p>
+            
             </section>
+
+            <!-- Dados da Sessão -->
+<section style="background: #f0f0f0; padding: 20px; margin: 20px 0; border-radius: 5px;">
+    <h3>Dados da Sessão (usuario):</h3>
+    <pre><%= JSON.stringify(usuario, null, 2) %></pre>
+</section>
+
+<!-- Dados Completos do Adestrador -->
+<section style="background: #e0f0ff; padding: 20px; margin: 20px 0; border-radius: 5px;">
+    <h3>Dados Completos do Adestrador:</h3>
+    <pre><%= JSON.stringify(adestrador, null, 2) %></pre>
+</section>
+
+<!-- Dados Individuais -->
+<section style="background: #f0fff0; padding: 20px; margin: 20px 0; border-radius: 5px;">
+    <h3>Dados Individuais:</h3>
+    <p><strong>Nome:</strong> <%= adestrador.nome %></p>
+    <p><strong>Email:</strong> <%= adestrador.email %></p>
+    <p><strong>Telefone:</strong> <%= adestrador.telefone %></p>
+    <p><strong>Cidade:</strong> <%= adestrador.cidade %></p>
+    <p><strong>Estado:</strong> <%= adestrador.estado %></p>
+    <p><strong>Experiência:</strong> <%= adestrador.experiencia %> anos</p>
+    <p><strong>Especialidades:</strong> <%= JSON.stringify(adestrador.especialidades) %></p>
+    <p><strong>Preço:</strong> R$ <%= adestrador.preco %></p>
+    <p><strong>Sobre:</strong> <%= adestrador.sobre %></p>
+    <p><strong>Senha (hash):</strong> <%= adestrador.senha %></p>
+</section>
 
             <!-- Dashboard Summary -->
             <section class="summary-cards">

@@ -1,358 +1,339 @@
+// Formatação automática de campos
 document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('trainerForm');
+    // Formatação do CPF
+    const cpfInput = document.getElementById('cpf');
+    cpfInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        e.target.value = value;
+    });
 
-  // Inputs
-  const nameInput = form.querySelector('#name');
-  const cpfInput = form.querySelector('#cpf');
-  const emailInput = form.querySelector('#email');
-  const phoneInput = form.querySelector('#phone');
-  const cityInput = form.querySelector('#city');
-  const stateSelect = form.querySelector('#state');
-  const experienceInput = form.querySelector('#experience');
-  const specialtyCheckboxes = form.querySelectorAll('input[name="specialty"]');
-  const priceInput = form.querySelector('#price');
-  const aboutInput = form.querySelector('#about');
-  const passwordInput = form.querySelector('#password');
-  const confirmPasswordInput = form.querySelector('#confirmPassword');
-  const termsCheckbox = form.querySelector('#terms');
-  
-  // Função para mostrar/ocultar erro
-  function showError(input, show) {
-    const errorMsg = input.parentElement.querySelector('.error-message');
-    if (errorMsg) errorMsg.style.display = show ? 'block' : 'none';
-    input.style.borderColor = show ? '#e74c3c' : '#ddd';
-  }
+    // Formatação do telefone
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+        value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+        e.target.value = value;
+    });
 
-  function showErrorCheckboxGroup(container, show) {
-    const errorMsg = container.querySelector('.error-message');
-    if (errorMsg) errorMsg.style.display = show ? 'block' : 'none';
-  }
+    // Formatação do preço
+    const priceInput = document.getElementById('price');
+    priceInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value) {
+            value = parseFloat(value).toFixed(2);
+            e.target.value = value;
+        }
+    });
+});
 
-  // Máscara para CPF
-  cpfInput.addEventListener('input', function() {
-    let value = this.value.replace(/\D/g, '');
-    if (value.length <= 11) {
-      value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-      this.value = value;
-    }
-  });
-
-  // Máscara para telefone
-  phoneInput.addEventListener('input', function() {
-    let value = this.value.replace(/\D/g, '');
-    if (value.length <= 11) {
-      if (value.length <= 10) {
-        value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-      } else {
-        value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-      }
-      this.value = value;
-    }
-  });
-
-  // Permitir apenas números no campo experiência
-  experienceInput.addEventListener('input', function() {
-    this.value = this.value.replace(/\D/g, '');
-    if (parseInt(this.value) > 50) {
-      this.value = '50';
-    }
-  });
-
-  // Permitir apenas números e vírgula/ponto no preço
-  priceInput.addEventListener('input', function() {
-    let value = this.value.replace(/[^\d.,]/g, '');
-    // Substituir vírgula por ponto
-    value = value.replace(',', '.');
-    // Permitir apenas um ponto decimal
-    const parts = value.split('.');
-    if (parts.length > 2) {
-      value = parts[0] + '.' + parts.slice(1).join('');
-    }
-    // Limitar a 2 casas decimais
-    if (parts[1] && parts[1].length > 2) {
-      value = parts[0] + '.' + parts[1].substring(0, 2);
-    }
-    this.value = value;
-  });
-
-  // Permitir apenas letras e espaços no nome
-  nameInput.addEventListener('input', function() {
-    this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
-  });
-
-  // Permitir apenas letras e espaços na cidade
-  cityInput.addEventListener('input', function() {
-    this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
-  });
-
-  // Funções de validação específicas
-  function isValidCPF(cpf) {
-    // Remove formatação
-    cpf = cpf.replace(/[^\d]/g, '');
+// Validação de CPF
+function validarCPF(cpf) {
+    cpf = cpf.replace(/[^\d]+/g, '');
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
     
-    // Verifica se tem 11 dígitos
-    if (cpf.length !== 11) return false;
-    
-    // Verifica se todos os dígitos são iguais
-    if (/^(\d)\1{10}$/.test(cpf)) return false;
-    
-    // Validação do primeiro dígito verificador
-    let sum = 0;
+    let soma = 0;
     for (let i = 0; i < 9; i++) {
-      sum += parseInt(cpf.charAt(i)) * (10 - i);
+        soma += parseInt(cpf.charAt(i)) * (10 - i);
     }
-    let remainder = (sum * 10) % 11;
-    if (remainder === 10 || remainder === 11) remainder = 0;
-    if (remainder !== parseInt(cpf.charAt(9))) return false;
+    let resto = 11 - (soma % 11);
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.charAt(9))) return false;
     
-    // Validação do segundo dígito verificador
-    sum = 0;
+    soma = 0;
     for (let i = 0; i < 10; i++) {
-      sum += parseInt(cpf.charAt(i)) * (11 - i);
+        soma += parseInt(cpf.charAt(i)) * (11 - i);
     }
-    remainder = (sum * 10) % 11;
-    if (remainder === 10 || remainder === 11) remainder = 0;
-    if (remainder !== parseInt(cpf.charAt(10))) return false;
+    resto = 11 - (soma % 11);
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.charAt(10))) return false;
     
     return true;
-  }
+}
 
-  function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
+// Validação de email
+function validarEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
 
-  function isValidPhone(phone) {
-    // Remove formatação
-    const phoneNumbers = phone.replace(/\D/g, '');
-    // Verifica se tem 10 ou 11 dígitos
-    return phoneNumbers.length === 10 || phoneNumbers.length === 11;
-  }
+// Validação de senha
+function validarSenha(senha) {
+    return senha.length >= 8 && /[a-zA-Z]/.test(senha) && /\d/.test(senha);
+}
 
-  function hasSpecialtyChecked() {
-    return Array.from(specialtyCheckboxes).some(cb => cb.checked);
-  }
+// Validação de telefone
+function validarTelefone(telefone) {
+    const regex = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
+    return regex.test(telefone);
+}
 
-  function isValidPassword(pw) {
-    // Mínimo 8 caracteres, pelo menos uma letra, um número
-    return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/.test(pw);
-  }
-
-  function isValidName(name) {
-    // Pelo menos 2 palavras, cada uma com pelo menos 2 caracteres
-    const words = name.trim().split(/\s+/);
-    return words.length >= 2 && words.every(word => word.length >= 2);
-  }
-
-  function isValidCity(city) {
-    // Pelo menos 2 caracteres, apenas letras e espaços
-    return city.trim().length >= 2 && /^[a-zA-ZÀ-ÿ\s]+$/.test(city.trim());
-  }
-
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    let isValid = true;
-
-    // Nome
-    if (!nameInput.value.trim() || !isValidName(nameInput.value.trim())) {
-      showError(nameInput, true);
-      isValid = false;
+// Mostrar/esconder mensagens de erro
+function mostrarErro(campo, mostrar = true) {
+    const formGroup = campo.closest('.form-group');
+    const errorMessage = formGroup.querySelector('.error-message');
+    
+    if (mostrar) {
+        campo.classList.add('error');
+        errorMessage.style.display = 'block';
     } else {
-      showError(nameInput, false);
+        campo.classList.remove('error');
+        errorMessage.style.display = 'none';
+    }
+}
+
+// Validar campo individual
+function validarCampo(campo) {
+    const valor = campo.value.trim();
+    const nome = campo.name;
+    let valido = true;
+
+    switch (nome) {
+        case 'name':
+            valido = valor.length >= 2;
+            break;
+        case 'cpf':
+            valido = validarCPF(valor);
+            break;
+        case 'email':
+            valido = validarEmail(valor);
+            break;
+        case 'phone':
+            valido = validarTelefone(valor);
+            break;
+        case 'city':
+            valido = valor.length >= 2;
+            break;
+        case 'state':
+            valido = valor !== '';
+            break;
+        case 'experience':
+            valido = parseInt(valor) >= 0;
+            break;
+        case 'price':
+            valido = parseFloat(valor) >= 50;
+            break;
+        case 'about':
+            valido = valor.length >= 50;
+            break;
+        case 'password':
+            valido = validarSenha(valor);
+            break;
+        case 'confirmPassword':
+            const senha = document.getElementById('password').value;
+            valido = valor === senha;
+            break;
     }
 
-    // CPF
-    if (!cpfInput.value.trim() || !isValidCPF(cpfInput.value.trim())) {
-      showError(cpfInput, true);
-      isValid = false;
-    } else {
-      showError(cpfInput, false);
-    }
+    mostrarErro(campo, !valido);
+    return valido;
+}
 
-    // Email
-    if (!emailInput.value.trim() || !isValidEmail(emailInput.value.trim())) {
-      showError(emailInput, true);
-      isValid = false;
+// Validar especialidades
+function validarEspecialidades() {
+    const checkboxes = document.querySelectorAll('input[name="specialty"]:checked');
+    const container = document.querySelector('.checkbox-group').closest('.form-group');
+    const errorMessage = container.querySelector('.error-message');
+    
+    if (checkboxes.length === 0) {
+        errorMessage.style.display = 'block';
+        return false;
     } else {
-      showError(emailInput, false);
+        errorMessage.style.display = 'none';
+        return true;
     }
+}
 
-    // Telefone
-    if (!phoneInput.value.trim() || !isValidPhone(phoneInput.value.trim())) {
-      showError(phoneInput, true);
-      isValid = false;
-    } else {
-      showError(phoneInput, false);
-    }
-
-    // Cidade
-    if (!cityInput.value.trim() || !isValidCity(cityInput.value.trim())) {
-      showError(cityInput, true);
-      isValid = false;
-    } else {
-      showError(cityInput, false);
-    }
-
-    // Estado
-    if (!stateSelect.value) {
-      showError(stateSelect, true);
-      isValid = false;
-    } else {
-      showError(stateSelect, false);
-    }
-
-    // Experiência
-    const experience = parseInt(experienceInput.value);
-    if (!experienceInput.value || experience < 0 || experience > 50) {
-      showError(experienceInput, true);
-      isValid = false;
-    } else {
-      showError(experienceInput, false);
-    }
-
-    // Especialidades
-    const specialtyContainer = form.querySelector('section.form-group:nth-child(7) .checkbox-group');
-    if (!hasSpecialtyChecked()) {
-      showErrorCheckboxGroup(specialtyContainer, true);
-      isValid = false;
-    } else {
-      showErrorCheckboxGroup(specialtyContainer, false);
-    }
-
-    // Preço
-    const price = parseFloat(priceInput.value);
-    if (!priceInput.value || price < 50) {
-      showError(priceInput, true);
-      isValid = false;
-    } else {
-      showError(priceInput, false);
-    }
-
-    // Sobre você
-    if (!aboutInput.value.trim() || aboutInput.value.trim().length < 50) {
-      showError(aboutInput, true);
-      isValid = false;
-    } else {
-      showError(aboutInput, false);
-    }
-
-    // Senha
-    if (!passwordInput.value || !isValidPassword(passwordInput.value)) {
-      showError(passwordInput, true);
-      isValid = false;
-    } else {
-      showError(passwordInput, false);
-    }
-
-    // Confirmar senha
-    if (confirmPasswordInput.value !== passwordInput.value) {
-      showError(confirmPasswordInput, true);
-      isValid = false;
-    } else {
-      showError(confirmPasswordInput, false);
-    }
-
-    // Termos
+// Validar termos
+function validarTermos() {
+    const termsCheckbox = document.getElementById('terms');
+    const container = termsCheckbox.closest('.form-group');
+    const errorMessage = container.querySelector('.error-message');
+    
     if (!termsCheckbox.checked) {
-      const termsError = termsCheckbox.parentElement.querySelector('.error-message');
-      if (termsError) termsError.style.display = 'block';
-      isValid = false;
+        errorMessage.style.display = 'block';
+        return false;
     } else {
-      const termsError = termsCheckbox.parentElement.querySelector('.error-message');
-      if (termsError) termsError.style.display = 'none';
+        errorMessage.style.display = 'none';
+        return true;
+    }
+}
+
+// Mostrar mensagem de sucesso
+function mostrarSucesso(mensagem) {
+    const successDiv = document.getElementById('successMessage');
+    successDiv.textContent = mensagem;
+    successDiv.style.display = 'block';
+    successDiv.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Mostrar mensagem de erro geral
+function mostrarErroGeral(mensagem) {
+    // Remover mensagem anterior se existir
+    const erroAnterior = document.querySelector('.error-general');
+    if (erroAnterior) {
+        erroAnterior.remove();
     }
 
-    if (isValid) {
-      try {
-        // Mostrar loading
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Cadastrando...';
-        submitBtn.disabled = true;
+    // Criar nova mensagem de erro
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-general';
+    errorDiv.style.cssText = `
+        background: #ff4444;
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 500;
+    `;
+    errorDiv.textContent = mensagem;
 
-        // Coletar especialidades selecionadas
-        const especialidades = Array.from(specialtyCheckboxes)
-          .filter(cb => cb.checked)
-          .map(cb => cb.value);
-
-        // Preparar dados para envio
-        const formData = new FormData(form);
-        
-        // Remover especialidades individuais e adicionar como array
-        specialtyCheckboxes.forEach(cb => formData.delete('specialty'));
-        especialidades.forEach(esp => formData.append('specialty', esp));
-
-        // Enviar dados para o servidor
-        const response = await fetch('/cadastrar-adestrador', {
-          method: 'POST',
-          body: formData
-        });
-
-        const resultado = await response.json();
-
-        if (resultado.sucesso) {
-          // Mostrar mensagem de sucesso
-          const successMsg = document.getElementById('successMessage');
-          successMsg.style.display = 'block';
-          successMsg.textContent = resultado.mensagem;
-
-          // Limpar form
-          form.reset();
-
-
-
-// Para:
-setTimeout(() => {
-  window.location.href = '/Login.ejs';
-}, 2000); // Reduzido para 2 segundos
-
-        } else {
-          // Mostrar erro
-          alert('Erro: ' + resultado.erro);
+    // Inserir antes do formulário
+    const form = document.getElementById('trainerForm');
+    form.parentNode.insertBefore(errorDiv, form);
+    
+    // Fazer scroll para a mensagem
+    errorDiv.scrollIntoView({ behavior: 'smooth' });
+    
+    // Remover após 5 segundos
+    setTimeout(() => {
+        if (errorDiv.parentNode) {
+            errorDiv.remove();
         }
+    }, 5000);
+}
 
-      } catch (error) {
-        console.error('Erro ao enviar formulário:', error);
-        alert('Erro ao processar cadastro. Verifique sua conexão e tente novamente.');
-      } finally {
-        // Restaurar botão
-        const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      }
+// Desabilitar/habilitar botão de submit
+function toggleSubmitButton(desabilitar = false) {
+    const submitBtn = document.querySelector('button[type="submit"]');
+    const textoOriginal = 'Cadastrar como Adestrador';
+    const textoCarregando = 'Cadastrando...';
+    
+    if (desabilitar) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = textoCarregando;
+        submitBtn.style.opacity = '0.7';
+        submitBtn.style.cursor = 'not-allowed';
     } else {
-      // Scroll para o primeiro erro
-      const firstError = form.querySelector('.error-message[style*="block"]');
-      if (firstError) {
-        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+        submitBtn.disabled = false;
+        submitBtn.textContent = textoOriginal;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
     }
-  });
+}
 
-  // Limpar erros quando o usuário começar a digitar
-  [nameInput, cpfInput, emailInput, phoneInput, cityInput, experienceInput, priceInput, aboutInput, passwordInput, confirmPasswordInput].forEach(input => {
-    input.addEventListener('input', function() {
-      showError(this, false);
+// Event listeners para validação em tempo real
+document.addEventListener('DOMContentLoaded', function() {
+    const campos = document.querySelectorAll('#trainerForm input, #trainerForm select, #trainerForm textarea');
+    
+    campos.forEach(campo => {
+        campo.addEventListener('blur', function() {
+            validarCampo(this);
+        });
+        
+        campo.addEventListener('input', function() {
+            if (this.classList.contains('error')) {
+                validarCampo(this);
+            }
+        });
     });
-  });
 
-  stateSelect.addEventListener('change', function() {
-    showError(this, false);
-  });
-
-  specialtyCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-      const specialtyContainer = form.querySelector('section.form-group:nth-child(7) .checkbox-group');
-      if (hasSpecialtyChecked()) {
-        showErrorCheckboxGroup(specialtyContainer, false);
-      }
+    // Validação das especialidades
+    const checkboxes = document.querySelectorAll('input[name="specialty"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', validarEspecialidades);
     });
-  });
 
-  termsCheckbox.addEventListener('change', function() {
-    const termsError = this.parentElement.querySelector('.error-message');
-    if (termsError) {
-      termsError.style.display = this.checked ? 'none' : 'block';
+    // Validação dos termos
+    document.getElementById('terms').addEventListener('change', validarTermos);
+});
+
+// Submissão do formulário
+document.getElementById('trainerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Validar todos os campos
+    const campos = document.querySelectorAll('#trainerForm input, #trainerForm select, #trainerForm textarea');
+    let formularioValido = true;
+    
+    campos.forEach(campo => {
+        if (!validarCampo(campo)) {
+            formularioValido = false;
+        }
+    });
+    
+    // Validar especialidades e termos
+    if (!validarEspecialidades()) formularioValido = false;
+    if (!validarTermos()) formularioValido = false;
+    
+    if (!formularioValido) {
+        mostrarErroGeral('Por favor, corrija os erros no formulário antes de continuar.');
+        return;
     }
-  });
+    
+    // Desabilitar botão e mostrar loading
+    toggleSubmitButton(true);
+    
+    try {
+        // Coletar dados do formulário
+        const formData = new FormData(this);
+        
+        // Coletar especialidades marcadas
+        const especialidades = [];
+        document.querySelectorAll('input[name="specialty"]:checked').forEach(checkbox => {
+            especialidades.push(checkbox.value);
+        });
+        
+        // Preparar dados para envio
+        const dadosParaEnvio = {
+            name: formData.get('name'),
+            cpf: formData.get('cpf'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            city: formData.get('city'),
+            state: formData.get('state'),
+            experience: formData.get('experience'),
+            specialty: especialidades,
+            price: formData.get('price'),
+            about: formData.get('about'),
+            password: formData.get('password')
+        };
+        
+        // Enviar dados
+        const response = await fetch('/cadastrar-adestrador', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dadosParaEnvio)
+        });
+        
+        const resultado = await response.json();
+        
+        if (resultado.sucesso) {
+            mostrarSucesso(resultado.mensagem);
+            
+            // Limpar formulário
+            this.reset();
+            
+            // Redirecionar para login após 2 segundos
+            setTimeout(() => {
+                window.location.href = '/Login.ejs';
+            }, 2000);
+            
+        } else {
+            mostrarErroGeral(resultado.erro || 'Erro ao realizar cadastro. Tente novamente.');
+        }
+        
+    } catch (error) {
+        console.error('Erro ao enviar formulário:', error);
+        mostrarErroGeral('Erro de conexão. Verifique sua internet e tente novamente.');
+    } finally {
+        // Reabilitar botão
+        toggleSubmitButton(false);
+    }
 });

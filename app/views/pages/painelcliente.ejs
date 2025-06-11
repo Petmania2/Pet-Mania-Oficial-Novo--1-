@@ -1,162 +1,320 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Mania - Dashboard do Cliente</title>
-    <link rel="stylesheet" href="/css/painelcliente.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Pet Mania - Painel do Cliente</title>
+    <link rel="stylesheet" href="/css/style-cliente.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- Cabeçalho Fixo -->
-    <header class="main-header">
-        <section class="header-container">
-            <section class="logo-section">
-                <img src="/imagens/petlogo.png" alt="Pet Mania Logo" class="logo">
-                <h1 class="site-title">Pet Mania</h1>
-            </section>
-            
-            <nav class="main-navigation">
-                <ul class="nav-list">
-                    <li><a href="#perfil" class="nav-link"><i class="fas fa-user"></i> Perfil</a></li>
-                    <li><a href="#mensagens" class="nav-link"><i class="fas fa-envelope"></i> Mensagens</a></li>
-                    <li><a href="#sair" class="nav-link logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
-                </ul>
-            </nav>
-            
-            <section class="user-info">
-                <p class="user-name">João Silva</p>
-                <i class="fas fa-user-circle user-avatar"></i>
-            </section>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <section class="container navbar-container">
+            <a href="painelcliente.ejs" class="logo">
+                <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
+            </a>
+            <button class="mobile-menu-btn" id="menuBtn">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="painelcliente.ejs" class="active"><i class="fas fa-home"></i> Início</a></li>
+                <li><a href="buscaradestrador.ejs"><i class="fas fa-search"></i> Buscar Adestrador</a></li>
+                <li><a href="mensagenscliente.ejs"><i class="fas fa-comments"></i> Mensagens <span class="notif-badge">2</span></a></li>
+                <li><a href="agendamentocliente.ejs"><i class="fas fa-calendar-alt"></i> Meus Agendamentos</a></li>
+                <li><a href="perfilcliente.ejs"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
+                <li><a href="avaliacoes.ejs"><i class="fas fa-star"></i> Avaliações</a></li>
+                <li><a href="index.ejs" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
         </section>
-    </header>
+    </nav>
 
-    <!-- Conteúdo Principal -->
+    <!-- Main Content -->
     <main class="main-content">
-        <!-- Saudação Personalizada -->
-        <section class="welcome-section">
-            <article class="welcome-card">
+        <section class="container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
                 <section class="welcome-content">
-                    <h2 class="welcome-title">Olá, João! 🐕</h2>
-                    <p class="welcome-text">Pronto para melhorar o comportamento do seu cãozinho hoje?</p>
+                    <h1>Olá, <span class="username">Davi</span>!</h1>
+                    <p class="current-date">Sexta-feira, 28 de Fevereiro de 2025</p>
                 </section>
-                <figure class="welcome-image">
-                    <i class="fas fa-dog welcome-icon"></i>
-                </figure>
-            </article>
-        </section>
-
-        <!-- Cards Principais -->
-        <section class="quick-actions">
-            <h3 class="section-title">Acesso Rápido</h3>
-            
-            <section class="cards-grid">
-                <!-- Card Buscar Adestradores -->
-                <article class="action-card primary-card">
-                    <i class="fas fa-search card-icon"></i>
-                    <h4 class="card-title">Buscar Adestradores</h4>
-                    <p class="card-description">Encontre o profissional ideal para seu pet</p>
-                    <button class="card-button primary-button">Buscar Agora</button>
-                </article>
-
-                <!-- Card Próximos Compromissos -->
-                <article class="action-card alert-card">
-                    <i class="fas fa-calendar-alt card-icon"></i>
-                    <h4 class="card-title">Próximo Compromisso</h4>
-                    <p class="card-description">Avaliação marcada para amanhã às 15h</p>
-                    <button class="card-button secondary-button">Ver Detalhes</button>
-                </article>
-
-                <!-- Card Mensagens -->
-                <article class="action-card">
-                    <i class="fas fa-comments card-icon"></i>
-                    <h4 class="card-title">Mensagens</h4>
-                    <p class="card-description">3 novas mensagens de adestradores</p>
-                    <button class="card-button secondary-button">Abrir Chat</button>
-                </article>
+                <section class="pet-avatar">
+                    <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="Buddy">
+                    <section class="pet-info">
+                        <h3>Buddy</h3>
+                        <p>Golden Retriever</p>
+                    </section>
+                </section>
             </section>
-        </section>
 
-        <!-- Seção de Recomendações -->
-        <section class="recommendations">
-            <h3 class="section-title">Adestradores Recomendados</h3>
-            
-            <section class="trainers-grid">
-                <!-- Adestrador 1 -->
-                <article class="trainer-card">
-                    <figure class="trainer-photo">
-                        <i class="fas fa-user-tie trainer-avatar"></i>
-                    </figure>
-                    <section class="trainer-info">
-                        <h4 class="trainer-name">Maria Santos</h4>
-                        <p class="trainer-specialty">Especialista em Comportamento Canino</p>
-                        <section class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span class="rating-text">5.0 (47 avaliações)</span>
-                        </section>
-                        <button class="trainer-button">Ver Perfil</button>
+            <!-- Quick Summary Cards -->
+            <section class="summary-cards">
+                <section class="card summary-card">
+                    <section class="card-icon calendar"><i class="fas fa-calendar-check"></i></section>
+                    <section class="card-content">
+                        <h3>Próximo Agendamento</h3>
+                        <p class="card-number">01 Mar</p>
+                        <p class="card-sub">14:00 - Carlos Mendes</p>
                     </section>
-                </article>
+                </section>
 
-                <!-- Adestrador 2 -->
-                <article class="trainer-card">
-                    <figure class="trainer-photo">
-                        <i class="fas fa-user-tie trainer-avatar"></i>
-                    </figure>
-                    <section class="trainer-info">
-                        <h4 class="trainer-name">Carlos Oliveira</h4>
-                        <p class="trainer-specialty">Adestramento Básico e Avançado</p>
-                        <section class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            <span class="rating-text">4.8 (32 avaliações)</span>
-                        </section>
-                        <button class="trainer-button">Ver Perfil</button>
+                <section class="card summary-card">
+                    <section class="card-icon messages"><i class="fas fa-envelope"></i></section>
+                    <section class="card-content">
+                        <h3>Mensagens</h3>
+                        <p class="card-number">2</p>
+                        <p class="card-sub">Não lidas</p>
                     </section>
-                </article>
+                </section>
 
-                <!-- Adestrador 3 -->
-                <article class="trainer-card">
-                    <figure class="trainer-photo">
-                        <i class="fas fa-user-tie trainer-avatar"></i>
-                    </figure>
-                    <section class="trainer-info">
-                        <h4 class="trainer-name">Ana Costa</h4>
-                        <p class="trainer-specialty">Socialização e Ansiedade</p>
-                        <section class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span class="rating-text">4.9 (28 avaliações)</span>
-                        </section>
-                        <button class="trainer-button">Ver Perfil</button>
+                <section class="card summary-card">
+                    <section class="card-icon reviews"><i class="fas fa-star"></i></section>
+                    <section class="card-content">
+                        <h3>Avaliações</h3>
+                        <p class="card-number">1</p>
+                        <p class="card-sub">Pendente</p>
                     </section>
-                </article>
+                </section>
+
+                <section class="card summary-card">
+                    <section class="card-icon sessions"><i class="fas fa-paw"></i></section>
+                    <section class="card-content">
+                        <h3>Sessões Realizadas</h3>
+                        <p class="card-number">8</p>
+                        <p class="card-sub">Este mês</p>
+                    </section>
+                </section>
+            </section>
+
+            <!-- Main Dashboard Grid -->
+            <section class="dashboard-grid">
+                <!-- Próximos Agendamentos -->
+                <section class="card appointments-section">
+                    <section class="card-header">
+                        <h2><i class="fas fa-calendar-check"></i> Próximos Agendamentos</h2>
+                        <a href="agendamentocliente.ejs" class="btn-link">Ver todos</a>
+                    </section>
+                    <section class="appointments-list">
+                        <section class="appointment-item">
+                            <section class="trainer-avatar">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Carlos Mendes">
+                            </section>
+                            <section class="appointment-details">
+                                <h4>Carlos Mendes <span class="status confirmed">Confirmado</span></h4>
+                                <p><i class="fas fa-clock"></i> 01 Mar, 14:00 - 15:30</p>
+                                <p><i class="fas fa-map-marker-alt"></i> Parque Municipal</p>
+                                <p class="session-type">Controle de Agressividade · 3ª Sessão</p>
+                            </section>
+                            <section class="appointment-actions">
+                                <button class="btn btn-small"><i class="fas fa-phone"></i> Contato</button>
+                                <button class="btn btn-small btn-secondary"><i class="fas fa-calendar-times"></i> Reagendar</button>
+                            </section>
+                        </section>
+
+                        <section class="appointment-item">
+                            <section class="trainer-avatar">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Ricardo Almeida">
+                            </section>
+                            <section class="appointment-details">
+                                <h4>Ricardo Almeida <span class="status pending">Pendente</span></h4>
+                                <p><i class="fas fa-clock"></i> 05 Mar, 09:00 - 10:30</p>
+                                <p><i class="fas fa-map-marker-alt"></i> Residência</p>
+                                <p class="session-type">Obediência Básica · 1ª Sessão</p>
+                            </section>
+                            <section class="appointment-actions">
+                                <button class="btn btn-small"><i class="fas fa-check"></i> Confirmar</button>
+                                <button class="btn btn-small btn-secondary"><i class="fas fa-times"></i> Cancelar</button>
+                            </section>
+                        </section>
+                    </section>
+                </section>
+
+                <!-- Mensagens Recentes -->
+                <section class="card messages-section">
+                    <section class="card-header">
+                        <h2><i class="fas fa-comments"></i> Mensagens Recentes</h2>
+                        <a href="mensagenscliente.ejs" class="btn-link">Ver todas</a>
+                    </section>
+                    <section class="messages-list">
+                        <section class="message-item unread">
+                            <section class="trainer-avatar">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Carlos Mendes">
+                            </section>
+                            <section class="message-content">
+                                <h4>Carlos Mendes <span class="message-time">Hoje, 16:20</span></h4>
+                                <p>Olá Davi! Confirmo nossa sessão de amanhã às 14h. Lembre-se de trazer...</p>
+                            </section>
+                            <section class="message-status">
+                                <span class="status-badge new">Nova</span>
+                            </section>
+                        </section>
+
+                        <section class="message-item unread">
+                            <section class="trainer-avatar">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Ricardo Almeida">
+                            </section>
+                            <section class="message-content">
+                                <h4>Ricardo Almeida <span class="message-time">Hoje, 12:45</span></h4>
+                                <p>Bom dia! Estou ansioso para conhecer o Buddy. Podemos confirmar...</p>
+                            </section>
+                            <section class="message-status">
+                                <span class="status-badge new">Nova</span>
+                            </section>
+                        </section>
+
+                        <section class="message-item read">
+                            <section class="trainer-avatar">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Juliana Costa">
+                            </section>
+                            <section class="message-content">
+                                <h4>Juliana Costa <span class="message-time">Ontem, 19:30</span></h4>
+                                <p>Parabéns! O Buddy está progredindo muito bem. Continue praticando...</p>
+                            </section>
+                        </section>
+                    </section>
+                </section>
+
+                <!-- Adestradores Recomendados -->
+                <section class="card recommended-trainers">
+                    <section class="card-header">
+                        <h2><i class="fas fa-user-graduate"></i> Adestradores Recomendados</h2>
+                        <a href="buscaradestrador.ejs" class="btn-link">Ver mais</a>
+                    </section>
+                    <section class="trainers-grid">
+                        <section class="trainer-card-mini">
+                            <section class="trainer-avatar">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Ana Silva">
+                            </section>
+                            <section class="trainer-info">
+                                <h4>Ana Silva</h4>
+                                <p class="specialty">Truques Avançados</p>
+                                <section class="rating">
+                                    <i class="fas fa-star"></i> 4.7
+                                </section>
+                                <p class="distance"><i class="fas fa-map-marker-alt"></i> 2.5 km</p>
+                            </section>
+                            <button class="btn btn-small btn-primary">Ver Perfil</button>
+                        </section>
+
+                        <section class="trainer-card-mini">
+                            <section class="trainer-avatar">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Pedro Santos">
+                            </section>
+                            <section class="trainer-info">
+                                <h4>Pedro Santos</h4>
+                                <p class="specialty">Filhotes</p>
+                                <section class="rating">
+                                    <i class="fas fa-star"></i> 4.9
+                                </section>
+                                <p class="distance"><i class="fas fa-map-marker-alt"></i> 3.2 km</p>
+                            </section>
+                            <button class="btn btn-small btn-primary">Ver Perfil</button>
+                        </section>
+                    </section>
+                </section>
+
+                <!-- Atalhos Rápidos -->
+                <section class="card quick-actions">
+                    <section class="card-header">
+                        <h2><i class="fas fa-bolt"></i> Ações Rápidas</h2>
+                    </section>
+                    <section class="actions-grid">
+                        <a href="buscaradestrador.ejs" class="action-card">
+                            <section class="action-icon search">
+                                <i class="fas fa-search"></i>
+                            </section>
+                            <h3>Buscar Adestrador</h3>
+                            <p>Encontre o profissional ideal</p>
+                        </a>
+
+                        <a href="agendamentocliente.ejs" class="action-card">
+                            <section class="action-icon calendar">
+                                <i class="fas fa-calendar-plus"></i>
+                            </section>
+                            <h3>Novo Agendamento</h3>
+                            <p>Marque uma nova sessão</p>
+                        </a>
+
+                        <a href="avaliacoes.ejs" class="action-card">
+                            <section class="action-icon star">
+                                <i class="fas fa-star"></i>
+                            </section>
+                            <h3>Avaliar Sessão</h3>
+                            <p>Deixe seu feedback</p>
+                        </a>
+
+                        <a href="perfilcliente.ejs" class="action-card">
+                            <section class="action-icon profile">
+                                <i class="fas fa-user-edit"></i>
+                            </section>
+                            <h3>Editar Perfil</h3>
+                            <p>Atualize suas informações</p>
+                        </a>
+                    </section>
+                </section>
+
+                <!-- Progresso do Pet -->
+                <section class="card pet-progress">
+                    <section class="card-header">
+                        <h2><i class="fas fa-chart-line"></i> Progresso do Buddy</h2>
+                    </section>
+                    <section class="progress-content">
+                        <section class="progress-item">
+                            <h4>Obediência Básica</h4>
+                            <section class="progress-bar">
+                                <section class="progress-fill" style="width: 85%"></section>
+                            </section>
+                            <span class="progress-text">85%</span>
+                        </section>
+
+                        <section class="progress-item">
+                            <h4>Socialização</h4>
+                            <section class="progress-bar">
+                                <section class="progress-fill" style="width: 70%"></section>
+                            </section>
+                            <span class="progress-text">70%</span>
+                        </section>
+
+                        <section class="progress-item">
+                            <h4>Controle de Agressividade</h4>
+                            <section class="progress-bar">
+                                <section class="progress-fill" style="width: 60%"></section>
+                            </section>
+                            <span class="progress-text">60%</span>
+                        </section>
+
+                        <section class="achievements">
+                            <h4>Conquistas Recentes</h4>
+                            <section class="achievement-badges">
+                                <section class="badge">
+                                    <i class="fas fa-trophy"></i>
+                                    <span>Primeira Sessão</span>
+                                </section>
+                                <section class="badge">
+                                    <i class="fas fa-heart"></i>
+                                    <span>Socialização</span>
+                                </section>
+                                <section class="badge">
+                                    <i class="fas fa-handshake"></i>
+                                    <span>Comando "Senta"</span>
+                                </section>
+                            </section>
+                        </section>
+                    </section>
+                </section>
             </section>
         </section>
     </main>
 
-    <!-- Rodapé -->
-    <footer class="main-footer">
-        <section class="footer-container">
-            <nav class="footer-nav">
-                <ul class="footer-links">
-                    <li><a href="#suporte" class="footer-link">Suporte</a></li>
-                    <li><a href="#privacidade" class="footer-link">Política de Privacidade</a></li>
-                </ul>
-            </nav>
-            <p class="footer-text">© 2025 Pet Mania. Conectando você ao melhor cuidado para seu pet.</p>
-        </section>
-    </footer>
+    <!-- Floating Notification Button -->
+    <section class="notification-float">
+        <i class="fas fa-bell"></i>
+        <span class="notif-count">3</span>
+    </section>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/5511999999999" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="/js/script-painelcliente.js"></script>
 </body>
 </html>

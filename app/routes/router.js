@@ -45,33 +45,34 @@ setInterval(() => {
   }
 }, 5 * 60 * 1000); // Limpeza a cada 5 minutos
 
-// Rotas GET existentes (sem alteração)
+// === ROTAS GET ===
+
 router.get("/", function (req, res) {
   res.render("pages/index");    
 });
 
 router.get("/Cadastroadestrador.ejs", function (req, res) {
-  res.render("pages/Cadastroadestrador.ejs");    
+  res.render("pages/Cadastroadestrador");    
 });
 
 router.get("/cliente.ejs", function (req, res) {
-  res.render("pages/cliente.ejs");    
+  res.render("pages/cliente");    
 });
 
 router.get("/agendamentoadestrador.ejs", function (req, res) {
-  res.render("pages/agendamentoadestrador.ejs");    
+  res.render("pages/agendamentoadestrador");    
 });
 
 router.get("/clienteadestrador.ejs", function (req, res) {
-  res.render("pages/clienteadestrador.ejs");    
+  res.render("pages/clienteadestrador");    
 });
 
 router.get("/Login.ejs", function (req, res) {
-  res.render("pages/Login.ejs");    
+  res.render("pages/Login");    
 });
 
 router.get("/mensagensadestrador.ejs", function (req, res) {
-  res.render("pages/mensagensadestrador.ejs");    
+  res.render("pages/mensagensadestrador");    
 });
 
 router.get("/paineladestrador.ejs", async function (req, res) {
@@ -95,40 +96,60 @@ router.get("/paineladestrador.ejs", async function (req, res) {
     res.redirect("/Login.ejs");
   }
 });
+// Substitua a rota atual do perfiladestrador.ejs no arquivo router.js por esta versão corrigida:
 
-router.get("/perfiladestrador.ejs", function (req, res) {
-  res.render("pages/perfiladestrador.ejs");    
+router.get("/perfiladestrador.ejs", async function (req, res) {
+  // Verificar se o usuário está logado
+  if (!req.session.usuario) {
+    return res.redirect("/Login.ejs");
+  }
+  
+  try {
+    // Buscar dados completos do adestrador
+    const adestrador = await AdestradorModel.buscarPorId(req.session.usuario.id);
+    if (!adestrador) {
+      return res.redirect("/Login.ejs");
+    }
+    
+    // Renderizar a view passando os dados do adestrador
+    res.render("pages/perfiladestrador", { 
+      usuario: req.session.usuario,
+      adestrador: adestrador 
+    });
+  } catch (error) {
+    console.error("Erro ao carregar perfil do adestrador:", error);
+    res.redirect("/Login.ejs");
+  }
 });
-
 router.get("/planosadestrador.ejs", function (req, res) {
-  res.render("pages/planosadestrador.ejs");    
+  res.render("pages/planosadestrador");    
 });
 
 router.get("/tipodeusuario.ejs", function (req, res) {
-  res.render("pages/tipodeusuario.ejs");    
+  res.render("pages/tipodeusuario");    
 });
 
 router.get("/clientesadestrador.ejs", function (req, res) {
-  res.render("pages/clientesadestrador.ejs");    
+  res.render("pages/clientesadestrador");    
 });
 
 router.get("/index.ejs", function (req, res) {
-  res.render("pages/index.ejs");    
+  res.render("pages/index");    
 });
 
 router.get("/painelcliente.ejs", function (req, res) {
-  res.render("pages/painelcliente.ejs");    
+  res.render("pages/painelcliente");    
 });
 
 router.get("/buscaradestrador.ejs", function (req, res) {
-  res.render("pages/buscaradestrador.ejs");    
+  res.render("pages/buscaradestrador");    
 });
 
 router.get("/perfilcliente.ejs", function (req, res) {
-  res.render("pages/perfilcliente.ejs");    
+  res.render("pages/perfilcliente");    
 });
 
-// ROTAS POST OTIMIZADAS
+// === ROTAS POST ===
 
 // Rota para cadastro - OTIMIZADA
 router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
@@ -298,7 +319,7 @@ router.post("/login", rateLimit, async function (req, res) {
   }
 });
 
-// Rota para logout - sem alteração
+// Rota para logout
 router.post("/logout", function (req, res) {
   req.session.destroy((err) => {
     if (err) {
@@ -309,7 +330,7 @@ router.post("/logout", function (req, res) {
   });
 });
 
-// Rotas POST existentes (sem alteração)
+// Rotas POST existentes
 router.post("/exibir", function (req, res) {
   var nome = req.body.nome;
   var email = req.body.email;

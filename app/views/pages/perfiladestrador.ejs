@@ -103,7 +103,7 @@
        </section>
        <section class="profile-name">
         <h2>
-         Carlos Oliveira
+         <%= adestrador && adestrador.nome ? adestrador.nome : 'Nome não informado' %>
         </h2>
         <p class="profile-type">
          Adestrador Profissional
@@ -153,13 +153,13 @@
           <label for="name">
            Nome Completo
           </label>
-          <input id="name" type="text" value="Carlos Oliveira"/>
+          <input id="name" type="text" value="<%= adestrador && adestrador.nome ? adestrador.nome : '' %>"/>
          </section>
          <section class="form-group">
           <label for="cpf">
            CPF
           </label>
-          <input disabled="" id="cpf" type="text" value="123.456.789-00"/>
+          <input disabled="" id="cpf" type="text" value="<%= adestrador && adestrador.cpf ? adestrador.cpf : 'Não informado' %>"/>
          </section>
         </section>
         <section class="form-row">
@@ -167,13 +167,13 @@
           <label for="email">
            E-mail
           </label>
-          <input id="email" type="email" value="carlos.adestrador@email.com"/>
+          <input id="email" type="email" value="<%= adestrador && adestrador.email ? adestrador.email : '' %>"/>
          </section>
          <section class="form-group">
           <label for="phone">
            Telefone
           </label>
-          <input id="phone" type="text" value="(11) 98765-4321"/>
+          <input id="phone" type="text" value="<%= adestrador && adestrador.telefone ? adestrador.telefone : '' %>"/>
          </section>
         </section>
         <section class="form-row">
@@ -181,23 +181,23 @@
           <label for="birth">
            Data de Nascimento
           </label>
-          <input id="birth" type="date" value="1985-06-15"/>
+          <input id="birth" type="date" value="<%= adestrador && adestrador.dataNascimento ? adestrador.dataNascimento : '' %>"/>
          </section>
          <section class="form-group">
           <label for="gender">
            Gênero
           </label>
           <select id="gender">
-           <option selected="" value="male">
+           <option value="male" <%= adestrador && adestrador.genero === 'masculino' ? 'selected' : '' %>>
             Masculino
            </option>
-           <option value="female">
+           <option value="female" <%= adestrador && adestrador.genero === 'feminino' ? 'selected' : '' %>>
             Feminino
            </option>
-           <option value="other">
+           <option value="other" <%= adestrador && adestrador.genero === 'outro' ? 'selected' : '' %>>
             Outro
            </option>
-           <option value="prefer-not">
+           <option value="prefer-not" <%= adestrador && adestrador.genero === 'nao-informar' ? 'selected' : '' %>>
             Prefiro não informar
            </option>
           </select>
@@ -207,26 +207,26 @@
          <label for="address">
           Endereço
          </label>
-         <input id="address" type="text" value="Rua das Flores, 123 - Jardim Primavera"/>
+         <input id="address" type="text" value="<%= adestrador && adestrador.endereco ? adestrador.endereco : '' %>"/>
         </section>
         <section class="form-row">
          <section class="form-group">
           <label for="city">
            Cidade
           </label>
-          <input id="city" type="text" value="São Paulo"/>
+          <input id="city" type="text" value="<%= adestrador && adestrador.cidade ? adestrador.cidade : '' %>"/>
          </section>
          <section class="form-group">
           <label for="state">
            Estado
           </label>
-          <input id="state" type="text" value="SP"/>
+          <input id="state" type="text" value="<%= adestrador && adestrador.estado ? adestrador.estado : '' %>"/>
          </section>
          <section class="form-group">
           <label for="cep">
            CEP
           </label>
-          <input id="cep" type="text" value="01234-567"/>
+          <input id="cep" type="text" value="<%= adestrador && adestrador.cep ? adestrador.cep : '' %>"/>
          </section>
         </section>
         <section class="form-actions">
@@ -242,57 +242,50 @@
          <label for="prof-title">
           Título Profissional
          </label>
-         <input id="prof-title" type="text" value="Adestrador Canino Especialista em Comportamento"/>
+         <input id="prof-title" type="text" value="<%= adestrador && adestrador.tituloProfissional ? adestrador.tituloProfissional : 'Adestrador Canino Profissional' %>"/>
         </section>
         <section class="form-group">
          <label for="experience">
           Anos de Experiência
          </label>
-         <input id="experience" type="number" value="8"/>
+         <input id="experience" type="number" value="<%= adestrador && adestrador.experiencia ? adestrador.experiencia : '' %>"/>
         </section>
         <section class="form-group">
          <label for="bio">
           Biografia
          </label>
-         <textarea id="bio" rows="5">Sou um adestrador profissional com mais de 8 anos de experiência. Especializado em modificação comportamental para cães com problemas de agressividade, ansiedade e socialização. Formado em Zootecnia com especialização em Comportamento Animal.</textarea>
+         <textarea id="bio" rows="5"><%= adestrador && adestrador.sobre ? adestrador.sobre : 'Conte um pouco sobre sua experiência e metodologia de trabalho...' %></textarea>
         </section>
         <section class="form-group">
          <label for="certifications">
           Certificações e Formação
          </label>
-         <textarea id="certifications" rows="3">- Bacharelado em Zootecnia (USP)
-- Especialização em Comportamento Animal (UFMG)
-- Certificado em Técnicas de Adestramento Positivo (ABAC)</textarea>
+         <textarea id="certifications" rows="3"><%= adestrador && adestrador.certificacoes ? adestrador.certificacoes : 'Adicione suas certificações e formações...' %></textarea>
+        </section>
+        <section class="form-group">
+         <label for="price">
+          Preço por Sessão (R$)
+         </label>
+         <input id="price" type="number" step="0.01" value="<%= adestrador && adestrador.preco ? adestrador.preco : '' %>"/>
         </section>
         <section class="form-group">
          <label>
           Especialidades
          </label>
          <section class="checkbox-group">
-          <label class="checkbox-item">
-           <input checked="" type="checkbox"/>
-           Obediência Básica
-          </label>
-          <label class="checkbox-item">
-           <input checked="" type="checkbox"/>
-           Problemas Comportamentais
-          </label>
-          <label class="checkbox-item">
-           <input checked="" type="checkbox"/>
-           Socialização
-          </label>
-          <label class="checkbox-item">
-           <input checked="" type="checkbox"/>
-           Treinamento Avançado
-          </label>
-          <label class="checkbox-item">
-           <input type="checkbox"/>
-           Treinamento para Competições
-          </label>
-          <label class="checkbox-item">
-           <input checked="" type="checkbox"/>
-           Adestramento de Filhotes
-          </label>
+          <% 
+          const especialidadesDisponiveis = ['Obediência Básica', 'Problemas Comportamentais', 'Socialização', 'Treinamento Avançado', 'Treinamento para Competições', 'Adestramento de Filhotes'];
+          const especialidadesUsuario = adestrador && adestrador.especialidades ? 
+            (Array.isArray(adestrador.especialidades) ? adestrador.especialidades : 
+             (typeof adestrador.especialidades === 'string' ? JSON.parse(adestrador.especialidades) : [])) 
+            : [];
+          %>
+          <% especialidadesDisponiveis.forEach(function(especialidade) { %>
+            <label class="checkbox-item">
+             <input type="checkbox" <%= especialidadesUsuario.includes(especialidade) ? 'checked' : '' %>/>
+             <%= especialidade %>
+            </label>
+          <% }); %>
          </section>
         </section>
         <section class="form-actions">
@@ -310,7 +303,7 @@
            Sessão de Obediência Básica
           </h3>
           <section class="service-price">
-           R$ 120,00
+           R$ <%= adestrador && adestrador.preco ? adestrador.preco : '120,00' %>
           </section>
          </section>
          <p>
@@ -346,7 +339,7 @@
            Pacote de Socialização
           </h3>
           <section class="service-price">
-           R$ 450,00
+           R$ <%= adestrador && adestrador.preco ? (adestrador.preco * 3.5).toFixed(2) : '450,00' %>
           </section>
          </section>
          <p>
@@ -382,7 +375,7 @@
            Consultoria Comportamental
           </h3>
           <section class="service-price">
-           R$ 150,00
+           R$ <%= adestrador && adestrador.preco ? (adestrador.preco * 1.25).toFixed(2) : '150,00' %>
           </section>
          </section>
          <p>

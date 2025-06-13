@@ -4,77 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Perfil - Pet Mania</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/perfilcliente.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style-perfil-cliente.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="container navbar-container">
+        <section class="container navbar-container">
             <a href="/" class="logo">🐾 Pet Mania</a>
-            <div class="user-nav">
-                <div class="user-avatar">JS</div>
-                <div class="user-info">
+            <section class="user-nav">
+                <figure class="user-avatar">JS</figure>
+                <section class="user-info">
                     <span>João Silva</span>
-                </div>
+                </section>
                 <a href="/logout" class="btn-logout">
                     <i class="fas fa-sign-out-alt"></i> Sair
                 </a>
-            </div>
-        </div>
+            </section>
+        </section>
     </nav>
 
     <!-- Main Content -->
-    <div class="container">
-        <div class="main-content">
+    <section class="container">
+        <section class="main-content">
             <!-- Sidebar -->
             <aside class="sidebar">
-                <div class="profile-header">
-                    <div class="profile-avatar" onclick="openModal('avatarModal')">
-                        JS
-                        <div class="avatar-upload">
+                <header class="profile-header">
+                    <figure class="profile-avatar change-avatar-btn">
+                        <div class="avatar-placeholder">JS</div>
+                        <section class="avatar-upload">
                             <i class="fas fa-camera"></i>
-                        </div>
-                    </div>
-                    <div class="profile-name">João Silva</div>
-                    <div class="profile-email">joao.silva@email.com</div>
-                </div>
+                        </section>
+                    </figure>
+                    <h2 class="profile-name">João Silva</h2>
+                    <p class="profile-email">joao.silva@email.com</p>
+                </header>
 
                 <nav>
                     <ul class="menu-list">
                         <li class="menu-item">
-                            <a href="#" class="menu-link active" onclick="showSection('profile')">
+                            <a href="#" class="menu-link tab-btn active" data-tab="profile">
                                 <i class="fas fa-user"></i>
                                 Meu Perfil
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="menu-link" onclick="showSection('pets')">
+                            <a href="#" class="menu-link tab-btn" data-tab="pets">
                                 <i class="fas fa-paw"></i>
                                 Meus Pets
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="menu-link" onclick="showSection('sessions')">
+                            <a href="#" class="menu-link tab-btn" data-tab="sessions">
                                 <i class="fas fa-calendar-alt"></i>
                                 Sessões
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="menu-link" onclick="showSection('payments')">
+                            <a href="#" class="menu-link tab-btn" data-tab="payments">
                                 <i class="fas fa-credit-card"></i>
                                 Pagamentos
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="menu-link" onclick="showSection('security')">
+                            <a href="#" class="menu-link tab-btn" data-tab="security">
                                 <i class="fas fa-shield-alt"></i>
                                 Segurança
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="#" class="menu-link" onclick="showSection('notifications')">
+                            <a href="#" class="menu-link tab-btn" data-tab="notifications">
                                 <i class="fas fa-bell"></i>
                                 Notificações
                             </a>
@@ -85,277 +85,360 @@
 
             <!-- Content Area -->
             <main class="content-area">
-                <div class="notification" id="notification">
+                <aside class="notification" id="notification" role="alert">
                     <i class="fas fa-check-circle"></i>
                     Dados atualizados com sucesso!
-                </div>
+                </aside>
 
                 <!-- Profile Section -->
-                <div id="profile-section" class="content-section">
-                    <div class="content-header">
-                        <div>
+                <section id="profile-tab" class="content-section profile-tab-content active">
+                    <header class="content-header">
+                        <section>
                             <h1 class="content-title">Meu Perfil</h1>
                             <p class="content-subtitle">Gerencie suas informações pessoais</p>
-                        </div>
-                    </div>
+                        </section>
+                        <section class="profile-actions">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-eye"></i>
+                                Visualizar como cliente
+                            </button>
+                        </section>
+                    </header>
+
+                    <!-- Profile Completion -->
+                    <section class="profile-completion">
+                        <h3>Complete seu perfil</h3>
+                        <section class="progress-bar">
+                            <section class="progress-fill" style="width: 85%;"></section>
+                        </section>
+                        <section class="progress-text">85% Completo</section>
+                        <section class="completion-tasks">
+                            <section class="task-item completed">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Informações básicas preenchidas</span>
+                            </section>
+                            <section class="task-item completed">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Endereço adicionado</span>
+                            </section>
+                            <section class="task-item">
+                                <i class="fas fa-circle"></i>
+                                <span>Adicionar foto de perfil</span>
+                            </section>
+                        </section>
+                    </section>
 
                     <form id="profileForm">
-                        <div class="form-section">
-                            <h2 class="section-title">
+                        <fieldset class="form-section">
+                            <legend class="section-title">
                                 <i class="fas fa-user"></i>
                                 Informações Pessoais
-                            </h2>
-                            <div class="form-grid">
-                                <div class="form-group">
+                            </legend>
+                            <section class="form-grid">
+                                <section class="form-group">
                                     <label class="form-label">Nome Completo</label>
                                     <input type="text" class="form-input" value="João Silva" name="fullName">
-                                </div>
-                                <div class="form-group">
+                                </section>
+                                <section class="form-group">
                                     <label class="form-label">Email</label>
                                     <input type="email" class="form-input" value="joao.silva@email.com" name="email">
-                                </div>
-                                <div class="form-group">
+                                </section>
+                                <section class="form-group">
                                     <label class="form-label">Telefone</label>
                                     <input type="tel" class="form-input" value="(11) 99999-9999" name="phone">
-                                </div>
-                                <div class="form-group">
+                                </section>
+                                <section class="form-group">
                                     <label class="form-label">Data de Nascimento</label>
                                     <input type="date" class="form-input" value="1985-06-15" name="birthDate">
-                                </div>
-                            </div>
-                        </div>
+                                </section>
+                            </section>
+                        </fieldset>
 
-                        <div class="form-section">
-                            <h2 class="section-title">
+                        <fieldset class="form-section">
+                            <legend class="section-title">
                                 <i class="fas fa-map-marker-alt"></i>
                                 Endereço
-                            </h2>
-                            <div class="form-grid">
-                                <div class="form-group">
+                            </legend>
+                            <section class="form-grid">
+                                <section class="form-group">
                                     <label class="form-label">CEP</label>
                                     <input type="text" class="form-input" value="01310-100" name="zipCode">
-                                </div>
-                                <div class="form-group">
+                                </section>
+                                <section class="form-group">
                                     <label class="form-label">Endereço</label>
                                     <input type="text" class="form-input" value="Av. Paulista, 1000" name="address">
-                                </div>
-                                <div class="form-group">
+                                </section>
+                                <section class="form-group">
                                     <label class="form-label">Bairro</label>
                                     <input type="text" class="form-input" value="Bela Vista" name="neighborhood">
-                                </div>
-                                <div class="form-group">
+                                </section>
+                                <section class="form-group">
                                     <label class="form-label">Cidade</label>
                                     <input type="text" class="form-input" value="São Paulo" name="city">
-                                </div>
-                                <div class="form-group">
+                                </section>
+                                <section class="form-group">
                                     <label class="form-label">Estado</label>
                                     <select class="form-input" name="state">
                                         <option value="SP" selected>São Paulo</option>
                                         <option value="RJ">Rio de Janeiro</option>
                                         <option value="MG">Minas Gerais</option>
                                     </select>
-                                </div>
-                            </div>
-                        </div>
+                                </section>
+                            </section>
+                        </fieldset>
 
-                        <div class="form-section">
-                            <h2 class="section-title">
+                        <fieldset class="form-section">
+                            <legend class="section-title">
                                 <i class="fas fa-info-circle"></i>
                                 Informações Adicionais
-                            </h2>
-                            <div class="form-group">
+                            </legend>
+                            <section class="form-group">
                                 <label class="form-label">Sobre mim</label>
                                 <textarea class="form-input form-textarea" name="about" placeholder="Conte um pouco sobre você e sua experiência com pets...">Sou apaixonado por cães e tenho um Golden Retriever chamado Rex. Busco sempre o melhor treinamento para meu pet.</textarea>
-                            </div>
-                        </div>
+                            </section>
+                        </fieldset>
 
-                        <div class="form-actions">
+                        <section class="form-actions">
                             <button type="button" class="btn btn-secondary">
                                 <i class="fas fa-times"></i>
                                 Cancelar
                             </button>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary btn-save">
                                 <i class="fas fa-save"></i>
                                 Salvar Alterações
                             </button>
-                        </div>
+                        </section>
                     </form>
-                </div>
+                </section>
 
                 <!-- Pets Section -->
-                <div id="pets-section" class="content-section" style="display: none;">
-                    <div class="content-header">
-                        <div>
+                <section id="pets-tab" class="content-section profile-tab-content">
+                    <header class="content-header">
+                        <section>
                             <h1 class="content-title">Meus Pets</h1>
                             <p class="content-subtitle">Gerencie as informações dos seus animais de estimação</p>
-                        </div>
-                    </div>
+                        </section>
+                    </header>
 
-                    <div class="pets-grid">
-                        <div class="pet-card add-pet-card" onclick="openModal('petModal')">
+                    <section class="pets-grid">
+                        <article class="pet-card add-pet-card btn-add-service">
                             <i class="fas fa-plus"></i>
                             <h3>Adicionar Pet</h3>
                             <p>Cadastre um novo animal de estimação</p>
-                        </div>
+                        </article>
 
-                        <div class="pet-card">
-                            <div class="pet-info">
-                                <div class="pet-avatar">🐕</div>
-                                <div class="pet-name">Rex</div>
-                                <div class="pet-details">
+                        <article class="pet-card">
+                            <section class="pet-info">
+                                <figure class="pet-avatar">🐕</figure>
+                                <h3 class="pet-name">Rex</h3>
+                                <section class="pet-details">
                                     Golden Retriever • 3 anos<br>
                                     Macho • 30kg
-                                </div>
-                                <div class="pet-actions">
-                                    <button class="btn-pet btn-edit" onclick="openModal('petModal')">
+                                </section>
+                                <section class="pet-actions">
+                                    <button class="btn-pet btn-edit">
                                         <i class="fas fa-edit"></i> Editar
                                     </button>
                                     <button class="btn-pet btn-delete">
                                         <i class="fas fa-trash"></i> Excluir
                                     </button>
-                                </div>
-                            </div>
-                        </div>
+                                </section>
+                            </section>
+                        </article>
 
-                        <div class="pet-card">
-                            <div class="pet-info">
-                                <div class="pet-avatar">🐱</div>
-                                <div class="pet-name">Luna</div>
-                                <div class="pet-details">
+                        <article class="pet-card">
+                            <section class="pet-info">
+                                <figure class="pet-avatar">🐱</figure>
+                                <h3 class="pet-name">Luna</h3>
+                                <section class="pet-details">
                                     Persa • 2 anos<br>
                                     Fêmea • 4kg
-                                </div>
-                                <div class="pet-actions">
-                                    <button class="btn-pet btn-edit" onclick="openModal('petModal')">
+                                </section>
+                                <section class="pet-actions">
+                                    <button class="btn-pet btn-edit">
                                         <i class="fas fa-edit"></i> Editar
                                     </button>
                                     <button class="btn-pet btn-delete">
                                         <i class="fas fa-trash"></i> Excluir
                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                </section>
+                            </section>
+                        </article>
+                    </section>
+                </section>
 
                 <!-- Sessions Section -->
-                <div id="sessions-section" class="content-section" style="display: none;">
-                    <div class="content-header">
-                        <div>
+                <section id="sessions-tab" class="content-section profile-tab-content">
+                    <header class="content-header">
+                        <section>
                             <h1 class="content-title">Minhas Sessões</h1>
                             <p class="content-subtitle">Acompanhe suas sessões de adestramento</p>
-                        </div>
-                    </div>
+                        </section>
+                    </header>
 
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">📅</div>
-                            <div class="stat-number">12</div>
-                            <div class="stat-label">Sessões Realizadas</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">⏱️</div>
-                            <div class="stat-number">24h</div>
-                            <div class="stat-label">Horas de Treinamento</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">🏆</div>
-                            <div class="stat-number">8</div>
-                            <div class="stat-label">Objetivos Alcançados</div>
-                        </div>
-                    </div>
+                    <section class="stats-grid">
+                        <article class="stat-card">
+                            <figure class="stat-icon">📅</figure>
+                            <section class="stat-number">12</section>
+                            <section class="stat-label">Sessões Realizadas</section>
+                        </article>
+                        <article class="stat-card">
+                            <figure class="stat-icon">⏱️</figure>
+                            <section class="stat-number">24h</section>
+                            <section class="stat-label">Horas de Treinamento</section>
+                        </article>
+                        <article class="stat-card">
+                            <figure class="stat-icon">🏆</figure>
+                            <section class="stat-number">8</section>
+                            <section class="stat-label">Objetivos Alcançados</section>
+                        </article>
+                    </section>
 
-                    <div class="form-section">
+                    <section class="form-section">
                         <h2 class="section-title">
                             <i class="fas fa-calendar-check"></i>
                             Próximas Sessões
                         </h2>
-                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 15px; text-align: center; color: #666;">
-                            <i class="fas fa-calendar-plus" style="font-size: 3rem; margin-bottom: 1rem; color: #FFA500;"></i>
+                        <section class="empty-state">
+                            <i class="fas fa-calendar-plus"></i>
                             <h3>Nenhuma sessão agendada</h3>
                             <p>Que tal agendar uma nova sessão para seu pet?</p>
-                            <button class="btn btn-primary" style="margin-top: 1rem;">
+                            <button class="btn btn-primary">
                                 <i class="fas fa-plus"></i>
                                 Agendar Sessão
                             </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Payments Section -->
-                <div id="payments-section" class="content-section" style="display: none;">
-                    <div class="content-header">
-                        <div>
-                            <h1 class="content-title">Pagamentos</h1>
-                            <p class="content-subtitle">Gerencie seus métodos de pagamento e histórico</p>
-                        </div>
-                    </div>
-                    <div style="background: #f8f9fa; padding: 3rem; border-radius: 15px; text-align: center; color: #666;">
-                        <i class="fas fa-credit-card" style="font-size: 4rem; margin-bottom: 1rem; color: #FFA500;"></i>
-                        <h3>Em desenvolvimento</h3>
-                        <p>Esta seção estará disponível em breve!</p>
-                    </div>
-                </div>
+                        </section>
+                    </section>
+                </section>
 
                 <!-- Security Section -->
-                <div id="security-section" class="content-section" style="display: none;">
-                    <div class="content-header">
-                        <div>
+                <section id="security-tab" class="content-section profile-tab-content">
+                    <header class="content-header">
+                        <section>
                             <h1 class="content-title">Segurança</h1>
                             <p class="content-subtitle">Altere sua senha e configure a segurança da conta</p>
-                        </div>
-                    </div>
-                    <div style="background: #f8f9fa; padding: 3rem; border-radius: 15px; text-align: center; color: #666;">
-                        <i class="fas fa-shield-alt" style="font-size: 4rem; margin-bottom: 1rem; color: #FFA500;"></i>
+                        </section>
+                    </header>
+
+                    <form id="securityForm">
+                        <fieldset class="form-section">
+                            <legend class="section-title">
+                                <i class="fas fa-key"></i>
+                                Alterar Senha
+                            </legend>
+                            <section class="form-group">
+                                <label class="form-label">Senha Atual</label>
+                                <input type="password" class="form-input" name="currentPassword" required>
+                            </section>
+                            <section class="form-group">
+                                <label class="form-label">Nova Senha</label>
+                                <input type="password" class="form-input" id="new-password" name="newPassword" required>
+                                <section class="password-strength">
+                                    <section class="strength-bar">
+                                        <section class="strength-segment"></section>
+                                        <section class="strength-segment"></section>
+                                        <section class="strength-segment"></section>
+                                        <section class="strength-segment"></section>
+                                    </section>
+                                    <section class="strength-text">Digite uma nova senha</section>
+                                </section>
+                            </section>
+                            <section class="form-group">
+                                <label class="form-label">Confirmar Nova Senha</label>
+                                <input type="password" class="form-input" name="confirmPassword" required>
+                            </section>
+                        </fieldset>
+
+                        <fieldset class="form-section">
+                            <legend class="section-title">
+                                <i class="fas fa-shield-alt"></i>
+                                Autenticação de Dois Fatores
+                            </legend>
+                            <section class="toggle-group">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="two-factor">
+                                    <span class="slider"></span>
+                                </label>
+                                <section class="toggle-info">
+                                    <strong>Autenticação de Dois Fatores</strong>
+                                    <p>Adicione uma camada extra de segurança à sua conta</p>
+                                    <span class="toggle-label">Desativado</span>
+                                </section>
+                            </section>
+                        </fieldset>
+
+                        <section class="form-actions">
+                            <button type="button" class="btn btn-secondary">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-save">
+                                <i class="fas fa-save"></i>
+                                Salvar Alterações
+                            </button>
+                        </section>
+                    </form>
+                </section>
+
+                <!-- Services Section (para demonstrar funcionalidade) -->
+                <section class="services-section" style="display: none;">
+                    <section class="services-list">
+                        <section class="service-item">
+                            <section class="service-header">
+                                <h3>Adestramento Básico</h3>
+                                <section class="service-price">R$ 150.00</section>
+                            </section>
+                            <p>Treinamento básico de obediência para cães</p>
+                            <section class="service-details">
+                                <span><i class="fas fa-clock"></i> 1h30min</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Residência</span>
+                            </section>
+                            <section class="service-actions">
+                                <button class="btn btn-small btn-outline"><i class="fas fa-edit"></i> Editar</button>
+                                <button class="btn btn-small btn-danger"><i class="fas fa-trash"></i></button>
+                            </section>
+                        </section>
+
+                        <button class="btn btn-primary btn-add-service">
+                            <i class="fas fa-plus"></i>
+                            Adicionar Serviço
+                        </button>
+                    </section>
+                </section>
+
+                <!-- Outras seções vazias para demonstração -->
+                <section id="payments-tab" class="content-section profile-tab-content">
+                    <header class="content-header">
+                        <section>
+                            <h1 class="content-title">Pagamentos</h1>
+                            <p class="content-subtitle">Gerencie seus métodos de pagamento e histórico</p>
+                        </section>
+                    </header>
+                    <section class="empty-state">
+                        <i class="fas fa-credit-card"></i>
                         <h3>Em desenvolvimento</h3>
                         <p>Esta seção estará disponível em breve!</p>
-                    </div>
-                </div>
+                    </section>
+                </section>
 
-                <!-- Notifications Section -->
-                <div id="notifications-section" class="content-section" style="display: none;">
-                    <div class="content-header">
-                        <div>
+                <section id="notifications-tab" class="content-section profile-tab-content">
+                    <header class="content-header">
+                        <section>
                             <h1 class="content-title">Notificações</h1>
                             <p class="content-subtitle">Configure suas preferências de notificação</p>
-                        </div>
-                    </div>
-                    <div style="background: #f8f9fa; padding: 3rem; border-radius: 15px; text-align: center; color: #666;">
-                        <i class="fas fa-bell" style="font-size: 4rem; margin-bottom: 1rem; color: #FFA500;"></i>
+                        </section>
+                    </header>
+                    <section class="empty-state">
+                        <i class="fas fa-bell"></i>
                         <h3>Em desenvolvimento</h3>
                         <p>Esta seção estará disponível em breve!</p>
-                    </div>
-                </div>
+                    </section>
+                </section>
             </main>
-        </div>
-    </div>
+        </section>
+    </section>
 
-    <!-- Modal for Avatar Upload -->
-    <div id="avatarModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Alterar Foto do Perfil</h2>
-                <button class="close-modal" onclick="closeModal('avatarModal')">&times;</button>
-            </div>
-            <div style="text-align: center; padding: 2rem;">
-                <p>Funcionalidade em desenvolvimento</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for Pet -->
-    <div id="petModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Adicionar Pet</h2>
-                <button class="close-modal" onclick="closeModal('petModal')">&times;</button>
-            </div>
-            <div style="text-align: center; padding: 2rem;">
-                <p>Funcionalidade em desenvolvimento</p>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <!-- Incluir o arquivo JavaScript -->
+    <script src="/js/perfil-cliente.js"></script>
 </body>
 </html>

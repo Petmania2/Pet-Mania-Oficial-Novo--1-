@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Pet Mania - Meu Perfil
+  </title>
+  <link href="/css/meuspets.css" rel="stylesheet"/>
+  <link href="/css/style-perfil.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+ </head>
+ <body>
+<!-- Pets Section -->
+<section id="pets-tab" class="content-section profile-tab-content">
+    <header class="content-header">
+        <section>
+            <h1 class="content-title">Meus Pets</h1>
+            <p class="content-subtitle">Gerencie as informações dos seu Pet</p>
+        </section>
+    </header>
+
+    <section class="pets-grid">
+        <!-- Add Pet Card -->
+        <article class="pet-card add-pet-card" id="addPetBtn">
+            <i class="fas fa-plus"></i>
+            <h3>Adicionar Pet</h3>
+            <p>Cadastre um novo animal de estimação</p>
+        </article>
+
+        <!-- Existing Pet Cards -->
+        <article class="pet-card">
+            <section class="pet-info">
+                <figure class="pet-avatar">🐕</figure>
+                <h3 class="pet-name">Rex</h3>
+                <section class="pet-details">
+                    Golden Retriever • 3 anos<br>
+                    Grande • 30kg
+                </section>
+                <section class="pet-actions">
+                    <button class="btn-pet btn-edit" onclick="editPet(1)">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                    <button class="btn-pet btn-delete" onclick="deletePet(1)">
+                        <i class="fas fa-trash"></i> Excluir
+                    </button>
+                </section>
+            </section>
+        </article>
+
+        <article class="pet-card">
+            <section class="pet-info">
+                <figure class="pet-avatar">🐱</figure>
+                <h3 class="pet-name">Luna</h3>
+                <section class="pet-details">
+                    Persa • 2 anos<br>
+                    Pequeno • 4kg
+                </section>
+                <section class="pet-actions">
+                    <button class="btn-pet btn-edit" onclick="editPet(2)">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                    <button class="btn-pet btn-delete" onclick="deletePet(2)">
+                        <i class="fas fa-trash"></i> Excluir
+                    </button>
+                </section>
+            </section>
+        </article>
+    </section>
+</section>
+
+<!-- Modal for Add/Edit Pet -->
+<div class="modal" id="petModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Adicionar Pet</h2>
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <form id="petForm" class="modal-body">
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-paw"></i>
+                    Informações Básicas
+                </h3>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Nome do Pet *</label>
+                        <input type="text" class="form-input" id="petName" name="petName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tipo de Animal *</label>
+                        <select class="form-input" id="animalType" name="animalType" required>
+                            <option value="">Selecione o tipo</option>
+                            <option value="dog">Cão</option>
+                            <option value="cat">Gato</option>
+                            <option value="bird">Pássaro</option>
+                            <option value="other">Outro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Raça</label>
+                        <select class="form-input" id="breed" name="breed">
+                            <option value="">Selecione primeiro o tipo de animal</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Sexo *</label>
+                        <select class="form-input" id="gender" name="gender" required>
+                            <option value="">Selecione o sexo</option>
+                            <option value="male">Macho</option>
+                            <option value="female">Fêmea</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-ruler-combined"></i>
+                    Características Físicas
+                </h3>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Idade</label>
+                        <div class="age-inputs">
+                            <input type="number" class="form-input age-input" id="ageYears" name="ageYears" min="0" max="30" placeholder="0">
+                            <span class="age-label">anos</span>
+                            <input type="number" class="form-input age-input" id="ageMonths" name="ageMonths" min="0" max="11" placeholder="0">
+                            <span class="age-label">meses</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Peso (kg)</label>
+                        <input type="number" class="form-input" id="weight" name="weight" min="0" max="200" step="0.1" placeholder="0.0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tamanho *</label>
+                        <select class="form-input" id="size" name="size" required>
+                            <option value="">Selecione o tamanho</option>
+                            <option value="tiny">Muito Pequeno (até 2kg)</option>
+                            <option value="small">Pequeno (2-10kg)</option>
+                            <option value="medium">Médio (10-25kg)</option>
+                            <option value="large">Grande (25-45kg)</option>
+                            <option value="giant">Gigante (acima de 45kg)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Cor</label>
+                        <input type="text" class="form-input" id="color" name="color" placeholder="Ex: Dourado, Preto, Malhado...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-heart"></i>
+                    Informações de Saúde
+                </h3>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Status de Castração</label>
+                        <select class="form-input" id="neutered" name="neutered">
+                            <option value="">Não informado</option>
+                            <option value="yes">Castrado</option>
+                            <option value="no">Não castrado</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Vacinação em Dia</label>
+                        <select class="form-input" id="vaccinated" name="vaccinated">
+                            <option value="">Não informado</option>
+                            <option value="yes">Sim, em dia</option>
+                            <option value="no">Não, atrasada</option>
+                            <option value="partial">Parcialmente</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Observações de Saúde</label>
+                    <textarea class="form-input form-textarea" id="healthNotes" name="healthNotes" placeholder="Alergias, medicações, condições especiais..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-smile"></i>
+                    Comportamento
+                </h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Temperamento</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="temperament" value="calm">
+                            <span>Calmo</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="temperament" value="energetic">
+                            <span>Energético</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="temperament" value="friendly">
+                            <span>Amigável</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="temperament" value="shy">
+                            <span>Tímido</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="temperament" value="aggressive">
+                            <span>Agressivo</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="temperament" value="playful">
+                            <span>Brincalhão</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Observações Comportamentais</label>
+                    <textarea class="form-input form-textarea" id="behaviorNotes" name="behaviorNotes" placeholder="Medos, preferências, comportamentos especiais..."></textarea>
+                </div>
+            </div>
+        </form>
+        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="cancelBtn">
+                <i class="fas fa-times"></i>
+                Cancelar
+            </button>
+            <button type="submit" form="petForm" class="btn btn-primary" id="saveBtn">
+                <i class="fas fa-save"></i>
+                Salvar Pet
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Pet breeds data
+const petBreeds = {
+    dog: [
+        'Golden Retriever', 'Labrador', 'Pastor Alemão', 'Bulldog Francês', 'Poodle',
+        'Rottweiler', 'Yorkshire Terrier', 'Chihuahua', 'Beagle', 'Boxer',
+        'Dálmata', 'Husky Siberiano', 'Border Collie', 'Cocker Spaniel', 'Pit Bull',
+        'Shih Tzu', 'Maltês', 'Doberman', 'Schnauzer', 'Basset Hound',
+        'Jack Russell Terrier', 'Bulldog Inglês', 'Akita', 'Weimaraner', 'Vira-lata'
+    ],
+    cat: [
+        'Persa', 'Siamês', 'Maine Coon', 'British Shorthair', 'Ragdoll',
+        'Bengal', 'Abissínio', 'Scottish Fold', 'Sphynx', 'Russian Blue',
+        'Birmanês', 'Angorá Turco', 'Manx', 'Himalaia', 'Vira-lata'
+    ],
+    bird: [
+        'Canário', 'Periquito', 'Calopsita', 'Papagaio', 'Bem-te-vi',
+        'Sabiá', 'Curió', 'Trinca-ferro', 'Azulão', 'Coleiro'
+    ],
+    other: [
+        'Coelho', 'Hamster', 'Porquinho-da-índia', 'Ferret', 'Tartaruga',
+        'Iguana', 'Peixe', 'Outro'
+    ]
+};
+
+// Modal functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('petModal');
+    const addPetBtn = document.getElementById('addPetBtn');
+    const closeModal = document.getElementById('closeModal');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const animalTypeSelect = document.getElementById('animalType');
+    const breedSelect = document.getElementById('breed');
+    const petForm = document.getElementById('petForm');
+
+    // Open modal
+    addPetBtn.addEventListener('click', function() {
+        modal.style.display = 'flex';
+        document.getElementById('modalTitle').textContent = 'Adicionar Pet';
+        petForm.reset();
+    });
+
+    // Close modal
+    function closeModalHandler() {
+        modal.style.display = 'none';
+    }
+
+    closeModal.addEventListener('click', closeModalHandler);
+    cancelBtn.addEventListener('click', closeModalHandler);
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeModalHandler();
+        }
+    });
+
+    // Update breeds based on animal type
+    animalTypeSelect.addEventListener('change', function() {
+        const selectedType = this.value;
+        breedSelect.innerHTML = '<option value="">Selecione uma raça</option>';
+        
+        if (selectedType && petBreeds[selectedType]) {
+            petBreeds[selectedType].forEach(breed => {
+                const option = document.createElement('option');
+                option.value = breed.toLowerCase().replace(/\s+/g, '-');
+                option.textContent = breed;
+                breedSelect.appendChild(option);
+            });
+        }
+    });
+
+    // Handle form submission
+    petForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(petForm);
+        const petData = {};
+        
+        // Get regular form fields
+        for (let [key, value] of formData.entries()) {
+            if (key !== 'temperament') {
+                petData[key] = value;
+            }
+        }
+        
+        // Get temperament checkboxes
+        const temperamentCheckboxes = document.querySelectorAll('input[name="temperament"]:checked');
+        petData.temperament = Array.from(temperamentCheckboxes).map(cb => cb.value);
+        
+        // Create age string
+        const years = document.getElementById('ageYears').value || '0';
+        const months = document.getElementById('ageMonths').value || '0';
+        petData.age = `${years} anos${months !== '0' ? ` e ${months} meses` : ''}`;
+        
+        console.log('Pet data:', petData);
+        
+        // Here you would normally send the data to your server
+        // For now, we'll just close the modal and show a success message
+        closeModalHandler();
+        showNotification('Pet adicionado com sucesso!');
+        
+        // Add the new pet card to the grid (this would normally be handled by a page refresh)
+        addPetCard(petData);
+    });
+});
+
+// Function to show notification
+function showNotification(message) {
+    const notification = document.getElementById('notification');
+    if (notification) {
+        notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+}
+
+// Function to add pet card (demo purposes)
+function addPetCard(petData) {
+    const petsGrid = document.querySelector('.pets-grid');
+    const addPetCard = document.getElementById('addPetBtn');
+    
+    const newPetCard = document.createElement('article');
+    newPetCard.className = 'pet-card';
+    
+    // Simple emoji selection based on animal type
+    const emoji = petData.animalType === 'dog' ? '🐕' : 
+                  petData.animalType === 'cat' ? '🐱' :
+                  petData.animalType === 'bird' ? '🐦' : '🐾';
+    
+    newPetCard.innerHTML = `
+        <section class="pet-info">
+            <figure class="pet-avatar">${emoji}</figure>
+            <h3 class="pet-name">${petData.petName}</h3>
+            <section class="pet-details">
+                ${petData.breed || 'Sem raça definida'} • ${petData.age}<br>
+                ${getSizeLabel(petData.size)} • ${petData.weight ? petData.weight + 'kg' : 'Peso não informado'}
+            </section>
+            <section class="pet-actions">
+                <button class="btn-pet btn-edit" onclick="editPet('${petData.petName}')">
+                    <i class="fas fa-edit"></i> Editar
+                </button>
+                <button class="btn-pet btn-delete" onclick="deletePet('${petData.petName}')">
+                    <i class="fas fa-trash"></i> Excluir
+                </button>
+            </section>
+        </section>
+    `;
+    
+    petsGrid.insertBefore(newPetCard, addPetCard);
+}
+
+// Function to get size label
+function getSizeLabel(size) {
+    const sizeLabels = {
+        'tiny': 'Muito Pequeno',
+        'small': 'Pequeno',
+        'medium': 'Médio',
+        'large': 'Grande',
+        'giant': 'Gigante'
+    };
+    return sizeLabels[size] || 'Tamanho não informado';
+}
+
+// Edit pet function
+function editPet(petId) {
+    // This would normally fetch the pet data from server
+    console.log('Editing pet:', petId);
+    
+    // Open modal with existing data
+    const modal = document.getElementById('petModal');
+    modal.style.display = 'flex';
+    document.getElementById('modalTitle').textContent = 'Editar Pet';
+    
+    // Here you would populate the form with existing pet data
+}
+
+// Delete pet function
+function deletePet(petId) {
+    if (confirm('Tem certeza que deseja excluir este pet?')) {
+        console.log('Deleting pet:', petId);
+        showNotification('Pet excluído com sucesso!');
+        // Here you would send delete request to server
+    }
+}
+</script>

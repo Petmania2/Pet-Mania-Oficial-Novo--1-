@@ -103,7 +103,7 @@
        </section>
        <section class="profile-name">
         <h2>
-         <%= adestrador && adestrador.nome ? adestrador.nome : 'Nome não informado' %>
+         <%= adestrador && adestrador.name ? adestrador.name : (adestrador && adestrador.nome ? adestrador.nome : 'Nome não informado') %>
         </h2>
         <p class="profile-type">
          Adestrador Profissional
@@ -153,14 +153,14 @@
           <label for="name">
            Nome Completo
           </label>
-          <input id="name" type="text" value="<%= adestrador && adestrador.nome ? adestrador.nome : '' %>"/>
+          <input id="name" type="text" value="<%= adestrador && adestrador.name ? adestrador.name : (adestrador && adestrador.nome ? adestrador.nome : '') %>"/>
          </section>
          <section class="form-group">
           <label for="cpf">
            CPF
           </label>
           <input disabled="" id="cpf" type="text" value="<%= adestrador && adestrador.cpf ? adestrador.cpf : 'Não informado' %>"/>
-         </section>
+        </section>
         </section>
         <section class="form-row">
          <section class="form-group">
@@ -171,9 +171,9 @@
          </section>
          <section class="form-group">
           <label for="phone">
-           Telefone
+           Telefone/WhatsApp
           </label>
-          <input id="phone" type="text" value="<%= adestrador && adestrador.telefone ? adestrador.telefone : '' %>"/>
+          <input id="phone" type="text" value="<%= adestrador && adestrador.phone ? adestrador.phone : (adestrador && adestrador.telefone ? adestrador.telefone : '') %>"/>
          </section>
         </section>
         <section class="form-row">
@@ -214,13 +214,42 @@
           <label for="city">
            Cidade
           </label>
-          <input id="city" type="text" value="<%= adestrador && adestrador.cidade ? adestrador.cidade : '' %>"/>
+          <input id="city" type="text" value="<%= adestrador && adestrador.city ? adestrador.city : (adestrador && adestrador.cidade ? adestrador.cidade : '') %>"/>
          </section>
          <section class="form-group">
           <label for="state">
            Estado
           </label>
-          <input id="state" type="text" value="<%= adestrador && adestrador.estado ? adestrador.estado : '' %>"/>
+          <select id="state">
+           <option value="">Selecione</option>
+           <option value="AC" <%= adestrador && adestrador.state === 'AC' ? 'selected' : (adestrador && adestrador.estado === 'AC' ? 'selected' : '') %>>Acre</option>
+           <option value="AL" <%= adestrador && adestrador.state === 'AL' ? 'selected' : (adestrador && adestrador.estado === 'AL' ? 'selected' : '') %>>Alagoas</option>
+           <option value="AP" <%= adestrador && adestrador.state === 'AP' ? 'selected' : (adestrador && adestrador.estado === 'AP' ? 'selected' : '') %>>Amapá</option>
+           <option value="AM" <%= adestrador && adestrador.state === 'AM' ? 'selected' : (adestrador && adestrador.estado === 'AM' ? 'selected' : '') %>>Amazonas</option>
+           <option value="BA" <%= adestrador && adestrador.state === 'BA' ? 'selected' : (adestrador && adestrador.estado === 'BA' ? 'selected' : '') %>>Bahia</option>
+           <option value="CE" <%= adestrador && adestrador.state === 'CE' ? 'selected' : (adestrador && adestrador.estado === 'CE' ? 'selected' : '') %>>Ceará</option>
+           <option value="DF" <%= adestrador && adestrador.state === 'DF' ? 'selected' : (adestrador && adestrador.estado === 'DF' ? 'selected' : '') %>>Distrito Federal</option>
+           <option value="ES" <%= adestrador && adestrador.state === 'ES' ? 'selected' : (adestrador && adestrador.estado === 'ES' ? 'selected' : '') %>>Espírito Santo</option>
+           <option value="GO" <%= adestrador && adestrador.state === 'GO' ? 'selected' : (adestrador && adestrador.estado === 'GO' ? 'selected' : '') %>>Goiás</option>
+           <option value="MA" <%= adestrador && adestrador.state === 'MA' ? 'selected' : (adestrador && adestrador.estado === 'MA' ? 'selected' : '') %>>Maranhão</option>
+           <option value="MT" <%= adestrador && adestrador.state === 'MT' ? 'selected' : (adestrador && adestrador.estado === 'MT' ? 'selected' : '') %>>Mato Grosso</option>
+           <option value="MS" <%= adestrador && adestrador.state === 'MS' ? 'selected' : (adestrador && adestrador.estado === 'MS' ? 'selected' : '') %>>Mato Grosso do Sul</option>
+           <option value="MG" <%= adestrador && adestrador.state === 'MG' ? 'selected' : (adestrador && adestrador.estado === 'MG' ? 'selected' : '') %>>Minas Gerais</option>
+           <option value="PA" <%= adestrador && adestrador.state === 'PA' ? 'selected' : (adestrador && adestrador.estado === 'PA' ? 'selected' : '') %>>Pará</option>
+           <option value="PB" <%= adestrador && adestrador.state === 'PB' ? 'selected' : (adestrador && adestrador.estado === 'PB' ? 'selected' : '') %>>Paraíba</option>
+           <option value="PR" <%= adestrador && adestrador.state === 'PR' ? 'selected' : (adestrador && adestrador.estado === 'PR' ? 'selected' : '') %>>Paraná</option>
+           <option value="PE" <%= adestrador && adestrador.state === 'PE' ? 'selected' : (adestrador && adestrador.estado === 'PE' ? 'selected' : '') %>>Pernambuco</option>
+           <option value="PI" <%= adestrador && adestrador.state === 'PI' ? 'selected' : (adestrador && adestrador.estado === 'PI' ? 'selected' : '') %>>Piauí</option>
+           <option value="RJ" <%= adestrador && adestrador.state === 'RJ' ? 'selected' : (adestrador && adestrador.estado === 'RJ' ? 'selected' : '') %>>Rio de Janeiro</option>
+           <option value="RN" <%= adestrador && adestrador.state === 'RN' ? 'selected' : (adestrador && adestrador.estado === 'RN' ? 'selected' : '') %>>Rio Grande do Norte</option>
+           <option value="RS" <%= adestrador && adestrador.state === 'RS' ? 'selected' : (adestrador && adestrador.estado === 'RS' ? 'selected' : '') %>>Rio Grande do Sul</option>
+           <option value="RO" <%= adestrador && adestrador.state === 'RO' ? 'selected' : (adestrador && adestrador.estado === 'RO' ? 'selected' : '') %>>Rondônia</option>
+           <option value="RR" <%= adestrador && adestrador.state === 'RR' ? 'selected' : (adestrador && adestrador.estado === 'RR' ? 'selected' : '') %>>Roraima</option>
+           <option value="SC" <%= adestrador && adestrador.state === 'SC' ? 'selected' : (adestrador && adestrador.estado === 'SC' ? 'selected' : '') %>>Santa Catarina</option>
+           <option value="SP" <%= adestrador && adestrador.state === 'SP' ? 'selected' : (adestrador && adestrador.estado === 'SP' ? 'selected' : '') %>>São Paulo</option>
+           <option value="SE" <%= adestrador && adestrador.state === 'SE' ? 'selected' : (adestrador && adestrador.estado === 'SE' ? 'selected' : '') %>>Sergipe</option>
+           <option value="TO" <%= adestrador && adestrador.state === 'TO' ? 'selected' : (adestrador && adestrador.estado === 'TO' ? 'selected' : '') %>>Tocantins</option>
+          </select>
          </section>
          <section class="form-group">
           <label for="cep">
@@ -248,13 +277,13 @@
          <label for="experience">
           Anos de Experiência
          </label>
-         <input id="experience" type="number" value="<%= adestrador && adestrador.experiencia ? adestrador.experiencia : '' %>"/>
+         <input id="experience" type="number" value="<%= adestrador && adestrador.experience ? adestrador.experience : (adestrador && adestrador.experiencia ? adestrador.experiencia : '') %>"/>
         </section>
         <section class="form-group">
          <label for="bio">
-          Biografia
+          Biografia/Sobre Você
          </label>
-         <textarea id="bio" rows="5"><%= adestrador && adestrador.sobre ? adestrador.sobre : 'Conte um pouco sobre sua experiência e metodologia de trabalho...' %></textarea>
+         <textarea id="bio" rows="5"><%= adestrador && adestrador.about ? adestrador.about : (adestrador && adestrador.sobre ? adestrador.sobre : 'Conte um pouco sobre sua experiência e metodologia de trabalho...') %></textarea>
         </section>
         <section class="form-group">
          <label for="certifications">
@@ -266,28 +295,52 @@
          <label for="price">
           Preço por Sessão (R$)
          </label>
-         <input id="price" type="number" step="0.01" value="<%= adestrador && adestrador.preco ? adestrador.preco : '' %>"/>
+         <input id="price" type="number" step="0.01" value="<%= adestrador && adestrador.price ? adestrador.price : (adestrador && adestrador.preco ? adestrador.preco : '') %>"/>
         </section>
+        
         <section class="form-group">
-         <label>
-          Especialidades
-         </label>
-         <section class="checkbox-group">
-          <% 
-          const especialidadesDisponiveis = ['Obediência Básica', 'Problemas Comportamentais', 'Socialização', 'Treinamento Avançado', 'Treinamento para Competições', 'Adestramento de Filhotes'];
-          const especialidadesUsuario = adestrador && adestrador.especialidades ? 
-            (Array.isArray(adestrador.especialidades) ? adestrador.especialidades : 
-             (typeof adestrador.especialidades === 'string' ? JSON.parse(adestrador.especialidades) : [])) 
-            : [];
-          %>
-          <% especialidadesDisponiveis.forEach(function(especialidade) { %>
-            <label class="checkbox-item">
-             <input type="checkbox" <%= especialidadesUsuario.includes(especialidade) ? 'checked' : '' %>/>
-             <%= especialidade %>
-            </label>
-          <% }); %>
+          <label>
+           Especialidades
+          </label>
+          <section class="checkbox-group">
+           <% 
+           // Mapear as especialidades do banco para os valores corretos
+           const especialidadesDisponiveis = [
+             { valor: 'obediencia-basica', nome: 'Obediência Básica' },
+             { valor: 'comportamento', nome: 'Problemas de Comportamento' },
+             { valor: 'truques', nome: 'Truques e Comandos' },
+             { valor: 'agressividade', nome: 'Controle de Agressividade' },
+             { valor: 'filhotes', nome: 'Treinamento de Filhotes' }
+           ];
+           
+           // Garantir que especialidades seja um array
+           let especialidadesUsuario = [];
+           if (adestrador && adestrador.especialidades) {
+             if (Array.isArray(adestrador.especialidades)) {
+               especialidadesUsuario = adestrador.especialidades;
+             } else if (typeof adestrador.especialidades === 'string') {
+               try {
+                 especialidadesUsuario = JSON.parse(adestrador.especialidades);
+               } catch (e) {
+                 especialidadesUsuario = [];
+               }
+             }
+           }
+           %>
+           
+           <% especialidadesDisponiveis.forEach(function(especialidade) { %>
+             <label class="checkbox-item">
+              <input 
+                type="checkbox" 
+                name="specialty" 
+                value="<%= especialidade.valor %>"
+                <%= especialidadesUsuario.includes(especialidade.valor) ? 'checked' : '' %>
+              />
+              <%= especialidade.nome %>
+             </label>
+           <% }); %>
+          </section>
          </section>
-        </section>
         <section class="form-actions">
          <button class="btn btn-primary btn-save" type="button">
           Salvar Alterações
@@ -303,7 +356,7 @@
            Sessão de Obediência Básica
           </h3>
           <section class="service-price">
-           R$ <%= adestrador && adestrador.preco ? adestrador.preco : '120,00' %>
+           R$ <%= adestrador && adestrador.price ? parseFloat(adestrador.price).toFixed(2).replace('.', ',') : (adestrador && adestrador.preco ? parseFloat(adestrador.preco).toFixed(2).replace('.', ',') : '120,00') %>
           </section>
          </section>
          <p>
@@ -339,7 +392,7 @@
            Pacote de Socialização
           </h3>
           <section class="service-price">
-           R$ <%= adestrador && adestrador.preco ? (adestrador.preco * 3.5).toFixed(2) : '450,00' %>
+           R$ <%= adestrador && adestrador.price ? (parseFloat(adestrador.price) * 3.5).toFixed(2).replace('.', ',') : (adestrador && adestrador.preco ? (parseFloat(adestrador.preco) * 3.5).toFixed(2).replace('.', ',') : '450,00') %>
           </section>
          </section>
          <p>
@@ -375,7 +428,7 @@
            Consultoria Comportamental
           </h3>
           <section class="service-price">
-           R$ <%= adestrador && adestrador.preco ? (adestrador.preco * 1.25).toFixed(2) : '150,00' %>
+           R$ <%= adestrador && adestrador.price ? (parseFloat(adestrador.price) * 1.25).toFixed(2).replace('.', ',') : (adestrador && adestrador.preco ? (parseFloat(adestrador.preco) * 1.25).toFixed(2).replace('.', ',') : '150,00') %>
           </section>
          </section>
          <p>

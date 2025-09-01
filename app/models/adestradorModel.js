@@ -158,31 +158,38 @@ class AdestradorModel {
   }
   
   // Buscar por ID - otimizado
-  static async buscarPorId(id) {
-    try {
-      const query = `
-        SELECT id, nome, cidade, estado, experiencia, especialidades, preco, sobre, email, telefone
-        FROM adestradores 
-        WHERE id = ? AND ativo = TRUE
-        LIMIT 1
-      `;
-      const rows = await executeQuery(query, [id]);
-      
-      if (rows.length > 0) {
-        const adestrador = rows[0];
-        try {
+ // Buscar por ID - CORRIGIDO para incluir CPF e todos os campos necessários
+static async buscarPorId(id) {
+  try {
+    const query = `
+      SELECT id, nome, cpf, cidade, estado, experiencia, especialidades, preco, sobre, email, telefone
+      FROM adestradores 
+      WHERE id = ? AND ativo = TRUE
+      LIMIT 1
+    `;
+    const rows = await executeQuery(query, [id]);
+    
+    if (rows.length > 0) {
+      const adestrador = rows[0];
+      try {
+        // Garantir que especialidades seja sempre um array
+        if (typeof adestrador.especialidades === 'string') {
           adestrador.especialidades = JSON.parse(adestrador.especialidades);
-        } catch (e) {
+        } else if (!Array.isArray(adestrador.especialidades)) {
           adestrador.especialidades = [];
         }
-        return adestrador;
+      } catch (e) {
+        console.error('Erro ao parsear especialidades:', e);
+        adestrador.especialidades = [];
       }
-      return null;
-    } catch (error) {
-      console.error('Erro ao buscar adestrador por ID:', error);
-      throw error;
+      return adestrador;
     }
+    return null;
+  } catch (error) {
+    console.error('Erro ao buscar adestrador por ID:', error);
+    throw error;
   }
+}
   
   // Método para limpar cache/conexões (chamado periodicamente)
   static async limpeza() {

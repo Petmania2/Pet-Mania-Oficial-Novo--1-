@@ -19,16 +19,59 @@ document.addEventListener('DOMContentLoaded', function() {
         e.target.value = value;
     });
 
-    // Formatação do preço
-    const priceInput = document.getElementById('price');
-    priceInput.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value) {
-            value = parseFloat(value).toFixed(2);
-            e.target.value = value;
-        }
-    });
+  // Formatação do preço
+const priceInput = document.getElementById('price');
+priceInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+    
+    if (value.length === 0) {
+        e.target.value = '';
+        return;
+    }
+    
+    // Converte para centavos para facilitar a formatação
+    let numValue = parseInt(value);
+    
+    // Formata como moeda (divide por 100 para casas decimais)
+    let formatted = (numValue / 100).toFixed(2);
+    
+    // Remove zeros desnecessários à esquerda da parte inteira
+    formatted = formatted.replace(/^0+/, '') || '0.00';
+    
+    // Se começar com ponto, adiciona zero
+    if (formatted.startsWith('.')) {
+        formatted = '0' + formatted;
+    }
+    
+    e.target.value = formatted;
 });
+
+// Opcional: Formatação com máscara de moeda brasileira
+const priceInputBR = document.getElementById('price-br'); // Se quiser usar formato brasileiro
+if (priceInputBR) {
+    priceInputBR.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        
+        if (value.length === 0) {
+            e.target.value = '';
+            return;
+        }
+        
+        let numValue = parseInt(value);
+        let formatted = (numValue / 100).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+        
+        e.target.value = formatted;
+    });
+}
+    
+});
+
+
+
+
 
 // Validação de CPF
 function validarCPF(cpf) {

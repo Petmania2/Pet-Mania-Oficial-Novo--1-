@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adestradores - Pet Mania</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adestradores.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <section class="container navbar-container">
+            <a href="index.html" class="logo">
+                <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
+            </a>
+            
+            <ul class="nav-links" id="navLinks">
+                <li><a href="perfilcliente.ejs" class="nav-item">Conta</a></li>
+                <li><a href="index.html#find-trainer" class="nav-item">Encontrar</a></li>
+                <li><a href="adestradores.html" class="nav-item active">Adestradores</a></li>
+                <li><a href="index.html#how-it-works" class="nav-item">Como Funciona</a></li>
+                <li><a href="index.html#contact" class="nav-item">Contato</a></li>
+                <li><a href="Login.ejs" class="btn btn-outline">Entrar</a></li>
+            </ul>
+            
+            <button class="mobile-menu-btn" id="menuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </section>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="adestradores-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Encontre o Adestrador Perfeito</h1>
+                <p>Conecte-se com profissionais qualificados em sua região</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <strong>150+</strong>
+                        <span>Adestradores</span>
+                    </div>
+                    <div class="stat">
+                        <strong>2500+</strong>
+                        <span>Cães Treinados</span>
+                    </div>
+                    <div class="stat">
+                        <strong>98%</strong>
+                        <span>Satisfação</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-container">
+                <div class="search-bar-container">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Busque por nome, especialidade ou cidade...">
+                    </div>
+                    <button id="searchBtn" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </div>
+
+                <div class="advanced-filters" id="advancedFilters">
+                    <div class="filter-group">
+                        <label for="cityFilter">Cidade:</label>
+                        <select id="cityFilter" class="filter-select">
+                            <option value="">Todas as Cidades</option>
+                            <option value="sao-paulo">São Paulo</option>
+                            <option value="rio-de-janeiro">Rio de Janeiro</option>
+                            <option value="belo-horizonte">Belo Horizonte</option>
+                            <option value="curitiba">Curitiba</option>
+                            <option value="porto-alegre">Porto Alegre</option>
+                            <option value="brasilia">Brasília</option>
+                            <option value="salvador">Salvador</option>
+                            <option value="fortaleza">Fortaleza</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="specialtyFilter">Especialidade:</label>
+                        <select id="specialtyFilter" class="filter-select">
+                            <option value="">Todas as Especialidades</option>
+                            <option value="obediencia-basica">Obediência Básica</option>
+                            <option value="comportamento">Problemas de Comportamento</option>
+                            <option value="truques">Truques e Comandos</option>
+                            <option value="agressividade">Controle de Agressividade</option>
+                            <option value="filhotes">Adestramento para Filhotes</option>
+                            <option value="socializacao">Socialização Canina</option>
+                            <option value="guarda">Cães de Guarda</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="priceFilter">Preço por Sessão:</label>
+                        <select id="priceFilter" class="filter-select">
+                            <option value="">Todos os Preços</option>
+                            <option value="0-100">Até R$ 100</option>
+                            <option value="100-150">R$ 100 - R$ 150</option>
+                            <option value="150-200">R$ 150 - R$ 200</option>
+                            <option value="200-300">R$ 200 - R$ 300</option>
+                            <option value="300+">Acima de R$ 300</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="ratingFilter">Avaliação:</label>
+                        <select id="ratingFilter" class="filter-select">
+                            <option value="">Todas as Avaliações</option>
+                            <option value="5">5 Estrelas</option>
+                            <option value="4">4+ Estrelas</option>
+                            <option value="3">3+ Estrelas</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="experienceFilter">Experiência:</label>
+                        <select id="experienceFilter" class="filter-select">
+                            <option value="">Toda Experiência</option>
+                            <option value="0-2">Até 2 anos</option>
+                            <option value="3-5">3-5 anos</option>
+                            <option value="6-10">6-10 anos</option>
+                            <option value="10+">Mais de 10 anos</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="availabilityFilter">Disponibilidade:</label>
+                        <select id="availabilityFilter" class="filter-select">
+                            <option value="">Qualquer horário</option>
+                            <option value="manha">Manhã</option>
+                            <option value="tarde">Tarde</option>
+                            <option value="noite">Noite</option>
+                            <option value="fim-semana">Fins de Semana</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-actions">
+                    <button id="toggleFilters" class="btn btn-secondary">
+                        <i class="fas fa-filter"></i> Filtros Avançados
+                    </button>
+                    <button id="clearFilters" class="btn btn-outline">
+                        <i class="fas fa-times"></i> Limpar Filtros
+                    </button>
+                    <div class="sort-options">
+                        <label for="sortBy">Ordenar por:</label>
+                        <select id="sortBy" class="filter-select">
+                            <option value="relevance">Relevância</option>
+                            <option value="rating">Melhor Avaliação</option>
+                            <option value="price-low">Menor Preço</option>
+                            <option value="price-high">Maior Preço</option>
+                            <option value="experience">Mais Experiente</option>
+                            <option value="newest">Mais Recente</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section">
+        <div class="container">
+            <div class="results-header">
+                <div class="results-info">
+                    <span id="resultsCount">Mostrando 12 de 150 adestradores</span>
+                </div>
+                <div class="view-toggle">
+                    <button id="gridView" class="view-btn active" title="Visualização em Grade">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button id="listView" class="view-btn" title="Visualização em Lista">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Adestradores Grid -->
+            <div class="adestradores-container" id="adestradoresContainer">
+                <!-- Grid View -->
+                <div class="adestradores-grid" id="gridContainer">
+                    <!-- Trainer cards will be dynamically loaded here -->
+                </div>
+
+                <!-- List View -->
+                <div class="adestradores-list" id="listContainer" style="display: none;">
+                    <!-- List items will be dynamically loaded here -->
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Carregando adestradores...</p>
+            </div>
+
+            <!-- No Results -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>Nenhum adestrador encontrado</h3>
+                <p>Tente ajustar os filtros ou buscar por outros termos.</p>
+                <button id="resetSearch" class="btn btn-primary">Limpar Busca</button>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container" id="paginationContainer">
+                <button id="prevPage" class="btn btn-outline" disabled>
+                    <i class="fas fa-chevron-left"></i> Anterior
+                </button>
+                <div class="page-numbers" id="pageNumbers">
+                    <!-- Page numbers will be dynamically generated -->
+                </div>
+                <button id="nextPage" class="btn btn-outline">
+                    Próxima <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <section class="container">
+            <section class="footer-container">
+                <section class="footer-info">
+                    <section class="footer-logo">
+                        <img src="/imagens/petlogo.png" alt="Pet Mania" class="footer-logo-img">
+                        <span>Pet Mania</span>
+                    </section>
+                    <p>Conectando donos de cães a adestradores profissionais qualificados. Transforme o comportamento do seu pet com treinamento personalizado e eficiente.</p>
+                    <section class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </section>
+                </section>
+                
+                <section class="footer-links">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#find-trainer">Encontrar</a></li>
+                        <li><a href="adestradores.html">Adestradores</a></li>
+                        <li><a href="index.html#how-it-works">Como Funciona</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="login.html">Entrar</a></li>
+                    </ul>
+                </section>
+                
+                <section class="footer-links">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Central de Ajuda</a></li>
+                    </ul>
+                </section>
+                
+                <section class="footer-contact">
+                    <h3>Contato</h3>
+                    <section class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Av. Paulista, 1000, São Paulo - SP</p>
+                    </section>
+                    <section class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <p>(11) 99999-9999</p>
+                    </section>
+                    <section class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>contato@petmania.com.br</p>
+                    </section>
+                </section>
+            </section>
+            
+            <section class="footer-bottom">
+                <p>&copy; 2025 Pet Mania. Todos os direitos reservados.</p>
+            </section>
+        </section>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/5511999999999" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Scroll to Top Button -->
+    <a href="#" class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="/js/javascript.js"></script>
+    <script src="/js/adestradores.js"></script>
+</body>
+</html>

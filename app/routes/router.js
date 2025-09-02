@@ -75,6 +75,10 @@ router.get("/mensagensadestrador.ejs", function (req, res) {
   res.render("pages/mensagensadestrador");    
 });
 
+router.get("/adestradores.ejs", function (req, res) {
+  res.render("pages/adestradores");    
+});
+
 router.get("/paineladestrador.ejs", async function (req, res) {
   if (!req.session.usuario) {
     return res.redirect("/Login.ejs");

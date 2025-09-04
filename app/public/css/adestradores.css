@@ -756,3 +756,390 @@
         break-inside: avoid;
     }
 }
+
+/* Modal de Perfil do Adestrador */
+.trainer-profile-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.trainer-profile-modal.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 1001;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1rem 2rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h2 {
+    color: #1a202c;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    background: #f1f5f9;
+    color: #e53e3e;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.trainer-profile-card {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-image {
+    position: relative;
+    align-self: center;
+    margin-bottom: 1rem;
+}
+
+.profile-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #FFA500;
+    box-shadow: 0 10px 25px rgba(255, 165, 0, 0.3);
+}
+
+.profile-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.profile-section h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.profile-rating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.profile-rating .stars {
+    font-size: 1.1rem;
+}
+
+.profile-rating span {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    border-left: 4px solid #FFA500;
+    transition: all 0.3s ease;
+}
+
+.detail-item:hover {
+    background: #f1f5f9;
+    transform: translateX(5px);
+}
+
+.detail-item i {
+    color: #FFA500;
+    font-size: 1.1rem;
+    margin-top: 0.1rem;
+    min-width: 20px;
+}
+
+.detail-item label {
+    font-weight: 600;
+    color: #374151;
+    min-width: 100px;
+}
+
+.detail-item span,
+.detail-item p {
+    color: #1a202c;
+    font-weight: 500;
+    flex: 1;
+}
+
+.phone-number {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.see-more-btn {
+    background: none;
+    border: none;
+    color: #FFA500;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: underline;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.see-more-btn:hover {
+    color: #ff8c00;
+}
+
+.specialties-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.specialty-tag {
+    background: linear-gradient(135deg, #FFA500, #ff8c00);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(255, 165, 0, 0.3);
+}
+
+.price-highlight {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #059669;
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.biography-section {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.biography-section .detail-item-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.biography-section p {
+    line-height: 1.6;
+    margin: 0;
+    padding-left: 2rem;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.profile-actions .btn {
+    flex: 1;
+    max-width: 200px;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.profile-actions .btn-primary {
+    background: linear-gradient(135deg, #FFA500, #ff8c00);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+}
+
+.profile-actions .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+}
+
+.profile-actions .btn-outline {
+    background: white;
+    border: 2px solid #25d366;
+    color: #25d366;
+}
+
+.profile-actions .btn-outline:hover {
+    background: #25d366;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 1rem;
+        max-height: 95vh;
+    }
+    
+    .modal-header,
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .trainer-profile-card {
+        gap: 1.5rem;
+    }
+    
+    .profile-image img {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .profile-section h3 {
+        font-size: 1.6rem;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: left;
+    }
+    
+    .detail-item label {
+        min-width: auto;
+        margin-bottom: 0.3rem;
+    }
+    
+    .profile-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .profile-actions .btn {
+        max-width: none;
+    }
+    
+    .biography-section p {
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .profile-image img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .specialties-list {
+        justify-content: center;
+    }
+}
+
+/* Animações adicionais */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.profile-actions .btn:hover {
+    animation: pulse 0.6s ease-in-out;
+}

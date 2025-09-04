@@ -363,11 +363,11 @@ function createTrainerCard(adestrador) {
                 <i class="fas fa-medal"></i> ${adestrador.badge}
             </div>` : ''}
         </div>
-        <div class="trainer-img">
+        <div class="trainer-img" onclick="verPerfil(${adestrador.id})" style="cursor: pointer;">
             <img src="${adestrador.imagem}" alt="${adestrador.nome}">
         </div>
         <div class="trainer-info">
-            <h3 class="trainer-name">${adestrador.nome}</h3>
+            <h3 class="trainer-name" onclick="verPerfil(${adestrador.id})" style="cursor: pointer;">${adestrador.nome}</h3>
             <p class="trainer-specialty">
                 <i class="fas fa-certificate"></i> ${especialidadesMap[adestrador.especialidade]}
             </p>
@@ -385,32 +385,34 @@ function createTrainerCard(adestrador) {
                 <span class="price-label">Preço por sessão:</span>
                 <span class="price-value">R$ ${adestrador.preco}</span>
             </div>
-            <button class="btn btn-primary trainer-btn" onclick="agendarSessao(${adestrador.id})">
-                Agendar Sessão
-            </button>
+            <div class="trainer-buttons">
+                <button class="btn btn-primary trainer-btn" onclick="agendarSessao(${adestrador.id})">
+                    Agendar Sessão
+                </button>
+                <button class="btn btn-outline trainer-btn" onclick="verPerfil(${adestrador.id})" style="margin-top: 0.5rem;">
+                    Ver Perfil
+                </button>
+            </div>
         </div>
     `;
     return card;
 }
-
 function createTrainerListItem(adestrador) {
     const item = document.createElement('div');
     item.className = 'trainer-list-item';
     item.innerHTML = `
+        <div class="trainer-list-img" onclick="verPerfil(${adestrador.id})" style="cursor: pointer;">
+            <img src="${adestrador.imagem}" alt="${adestrador.nome}">
+            ${adestrador.badge ? `<div class="trainer-badge">
+                <i class="fas fa-medal"></i> ${adestrador.badge}
+            </div>` : ''}
+        </div>
         <div class="trainer-list-content">
-            <div class="trainer-list-img">
-                <img src="${adestrador.imagem}" alt="${adestrador.nome}">
-                ${adestrador.badge ? `<div class="trainer-badge">
-                    <i class="fas fa-medal"></i> ${adestrador.badge}
-                </div>` : ''}
-            </div>
-            <div class="trainer-list-info">
-                <div class="trainer-list-header">
-                    <h3 class="trainer-name">${adestrador.nome}</h3>
-                    <div class="trainer-rating">
-                        <i class="fas fa-star"></i> ${adestrador.rating}
-                        <span>(${adestrador.reviews} avaliações)</span>
-                    </div>
+            <div class="trainer-list-main">
+                <h3 onclick="verPerfil(${adestrador.id})" style="cursor: pointer;">${adestrador.nome}</h3>
+                <div class="trainer-rating">
+                    <i class="fas fa-star"></i> ${adestrador.rating}
+                    <span>(${adestrador.reviews} avaliações)</span>
                 </div>
                 <p class="trainer-specialty">
                     <i class="fas fa-certificate"></i> ${especialidadesMap[adestrador.especialidade]}
@@ -423,23 +425,22 @@ function createTrainerListItem(adestrador) {
                 </p>
                 <p class="trainer-description">${adestrador.descricao}</p>
             </div>
-            <div class="trainer-list-actions">
-                <div class="price-info">
-                    <span class="price-value">R$ ${adestrador.preco}</span>
-                    <span class="price-label">por sessão</span>
-                </div>
-                <button class="btn btn-primary" onclick="agendarSessao(${adestrador.id})">
-                    Agendar Sessão
-                </button>
-                <button class="btn btn-outline" onclick="verPerfil(${adestrador.id})">
-                    Ver Perfil
-                </button>
+        </div>
+        <div class="trainer-list-actions">
+            <div class="price-info">
+                <span class="price-value">R$ ${adestrador.preco}</span>
+                <span class="price-label">por sessão</span>
             </div>
+            <button class="btn btn-primary" onclick="agendarSessao(${adestrador.id})">
+                Agendar Sessão
+            </button>
+            <button class="btn btn-outline" onclick="verPerfil(${adestrador.id})">
+                Ver Perfil
+            </button>
         </div>
     `;
     return item;
 }
-
 function generateStars(rating) {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
@@ -599,11 +600,390 @@ function verPerfil(adestradorId) {
     // window.location.href = `/perfil/${adestradorId}`;
 }
 
-// Função para contato via WhatsApp
-function contatarWhatsApp(adestradorId) {
+
+
+// Dados adicionais dos adestradores (para completar as informações)
+const adestradoresCompletos = {
+    1: {
+        nomeCompleto: "Ricardo Almeida Silva",
+        endereco: "Rua das Flores, 123 - Vila Madalena",
+        estado: "São Paulo",
+        biografia: "Profissional apaixonado por cães com mais de 8 anos de experiência em adestramento. Formado em Medicina Veterinária com especialização em comportamento animal. Trabalho com métodos positivos e personalizados para cada pet, sempre respeitando o bem-estar animal e fortalecendo a relação entre tutor e cão.",
+        especialidadesCompletas: ["Obediência Básica", "Socialização", "Caminhada sem Coleira"]
+    },
+    2: {
+        nomeCompleto: "Juliana Costa Mendes",
+        endereco: "Av. Copacabana, 456 - Copacabana",
+        estado: "Rio de Janeiro",
+        biografia: "Especialista em comportamento canino com 10 anos de experiência. Certificada pelo IBAC (Instituto Brasileiro de Adestramento de Cães). Dedico-me especialmente a casos de ansiedade, medo e comportamentos destrutivos, utilizando técnicas de reforço positivo e dessensibilização.",
+        especialidadesCompletas: ["Problemas de Comportamento", "Ansiedade Canina", "Terapia Comportamental"]
+    },
+    3: {
+        nomeCompleto: "Carlos Mendes Santos",
+        endereco: "Rua da Liberdade, 789 - Centro",
+        estado: "Minas Gerais",
+        biografia: "Especialista em controle de agressividade canina com 12 anos de experiência. Trabalho com casos complexos de reabilitação comportamental, sempre priorizando a segurança de todos os envolvidos. Certificado pela ANAA (Associação Nacional de Adestradores de Animais).",
+        especialidadesCompletas: ["Controle de Agressividade", "Reabilitação Comportamental", "Cães Dominantes"]
+    },
+    4: {
+        nomeCompleto: "Ana Silva Rodrigues",
+        endereco: "Rua XV de Novembro, 321 - Centro",
+        estado: "Paraná",
+        biografia: "Adestradora focada em truques e comandos avançados. Com 6 anos de experiência, transformo o treinamento em momentos divertidos e educativos. Especializada em preparação para competições e shows caninos.",
+        especialidadesCompletas: ["Truques e Comandos", "Preparação para Shows", "Adestramento Lúdico"]
+    },
+    5: {
+        nomeCompleto: "Pedro Santos Lima",
+        endereco: "Av. Ipiranga, 654 - Cidade Baixa",
+        estado: "Rio Grande do Sul",
+        biografia: "Especialista em adestramento para filhotes com 9 anos de experiência. Trabalho com socialização precoce, educação básica e prevenção de problemas comportamentais futuros. Certificado em Psicologia Canina.",
+        especialidadesCompletas: ["Adestramento para Filhotes", "Socialização Precoce", "Educação Básica"]
+    },
+    6: {
+        nomeCompleto: "Mariana Lima Costa",
+        endereco: "SHIS QI 15, Conjunto 3 - Lago Sul",
+        estado: "Distrito Federal",
+        biografia: "Especialista em socialização canina com 7 anos de experiência. Ajudo cães tímidos e medrosos a ganharem confiança e se relacionarem melhor com outros animais e pessoas. Utilizo técnicas de exposição gradual e reforço positivo.",
+        especialidadesCompletas: ["Socialização Canina", "Cães Tímidos", "Integração Social"]
+    },
+    7: {
+        nomeCompleto: "Lucas Ferreira Oliveira",
+        endereco: "Rua da Barra, 987 - Barra",
+        estado: "Bahia",
+        biografia: "Especialista em treinamento de cães de guarda com 11 anos de experiência. Ex-militar com formação em segurança canina. Trabalho com desenvolvimento de instintos protetivos equilibrados e obediência em situações de stress.",
+        especialidadesCompletas: ["Cães de Guarda", "Segurança Canina", "Treinamento Militar"]
+    },
+    8: {
+        nomeCompleto: "Fernanda Rocha Silva",
+        endereco: "Av. Beira Mar, 147 - Meireles",
+        estado: "Ceará",
+        biografia: "Adestradora com 5 anos de experiência em obediência básica e socialização. Formada em Zootecnia com pós-graduação em Comportamento Animal. Trabalho com métodos gentis e eficazes, sempre respeitando o ritmo de cada animal.",
+        especialidadesCompletas: ["Obediência Básica", "Socialização", "Comandos Básicos"]
+    }
+};
+
+// Função para mostrar o perfil do adestrador
+function verPerfil(adestradorId) {
     const adestrador = adestradoresData.find(a => a.id === adestradorId);
-    const mensagem = encodeURIComponent(`Olá ${adestrador.nome}! Vi seu perfil no Pet Mania e gostaria de saber mais sobre seus serviços de adestramento.`);
-    const whatsappUrl = `https://wa.me/55${adestrador.telefone.replace(/\D/g, '')}?text=${mensagem}`;
+    const dadosCompletos = adestradoresCompletos[adestradorId];
     
-    window.open(whatsappUrl, '_blank');
+    if (!adestrador || !dadosCompletos) {
+        alert('Perfil não encontrado!');
+        return;
+    }
+
+    // Preencher dados do modal
+    document.getElementById('profileImage').src = adestrador.imagem;
+    document.getElementById('profileImage').alt = dadosCompletos.nomeCompleto;
+    document.getElementById('profileName').textContent = dadosCompletos.nomeCompleto;
+    document.getElementById('profileStars').innerHTML = generateStars(adestrador.rating);
+    document.getElementById('profileReviews').textContent = `(${adestrador.reviews} avaliações)`;
+
+    // Telefone parcial
+    const telefoneCompleto = adestrador.telefone;
+    const telefoneParcial = telefoneCompleto.substring(0, telefoneCompleto.length - 4) + '...';
+    document.getElementById('phonePartial').textContent = telefoneParcial;
+
+    // Outros dados
+    document.getElementById('profileAddress').textContent = dadosCompletos.endereco;
+    document.getElementById('profileCity').textContent = cidadesMap[adestrador.cidade];
+    document.getElementById('profileState').textContent = dadosCompletos.estado;
+    document.getElementById('profileExperience').textContent = `${adestrador.experiencia} anos`;
+    document.getElementById('profilePrice').textContent = `R$ ${adestrador.preco}`;
+    document.getElementById('profileBiography').textContent = dadosCompletos.biografia;
+
+    // Especialidades
+    const specialtiesContainer = document.getElementById('profileSpecialties');
+    specialtiesContainer.innerHTML = '';
+    dadosCompletos.especialidadesCompletas.forEach(especialidade => {
+        const tag = document.createElement('span');
+        tag.className = 'specialty-tag';
+        tag.textContent = especialidade;
+        specialtiesContainer.appendChild(tag);
+    });
+
+    // Badge
+    const badgeElement = document.getElementById('profileBadge');
+    const badgeTextElement = document.getElementById('badgeText');
+    if (adestrador.badge) {
+        badgeElement.style.display = 'flex';
+        badgeTextElement.textContent = adestrador.badge;
+    } else {
+        badgeElement.style.display = 'none';
+    }
+
+    // Configurar botões
+    setupModalButtons(adestrador);
+
+    // Mostrar modal
+    showModal();
 }
+
+// Função para configurar os botões do modal
+function setupModalButtons(adestrador) {
+    const seeMoreBtn = document.getElementById('seeMorePhone');
+    const scheduleBtn = document.getElementById('scheduleSessionBtn');
+ 
+
+    // Botão "Ver mais" do telefone
+    seeMoreBtn.onclick = function() {
+        // Redirecionar para página de cadastro
+        window.location.href = '/cadastro-cliente';
+    };
+
+    // Botão agendar sessão
+    scheduleBtn.onclick = function() {
+        agendarSessao(adestrador.id);
+        hideModal();
+    };
+
+
+  
+}
+
+// Função para mostrar o modal
+function showModal() {
+    const modal = document.getElementById('trainerProfileModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Event listeners para fechar o modal
+    document.getElementById('modalClose').onclick = hideModal;
+    document.getElementById('modalOverlay').onclick = hideModal;
+
+    // Fechar com ESC
+    document.addEventListener('keydown', handleEscKey);
+}
+
+// Função para esconder o modal
+function hideModal() {
+    const modal = document.getElementById('trainerProfileModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+
+    // Remover event listener do ESC
+    document.removeEventListener('keydown', handleEscKey);
+}
+
+// Função para lidar com a tecla ESC
+function handleEscKey(event) {
+    if (event.key === 'Escape') {
+        hideModal();
+    }
+}
+
+// Função auxiliar para gerar estrelas (caso não exista)
+function generateStars(rating) {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+    let stars = '';
+    
+    // Estrelas completas
+    for (let i = 0; i < fullStars; i++) {
+        stars += '<i class="fas fa-star" style="color: #ffd700;"></i>';
+    }
+    
+    // Meia estrela
+    if (hasHalfStar) {
+        stars += '<i class="fas fa-star-half-alt" style="color: #ffd700;"></i>';
+    }
+    
+    // Estrelas vazias
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+    for (let i = 0; i < emptyStars; i++) {
+        stars += '<i class="far fa-star" style="color: #ffd700;"></i>';
+    }
+    
+    return stars;
+}
+
+// Adicionar event listeners quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar se o modal já existe no DOM, senão adicionar
+    if (!document.getElementById('trainerProfileModal')) {
+        addModalToDOM();
+    }
+});
+
+// Função para adicionar o modal ao DOM (caso não esteja no HTML)
+function addModalToDOM() {
+    const modalHTML = `
+        <div class="trainer-profile-modal" id="trainerProfileModal">
+            <div class="modal-overlay" id="modalOverlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Perfil do Adestrador</h2>
+                    <button class="modal-close" id="modalClose">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="trainer-profile-card">
+                        <div class="profile-image">
+                            <img id="profileImage" src="" alt="Foto do Adestrador">
+                            <div class="profile-badge" id="profileBadge" style="display: none;">
+                                <i class="fas fa-medal"></i>
+                                <span id="badgeText"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-info">
+                            <div class="profile-section">
+                                <h3 id="profileName">Nome do Adestrador</h3>
+                                <div class="profile-rating">
+                                    <div class="stars" id="profileStars"></div>
+                                    <span id="profileReviews">(0 avaliações)</span>
+                                </div>
+                            </div>
+
+                            <div class="profile-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-phone"></i>
+                                    <label>Telefone:</label>
+                                    <span class="phone-number">
+                                        <span id="phonePartial"></span>
+                                        <button class="see-more-btn" id="seeMorePhone">Ver mais</button>
+                                    </span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <label>Endereço:</label>
+                                    <span id="profileAddress"></span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <i class="fas fa-city"></i>
+                                    <label>Cidade:</label>
+                                    <span id="profileCity"></span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <i class="fas fa-map"></i>
+                                    <label>Estado:</label>
+                                    <span id="profileState"></span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    <label>Experiência:</label>
+                                    <span id="profileExperience"></span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <i class="fas fa-certificate"></i>
+                                    <label>Especialidades:</label>
+                                    <div class="specialties-list" id="profileSpecialties"></div>
+                                </div>
+
+                                <div class="detail-item">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <label>Preço por Sessão:</label>
+                                    <span class="price-highlight" id="profilePrice"></span>
+                                </div>
+
+                                <div class="detail-item biography-section">
+                                    <i class="fas fa-user"></i>
+                                    <label>Sobre:</label>
+                                    <p id="profileBiography"></p>
+                                </div>
+                            </div>
+
+                            <div class="profile-actions">
+                                <button class="btn btn-primary" id="scheduleSessionBtn">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Agendar Sessão
+                                </button>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+// 3. Verificar se o modal existe quando a página carrega
+document.addEventListener('DOMContentLoaded', function() {
+    // Adicionar o modal ao DOM se não existir
+    if (!document.getElementById('trainerProfileModal')) {
+        addModalToDOM();
+    }
+    
+    // Aguardar um pouco para garantir que tudo foi carregado
+    setTimeout(() => {
+        console.log('Sistema de perfil carregado!');
+        
+        // Verificar se existem adestradores carregados
+        if (adestradoresData && adestradoresData.length > 0) {
+            console.log(`${adestradoresData.length} adestradores disponíveis`);
+        }
+    }, 1000);
+});
+
+// 4. Dados adicionais dos adestradores (caso não estejam definidos)
+if (typeof adestradoresCompletos === 'undefined') {
+    const adestradoresCompletos = {
+        1: {
+            nomeCompleto: "Ricardo Almeida Silva",
+            endereco: "Rua das Flores, 123 - Vila Madalena",
+            estado: "São Paulo",
+            biografia: "Profissional apaixonado por cães com mais de 8 anos de experiência em adestramento. Formado em Medicina Veterinária com especialização em comportamento animal. Trabalho com métodos positivos e personalizados para cada pet, sempre respeitando o bem-estar animal e fortalecendo a relação entre tutor e cão.",
+            especialidadesCompletas: ["Obediência Básica", "Socialização", "Caminhada sem Coleira"]
+        },
+        2: {
+            nomeCompleto: "Juliana Costa Mendes",
+            endereco: "Av. Copacabana, 456 - Copacabana",
+            estado: "Rio de Janeiro",
+            biografia: "Especialista em comportamento canino com 10 anos de experiência. Certificada pelo IBAC (Instituto Brasileiro de Adestramento de Cães). Dedico-me especialmente a casos de ansiedade, medo e comportamentos destrutivos, utilizando técnicas de reforço positivo e dessensibilização.",
+            especialidadesCompletas: ["Problemas de Comportamento", "Ansiedade Canina", "Terapia Comportamental"]
+        },
+        3: {
+            nomeCompleto: "Carlos Mendes Santos",
+            endereco: "Rua da Liberdade, 789 - Centro",
+            estado: "Minas Gerais",
+            biografia: "Especialista em controle de agressividade canina com 12 anos de experiência. Trabalho com casos complexos de reabilitação comportamental, sempre priorizando a segurança de todos os envolvidos. Certificado pela ANAA (Associação Nacional de Adestradores de Animais).",
+            especialidadesCompletas: ["Controle de Agressividade", "Reabilitação Comportamental", "Cães Dominantes"]
+        },
+        4: {
+            nomeCompleto: "Ana Silva Rodrigues",
+            endereco: "Rua XV de Novembro, 321 - Centro",
+            estado: "Paraná",
+            biografia: "Adestradora focada em truques e comandos avançados. Com 6 anos de experiência, transformo o treinamento em momentos divertidos e educativos. Especializada em preparação para competições e shows caninos.",
+            especialidadesCompletas: ["Truques e Comandos", "Preparação para Shows", "Adestramento Lúdico"]
+        },
+        5: {
+            nomeCompleto: "Pedro Santos Lima",
+            endereco: "Av. Ipiranga, 654 - Cidade Baixa",
+            estado: "Rio Grande do Sul",
+            biografia: "Especialista em adestramento para filhotes com 9 anos de experiência. Trabalho com socialização precoce, educação básica e prevenção de problemas comportamentais futuros. Certificado em Psicologia Canina.",
+            especialidadesCompletas: ["Adestramento para Filhotes", "Socialização Precoce", "Educação Básica"]
+        },
+        6: {
+            nomeCompleto: "Mariana Lima Costa",
+            endereco: "SHIS QI 15, Conjunto 3 - Lago Sul",
+            estado: "Distrito Federal",
+            biografia: "Especialista em socialização canina com 7 anos de experiência. Ajudo cães tímidos e medrosos a ganharem confiança e se relacionarem melhor com outros animais e pessoas. Utilizo técnicas de exposição gradual e reforço positivo.",
+            especialidadesCompletas: ["Socialização Canina", "Cães Tímidos", "Integração Social"]
+        },
+        7: {
+            nomeCompleto: "Lucas Ferreira Oliveira",
+            endereco: "Rua da Barra, 987 - Barra",
+            estado: "Bahia",
+            biografia: "Especialista em treinamento de cães de guarda com 11 anos de experiência. Ex-militar com formação em segurança canina. Trabalho com desenvolvimento de instintos protetivos equilibrados e obediência em situações de stress.",
+            especialidadesCompletas: ["Cães de Guarda", "Segurança Canina", "Treinamento Militar"]
+        },
+        8: {
+            nomeCompleto: "Fernanda Rocha Silva",
+            endereco: "Av. Beira Mar, 147 - Meireles",
+            estado: "Ceará",
+            biografia: "Adestradora com 5 anos de experiência em obediência básica e socialização. Formada em Zootecnia com pós-graduação em Comportamento Animal. Trabalho com métodos gentis e eficazes, sempre respeitando o ritmo de cada animal.",
+            especialidadesCompletas: ["Obediência Básica", "Socialização", "Comandos Básicos"]
+        }
+    };
+}
+

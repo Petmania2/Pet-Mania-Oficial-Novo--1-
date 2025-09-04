@@ -13,16 +13,16 @@
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <section class="container navbar-container">
-            <a href="index.html" class="logo">
+            <a href="index.ejs" class="logo">
                 <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
             </a>
             
             <ul class="nav-links" id="navLinks">
                 <li><a href="perfilcliente.ejs" class="nav-item">Conta</a></li>
-                <li><a href="index.html#find-trainer" class="nav-item">Encontrar</a></li>
-                <li><a href="adestradores.html" class="nav-item active">Adestradores</a></li>
-                <li><a href="index.html#how-it-works" class="nav-item">Como Funciona</a></li>
-                <li><a href="index.html#contact" class="nav-item">Contato</a></li>
+                <li><a href="index.ejs#find-trainer" class="nav-item">Encontrar</a></li>
+                <li><a href="adestradores.ejs" class="nav-item active">Adestradores</a></li>
+                <li><a href="index.ejs#how-it-works" class="nav-item">Como Funciona</a></li>
+                <li><a href="index.ejs#contact" class="nav-item">Contato</a></li>
                 <li><a href="Login.ejs" class="btn btn-outline">Entrar</a></li>
             </ul>
             
@@ -276,15 +276,107 @@
         </section>
     </footer>
 
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/5511999999999" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-whatsapp"></i>
-    </a>
 
     <!-- Scroll to Top Button -->
     <a href="#" class="scroll-top" id="scrollTop">
         <i class="fas fa-arrow-up"></i>
     </a>
+
+    <!-- Modal de Perfil do Adestrador -->
+<div class="trainer-profile-modal" id="trainerProfileModal">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Perfil do Adestrador</h2>
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="trainer-profile-card">
+                <div class="profile-image">
+                    <img id="profileImage" src="" alt="Foto do Adestrador">
+                    <div class="profile-badge" id="profileBadge" style="display: none;">
+                        <i class="fas fa-medal"></i>
+                        <span id="badgeText"></span>
+                    </div>
+                </div>
+                
+                <div class="profile-info">
+                    <div class="profile-section">
+                        <h3 id="profileName">Nome do Adestrador</h3>
+                        <div class="profile-rating">
+                            <div class="stars" id="profileStars"></div>
+                            <span id="profileReviews">(0 avaliações)</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-details">
+                        <div class="detail-item">
+                            <i class="fas fa-phone"></i>
+                            <label>Telefone:</label>
+                            <span class="phone-number">
+                                <span id="phonePartial"></span>
+                                <button class="see-more-btn" id="seeMorePhone">Ver mais</button>
+                            </span>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <label>Endereço:</label>
+                            <span id="profileAddress"></span>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="fas fa-city"></i>
+                            <label>Cidade:</label>
+                            <span id="profileCity"></span>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="fas fa-map"></i>
+                            <label>Estado:</label>
+                            <span id="profileState"></span>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <label>Experiência:</label>
+                            <span id="profileExperience"></span>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="fas fa-certificate"></i>
+                            <label>Especialidades:</label>
+                            <div class="specialties-list" id="profileSpecialties"></div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <label>Preço por Sessão:</label>
+                            <span class="price-highlight" id="profilePrice"></span>
+                        </div>
+
+                        <div class="detail-item biography-section">
+                            <i class="fas fa-user"></i>
+                            <label>Sobre:</label>
+                            <p id="profileBiography"></p>
+                        </div>
+                    </div>
+
+                    <div class="profile-actions">
+                        <button class="btn btn-primary" id="scheduleSessionBtn">
+                            <i class="fas fa-calendar-alt"></i>
+                            Agendar Sessão
+                        </button>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- Scripts -->
     <script src="/js/javascript.js"></script>

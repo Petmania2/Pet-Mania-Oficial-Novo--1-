@@ -1,654 +1,361 @@
-
+<!DOCTYPE html>
 <html lang="pt-br">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>
-   Pet Mania - Meu Perfil
-  </title>
-  <link href="/css/style-adestrador.css" rel="stylesheet"/>
-  <link href="/css/style-perfil.css" rel="stylesheet"/>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
- </head>
- <body>
-  <!-- Rodapé Superior (copiado do index.ejs) -->
-  <section class="top-bar">
-    <section class="container top-bar-container">
-      <span>Bem-vindo ao Pet Mania!</span>
-      <span>Contato: contato@petmania.com.br | (99) 99999-9999</span>
-    </section>
-  </section>
-  <!-- Navbar -->
-  <nav class="navbar" id="navbar">
-   <section class="container navbar-container">
-     <a href="paineladestrador.ejs" class="logo">
-    <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
-</a> 
-    ...
-   </section>
-  </nav>
-    <button class="mobile-menu-btn" id="menuBtn">
-     ☰
-    </button>
-    <ul class="nav-links" id="navLinks">
-     <li>
-     <a href="paineladestrador.ejs">
-       <i class="fas fa-home">
-       </i>
-       Início
-      </a>
-     </li>
-     <li>
-      <a href="clientesadestrador.ejs">
-       <i class="fas fa-user-friends">
-       </i>
-       Clientes
-      </a>
-     </li>
-     <li>
-      <a href="mensagensadestrador.ejs">
-       <i class="fas fa-comments">
-       </i>
-       Mensagens
-       <span class="notif-badge">
-        3
-       </span>
-      </a>
-     </li>
-     <li>
-      <a href="agendamentoadestrador.ejs">
-       <i class="fas fa-calendar-alt">
-       </i>
-       Agendamentos
-      </a>
-     </li>
-     <li>
-      <a class="active" href="perfiladestrador.ejs"
-        class="active"><i class="fas fa-user-circle">
-       </i>
-       Meu Perfil
-      </a>
-     </li>
-     <li>
-      <a href="planosadestrador.ejs">
-       <i class="fas fa-star">
-       </i>
-       Planos
-      </a>
-     </li>
-     <li>
-      <a class="btn btn-logout" href="index.ejs">
-       <i class="fas fa-sign-out-alt">
-       </i>
-       Sair
-      </a>
-     </li>
-    </ul>
-   </section>
-  </nav>
-  <!-- Main Content -->
-  <main class="main-content">
-   <section class="container">
-    <section class="welcome-section">
-     <h1>
-      Meu Perfil
-     </h1>
-     <p class="current-date">
-      Sexta-feira, 28 de Fevereiro de 2025
-     </p>
-    </section>
-    <section class="profile-grid">
-     <!-- Profile Info Section -->
-     <section class="card profile-info-section">
-      <section class="profile-header">
-       <section class="profile-avatar">
-        <section class="avatar-placeholder">
-         <i class="fas fa-user">
-         </i>
-        </section>
-        <button class="change-avatar-btn">
-         <i class="fas fa-camera">
-         </i>
-        </button>
-       </section>
-       <section class="profile-name">
-        <h2>
-         <%= adestrador && adestrador.name ? adestrador.name : (adestrador && adestrador.nome ? adestrador.nome : 'Nome não informado') %>
-        </h2>
-        <p class="profile-type">
-         Adestrador Profissional
-        </p>
-        <section class="profile-rating">
-         <i class="fas fa-star">
-         </i>
-         <i class="fas fa-star">
-         </i>
-         <i class="fas fa-star">
-         </i>
-         <i class="fas fa-star">
-         </i>
-         <i class="fas fa-star-half-alt">
-         </i>
-         <span>
-          4.8 (38 avaliações)
-         </span>
-        </section>
-       </section>
-       <section class="profile-actions">
-        <button class="btn btn-primary">
-         <i class="fas fa-eye">
-         </i>
-         Ver como cliente
-        </button>
-       </section>
-      </section>
-      <section class="profile-tabs">
-       <button class="tab-btn active" data-tab="personal">
-        Dados Pessoais
-       </button>
-       <button class="tab-btn" data-tab="professional">
-        Perfil Profissional
-       </button>
-       <button class="tab-btn" data-tab="services">
-        Serviços
-       </button>
-       <button class="tab-btn" data-tab="security">
-        Segurança
-       </button>
-      </section>
-      <section class="profile-tab-content active" id="personal-tab">
-       <form class="profile-form">
-        <section class="form-row">
-         <section class="form-group">
-          <label for="name">
-           Nome Completo
-          </label>
-          <input id="name" type="text" value="<%= adestrador && adestrador.name ? adestrador.name : (adestrador && adestrador.nome ? adestrador.nome : '') %>"/>
-         </section>
-         <section class="form-group">
-          <label for="cpf">
-           CPF
-          </label>
-          <input disabled="" id="cpf" type="text" value="<%= adestrador && adestrador.cpf ? adestrador.cpf : 'Não informado' %>"/>
-        </section>
-        </section>
-        <section class="form-row">
-         <section class="form-group">
-          <label for="email">
-           E-mail
-          </label>
-          <input id="email" type="email" value="<%= adestrador && adestrador.email ? adestrador.email : '' %>"/>
-         </section>
-         <section class="form-group">
-          <label for="phone">
-           Telefone/WhatsApp
-          </label>
-          <input id="phone" type="text" value="<%= adestrador && adestrador.phone ? adestrador.phone : (adestrador && adestrador.telefone ? adestrador.telefone : '') %>"/>
-         </section>
-        </section>
-        <section class="form-row">
-         <section class="form-group">
-          <label for="birth">
-           Data de Nascimento
-          </label>
-          <input id="birth" type="date" value="<%= adestrador && adestrador.dataNascimento ? adestrador.dataNascimento : '' %>"/>
-         </section>
-         <section class="form-group">
-          <label for="gender">
-           Gênero
-          </label>
-          <select id="gender">
-           <option value="male" <%= adestrador && adestrador.genero === 'masculino' ? 'selected' : '' %>>
-            Masculino
-           </option>
-           <option value="female" <%= adestrador && adestrador.genero === 'feminino' ? 'selected' : '' %>>
-            Feminino
-           </option>
-           <option value="other" <%= adestrador && adestrador.genero === 'outro' ? 'selected' : '' %>>
-            Outro
-           </option>
-           <option value="prefer-not" <%= adestrador && adestrador.genero === 'nao-informar' ? 'selected' : '' %>>
-            Prefiro não informar
-           </option>
-          </select>
-         </section>
-        </section>
-        <section class="form-group">
-         <label for="address">
-          Endereço
-         </label>
-         <input id="address" type="text" value="<%= adestrador && adestrador.endereco ? adestrador.endereco : '' %>"/>
-        </section>
-        <section class="form-row">
-         <section class="form-group">
-          <label for="city">
-           Cidade
-          </label>
-          <input id="city" type="text" value="<%= adestrador && adestrador.city ? adestrador.city : (adestrador && adestrador.cidade ? adestrador.cidade : '') %>"/>
-         </section>
-         <section class="form-group">
-          <label for="state">
-           Estado
-          </label>
-          <select id="state">
-           <option value="">Selecione</option>
-           <option value="AC" <%= adestrador && adestrador.state === 'AC' ? 'selected' : (adestrador && adestrador.estado === 'AC' ? 'selected' : '') %>>Acre</option>
-           <option value="AL" <%= adestrador && adestrador.state === 'AL' ? 'selected' : (adestrador && adestrador.estado === 'AL' ? 'selected' : '') %>>Alagoas</option>
-           <option value="AP" <%= adestrador && adestrador.state === 'AP' ? 'selected' : (adestrador && adestrador.estado === 'AP' ? 'selected' : '') %>>Amapá</option>
-           <option value="AM" <%= adestrador && adestrador.state === 'AM' ? 'selected' : (adestrador && adestrador.estado === 'AM' ? 'selected' : '') %>>Amazonas</option>
-           <option value="BA" <%= adestrador && adestrador.state === 'BA' ? 'selected' : (adestrador && adestrador.estado === 'BA' ? 'selected' : '') %>>Bahia</option>
-           <option value="CE" <%= adestrador && adestrador.state === 'CE' ? 'selected' : (adestrador && adestrador.estado === 'CE' ? 'selected' : '') %>>Ceará</option>
-           <option value="DF" <%= adestrador && adestrador.state === 'DF' ? 'selected' : (adestrador && adestrador.estado === 'DF' ? 'selected' : '') %>>Distrito Federal</option>
-           <option value="ES" <%= adestrador && adestrador.state === 'ES' ? 'selected' : (adestrador && adestrador.estado === 'ES' ? 'selected' : '') %>>Espírito Santo</option>
-           <option value="GO" <%= adestrador && adestrador.state === 'GO' ? 'selected' : (adestrador && adestrador.estado === 'GO' ? 'selected' : '') %>>Goiás</option>
-           <option value="MA" <%= adestrador && adestrador.state === 'MA' ? 'selected' : (adestrador && adestrador.estado === 'MA' ? 'selected' : '') %>>Maranhão</option>
-           <option value="MT" <%= adestrador && adestrador.state === 'MT' ? 'selected' : (adestrador && adestrador.estado === 'MT' ? 'selected' : '') %>>Mato Grosso</option>
-           <option value="MS" <%= adestrador && adestrador.state === 'MS' ? 'selected' : (adestrador && adestrador.estado === 'MS' ? 'selected' : '') %>>Mato Grosso do Sul</option>
-           <option value="MG" <%= adestrador && adestrador.state === 'MG' ? 'selected' : (adestrador && adestrador.estado === 'MG' ? 'selected' : '') %>>Minas Gerais</option>
-           <option value="PA" <%= adestrador && adestrador.state === 'PA' ? 'selected' : (adestrador && adestrador.estado === 'PA' ? 'selected' : '') %>>Pará</option>
-           <option value="PB" <%= adestrador && adestrador.state === 'PB' ? 'selected' : (adestrador && adestrador.estado === 'PB' ? 'selected' : '') %>>Paraíba</option>
-           <option value="PR" <%= adestrador && adestrador.state === 'PR' ? 'selected' : (adestrador && adestrador.estado === 'PR' ? 'selected' : '') %>>Paraná</option>
-           <option value="PE" <%= adestrador && adestrador.state === 'PE' ? 'selected' : (adestrador && adestrador.estado === 'PE' ? 'selected' : '') %>>Pernambuco</option>
-           <option value="PI" <%= adestrador && adestrador.state === 'PI' ? 'selected' : (adestrador && adestrador.estado === 'PI' ? 'selected' : '') %>>Piauí</option>
-           <option value="RJ" <%= adestrador && adestrador.state === 'RJ' ? 'selected' : (adestrador && adestrador.estado === 'RJ' ? 'selected' : '') %>>Rio de Janeiro</option>
-           <option value="RN" <%= adestrador && adestrador.state === 'RN' ? 'selected' : (adestrador && adestrador.estado === 'RN' ? 'selected' : '') %>>Rio Grande do Norte</option>
-           <option value="RS" <%= adestrador && adestrador.state === 'RS' ? 'selected' : (adestrador && adestrador.estado === 'RS' ? 'selected' : '') %>>Rio Grande do Sul</option>
-           <option value="RO" <%= adestrador && adestrador.state === 'RO' ? 'selected' : (adestrador && adestrador.estado === 'RO' ? 'selected' : '') %>>Rondônia</option>
-           <option value="RR" <%= adestrador && adestrador.state === 'RR' ? 'selected' : (adestrador && adestrador.estado === 'RR' ? 'selected' : '') %>>Roraima</option>
-           <option value="SC" <%= adestrador && adestrador.state === 'SC' ? 'selected' : (adestrador && adestrador.estado === 'SC' ? 'selected' : '') %>>Santa Catarina</option>
-           <option value="SP" <%= adestrador && adestrador.state === 'SP' ? 'selected' : (adestrador && adestrador.estado === 'SP' ? 'selected' : '') %>>São Paulo</option>
-           <option value="SE" <%= adestrador && adestrador.state === 'SE' ? 'selected' : (adestrador && adestrador.estado === 'SE' ? 'selected' : '') %>>Sergipe</option>
-           <option value="TO" <%= adestrador && adestrador.state === 'TO' ? 'selected' : (adestrador && adestrador.estado === 'TO' ? 'selected' : '') %>>Tocantins</option>
-          </select>
-         </section>
-         <section class="form-group">
-          <label for="cep">
-           CEP
-          </label>
-          <input id="cep" type="text" value="<%= adestrador && adestrador.cep ? adestrador.cep : '' %>"/>
-         </section>
-        </section>
-        <section class="form-actions">
-         <button class="btn btn-primary btn-save" type="button">
-          Salvar Alterações
-         </button>
-        </section>
-       </form>
-      </section>
-      <section class="profile-tab-content" id="professional-tab">
-       <form class="profile-form">
-        <section class="form-group">
-         <label for="prof-title">
-          Título Profissional
-         </label>
-         <input id="prof-title" type="text" value="<%= adestrador && adestrador.tituloProfissional ? adestrador.tituloProfissional : 'Adestrador Canino Profissional' %>"/>
-        </section>
-        <section class="form-group">
-         <label for="experience">
-          Anos de Experiência
-         </label>
-         <input id="experience" type="number" value="<%= adestrador && adestrador.experience ? adestrador.experience : (adestrador && adestrador.experiencia ? adestrador.experiencia : '') %>"/>
-        </section>
-        <section class="form-group">
-         <label for="bio">
-          Biografia/Sobre Você
-         </label>
-         <textarea id="bio" rows="5"><%= adestrador && adestrador.about ? adestrador.about : (adestrador && adestrador.sobre ? adestrador.sobre : 'Conte um pouco sobre sua experiência e metodologia de trabalho...') %></textarea>
-        </section>
-        <section class="form-group">
-         <label for="certifications">
-          Certificações e Formação
-         </label>
-         <textarea id="certifications" rows="3"><%= adestrador && adestrador.certificacoes ? adestrador.certificacoes : 'Adicione suas certificações e formações...' %></textarea>
-        </section>
-        <section class="form-group">
-         <label for="price">
-          Preço por Sessão (R$)
-         </label>
-         <input id="price" type="number" step="0.01" value="<%= adestrador && adestrador.price ? adestrador.price : (adestrador && adestrador.preco ? adestrador.preco : '') %>"/>
-        </section>
-        
-        <section class="form-group">
-          <label>
-           Especialidades
-          </label>
-          <section class="checkbox-group">
-           <% 
-           // Mapear as especialidades do banco para os valores corretos
-           const especialidadesDisponiveis = [
-             { valor: 'obediencia-basica', nome: 'Obediência Básica' },
-             { valor: 'comportamento', nome: 'Problemas de Comportamento' },
-             { valor: 'truques', nome: 'Truques e Comandos' },
-             { valor: 'agressividade', nome: 'Controle de Agressividade' },
-             { valor: 'filhotes', nome: 'Treinamento de Filhotes' }
-           ];
-           
-           // Garantir que especialidades seja um array
-           let especialidadesUsuario = [];
-           if (adestrador && adestrador.especialidades) {
-             if (Array.isArray(adestrador.especialidades)) {
-               especialidadesUsuario = adestrador.especialidades;
-             } else if (typeof adestrador.especialidades === 'string') {
-               try {
-                 especialidadesUsuario = JSON.parse(adestrador.especialidades);
-               } catch (e) {
-                 especialidadesUsuario = [];
-               }
-             }
-           }
-           %>
-           
-           <% especialidadesDisponiveis.forEach(function(especialidade) { %>
-             <label class="checkbox-item">
-              <input 
-                type="checkbox" 
-                name="specialty" 
-                value="<%= especialidade.valor %>"
-                <%= especialidadesUsuario.includes(especialidade.valor) ? 'checked' : '' %>
-              />
-              <%= especialidade.nome %>
-             </label>
-           <% }); %>
-          </section>
-         </section>
-        <section class="form-actions">
-         <button class="btn btn-primary btn-save" type="button">
-          Salvar Alterações
-         </button>
-        </section>
-       </form>
-      </section>
-      <section class="profile-tab-content" id="services-tab">
-       <section class="services-list">
-        <section class="service-item">
-         <section class="service-header">
-          <h3>
-           Sessão de Obediência Básica
-          </h3>
-          <section class="service-price">
-           R$ <%= adestrador && adestrador.price ? parseFloat(adestrador.price).toFixed(2).replace('.', ',') : (adestrador && adestrador.preco ? parseFloat(adestrador.preco).toFixed(2).replace('.', ',') : '120,00') %>
-          </section>
-         </section>
-         <p>
-          Treinamento de comandos básicos como sentar, deitar, ficar e vir. Ideal para cães de todas as idades.
-         </p>
-         <section class="service-details">
-          <span>
-           <i class="fas fa-clock">
-           </i>
-           1h30min
-          </span>
-          <span>
-           <i class="fas fa-map-marker-alt">
-           </i>
-           Residência ou Parque
-          </span>
-         </section>
-         <section class="service-actions">
-          <button class="btn btn-small btn-outline">
-           <i class="fas fa-edit">
-           </i>
-           Editar
-          </button>
-          <button class="btn btn-small btn-danger">
-           <i class="fas fa-trash">
-           </i>
-          </button>
-         </section>
-        </section>
-        <section class="service-item">
-         <section class="service-header">
-          <h3>
-           Pacote de Socialização
-          </h3>
-          <section class="service-price">
-           R$ <%= adestrador && adestrador.price ? (parseFloat(adestrador.price) * 3.5).toFixed(2).replace('.', ',') : (adestrador && adestrador.preco ? (parseFloat(adestrador.preco) * 3.5).toFixed(2).replace('.', ',') : '450,00') %>
-          </section>
-         </section>
-         <p>
-          Pacote com 4 sessões focadas na socialização do cão com outros animais e pessoas. Reduz problemas de agressividade e medo.
-         </p>
-         <section class="service-details">
-          <span>
-           <i class="fas fa-clock">
-           </i>
-           1h30min por sessão
-          </span>
-          <span>
-           <i class="fas fa-map-marker-alt">
-           </i>
-           Parques e áreas públicas
-          </span>
-         </section>
-         <section class="service-actions">
-          <button class="btn btn-small btn-outline">
-           <i class="fas fa-edit">
-           </i>
-           Editar
-          </button>
-          <button class="btn btn-small btn-danger">
-           <i class="fas fa-trash">
-           </i>
-          </button>
-         </section>
-        </section>
-        <section class="service-item">
-         <section class="service-header">
-          <h3>
-           Consultoria Comportamental
-          </h3>
-          <section class="service-price">
-           R$ <%= adestrador && adestrador.price ? (parseFloat(adestrador.price) * 1.25).toFixed(2).replace('.', ',') : (adestrador && adestrador.preco ? (parseFloat(adestrador.preco) * 1.25).toFixed(2).replace('.', ',') : '150,00') %>
-          </section>
-         </section>
-         <p>
-          Avaliação e diagnóstico de problemas comportamentais, com plano personalizado de treinamento.
-         </p>
-         <section class="service-details">
-          <span>
-           <i class="fas fa-clock">
-           </i>
-           2h
-          </span>
-          <span>
-           <i class="fas fa-map-marker-alt">
-           </i>
-           Residência do cliente
-          </span>
-         </section>
-         <section class="service-actions">
-          <button class="btn btn-small btn-outline">
-           <i class="fas fa-edit">
-           </i>
-           Editar
-          </button>
-          <button class="btn btn-small btn-danger">
-           <i class="fas fa-trash">
-           </i>
-          </button>
-         </section>
-        </section>
-        <button class="btn btn-add-service">
-         <i class="fas fa-plus">
-         </i>
-         Adicionar Serviço
-        </button>
-       </section>
-      </section>
-      <section class="profile-tab-content" id="security-tab">
-       <form class="profile-form">
-        <section class="form-group">
-         <label for="current-password">
-          Senha Atual
-         </label>
-         <input id="current-password" type="password"/>
-        </section>
-        <section class="form-group">
-         <label for="new-password">
-          Nova Senha
-         </label>
-         <input id="new-password" type="password"/>
-        </section>
-        <section class="form-group">
-         <label for="confirm-password">
-          Confirmar Nova Senha
-         </label>
-         <input id="confirm-password" type="password"/>
-        </section>
-        <section class="password-strength">
-         <p>
-          Força da senha:
-         </p>
-         <section class="strength-meter">
-          <section class="strength-segment">
-          </section>
-          <section class="strength-segment">
-          </section>
-          <section class="strength-segment">
-          </section>
-          <section class="strength-segment">
-          </section>
-         </section>
-         <p class="strength-text">
-          Digite uma nova senha
-         </p>
-        </section>
-        <section class="form-group">
-         <label>
-          Autenticação de Dois Fatores
-         </label>
-         <section class="toggle-switch">
-          <input id="two-factor" type="checkbox"/>
-          <label for="two-factor">
-          </label>
-          <span class="toggle-label">
-           Desativado
-          </span>
-         </section>
-        </section>
-        <section class="form-actions">
-         <button class="btn btn-primary btn-save" type="button">
-          Salvar Alterações
-         </button>
-        </section>
-       </form>
-      </section>
-     </section>
-     <!-- Sidebar Sections -->
-     <section class="profile-sidebar">
-      <section class="card profile-stats-section">
-       <h3>
-        <i class="fas fa-chart-pie">
-        </i>
-        Estatísticas do Perfil
-       </h3>
-       <section class="stat-item">
-        <section class="stat-label">
-         Visualizações do Perfil
-        </section>
-        <section class="stat-value">
-         432
-        </section>
-        <section class="stat-period">
-         Últimos 30 dias
-        </section>
-       </section>
-       <section class="stat-item">
-        <section class="stat-label">
-         Taxa de Resposta
-        </section>
-        <section class="stat-value">
-         98%
-        </section>
-        <section class="stat-period">
-         Tempo médio: 1h12min
-        </section>
-       </section>
-       <section class="stat-item">
-        <section class="stat-label">
-         Taxa de Conversão
-        </section>
-        <section class="stat-value">
-         76%
-        </section>
-        <section class="stat-period">
-         Contatos → Clientes
-        </section>
-       </section>
-      </section>
-      <section class="card profile-completion-section">
-       <h3>
-        <i class="fas fa-tasks">
-        </i>
-        Completude do Perfil
-       </h3>
-       <section class="completion-progress">
-        <section class="progress-bar">
-         <section class="progress-fill" style="width: 85%;">
-         </section>
-        </section>
-        <section class="progress-text">
-         85% Completo
-        </section>
-       </section>
-       <section class="completion-tasks">
-        <section class="task-item completed">
-         <i class="fas fa-check-circle">
-         </i>
-         <span>
-          Informações básicas
-         </span>
-        </section>
-        <section class="task-item completed">
-         <i class="fas fa-check-circle">
-         </i>
-         <span>
-          Serviços oferecidos
-         </span>
-        </section>
-        <section class="task-item completed">
-         <i class="fas fa-check-circle">
-         </i>
-         <span>
-          Biografia profissional
-         </span>
-        </section>
-        <section class="task-item">
-         <i class="fas fa-circle">
-         </i>
-         <span>
-          Adicionar foto de perfil
-         </span>
-        </section>
-        <section class="task-item">
-         <i class="fas fa-circle">
-         </i>
-         <span>
-          Verificar telefone
-         </span>
-        </section>
-       </section>
-      </section>
-     </section>
-    </section>
-   </section>
-  </main>
-  <!-- Floating Notification Button -->
-  <section class="notification-float">
-   <i class="fas fa-bell">
-   </i>
-   <span class="notif-count">
-    3
-   </span>
-  </section>
-  <script src="/js/script-adestrador.js">
-  </script>
-  <script src="/js/script-perfil.js">
-   
-  </script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Pet Mania</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style-perfil-cliente.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="/" class="logo">🐾 Pet Mania</a>
+            <div class="user-nav">
+                <div class="user-avatar">JS</div>
+                <div class="user-info">
+                    <span>João Silva</span>
+                </div>
+                <a href="/logout" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </a>
+            </div>
+        </div>
+    </nav>
 
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="profile-header">
+                    <div class="profile-avatar" onclick="openModal('avatarModal')">
+                        JS
+                        <div class="avatar-upload">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                    <div class="profile-name">João Silva</div>
+                    <div class="profile-email">joao.silva@email.com</div>
+                </div>
 
- </body>
+                <nav>
+                    <ul class="menu-list">
+                        <li class="menu-item">
+                            <a href="#" class="menu-link active" onclick="showSection('profile')">
+                                <i class="fas fa-user"></i>
+                                Meu Perfil
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link" onclick="showSection('pets')">
+                                <i class="fas fa-paw"></i>
+                                Meus Pets
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link" onclick="showSection('sessions')">
+                                <i class="fas fa-calendar-alt"></i>
+                                Sessões
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link" onclick="showSection('payments')">
+                                <i class="fas fa-credit-card"></i>
+                                Pagamentos
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link" onclick="showSection('security')">
+                                <i class="fas fa-shield-alt"></i>
+                                Segurança
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link" onclick="showSection('notifications')">
+                                <i class="fas fa-bell"></i>
+                                Notificações
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content-area">
+                <div class="notification" id="notification">
+                    <i class="fas fa-check-circle"></i>
+                    Dados atualizados com sucesso!
+                </div>
+
+                <!-- Profile Section -->
+                <div id="profile-section" class="content-section">
+                    <div class="content-header">
+                        <div>
+                            <h1 class="content-title">Meu Perfil</h1>
+                            <p class="content-subtitle">Gerencie suas informações pessoais</p>
+                        </div>
+                    </div>
+
+                    <form id="profileForm">
+                        <div class="form-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-user"></i>
+                                Informações Pessoais
+                            </h2>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Nome Completo</label>
+                                    <input type="text" class="form-input" value="João Silva" name="fullName">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-input" value="joao.silva@email.com" name="email">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Telefone</label>
+                                    <input type="tel" class="form-input" value="(11) 99999-9999" name="phone">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Data de Nascimento</label>
+                                    <input type="date" class="form-input" value="1985-06-15" name="birthDate">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Endereço
+                            </h2>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">CEP</label>
+                                    <input type="text" class="form-input" value="01310-100" name="zipCode">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Endereço</label>
+                                    <input type="text" class="form-input" value="Av. Paulista, 1000" name="address">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Bairro</label>
+                                    <input type="text" class="form-input" value="Bela Vista" name="neighborhood">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Cidade</label>
+                                    <input type="text" class="form-input" value="São Paulo" name="city">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Estado</label>
+                                    <select class="form-input" name="state">
+                                        <option value="SP" selected>São Paulo</option>
+                                        <option value="RJ">Rio de Janeiro</option>
+                                        <option value="MG">Minas Gerais</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Informações Adicionais
+                            </h2>
+                            <div class="form-group">
+                                <label class="form-label">Sobre mim</label>
+                                <textarea class="form-input form-textarea" name="about" placeholder="Conte um pouco sobre você e sua experiência com pets...">Sou apaixonado por cães e tenho um Golden Retriever chamado Rex. Busco sempre o melhor treinamento para meu pet.</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Salvar Alterações
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Pets Section -->
+                <div id="pets-section" class="content-section" style="display: none;">
+                    <div class="content-header">
+                        <div>
+                            <h1 class="content-title">Meus Pets</h1>
+                            <p class="content-subtitle">Gerencie as informações dos seus animais de estimação</p>
+                        </div>
+                    </div>
+
+                    <div class="pets-grid">
+                        <div class="pet-card add-pet-card" onclick="openModal('petModal')">
+                            <i class="fas fa-plus"></i>
+                            <h3>Adicionar Pet</h3>
+                            <p>Cadastre um novo animal de estimação</p>
+                        </div>
+
+                        <div class="pet-card">
+                            <div class="pet-info">
+                                <div class="pet-avatar">🐕</div>
+                                <div class="pet-name">Rex</div>
+                                <div class="pet-details">
+                                    Golden Retriever • 3 anos<br>
+                                    Macho • 30kg
+                                </div>
+                                <div class="pet-actions">
+                                    <button class="btn-pet btn-edit" onclick="openModal('petModal')">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button class="btn-pet btn-delete">
+                                        <i class="fas fa-trash"></i> Excluir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pet-card">
+                            <div class="pet-info">
+                                <div class="pet-avatar">🐱</div>
+                                <div class="pet-name">Luna</div>
+                                <div class="pet-details">
+                                    Persa • 2 anos<br>
+                                    Fêmea • 4kg
+                                </div>
+                                <div class="pet-actions">
+                                    <button class="btn-pet btn-edit" onclick="openModal('petModal')">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button class="btn-pet btn-delete">
+                                        <i class="fas fa-trash"></i> Excluir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sessions Section -->
+                <div id="sessions-section" class="content-section" style="display: none;">
+                    <div class="content-header">
+                        <div>
+                            <h1 class="content-title">Minhas Sessões</h1>
+                            <p class="content-subtitle">Acompanhe suas sessões de adestramento</p>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📅</div>
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">Sessões Realizadas</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-number">24h</div>
+                            <div class="stat-label">Horas de Treinamento</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🏆</div>
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Objetivos Alcançados</div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-calendar-check"></i>
+                            Próximas Sessões
+                        </h2>
+                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 15px; text-align: center; color: #666;">
+                            <i class="fas fa-calendar-plus" style="font-size: 3rem; margin-bottom: 1rem; color: #FFA500;"></i>
+                            <h3>Nenhuma sessão agendada</h3>
+                            <p>Que tal agendar uma nova sessão para seu pet?</p>
+                            <button class="btn btn-primary" style="margin-top: 1rem;">
+                                <i class="fas fa-plus"></i>
+                                Agendar Sessão
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payments Section -->
+                <div id="payments-section" class="content-section" style="display: none;">
+                    <div class="content-header">
+                        <div>
+                            <h1 class="content-title">Pagamentos</h1>
+                            <p class="content-subtitle">Gerencie seus métodos de pagamento e histórico</p>
+                        </div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 3rem; border-radius: 15px; text-align: center; color: #666;">
+                        <i class="fas fa-credit-card" style="font-size: 4rem; margin-bottom: 1rem; color: #FFA500;"></i>
+                        <h3>Em desenvolvimento</h3>
+                        <p>Esta seção estará disponível em breve!</p>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div id="security-section" class="content-section" style="display: none;">
+                    <div class="content-header">
+                        <div>
+                            <h1 class="content-title">Segurança</h1>
+                            <p class="content-subtitle">Altere sua senha e configure a segurança da conta</p>
+                        </div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 3rem; border-radius: 15px; text-align: center; color: #666;">
+                        <i class="fas fa-shield-alt" style="font-size: 4rem; margin-bottom: 1rem; color: #FFA500;"></i>
+                        <h3>Em desenvolvimento</h3>
+                        <p>Esta seção estará disponível em breve!</p>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div id="notifications-section" class="content-section" style="display: none;">
+                    <div class="content-header">
+                        <div>
+                            <h1 class="content-title">Notificações</h1>
+                            <p class="content-subtitle">Configure suas preferências de notificação</p>
+                        </div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 3rem; border-radius: 15px; text-align: center; color: #666;">
+                        <i class="fas fa-bell" style="font-size: 4rem; margin-bottom: 1rem; color: #FFA500;"></i>
+                        <h3>Em desenvolvimento</h3>
+                        <p>Esta seção estará disponível em breve!</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal for Avatar Upload -->
+    <div id="avatarModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Alterar Foto do Perfil</h2>
+                <button class="close-modal" onclick="closeModal('avatarModal')">&times;</button>
+            </div>
+            <div style="text-align: center; padding: 2rem;">
+                <p>Funcionalidade em desenvolvimento</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Pet -->
+    <div id="petModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Adicionar Pet</h2>
+                <button class="close-modal" onclick="closeModal('petModal')">&times;</button>
+            </div>
+            <div style="text-align: center; padding: 2rem;">
+                <p>Funcionalidade em desenvolvimento</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
-
-

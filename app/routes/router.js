@@ -75,6 +75,10 @@ router.get("/Login.ejs", function (req, res) {
   res.render("pages/Login");    
 });
 
+router.get("/meuspets.ejs", function (req, res) {
+  res.render("pages/meuspets");    
+});
+
 router.get("/mensagensadestrador.ejs", function (req, res) {
   res.render("pages/mensagensadestrador");    
 });

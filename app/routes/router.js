@@ -59,6 +59,10 @@ router.get("/cliente.ejs", function (req, res) {
   res.render("pages/cliente");    
 });
 
+router.get("/meuspets.ejs", function (req, res) {
+  res.render("pages/meupets");    
+});
+
 router.get("/agendamentoadestrador.ejs", function (req, res) {
   res.render("pages/agendamentoadestrador");    
 });

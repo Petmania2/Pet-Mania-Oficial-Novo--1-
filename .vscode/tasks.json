@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Iniciar servidor Pet Mania para teste de pagamento",
+			"command": "node app.js",
+			"group": "test",
+			"isBackground": true
+		}
+	]
+}

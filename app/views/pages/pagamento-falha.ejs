@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Falhou - Pet Mania</title>
+    <link rel="stylesheet" href="/css/style-adestrador.css">
+    <style>
+        .fail-container { text-align: center; padding: 60px 20px; }
+        .fail-icon { font-size: 64px; color: #e53935; margin-bottom: 20px; }
+        .fail-title { font-size: 2.2rem; margin-bottom: 10px; }
+        .fail-message { font-size: 1.2rem; margin-bottom: 30px; }
+        .btn-tentar { background: #e53935; color: #fff; padding: 12px 32px; border-radius: 8px; font-size: 1rem; text-decoration: none; transition: background 0.2s; }
+        .btn-tentar:hover { background: #b71c1c; }
+    </style>
+</head>
+<body>
+    <section class="fail-container">
+        <section class="fail-icon">
+            <i class="fas fa-times-circle"></i>
+        </section>
+        <h1 class="fail-title">Pagamento não realizado</h1>
+        <p class="fail-message">Ocorreu um erro ou o pagamento foi cancelado. Tente novamente ou escolha outro método.</p>
+        <a href="/planosadestrador.ejs" class="btn-tentar">Tentar novamente</a>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+</body>
+</html>

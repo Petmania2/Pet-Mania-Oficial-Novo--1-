@@ -103,11 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
     planButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (!paymentModal || !selectedPlan || !summaryPlan) return;
-            
             // Obter o tipo de plano baseado na classe do card pai
             const planCard = button.closest('.plan-card');
             let planType = '';
-
             if (planCard.classList.contains('bronze-plan')) {
                 planType = 'Bronze';
             } else if (planCard.classList.contains('silver-plan')) {
@@ -115,14 +113,14 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (planCard.classList.contains('gold-plan')) {
                 planType = 'Ouro';
             }
-
-            // Atualizar o modal com informações do plano
             selectedPlan.textContent = planType;
             summaryPlan.textContent = planType;
             updateSummary();
-
-            // Mostrar o modal
             paymentModal.classList.add('active');
+            // Inicializar Brick de cartão com valor correto
+            const periodType = document.querySelector('input[name="period"]:checked').value;
+            const amount = planPrices[planType][periodType];
+            renderCardBrick(amount);
         });
     });
 
@@ -133,6 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
             summaryPlan.textContent = 'Bronze';
             updateSummary();
             paymentModal.classList.add('active');
+            const periodType = document.querySelector('input[name="period"]:checked').value;
+            const amount = planPrices['Bronze'][periodType];
+            renderCardBrick(amount);
         });
     }
 
@@ -151,37 +152,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Confirmar pagamento
     if (confirmPayment && paymentModal) {
-        confirmPayment.addEventListener('click', () => {
-            // Simulação de processamento de pagamento
+        confirmPayment.addEventListener('click', async () => {
             confirmPayment.textContent = 'Processando...';
             confirmPayment.disabled = true;
-            
-            setTimeout(() => {
-                // Adicionar mensagem de sucesso
-                const modalBody = document.querySelector('.modal-body');
-                const paymentOptions = document.querySelector('.payment-options');
-                
-                if (!modalBody || !paymentOptions) return;
-                
-                // Criar elemento de mensagem
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'payment-message success';
-                messageDiv.innerHTML = '<p><i class="fas fa-check-circle"></i> Pagamento processado com sucesso! Seu plano foi atualizado.</p>';
-                
-                // Ocultar as opções de pagamento e mostrar a mensagem
-                paymentOptions.style.display = 'none';
-                modalBody.insertBefore(messageDiv, paymentOptions);
-                
-                // Mudar os botões do rodapé
-                confirmPayment.style.display = 'none';
-                cancelPayment.textContent = 'Fechar';
-                
-                // Atualizar a página após fechar
-                cancelPayment.addEventListener('click', () => {
-                    window.location.reload();
+
+            // Dados do plano
+            const descricao = summaryPlan.textContent + ' - ' + summaryPeriod.textContent;
+            const valor = summaryPrice.textContent.replace('R$', '').replace(',', '.').trim();
+
+            try {
+                const response = await fetch('/criar-pagamento', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ descricao, valor })
                 });
-                
-            }, 2000);
+                const result = await response.json();
+                if (result.checkout_url) {
+                    window.location.href = result.checkout_url;
+                } else {
+                    alert('Erro ao criar pagamento. Tente novamente.');
+                    confirmPayment.textContent = 'Confirmar Pagamento';
+                    confirmPayment.disabled = false;
+                }
+            } catch (error) {
+                alert('Erro de conexão com Mercado Pago.');
+                confirmPayment.textContent = 'Confirmar Pagamento';
+                confirmPayment.disabled = false;
+            }
         });
     }
 
@@ -254,5 +251,80 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verificar se há FAQ e abrir o primeiro por padrão
     if (faqQuestions.length > 0) {
         faqQuestions[0].click();
+    }
+
+    // ======== MERCADO PAGO INTEGRAÇÃO CUSTOMIZADA ========
+    const mp = new window.MercadoPago('SEU_PUBLIC_KEY_AQUI'); // Troque pelo seu Public Key
+
+    let cardBrickInstance = null;
+    function renderCardBrick(amount) {
+        const formMp = document.getElementById('form-mp');
+        if (formMp) formMp.innerHTML = '';
+        if (cardBrickInstance) cardBrickInstance.unmount();
+        cardBrickInstance = mp.bricks().create('cardPayment', 'form-mp', {
+            initialization: {
+                amount: amount,
+            },
+            customization: {
+                paymentMethods: ['credit_card'],
+            },
+            callbacks: {
+                onReady: () => {},
+                onSubmit: async (cardFormData) => {
+                    payCardBtn.disabled = true;
+                    payCardBtn.textContent = 'Processando...';
+                    const descricao = summaryPlan.textContent + ' - ' + summaryPeriod.textContent;
+                    const valor = planPrices[summaryPlan.textContent][document.querySelector('input[name="period"]:checked').value];
+                    try {
+                        // Envia o token do cartão para o backend
+                        const response = await fetch('/criar-pagamento', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ descricao, valor, token: cardFormData.token, paymentMethodId: cardFormData.paymentMethodId, payerEmail: cardFormData.payer.email })
+                        });
+                        const result = await response.json();
+                        if (result.status === 'approved') {
+                            window.location.href = '/pagamento-sucesso';
+                        } else {
+                            window.location.href = '/pagamento-falha';
+                        }
+                    } catch (error) {
+                        window.location.href = '/pagamento-falha';
+                    }
+                },
+                onError: (error) => {
+                    alert('Erro no pagamento: ' + error.message);
+                    payCardBtn.disabled = false;
+                    payCardBtn.textContent = 'Pagar com Cartão';
+                }
+            }
+        });
+    }
+
+    // Pagamento Pix - Gera QR Code
+    if (payPixBtn) {
+        payPixBtn.addEventListener('click', async () => {
+            payPixBtn.disabled = true;
+            payPixBtn.textContent = 'Gerando QR Code...';
+            const descricao = summaryPlan.textContent + ' - ' + summaryPeriod.textContent;
+            const valor = planPrices[summaryPlan.textContent][document.querySelector('input[name="period"]:checked').value];
+            try {
+                const response = await fetch('/criar-pagamento', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ descricao, valor, paymentMethod: 'pix' })
+                });
+                const result = await response.json();
+                if (result.qr_code_base64) {
+                    pixQrCode.innerHTML = `<img src="data:image/png;base64,${result.qr_code_base64}" alt="QR Code Pix" style="max-width:220px;">`;
+                } else {
+                    alert('Erro ao gerar QR Code Pix.');
+                }
+            } catch (error) {
+                alert('Erro ao conectar com Mercado Pago.');
+            }
+            payPixBtn.disabled = false;
+            payPixBtn.textContent = 'Gerar QR Code Pix';
+        });
     }
 });

@@ -550,5 +550,32 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     console.log('Pet Mania JavaScript loaded successfully! 🐾');
+    
+    // FAVORITAR/DESFAVORITAR ADSTRADOR
+    const favoriteBtns = document.querySelectorAll('.favorite-btn');
+    favoriteBtns.forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const adestradorId = this.getAttribute('data-id');
+            const isFavorito = this.getAttribute('data-favorito') === 'true';
+            const situacao = isFavorito ? 'favorito' : 'favoritar';
+            try {
+                const response = await fetch(`/favoritar?id=${adestradorId}&situacao=${situacao}`);
+                const result = await response.json();
+                if (result.sucesso) {
+                    this.setAttribute('data-favorito', (!isFavorito).toString());
+                    const icon = this.querySelector('i');
+                    if (!isFavorito) {
+                        icon.classList.remove('fa-heart-o');
+                        icon.classList.add('fa-heart');
+                    } else {
+                        icon.classList.remove('fa-heart');
+                        icon.classList.add('fa-heart-o');
+                    }
+                }
+            } catch (err) {
+                showNotification('Erro ao favoritar/desfavoritar!', 'error');
+            }
+        });
+    });
 });
 

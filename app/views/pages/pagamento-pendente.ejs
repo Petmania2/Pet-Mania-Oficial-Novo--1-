@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Pendente - Pet Mania</title>
+    <link rel="stylesheet" href="/css/style-adestrador.css">
+    <style>
+        .pending-container { text-align: center; padding: 60px 20px; }
+        .pending-icon { font-size: 64px; color: #fbc02d; margin-bottom: 20px; }
+        .pending-title { font-size: 2.2rem; margin-bottom: 10px; }
+        .pending-message { font-size: 1.2rem; margin-bottom: 30px; }
+        .btn-voltar { background: #fbc02d; color: #fff; padding: 12px 32px; border-radius: 8px; font-size: 1rem; text-decoration: none; transition: background 0.2s; }
+        .btn-voltar:hover { background: #f9a825; }
+    </style>
+</head>
+<body>
+    <section class="pending-container">
+        <section class="pending-icon">
+            <i class="fas fa-hourglass-half"></i>
+        </section>
+        <h1 class="pending-title">Pagamento pendente</h1>
+        <p class="pending-message">Seu pagamento está sendo processado. Você será notificado assim que for aprovado.</p>
+        <a href="/paineladestrador.ejs" class="btn-voltar">Voltar ao painel</a>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+</body>
+</html>

@@ -425,7 +425,6 @@ router.post("/", (req, res) => {
   res.render("pages/mostrar", { dadosEnviados: objJson });
 });
 
-<<<<<<< HEAD
 // Rota para favoritar/desfavoritar uma HQ
 router.get("/favoritar", hqController.favoritar);
 
@@ -523,6 +522,98 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
 });
 
 module.exports = router;
-=======
+
+// Rota para criar pagamento com Mercado Pago
+router.post('/criar-pagamento', async (req, res) => {
+  try {
+    const { descricao, valor, token, paymentMethodId, payerEmail, paymentMethod } = req.body;
+    // Pagamento via cartão de crédito (real)
+    if (token && paymentMethodId && payerEmail) {
+      const payment_data = {
+        transaction_amount: parseFloat(valor),
+        token: token,
+        description: descricao,
+        installments: 1,
+        payment_method_id: paymentMethodId,
+        payer: {
+          email: payerEmail
+        }
+      };
+      const payment = await mercadopago.payment.create(payment_data);
+      if (payment.body.status === 'approved') {
+        return res.json({ status: 'approved' });
+      } else {
+        return res.json({ status: payment.body.status });
+      }
+    }
+
+    // Pagamento via Pix
+    if (paymentMethod === 'pix') {
+      preference.payment_methods = { excluded_payment_types: [{ id: 'credit_card' }] };
+      const response = await mercadopago.preferences.create(preference);
+      // Buscar QR Code Pix
+      if (response.body && response.body.init_point) {
+        // Mercado Pago não retorna o QR Code diretamente na preferência, é necessário usar o endpoint de pagamento Pix
+        // Aqui, apenas retorna o link de pagamento Pix (o QR Code será gerado pelo SDK ou pelo usuário)
+        return res.json({ checkout_url: response.body.init_point });
+      }
+      return res.status(500).json({ erro: 'Erro ao gerar pagamento Pix.' });
+    }
+
+    // Checkout padrão (redirecionamento)
+    const response = await mercadopago.preferences.create(preference);
+    res.json({ checkout_url: response.body.init_point });
+  } catch (error) {
+    console.error('Erro Mercado Pago:', error);
+    res.status(500).json({ erro: 'Erro ao criar pagamento.' });
+  }
+});
+
+router.get('/pagamento-sucesso', (req, res) => {
+  res.render('pages/pagamento-sucesso');
+});
+
+router.get('/pagamento-falha', (req, res) => {
+  res.render('pages/pagamento-falha');
+});
+
+router.get('/pagamento-pendente', (req, res) => {
+  res.render('pages/pagamento-pendente');
+});
+
+// Rota para cadastro de cliente
+router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
+  try {
+    const { nome, email, senha } = req.body;
+    if (!nome || !email || !senha) {
+      return res.status(400).json({ sucesso: false, erro: "Todos os campos são obrigatórios" });
+    }
+    // Verifica se já existe cliente com o mesmo email
+    const existente = await ClienteModel.buscarPorEmail(email);
+    if (existente) {
+      return res.status(400).json({ sucesso: false, erro: "Email já cadastrado" });
+    }
+    // Criptografa a senha
+    const bcrypt = require('bcrypt');
+    const senhaHash = await bcrypt.hash(senha, 10);
+    // Insere no banco
+    const pool = require('../config/pool_conexoes');
+    await pool.query('INSERT INTO clientes (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senhaHash]);
+    // Busca o cliente cadastrado
+    const cliente = await ClienteModel.buscarPorEmail(email);
+    // Cria sessão
+    req.session.usuario = {
+      id: cliente.id,
+      nome: cliente.nome,
+      email: cliente.email,
+      tipo: 'cliente'
+    };
+    // Redireciona para perfil do cliente
+    res.json({ sucesso: true, redirecionarPara: "/perfilcliente.ejs" });
+  } catch (error) {
+    console.error("Erro ao cadastrar cliente:", error);
+    res.status(500).json({ sucesso: false, erro: "Erro interno ao cadastrar cliente" });
+  }
+});
+
 module.exports = router;
->>>>>>> 7626bfd305084c99ca9eea90f9ea005b446b160d

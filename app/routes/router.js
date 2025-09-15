@@ -82,6 +82,10 @@ router.get("/cliente.ejs", function (req, res) {
   res.render("pages/cliente");    
 });
 
+router.get("/meuspets.ejs", function (req, res) {
+  res.render("pages/meupets");    
+});
+
 router.get("/agendamentoadestrador.ejs", function (req, res) {
   res.render("pages/agendamentoadestrador");    
 });
@@ -94,8 +98,16 @@ router.get("/Login.ejs", function (req, res) {
   res.render("pages/Login");    
 });
 
+router.get("/meuspets.ejs", function (req, res) {
+  res.render("pages/meuspets");    
+});
+
 router.get("/mensagensadestrador.ejs", function (req, res) {
   res.render("pages/mensagensadestrador");    
+});
+
+router.get("/adestradores.ejs", function (req, res) {
+  res.render("pages/adestradores");    
 });
 
 router.get("/paineladestrador.ejs", async function (req, res) {
@@ -179,8 +191,8 @@ router.get("/perfilcliente.ejs", async function (req, res) {
 });
 
 // === ROTAS POST ===
+// SUBSTITUA a rota "/cadastrar-adestrador" no seu router.js por esta versão corrigida:
 
-// Rota para cadastro - OTIMIZADA
 router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
   try {
     const {
@@ -188,11 +200,37 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
       experience, specialty, price, about, password
     } = req.body;
 
-    // Validação básica dos dados
-    if (!name || !cpf || !email || !password) {
+    // Validação básica dos dados obrigatórios
+    if (!name || !cpf || !email || !password || !price) {
       return res.status(400).json({ 
         sucesso: false, 
         erro: "Campos obrigatórios não preenchidos" 
+      });
+    }
+
+    // VALIDAÇÃO ESPECÍFICA DO PREÇO - CORREÇÃO DO BUG
+    const precoConvertido = parseFloat(price);
+    if (isNaN(precoConvertido) || precoConvertido < 50 || precoConvertido > 99999999.99) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Preço deve ser um valor válido entre R$ 50,00 e R$ 99.999.999,99" 
+      });
+    }
+
+    // VALIDAÇÃO DA EXPERIÊNCIA
+    const experienciaConvertida = parseInt(experience);
+    if (isNaN(experienciaConvertida) || experienciaConvertida < 0 || experienciaConvertida > 50) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Anos de experiência deve ser um valor válido entre 0 e 50" 
+      });
+    }
+
+    // VALIDAÇÃO DAS ESPECIALIDADES
+    if (!specialty || (Array.isArray(specialty) && specialty.length === 0)) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Selecione pelo menos uma especialidade" 
       });
     }
 
@@ -213,20 +251,26 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
       });
     }
 
-    // Preparar dados do adestrador
+    // Preparar dados do adestrador com validações aplicadas
     const dadosAdestrador = {
-      nome: name,
-      cpf: cpf,
-      email: email,
-      telefone: phone,
-      cidade: city,
+      nome: name.trim(),
+      cpf: cpf.trim(),
+      email: email.toLowerCase().trim(),
+      telefone: phone.trim(),
+      cidade: city.trim(),
       estado: state,
-      experiencia: parseInt(experience) || 0,
+      experiencia: experienciaConvertida,
       especialidades: Array.isArray(specialty) ? specialty : [specialty],
-      preco: parseFloat(price) || 0,
-      sobre: about || '',
+      preco: precoConvertido, // AGORA COM VALIDAÇÃO CORRETA
+      sobre: about ? about.trim() : '',
       senha: password
     };
+
+    // LOG para debug (remova em produção)
+    console.log('Dados sendo enviados para o banco:', {
+      ...dadosAdestrador,
+      senha: '[OCULTA]'
+    });
 
     // Criar adestrador no banco
     await AdestradorModel.criar(dadosAdestrador);
@@ -256,6 +300,14 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
         erro: "Problema de conexão. Tente novamente." 
       });
     }
+
+    // Erro específico de valor fora do range
+    if (error.code === 'ER_WARN_DATA_OUT_OF_RANGE') {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Um dos valores informados está fora do limite permitido. Verifique o preço e a experiência." 
+      });
+    }
     
     // Erros de validação
     if (error.message.includes('email já está cadastrado') || 
@@ -272,7 +324,6 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
     });
   }
 });
-
 // Rota para login - OTIMIZADA
 router.post("/login", rateLimit, async function (req, res) {
   try {
@@ -374,6 +425,7 @@ router.post("/", (req, res) => {
   res.render("pages/mostrar", { dadosEnviados: objJson });
 });
 
+<<<<<<< HEAD
 // Rota para favoritar/desfavoritar uma HQ
 router.get("/favoritar", hqController.favoritar);
 
@@ -471,3 +523,6 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
 });
 
 module.exports = router;
+=======
+module.exports = router;
+>>>>>>> 7626bfd305084c99ca9eea90f9ea005b446b160d

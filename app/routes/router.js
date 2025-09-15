@@ -173,7 +173,19 @@ router.get("/index.ejs", function (req, res) {
 });
 
 router.get("/painelcliente.ejs", function (req, res) {
-  res.render("pages/painelcliente");    
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect("/Login.ejs");
+  }
+  (async () => {
+    try {
+      const pool = require('../config/pool_conexoes');
+      const [rows] = await pool.query('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
+      const cliente = rows[0] || null;
+      res.render("pages/painelcliente", { cliente });
+    } catch (err) {
+      res.render("pages/painelcliente", { cliente: null });
+    }
+  })();
 });
 
 router.get("/buscaradestrador.ejs", function (req, res) {
@@ -182,7 +194,7 @@ router.get("/buscaradestrador.ejs", function (req, res) {
 
 router.get("/perfilcliente.ejs", async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
-    return res.render("pages/perfilcliente", { cliente: null });
+    return res.redirect("/Login.ejs");
   }
   const pool = require('../config/pool_conexoes');
   const [rows] = await pool.query('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
@@ -191,6 +203,21 @@ router.get("/perfilcliente.ejs", async function (req, res) {
 });
 
 // === ROTAS POST ===
+router.post("/atualizar-cliente", rateLimit, async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect("/Login.ejs");
+  }
+  const { nome, email } = req.body;
+  if (!nome || !email) {
+    return res.status(400).send("Nome e email são obrigatórios.");
+  }
+  const pool = require('../config/pool_conexoes');
+  await pool.query('UPDATE clientes SET nome = ?, email = ? WHERE id = ?', [nome, email, req.session.usuario.id]);
+  // Atualiza sessão
+  req.session.usuario.nome = nome;
+  req.session.usuario.email = email;
+  res.redirect("/perfilcliente.ejs");
+});
 // SUBSTITUA a rota "/cadastrar-adestrador" no seu router.js por esta versão corrigida:
 
 router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {

@@ -1,4 +1,4 @@
-pets.ejs<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -10,92 +10,77 @@ pets.ejs<!DOCTYPE html>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Pet Mania</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/perfilcliente.css">
+    <link rel="stylesheet" href="/css/style-cliente.css">
+    <link rel="stylesheet" href="/css/style-perfil-cliente.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <section class="container navbar-container">
-            <a href="/" class=petlogo.png></a>
-            <section class="user-nav">
-                <figure class="user-avatar">JS</figure>
-                <section class="user-info">
-                    <span><%= cliente ? cliente.nome : '' %></span>
-                </section>
-                <a href="/logout" class="btn-logout">
-                    <i class="fas fa-sign-out-alt"></i> Sair
-                </a>
-            </section>
+            <a href="index.ejs" class="logo">
+                <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="perfilcliente.ejs" class="nav-item active">Conta</a></li>
+                <li><a href="#find-trainer" class="nav-item">Encontrar</a></li>
+                <li><a href="adestradores.ejs" class="nav-item">Adestradores</a></li>
+                <li><a href="#how-it-works" class="nav-item">Como Funciona</a></li>
+                <li><a href="#contact" class="nav-item">Contato</a></li>
+                <li><a href="/logout" class="btn btn-logout">Sair</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="menuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
         </section>
     </nav>
 
-    <!-- Main Content -->
-    <section class="container">
-        <section class="main-content">
-            <!-- Sidebar -->
-            <aside class="sidebar">
-                <header class="profile-header">
-                    <figure class="profile-avatar change-avatar-btn">
-                        <div class="avatar-placeholder"><%= cliente ? cliente.nome.split(' ').map(n => n[0]).join('') : '' %></div>
-                        <section class="avatar-upload">
-                            <i class="fas fa-camera"></i>
-                        </section>
-                    </figure>
-                    <h2 class="profile-name"><%= cliente ? cliente.nome : '' %></h2>
-                    <p class="profile-email">joao.silva@email.com</p>
-                </header>
-
-                <nav>
-                    <ul class="menu-list">
-                        <li class="menu-item">
-                            <a href="#" class="menu-link tab-btn active" data-tab="profile">
-                                <i class="fas fa-user"></i>
-                                Meu Perfil
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="meuspets.ejs" class="menu-link tab-btn" data-tab="pets">
-                                <i class="fas fa-paw"></i>
-                                Meus Pets
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link tab-btn" data-tab="sessions">
-                                <i class="fas fa-calendar-alt"></i>
-                                Sessões
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link tab-btn" data-tab="payments">
-                                <i class="fas fa-credit-card"></i>
-                                Pagamentos
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link tab-btn" data-tab="security">
-                                <i class="fas fa-shield-alt"></i>
-                                Segurança
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link tab-btn" data-tab="notifications">
-                                <i class="fas fa-bell"></i>
-                                Notificações
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </aside>
-
-            <!-- Content Area -->
-            <main class="content-area">
-                <aside class="notification" id="notification" role="alert">
-                    <i class="fas fa-check-circle"></i>
-                    Dados atualizados com sucesso!
-                </aside>
-
-                <!-- Profile Section -->
-                <section id="profile-tab" class="content-section profile-tab-content active">
-                    <header class="content-header">
-                        <section>
+    <section class="container" style="margin-top:40px;max-width:700px;padding:0 32px;display:flex;flex-direction:column;align-items:center;">
+        <section class="profile-header" style="width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;background:#fff;border-radius:20px;box-shadow:0 2px 16px rgba(0,0,0,0.07);padding:40px 32px 32px 32px;">
+            <figure class="profile-avatar change-avatar-btn" style="margin-bottom:0;">
+                <div class="avatar-placeholder" style="font-size:2.5rem;background:#eee;border-radius:50%;width:80px;height:80px;display:flex;align-items:center;justify-content:center;"><%= cliente ? cliente.nome.split(' ').map(n => n[0]).join('') : '' %></div>
+                <section class="avatar-upload" style="margin-top:8px;">
+                    <i class="fas fa-camera"></i>
+                </section>
+            </figure>
+            <h1 class="profile-name" style="font-size:2.3rem;font-weight:800;margin-bottom:8px;color:#FFA500;text-align:center;">Meu Perfil</h1>
+            <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:4px;text-align:center;">Olá, <%= cliente ? cliente.nome : '' %></h2>
+            <p class="profile-email" style="color:#888;margin-bottom:12px;text-align:center;"><i class="fas fa-envelope"></i> <%= cliente ? cliente.email : '' %></p>
+            <form action="/atualizar-cliente" method="POST" class="edit-info-form" style="display:flex;flex-direction:column;gap:12px;max-width:340px;width:100%;margin:0 auto;">
+                <label for="nome" style="font-weight:600;">Nome:</label>
+                <input type="text" id="nome" name="nome" value="<%= cliente ? cliente.nome : '' %>" required style="padding:10px;border-radius:8px;border:1px solid #ccc;">
+                <label for="email" style="font-weight:600;">Email:</label>
+                <input type="email" id="email" name="email" value="<%= cliente ? cliente.email : '' %>" required style="padding:10px;border-radius:8px;border:1px solid #ccc;">
+                <button type="submit" class="btn btn-primary" style="margin-top:16px;font-size:1.1rem;">Salvar Alterações</button>
+            </form>
+        </section>
+        <nav style="margin:32px 0 0 0;">
+            <ul class="menu-list" style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;">
+                <li class="menu-item"><a href="painelcliente.ejs" class="menu-link painel-btn" style="background: linear-gradient(90deg, #FF6B35 0%, #F7931E 100%); color: #fff; font-weight: bold; border-radius: 8px; padding: 12px 20px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);"><i class="fas fa-th-large"></i> Painel de Cliente</a></li>
+                <li class="menu-item"><a href="meuspets.ejs" class="menu-link tab-btn" data-tab="pets"><i class="fas fa-paw"></i> Meus Pets</a></li>
+                <li class="menu-item"><a href="#" class="menu-link tab-btn" data-tab="sessions"><i class="fas fa-calendar-alt"></i> Sessões</a></li>
+                <li class="menu-item"><a href="#" class="menu-link tab-btn" data-tab="payments"><i class="fas fa-credit-card"></i> Pagamentos</a></li>
+                <li class="menu-item"><a href="#" class="menu-link tab-btn" data-tab="security"><i class="fas fa-shield-alt"></i> Segurança</a></li>
+            </ul>
+        </nav>
+        <section class="profile-content" style="margin-top:32px;background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,0.07);padding:32px 24px;min-height:300px;">
+            <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:16px;">Resumo da Conta</h2>
+            <p style="font-size:1.1rem;color:#555;margin-bottom:24px;">Gerencie suas informações, acesse o painel do cliente, seus pets, sessões, pagamentos e segurança.</p>
+            <!-- Espaço para conteúdo dinâmico das abas -->
+        </section>
+    </section>
+</body>
+</html>
                             <h1 class="content-title">Meu Perfil</h1>
                             <p class="content-subtitle">Gerencie suas informações pessoais</p>
                         </section>

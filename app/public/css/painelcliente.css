@@ -53,9 +53,14 @@ body {
 
 /* Container principal */
 .container {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 32px;
+    background: var(--white);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-light);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 /* Navbar */
@@ -157,26 +162,32 @@ body {
 
 /* Main Content */
 .main-content {
-    padding: 2rem 0;
+    padding: 3rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Welcome Section */
 .welcome-section {
     background: var(--gradient-primary);
     color: var(--white);
-    padding: 2rem;
+    padding: 2.5rem 2rem;
     border-radius: var(--border-radius-large);
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
     box-shadow: var(--shadow-medium);
+    text-align: center;
 }
 
 .welcome-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    font-weight: 700;
+    font-size: 2.7rem;
+    margin-bottom: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
 
 .username {
@@ -214,9 +225,10 @@ body {
 /* Summary Cards */
 .summary-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    justify-content: center;
 }
 
 .summary-card {
@@ -286,8 +298,9 @@ body {
 .dashboard-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+    justify-content: center;
 }
 
 /* Cards gerais */

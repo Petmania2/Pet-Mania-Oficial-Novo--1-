@@ -198,7 +198,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         // Preparar dados para envio
         const dadosLogin = {
             email: emailInput.value.trim(),
-            password: passwordInput.value
+            password: passwordInput.value,
+            tipo: document.querySelector('input[name="tipo"]:checked')?.value || 'cliente'
         };
         
         // Enviar dados para o servidor

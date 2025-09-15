@@ -133,6 +133,8 @@ class AdestradorModel {
   // Buscar todos - otimizado com paginação
   static async buscarTodos(limite = 50, offset = 0) {
     try {
+      limite = Number(limite) || 50;
+      offset = Number(offset) || 0;
       const query = `
         SELECT id, nome, cidade, estado, experiencia, especialidades, preco, sobre 
         FROM adestradores 

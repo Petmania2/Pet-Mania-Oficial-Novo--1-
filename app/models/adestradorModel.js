@@ -20,11 +20,7 @@ class AdestradorModel {
       const especialidadesJson = JSON.stringify(dadosAdestrador.especialidades);
       
       // Query otimizada com prepared statement
-      const query = `
-        INSERT INTO adestradores 
-        (nome, cpf, email, telefone, cidade, estado, experiencia, especialidades, preco, sobre, senha)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `;
+      const query = 'INSERT INTO adestradores (nome, cpf, email, telefone, cidade, estado, experiencia, especialidades, preco, sobre, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
       
       const valores = [
         dadosAdestrador.nome,
@@ -86,13 +82,7 @@ class AdestradorModel {
   // Método combinado para verificar email E CPF de uma vez
   static async verificarDuplicados(email, cpf) {
     try {
-      const query = `
-        SELECT 
-          SUM(CASE WHEN email = ? THEN 1 ELSE 0 END) as email_existe,
-          SUM(CASE WHEN cpf = ? THEN 1 ELSE 0 END) as cpf_existe
-        FROM adestradores 
-        WHERE email = ? OR cpf = ?
-      `;
+      const query = 'SELECT SUM(CASE WHEN email = ? THEN 1 ELSE 0 END) as email_existe, SUM(CASE WHEN cpf = ? THEN 1 ELSE 0 END) as cpf_existe FROM adestradores WHERE email = ? OR cpf = ?';
       const rows = await executeQuery(query, [email, cpf, email, cpf]);
       
       if (rows[0]) {
@@ -133,12 +123,7 @@ class AdestradorModel {
   // Buscar todos - simplificado
   static async buscarTodos() {
     try {
-      const query = `
-        SELECT id, nome, cidade, estado, experiencia, especialidades, preco, sobre 
-        FROM adestradores 
-        WHERE ativo = TRUE
-        ORDER BY nome
-      `;
+      const query = 'SELECT id, nome, cidade, estado, experiencia, especialidades, preco, sobre FROM adestradores WHERE ativo = TRUE ORDER BY nome';
       const rows = await executeQuery(query);
       
       // Converter especialidades de JSON para array
@@ -160,12 +145,7 @@ class AdestradorModel {
  // Buscar por ID - CORRIGIDO para incluir CPF e todos os campos necessários
 static async buscarPorId(id) {
   try {
-    const query = `
-      SELECT id, nome, cpf, cidade, estado, experiencia, especialidades, preco, sobre, email, telefone
-      FROM adestradores 
-      WHERE id = ? AND ativo = TRUE
-      LIMIT 1
-    `;
+    const query = 'SELECT id, nome, cpf, cidade, estado, experiencia, especialidades, preco, sobre, email, telefone FROM adestradores WHERE id = ? AND ativo = TRUE LIMIT 1';
     const rows = await executeQuery(query, [id]);
     
     if (rows.length > 0) {

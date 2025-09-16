@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt');
-const pool = require('../../config/pool_conexoes');
+const { executeQuery } = require('../../config/pool_conexoes');
 
 const ClienteModel = {
   async buscarPorEmail(email) {
-    const [rows] = await pool.query('SELECT id, nome, email, senha FROM clientes WHERE email = ? LIMIT 1', [email]);
+    const rows = await executeQuery('SELECT id, nome, email, senha FROM clientes WHERE email = ? LIMIT 1', [email]);
     return rows[0] || null;
   },
   async verificarSenha(senhaTexto, senhaHash) {
@@ -11,7 +11,7 @@ const ClienteModel = {
   },
   async criarCliente({ nome, email, senha }) {
     const senhaHash = await bcrypt.hash(senha, 8);
-    const [result] = await pool.query('INSERT INTO clientes (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senhaHash]);
+    const result = await executeQuery('INSERT INTO clientes (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senhaHash]);
     return result.insertId;
   }
 };

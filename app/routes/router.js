@@ -5,6 +5,7 @@ const hqController = require("../controllers/hqController");
 const favoritoModel = require("../models/favoritoModel");
 const mercadopago = require('mercadopago');
 const ClienteModel = require("../models/clienteModel");
+const aiChatService = require('../services/aiChatService');
 mercadopago.access_token = process.env.MERCADOPAGO_ACCESS_TOKEN || 'SEU_ACCESS_TOKEN_AQUI';
 
 // Middleware para rate limiting simples (em memória)
@@ -83,7 +84,7 @@ router.get("/cliente.ejs", function (req, res) {
 });
 
 router.get("/meuspets.ejs", function (req, res) {
-  res.render("pages/meupets");    
+  res.render("pages/meuspets");    
 });
 
 router.get("/agendamentoadestrador.ejs", function (req, res) {
@@ -96,10 +97,6 @@ router.get("/clienteadestrador.ejs", function (req, res) {
 
 router.get("/Login.ejs", function (req, res) {
   res.render("pages/Login");    
-});
-
-router.get("/meuspets.ejs", function (req, res) {
-  res.render("pages/meuspets");    
 });
 
 router.get("/mensagensadestrador.ejs", function (req, res) {
@@ -131,7 +128,6 @@ router.get("/paineladestrador.ejs", async function (req, res) {
     res.redirect("/Login.ejs");
   }
 });
-// Substitua a rota atual do perfiladestrador.ejs no arquivo router.js por esta versão corrigida:
 
 router.get("/perfiladestrador.ejs", async function (req, res) {
   // Verificar se o usuário está logado
@@ -156,6 +152,7 @@ router.get("/perfiladestrador.ejs", async function (req, res) {
     res.redirect("/Login.ejs");
   }
 });
+
 router.get("/planosadestrador.ejs", function (req, res) {
   res.render("pages/planosadestrador");    
 });
@@ -172,20 +169,19 @@ router.get("/index.ejs", function (req, res) {
   res.render("pages/index");    
 });
 
-router.get("/painelcliente.ejs", function (req, res) {
+router.get("/painelcliente.ejs", async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.redirect("/Login.ejs");
   }
-  (async () => {
-    try {
-      const pool = require('../config/pool_conexoes');
-      const [rows] = await pool.query('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
-      const cliente = rows[0] || null;
-      res.render("pages/painelcliente", { cliente });
-    } catch (err) {
-      res.render("pages/painelcliente", { cliente: null });
-    }
-  })();
+  try {
+    const { executeQuery } = require('../config/pool_conexoes');
+    const rows = await executeQuery('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
+    const cliente = rows[0] || null;
+    res.render("pages/painelcliente", { cliente });
+  } catch (err) {
+    console.error('Erro ao carregar painel cliente:', err);
+    res.render("pages/painelcliente", { cliente: null });
+  }
 });
 
 router.get("/buscaradestrador.ejs", function (req, res) {
@@ -196,13 +192,33 @@ router.get("/perfilcliente.ejs", async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.redirect("/Login.ejs");
   }
-  const pool = require('../config/pool_conexoes');
-  const [rows] = await pool.query('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
-  const cliente = rows[0] || null;
-  res.render("pages/perfilcliente", { cliente });
+  try {
+    const { executeQuery } = require('../config/pool_conexoes');
+    const rows = await executeQuery('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
+    const cliente = rows[0] || null;
+    res.render("pages/perfilcliente", { cliente });
+  } catch (err) {
+    console.error('Erro ao carregar perfil cliente:', err);
+    res.redirect("/Login.ejs");
+  }
 });
 
 // === ROTAS POST ===
+
+// ROTA DE SUPORTE IA
+router.post('/chat', rateLimit, async (req, res) => {
+  const { message } = req.body;
+  if (!message) {
+    return res.status(400).json({ error: 'Mensagem é obrigatória' });
+  }
+  try {
+    const reply = await aiChatService.processMessage(message);
+    res.json({ reply });
+  } catch (error) {
+    console.error('Erro no chat:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
 router.post("/atualizar-cliente", rateLimit, async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.redirect("/Login.ejs");
@@ -211,14 +227,18 @@ router.post("/atualizar-cliente", rateLimit, async function (req, res) {
   if (!nome || !email) {
     return res.status(400).send("Nome e email são obrigatórios.");
   }
-  const pool = require('../config/pool_conexoes');
-  await pool.query('UPDATE clientes SET nome = ?, email = ? WHERE id = ?', [nome, email, req.session.usuario.id]);
-  // Atualiza sessão
-  req.session.usuario.nome = nome;
-  req.session.usuario.email = email;
-  res.redirect("/perfilcliente.ejs");
+  try {
+    const { executeQuery } = require('../config/pool_conexoes');
+    await executeQuery('UPDATE clientes SET nome = ?, email = ? WHERE id = ?', [nome, email, req.session.usuario.id]);
+    // Atualiza sessão
+    req.session.usuario.nome = nome;
+    req.session.usuario.email = email;
+    res.redirect("/perfilcliente.ejs");
+  } catch (err) {
+    console.error('Erro ao atualizar cliente:', err);
+    res.status(500).send("Erro interno ao atualizar dados.");
+  }
 });
-// SUBSTITUA a rota "/cadastrar-adestrador" no seu router.js por esta versão corrigida:
 
 router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
   try {
@@ -232,6 +252,21 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
       return res.status(400).json({ 
         sucesso: false, 
         erro: "Campos obrigatórios não preenchidos" 
+      });
+    }
+
+    // Validação de senha forte
+    if (password.length < 8) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "A senha deve ter pelo menos 8 caracteres" 
+      });
+    }
+    
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "A senha deve conter pelo menos: 1 letra minúscula, 1 maiúscula e 1 número" 
       });
     }
 
@@ -301,10 +336,18 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
 
     // Criar adestrador no banco
     await AdestradorModel.criar(dadosAdestrador);
+    
+    // Enviar email de boas-vindas
+    try {
+      const emailService = require('../services/emailService');
+      await emailService.enviarEmailBoasVindas(dadosAdestrador.email, dadosAdestrador.nome, 'adestrador');
+    } catch (emailError) {
+      console.error('Erro ao enviar email de boas-vindas:', emailError.message);
+    }
 
     res.json({ 
       sucesso: true, 
-      mensagem: "Cadastro realizado com sucesso! Redirecionando..." 
+      mensagem: "Cadastro realizado com sucesso! Verifique seu email." 
     });
 
   } catch (error) {
@@ -351,7 +394,8 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
     });
   }
 });
-// Rota para login - OTIMIZADA
+
+// Rota para login - OTIMIZADA COM EMAIL
 router.post("/login", rateLimit, async function (req, res) {
   try {
     const { email, password, tipo } = req.body;
@@ -388,12 +432,18 @@ router.post("/login", rateLimit, async function (req, res) {
       tipo: tipo
     };
 
-    // Salvar login do cliente no banco (opcional, se necessário)
-    // await pool.query('UPDATE clientes SET ultimo_login = NOW() WHERE id = ?', [usuario.id]);
+    // Enviar email de boas-vindas (não bloquear o login se falhar)
+    try {
+      const emailService = require('../services/emailService');
+      await emailService.enviarEmailBoasVindas(usuario.email, usuario.nome, tipo);
+    } catch (emailError) {
+      console.error('Erro ao enviar email de boas-vindas:', emailError.message);
+      // Não falhar o login por causa do email
+    }
 
     res.json({ 
       sucesso: true, 
-      mensagem: "Login realizado com sucesso!",
+      mensagem: "Login realizado com sucesso! Verifique seu email.",
       redirecionarPara: tipo === "adestrador" ? "/paineladestrador.ejs" : "/painelcliente.ejs"
     });
 
@@ -434,6 +484,65 @@ router.post("/logout", function (req, res) {
     }
     res.json({ sucesso: true });
   });
+});
+
+// Rota para cadastro de cliente
+router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
+  try {
+    const { nome, email, senha } = req.body;
+    if (!nome || !email || !senha) {
+      return res.status(400).json({ sucesso: false, erro: "Todos os campos são obrigatórios" });
+    }
+    
+    // Validação de senha forte
+    if (senha.length < 8) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "A senha deve ter pelo menos 8 caracteres" 
+      });
+    }
+    
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(senha)) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "A senha deve conter pelo menos: 1 letra minúscula, 1 maiúscula e 1 número" 
+      });
+    }
+    // Verifica se já existe cliente com o mesmo email
+    const existente = await ClienteModel.buscarPorEmail(email);
+    if (existente) {
+      return res.status(400).json({ sucesso: false, erro: "Email já cadastrado" });
+    }
+    // Criptografa a senha
+    const bcrypt = require('bcrypt');
+    const senhaHash = await bcrypt.hash(senha, 10);
+    // Insere no banco
+    const { executeQuery } = require('../config/pool_conexoes');
+    await executeQuery('INSERT INTO clientes (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senhaHash]);
+    // Busca o cliente cadastrado
+    const cliente = await ClienteModel.buscarPorEmail(email);
+    // Cria sessão
+    req.session.usuario = {
+      id: cliente.id,
+      nome: cliente.nome,
+      email: cliente.email,
+      tipo: 'cliente'
+    };
+    
+    // Enviar email de boas-vindas
+    try {
+      const emailService = require('../services/emailService');
+      await emailService.enviarEmailBoasVindas(cliente.email, cliente.nome, 'cliente');
+    } catch (emailError) {
+      console.error('Erro ao enviar email de boas-vindas:', emailError.message);
+    }
+    
+    // Redireciona para perfil do cliente
+    res.json({ sucesso: true, redirecionarPara: "/perfilcliente.ejs" });
+  } catch (error) {
+    console.error("Erro ao cadastrar cliente:", error);
+    res.status(500).json({ sucesso: false, erro: "Erro interno ao cadastrar cliente" });
+  }
 });
 
 // Rotas POST existentes
@@ -513,133 +622,50 @@ router.get('/pagamento-pendente', (req, res) => {
   res.render('pages/pagamento-pendente');
 });
 
-// Rota para cadastro de cliente
-router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
+// Rotas para Chat com IA
+router.post('/chat/send', async (req, res) => {
   try {
-    const { nome, email, senha } = req.body;
-    if (!nome || !email || !senha) {
-      return res.status(400).json({ sucesso: false, erro: "Todos os campos são obrigatórios" });
+    const { message, history } = req.body;
+    
+    if (!message || message.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Mensagem é obrigatória'
+      });
     }
-    // Verifica se já existe cliente com o mesmo email
-    const existente = await ClienteModel.buscarPorEmail(email);
-    if (existente) {
-      return res.status(400).json({ sucesso: false, erro: "Email já cadastrado" });
-    }
-    // Criptografa a senha
-    const bcrypt = require('bcrypt');
-    const senhaHash = await bcrypt.hash(senha, 10);
-    // Insere no banco
-    const pool = require('../config/pool_conexoes');
-    await pool.query('INSERT INTO clientes (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senhaHash]);
-    // Busca o cliente cadastrado
-    const cliente = await ClienteModel.buscarPorEmail(email);
-    // Cria sessão
-    req.session.usuario = {
-      id: cliente.id,
-      nome: cliente.nome,
-      email: cliente.email,
-      tipo: 'cliente'
-    };
-    // Redireciona para perfil do cliente
-    res.json({ sucesso: true, redirecionarPara: "/perfilcliente.ejs" });
+    
+    const aiChatService = require('../services/aiChatService');
+    const response = await aiChatService.sendMessage(message, history || []);
+    
+    res.json(response);
   } catch (error) {
-    console.error("Erro ao cadastrar cliente:", error);
-    res.status(500).json({ sucesso: false, erro: "Erro interno ao cadastrar cliente" });
+    console.error('Erro no chat:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Erro interno do servidor'
+    });
   }
 });
 
-module.exports = router;
-
-// Rota para criar pagamento com Mercado Pago
-router.post('/criar-pagamento', async (req, res) => {
+// Rota de teste para email (remover em produção)
+router.get('/teste-email', async (req, res) => {
   try {
-    const { descricao, valor, token, paymentMethodId, payerEmail, paymentMethod } = req.body;
-    // Pagamento via cartão de crédito (real)
-    if (token && paymentMethodId && payerEmail) {
-      const payment_data = {
-        transaction_amount: parseFloat(valor),
-        token: token,
-        description: descricao,
-        installments: 1,
-        payment_method_id: paymentMethodId,
-        payer: {
-          email: payerEmail
-        }
-      };
-      const payment = await mercadopago.payment.create(payment_data);
-      if (payment.body.status === 'approved') {
-        return res.json({ status: 'approved' });
-      } else {
-        return res.json({ status: payment.body.status });
-      }
-    }
-
-    // Pagamento via Pix
-    if (paymentMethod === 'pix') {
-      preference.payment_methods = { excluded_payment_types: [{ id: 'credit_card' }] };
-      const response = await mercadopago.preferences.create(preference);
-      // Buscar QR Code Pix
-      if (response.body && response.body.init_point) {
-        // Mercado Pago não retorna o QR Code diretamente na preferência, é necessário usar o endpoint de pagamento Pix
-        // Aqui, apenas retorna o link de pagamento Pix (o QR Code será gerado pelo SDK ou pelo usuário)
-        return res.json({ checkout_url: response.body.init_point });
-      }
-      return res.status(500).json({ erro: 'Erro ao gerar pagamento Pix.' });
-    }
-
-    // Checkout padrão (redirecionamento)
-    const response = await mercadopago.preferences.create(preference);
-    res.json({ checkout_url: response.body.init_point });
+    const emailService = require('../services/emailService');
+    const resultado = await emailService.enviarEmailBoasVindas(
+      'teste@exemplo.com', 
+      'Usuário Teste', 
+      'cliente'
+    );
+    res.json({ 
+      sucesso: true, 
+      mensagem: 'Email de teste enviado!', 
+      resultado 
+    });
   } catch (error) {
-    console.error('Erro Mercado Pago:', error);
-    res.status(500).json({ erro: 'Erro ao criar pagamento.' });
-  }
-});
-
-router.get('/pagamento-sucesso', (req, res) => {
-  res.render('pages/pagamento-sucesso');
-});
-
-router.get('/pagamento-falha', (req, res) => {
-  res.render('pages/pagamento-falha');
-});
-
-router.get('/pagamento-pendente', (req, res) => {
-  res.render('pages/pagamento-pendente');
-});
-
-// Rota para cadastro de cliente
-router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
-  try {
-    const { nome, email, senha } = req.body;
-    if (!nome || !email || !senha) {
-      return res.status(400).json({ sucesso: false, erro: "Todos os campos são obrigatórios" });
-    }
-    // Verifica se já existe cliente com o mesmo email
-    const existente = await ClienteModel.buscarPorEmail(email);
-    if (existente) {
-      return res.status(400).json({ sucesso: false, erro: "Email já cadastrado" });
-    }
-    // Criptografa a senha
-    const bcrypt = require('bcrypt');
-    const senhaHash = await bcrypt.hash(senha, 10);
-    // Insere no banco
-    const pool = require('../config/pool_conexoes');
-    await pool.query('INSERT INTO clientes (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senhaHash]);
-    // Busca o cliente cadastrado
-    const cliente = await ClienteModel.buscarPorEmail(email);
-    // Cria sessão
-    req.session.usuario = {
-      id: cliente.id,
-      nome: cliente.nome,
-      email: cliente.email,
-      tipo: 'cliente'
-    };
-    // Redireciona para perfil do cliente
-    res.json({ sucesso: true, redirecionarPara: "/perfilcliente.ejs" });
-  } catch (error) {
-    console.error("Erro ao cadastrar cliente:", error);
-    res.status(500).json({ sucesso: false, erro: "Erro interno ao cadastrar cliente" });
+    res.status(500).json({ 
+      sucesso: false, 
+      erro: error.message 
+    });
   }
 });
 

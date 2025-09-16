@@ -1,0 +1,100 @@
+.ia-support-float {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: #2d2d7a;
+    color: #fff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    cursor: pointer;
+    z-index: 9999;
+    transition: background 0.2s;
+}
+.ia-support-float:hover {
+    background: #4f4fcf;
+}
+.ia-chat-popup {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    right: 32px;
+    width: 320px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    z-index: 10000;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+.ia-chat-header {
+    background: #2d2d7a;
+    color: #fff;
+    padding: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.close-btn {
+    cursor: pointer;
+    font-size: 1.2em;
+}
+.ia-chat-body {
+    padding: 12px;
+    height: 180px;
+    overflow-y: auto;
+    background: #f7f7fa;
+}
+.ia-chat-msg {
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-break: break-word;
+}
+.ia-chat-msg-ia {
+    background: #e6e8fa;
+    color: #2d2d7a;
+    align-self: flex-start;
+}
+.ia-chat-msg-user {
+    background: #2d2d7a;
+    color: #fff;
+    align-self: flex-end;
+    margin-left: auto;
+}
+.ia-chat-footer {
+    display: flex;
+    border-top: 1px solid #eee;
+    padding: 8px;
+    background: #fafaff;
+}
+#iaChatInput {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 1em;
+    outline: none;
+}
+#iaChatSend {
+    background: #2d2d7a;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    margin-left: 8px;
+    padding: 0 16px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#iaChatSend:hover {
+    background: #4f4fcf;
+}

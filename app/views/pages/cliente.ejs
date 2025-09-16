@@ -6,6 +6,11 @@
     <title>Pet Mania - Cadastro de Cliente</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/style-cliente.css">
+    <link rel="stylesheet" href="/css/password-strength.css">
+    <link rel="stylesheet" href="/css/password-toggle.css">
+
+    <link rel="stylesheet" href="/css/ai-chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
  
 </head>
 <body>
@@ -115,16 +120,37 @@
                         <textarea id="descricao" name="descricao" rows="4"></textarea>
                     </section>
                     
-                    <section class="form-row">
-                        <section class="form-group">
-                            <label for="senha">Senha*</label>
-                            <input type="password" id="senha" name="senha" required>
-                            <section class="error-message" id="senhaError">A senha deve ter pelo menos 6 caracteres</section>
-                        </section>
-                        <section class="form-group">
-                            <label for="confirmarSenha">Confirmar Senha*</label>
-                            <input type="password" id="confirmarSenha" name="confirmarSenha" required>
-                            <section class="error-message" id="confirmarSenhaError">As senhas não coincidem</section>
+                    <section class="password-section">
+                        <div class="password-header">
+                            <h3>Defina sua senha</h3>
+                            <button type="button" class="password-toggle-all" onclick="toggleAllPasswords(this)">
+                                <i class="fas fa-eye"></i>
+                                <span>Mostrar senhas</span>
+                            </button>
+                        </div>
+                        
+                        <section class="form-row">
+                            <section class="form-group">
+                                <label for="senha">Senha* <small>(Mínimo 8 caracteres com letras, números e símbolos)</small></label>
+                                <input type="password" id="senha" name="senha" required>
+                                <div class="password-strength">
+                                    <div class="strength-bar">
+                                        <div class="strength-fill" id="strengthFillCliente"></div>
+                                    </div>
+                                    <div class="strength-text" id="strengthTextCliente">Digite uma senha forte</div>
+                                </div>
+                                <section class="error-message" id="senhaError">A senha deve ter pelo menos 8 caracteres</section>
+                            </section>
+                            
+                            <section class="form-group">
+                                <label for="confirmarSenha">Confirmar Senha*</label>
+                                <input type="password" id="confirmarSenha" name="confirmarSenha" required>
+                                <div class="password-match" id="passwordMatchCliente">
+                                    <div class="match-icon" id="matchIconCliente">✓</div>
+                                    <div class="match-text" id="matchTextCliente">Senhas coincidem</div>
+                                </div>
+                                <section class="error-message" id="confirmarSenhaError">As senhas não coincidem</section>
+                            </section>
                         </section>
                     </section>
                     
@@ -190,11 +216,12 @@
         </section>
     </footer>
 
-    <!-- Whatsapp Float Button -->
-    <a href="https://wa.me/5500000000000" class="whatsapp-float" target="_blank">
-        <span>WA</span>
-    </a>
 
+
+   <script src="/js/password-strength.js"></script>
+   <script src="/js/password-toggle.js"></script>
+
+   <script src="/js/ai-chat.js"></script>
    <script src="/js/script-cliente.js"></script>
   
 </body>

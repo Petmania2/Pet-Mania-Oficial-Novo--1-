@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pet Mania - Cadastro de Adestrador</title>
-        <link rel="stylesheet" href="/css/style-cadastroadestrador.css">
+    <link rel="stylesheet" href="/css/style-cadastroadestrador.css">
+    <link rel="stylesheet" href="/css/password-strength.css">
+
+    <link rel="stylesheet" href="/css/ai-chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
 </head>
 <body>
@@ -157,14 +161,24 @@
                     </section>
                     
                     <section class="form-group">
-                        <label for="password">Senha*</label>
-                        <input type="password" id="password" name="password" required>
-                        <section class="error-message">A senha deve ter pelo menos 8 caracteres, incluindo letras e números</section>
+                        <label for="password" style="display: inline-block; vertical-align: middle; margin-right: 10px;">Senha* <small>(Mínimo 8 caracteres com letras, números e símbolos)</small></label>
+                        <input type="password" id="password" name="password" required style="display: inline-block; vertical-align: middle; width: 220px; margin-right: 10px;">
+                        <div class="password-strength" style="display: inline-block; vertical-align: middle; width: 180px; margin-right: 10px;">
+                            <div class="strength-bar" style="height: 8px; background: #eee; border-radius: 4px;">
+                                <div class="strength-fill" id="strengthFill" style="height: 8px; border-radius: 4px;"></div>
+                            </div>
+                            <div class="strength-text" id="strengthText" style="font-size: 12px; margin-top: 2px;">Digite uma senha forte</div>
+                        </div>
+                        <section class="error-message" style="display: inline-block; vertical-align: middle; color: #d9534f; font-size: 12px; margin-left: 10px;">A senha deve ter pelo menos 8 caracteres, incluindo letras e números</section>
                     </section>
                     
-                    <section class="form-group">
+                    <section class="form-group"><p></p>
                         <label for="confirmPassword">Confirmar Senha*</label>
                         <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        <div class="password-match" id="passwordMatch">
+                            <div class="match-icon" id="matchIcon">✓</div>
+                            <div class="match-text" id="matchText">Senhas coincidem</div>
+                        </div>
                         <section class="error-message">As senhas não conferem</section>
                     </section>
                     
@@ -183,6 +197,11 @@
         </section>
     </section>
 
+
+
+<script src="/js/password-strength.js"></script>
+
+<script src="/js/ai-chat.js"></script>
 <script src="/js/script-cadastroades.js"></script>
 
 </body>

@@ -130,19 +130,16 @@ class AdestradorModel {
     }
   }
   
-  // Buscar todos - otimizado com paginação
-  static async buscarTodos(limite = 50, offset = 0) {
+  // Buscar todos - simplificado
+  static async buscarTodos() {
     try {
-      limite = Number(limite) || 50;
-      offset = Number(offset) || 0;
       const query = `
         SELECT id, nome, cidade, estado, experiencia, especialidades, preco, sobre 
         FROM adestradores 
         WHERE ativo = TRUE
         ORDER BY nome
-        LIMIT ? OFFSET ?
       `;
-      const rows = await executeQuery(query, [limite, offset]);
+      const rows = await executeQuery(query);
       
       // Converter especialidades de JSON para array
       return rows.map(adestrador => {

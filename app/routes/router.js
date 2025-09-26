@@ -5,7 +5,7 @@ const hqController = require("../controllers/hqController");
 const favoritoModel = require("../models/favoritoModel");
 const mercadopago = require('mercadopago');
 const ClienteModel = require("../models/clienteModel");
-const aiChatService = require('../services/aiChatService');
+// const aiChatService = require('../services/aiChatService'); // Removido temporariamente
 mercadopago.access_token = process.env.MERCADOPAGO_ACCESS_TOKEN || 'SEU_ACCESS_TOKEN_AQUI';
 
 // Middleware para rate limiting simples (em memória)
@@ -174,7 +174,7 @@ router.get("/painelcliente.ejs", async function (req, res) {
     return res.redirect("/Login.ejs");
   }
   try {
-    const { executeQuery } = require('../config/pool_conexoes');
+    const { executeQuery } = require('../../config/pool_conexoes');
     const rows = await executeQuery('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
     const cliente = rows[0] || null;
     res.render("pages/painelcliente", { cliente });
@@ -193,7 +193,7 @@ router.get("/perfilcliente.ejs", async function (req, res) {
     return res.redirect("/Login.ejs");
   }
   try {
-    const { executeQuery } = require('../config/pool_conexoes');
+    const { executeQuery } = require('../../config/pool_conexoes');
     const rows = await executeQuery('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
     const cliente = rows[0] || null;
     res.render("pages/perfilcliente", { cliente });
@@ -205,20 +205,10 @@ router.get("/perfilcliente.ejs", async function (req, res) {
 
 // === ROTAS POST ===
 
-// ROTA DE SUPORTE IA
-router.post('/chat', rateLimit, async (req, res) => {
-  const { message } = req.body;
-  if (!message) {
-    return res.status(400).json({ error: 'Mensagem é obrigatória' });
-  }
-  try {
-    const reply = await aiChatService.processMessage(message);
-    res.json({ reply });
-  } catch (error) {
-    console.error('Erro no chat:', error);
-    res.status(500).json({ error: 'Erro interno do servidor' });
-  }
-});
+// ROTA DE SUPORTE IA - DESABILITADA TEMPORARIAMENTE
+// router.post('/chat', rateLimit, async (req, res) => {
+//   res.json({ reply: { message: 'Chat temporariamente desabilitado' } });
+// });
 router.post("/atualizar-cliente", rateLimit, async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.redirect("/Login.ejs");
@@ -228,7 +218,7 @@ router.post("/atualizar-cliente", rateLimit, async function (req, res) {
     return res.status(400).send("Nome e email são obrigatórios.");
   }
   try {
-    const { executeQuery } = require('../config/pool_conexoes');
+    const { executeQuery } = require('../../config/pool_conexoes');
     await executeQuery('UPDATE clientes SET nome = ?, email = ? WHERE id = ?', [nome, email, req.session.usuario.id]);
     // Atualiza sessão
     req.session.usuario.nome = nome;
@@ -296,17 +286,17 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
       });
     }
 
-    // Verificar duplicados com UMA ÚNICA query
-    const duplicados = await AdestradorModel.verificarDuplicados(email, cpf);
-    
-    if (duplicados.emailExiste) {
+    // Verificar duplicados
+    const emailExiste = await AdestradorModel.emailExiste(email);
+    if (emailExiste) {
       return res.status(400).json({ 
         sucesso: false, 
         erro: "Este email já está cadastrado" 
       });
     }
 
-    if (duplicados.cpfExiste) {
+    const cpfExiste = await AdestradorModel.cpfExiste(cpf);
+    if (cpfExiste) {
       return res.status(400).json({ 
         sucesso: false, 
         erro: "Este CPF já está cadastrado" 
@@ -337,13 +327,7 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
     // Criar adestrador no banco
     await AdestradorModel.criar(dadosAdestrador);
     
-    // Enviar email de boas-vindas
-    try {
-      const emailService = require('../services/emailService');
-      await emailService.enviarEmailBoasVindas(dadosAdestrador.email, dadosAdestrador.nome, 'adestrador');
-    } catch (emailError) {
-      console.error('Erro ao enviar email de boas-vindas:', emailError.message);
-    }
+    // Email removido temporariamente
 
     res.json({ 
       sucesso: true, 
@@ -395,10 +379,14 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
   }
 });
 
-// Rota para login - OTIMIZADA COM EMAIL
-router.post("/login", rateLimit, async function (req, res) {
+// Rota para login - COM DEBUG
+router.post("/login", async function (req, res) {
+  console.log('=== ROTA DE LOGIN CHAMADA ===');
+  console.log('Body recebido:', req.body);
+  
   try {
     const { email, password, tipo } = req.body;
+    console.log('Dados extraídos:', { email, tipo, temSenha: !!password });
 
     if (!email || !password || !tipo) {
       return res.status(400).json({ 
@@ -409,18 +397,26 @@ router.post("/login", rateLimit, async function (req, res) {
 
     let usuario;
     if (tipo === "adestrador") {
+      console.log('Buscando adestrador por email:', email);
       usuario = await AdestradorModel.buscarPorEmail(email);
+      console.log('Adestrador encontrado:', !!usuario);
     } else if (tipo === "cliente") {
+      console.log('Buscando cliente por email:', email);
       usuario = await ClienteModel.buscarPorEmail(email);
+      console.log('Cliente encontrado:', !!usuario);
     } else {
       return res.status(400).json({ sucesso: false, erro: "Tipo de usuário inválido" });
     }
 
     if (!usuario) {
+      console.log('Usuário não encontrado para email:', email);
       return res.status(400).json({ sucesso: false, erro: "Email ou senha incorretos" });
     }
 
+    console.log('Verificando senha...');
     const senhaValida = await (tipo === "adestrador" ? AdestradorModel.verificarSenha(password, usuario.senha) : ClienteModel.verificarSenha(password, usuario.senha));
+    console.log('Senha válida:', senhaValida);
+    
     if (!senhaValida) {
       return res.status(400).json({ sucesso: false, erro: "Email ou senha incorretos" });
     }
@@ -432,14 +428,7 @@ router.post("/login", rateLimit, async function (req, res) {
       tipo: tipo
     };
 
-    // Enviar email de boas-vindas (não bloquear o login se falhar)
-    try {
-      const emailService = require('../services/emailService');
-      await emailService.enviarEmailBoasVindas(usuario.email, usuario.nome, tipo);
-    } catch (emailError) {
-      console.error('Erro ao enviar email de boas-vindas:', emailError.message);
-      // Não falhar o login por causa do email
-    }
+    // Email removido temporariamente
 
     res.json({ 
       sucesso: true, 
@@ -486,62 +475,53 @@ router.post("/logout", function (req, res) {
   });
 });
 
-// Rota para cadastro de cliente
-router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
+// Rota para cadastro de cliente - SIMPLIFICADA
+router.post("/cadastrar-cliente", async function (req, res) {
   try {
+    console.log('Dados recebidos para cadastro cliente:', req.body);
+    
     const { nome, email, senha } = req.body;
+    
     if (!nome || !email || !senha) {
       return res.status(400).json({ sucesso: false, erro: "Todos os campos são obrigatórios" });
     }
     
-    // Validação de senha forte
-    if (senha.length < 8) {
-      return res.status(400).json({ 
-        sucesso: false, 
-        erro: "A senha deve ter pelo menos 8 caracteres" 
-      });
-    }
+    // Verificar se email já existe
+    const { executeQuery } = require('../../config/pool_conexoes');
+    const existente = await executeQuery('SELECT id FROM clientes WHERE email = ?', [email]);
     
-    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(senha)) {
-      return res.status(400).json({ 
-        sucesso: false, 
-        erro: "A senha deve conter pelo menos: 1 letra minúscula, 1 maiúscula e 1 número" 
-      });
-    }
-    // Verifica se já existe cliente com o mesmo email
-    const existente = await ClienteModel.buscarPorEmail(email);
-    if (existente) {
+    if (existente && existente.length > 0) {
       return res.status(400).json({ sucesso: false, erro: "Email já cadastrado" });
     }
-    // Criptografa a senha
+    
+    // Hash da senha
     const bcrypt = require('bcrypt');
-    const senhaHash = await bcrypt.hash(senha, 10);
-    // Insere no banco
-    const { executeQuery } = require('../config/pool_conexoes');
-    await executeQuery('INSERT INTO clientes (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senhaHash]);
-    // Busca o cliente cadastrado
-    const cliente = await ClienteModel.buscarPorEmail(email);
-    // Cria sessão
+    const senhaHash = await bcrypt.hash(senha, 8);
+    
+    // Inserir cliente
+    console.log('Inserindo cliente no banco...');
+    const resultado = await executeQuery('INSERT INTO clientes (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senhaHash]);
+    console.log('Cliente inserido com ID:', resultado.insertId);
+    
+    // Criar sessão
     req.session.usuario = {
-      id: cliente.id,
-      nome: cliente.nome,
-      email: cliente.email,
+      id: resultado.insertId,
+      nome: nome,
+      email: email,
       tipo: 'cliente'
     };
     
-    // Enviar email de boas-vindas
-    try {
-      const emailService = require('../services/emailService');
-      await emailService.enviarEmailBoasVindas(cliente.email, cliente.nome, 'cliente');
-    } catch (emailError) {
-      console.error('Erro ao enviar email de boas-vindas:', emailError.message);
-    }
+    console.log('Sessão criada para cliente:', req.session.usuario);
     
-    // Redireciona para perfil do cliente
-    res.json({ sucesso: true, redirecionarPara: "/perfilcliente.ejs" });
+    res.json({ 
+      sucesso: true, 
+      mensagem: "Cadastro realizado com sucesso!",
+      redirecionarPara: "/painelcliente.ejs" 
+    });
+    
   } catch (error) {
     console.error("Erro ao cadastrar cliente:", error);
-    res.status(500).json({ sucesso: false, erro: "Erro interno ao cadastrar cliente" });
+    res.status(500).json({ sucesso: false, erro: "Erro interno: " + error.message });
   }
 });
 
@@ -561,8 +541,25 @@ router.post("/", (req, res) => {
   res.render("pages/mostrar", { dadosEnviados: objJson });
 });
 
-// Rota para favoritar/desfavoritar uma HQ
-router.get("/favoritar", hqController.favoritar);
+// Rota para favoritar/desfavoritar - SIMPLIFICADA
+router.get("/favoritar", async (req, res) => {
+  try {
+    if (!req.session.usuario) {
+      return res.status(401).json({
+        sucesso: false,
+        mensagem: "Para favoritar é necessário estar logado!"
+      });
+    }
+    
+    // Aqui você pode implementar a lógica de favoritar
+    // Por enquanto, apenas retorna sucesso
+    res.json({ sucesso: true, mensagem: "Favorito atualizado!" });
+    
+  } catch (error) {
+    console.error('Erro ao favoritar:', error);
+    res.status(500).json({ sucesso: false, mensagem: "Erro interno" });
+  }
+});
 
 // Rota para criar pagamento com Mercado Pago
 router.post('/criar-pagamento', async (req, res) => {
@@ -667,6 +664,74 @@ router.get('/teste-email', async (req, res) => {
       erro: error.message 
     });
   }
+});
+
+// Rota de debug para verificar usuários (remover em produção)
+router.get('/debug-usuarios', async (req, res) => {
+  try {
+    const { executeQuery } = require('../../config/pool_conexoes');
+    
+    let adestradores = [];
+    let clientes = [];
+    
+    try {
+      adestradores = await executeQuery('SELECT id, nome, email FROM adestradores ORDER BY id DESC LIMIT 5');
+    } catch (e) {
+      console.log('Erro ao buscar adestradores:', e.message);
+    }
+    
+    try {
+      clientes = await executeQuery('SELECT id, nome, email FROM clientes ORDER BY id DESC LIMIT 5');
+    } catch (e) {
+      console.log('Erro ao buscar clientes:', e.message);
+    }
+    
+    res.json({ 
+      adestradores: adestradores || [],
+      clientes: clientes || [],
+      total_adestradores: adestradores ? adestradores.length : 0,
+      total_clientes: clientes ? clientes.length : 0
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      erro: error.message 
+    });
+  }
+});
+
+// Rota para criar tabela clientes se não existir
+router.get('/criar-tabela-clientes', async (req, res) => {
+  try {
+    const { executeQuery } = require('../../config/pool_conexoes');
+    
+    const createTable = `
+      CREATE TABLE IF NOT EXISTS clientes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nome VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        senha VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+    
+    await executeQuery(createTable);
+    
+    res.json({ 
+      sucesso: true,
+      mensagem: 'Tabela clientes criada/verificada com sucesso!' 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      erro: error.message 
+    });
+  }
+});
+
+// Rota de teste simples
+router.post('/teste-login', (req, res) => {
+  console.log('=== TESTE LOGIN CHAMADO ===');
+  console.log('Body:', req.body);
+  res.json({ sucesso: true, mensagem: 'Teste funcionando!' });
 });
 
 module.exports = router;

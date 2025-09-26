@@ -3,7 +3,9 @@ const { executeQuery } = require('../../config/pool_conexoes');
 
 const ClienteModel = {
   async buscarPorEmail(email) {
-    const rows = await executeQuery('SELECT id, nome, email, senha FROM clientes WHERE email = ? LIMIT 1', [email]);
+    console.log('Buscando cliente com email:', email);
+    const rows = await executeQuery('SELECT id, nome, email, senha FROM clientes WHERE email = ?', [email]);
+    console.log('Resultado da busca cliente:', rows.length > 0 ? 'Encontrado' : 'Não encontrado');
     return rows[0] || null;
   },
   async verificarSenha(senhaTexto, senhaHash) {

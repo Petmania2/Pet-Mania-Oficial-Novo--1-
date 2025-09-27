@@ -5,24 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagamento Pendente - Pet Mania</title>
     <link rel="stylesheet" href="/css/style-adestrador.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        .pending-container { text-align: center; padding: 60px 20px; }
-        .pending-icon { font-size: 64px; color: #fbc02d; margin-bottom: 20px; }
-        .pending-title { font-size: 2.2rem; margin-bottom: 10px; }
-        .pending-message { font-size: 1.2rem; margin-bottom: 30px; }
-        .btn-voltar { background: #fbc02d; color: #fff; padding: 12px 32px; border-radius: 8px; font-size: 1rem; text-decoration: none; transition: background 0.2s; }
-        .btn-voltar:hover { background: #f9a825; }
+        .pending-container { text-align: center; padding: 3rem; max-width: 600px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .pending-icon { font-size: 4rem; color: #FF9800; margin-bottom: 1rem; }
+        .pending-title { color: #F57C00; font-size: 2rem; margin-bottom: 1rem; }
+        .pending-message { color: #666; font-size: 1.1rem; margin-bottom: 2rem; }
+        .btn-return { background: #FF9800; color: white; padding: 12px 24px; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-block; }
     </style>
 </head>
 <body>
-    <section class="pending-container">
-        <section class="pending-icon">
-            <i class="fas fa-hourglass-half"></i>
-        </section>
-        <h1 class="pending-title">Pagamento pendente</h1>
-        <p class="pending-message">Seu pagamento está sendo processado. Você será notificado assim que for aprovado.</p>
-        <a href="/paineladestrador.ejs" class="btn-voltar">Voltar ao painel</a>
-    </section>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <div class="pending-container">
+        <i class="fas fa-clock pending-icon"></i>
+        <h1 class="pending-title">Pagamento Pendente</h1>
+        <p class="pending-message">Seu pagamento está sendo processado. Você receberá uma confirmação em breve por email.</p>
+        <a href="/paineladestrador.ejs" class="btn-return">Voltar ao Painel</a>
+    </div>
 </body>
 </html>

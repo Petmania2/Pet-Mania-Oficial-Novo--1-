@@ -3,26 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamento Falhou - Pet Mania</title>
+    <title>Pagamento Rejeitado - Pet Mania</title>
     <link rel="stylesheet" href="/css/style-adestrador.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        .fail-container { text-align: center; padding: 60px 20px; }
-        .fail-icon { font-size: 64px; color: #e53935; margin-bottom: 20px; }
-        .fail-title { font-size: 2.2rem; margin-bottom: 10px; }
-        .fail-message { font-size: 1.2rem; margin-bottom: 30px; }
-        .btn-tentar { background: #e53935; color: #fff; padding: 12px 32px; border-radius: 8px; font-size: 1rem; text-decoration: none; transition: background 0.2s; }
-        .btn-tentar:hover { background: #b71c1c; }
+        .error-container { text-align: center; padding: 3rem; max-width: 600px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .error-icon { font-size: 4rem; color: #f44336; margin-bottom: 1rem; }
+        .error-title { color: #d32f2f; font-size: 2rem; margin-bottom: 1rem; }
+        .error-message { color: #666; font-size: 1.1rem; margin-bottom: 2rem; }
+        .btn-retry { background: #2196F3; color: white; padding: 12px 24px; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-block; margin-right: 1rem; }
+        .btn-return { background: #666; color: white; padding: 12px 24px; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-block; }
     </style>
 </head>
 <body>
-    <section class="fail-container">
-        <section class="fail-icon">
-            <i class="fas fa-times-circle"></i>
-        </section>
-        <h1 class="fail-title">Pagamento não realizado</h1>
-        <p class="fail-message">Ocorreu um erro ou o pagamento foi cancelado. Tente novamente ou escolha outro método.</p>
-        <a href="/planosadestrador.ejs" class="btn-tentar">Tentar novamente</a>
-    </section>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <div class="error-container">
+        <i class="fas fa-times-circle error-icon"></i>
+        <h1 class="error-title">Pagamento Rejeitado</h1>
+        <p class="error-message">Houve um problema com seu pagamento. Verifique os dados do cartão ou tente outro método de pagamento.</p>
+        <a href="/planosadestrador.ejs" class="btn-retry">Tentar Novamente</a>
+        <a href="/paineladestrador.ejs" class="btn-return">Voltar ao Painel</a>
+    </div>
 </body>
 </html>

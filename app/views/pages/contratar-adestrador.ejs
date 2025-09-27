@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contratar Adestrador - Pet Mania</title>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <style>
+        .adestrador-card { border: 1px solid #ddd; padding: 20px; margin: 10px; border-radius: 8px; }
+        .btn-contratar { background: #009ee3; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        #wallet_container { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Contratar Adestrador</h1>
+    
+    <div class="adestrador-card">
+        <h3>João Silva - Adestrador Profissional</h3>
+        <p><strong>Especialidade:</strong> Adestramento básico e comportamental</p>
+        <p><strong>Experiência:</strong> 8 anos</p>
+        <p><strong>Avaliação:</strong> ⭐⭐⭐⭐⭐ (4.9/5)</p>
+        <p><strong>Valor:</strong> R$ 150,00 por sessão</p>
+        <button class="btn-contratar" onclick="contratarAdestrador('1')">Contratar Adestrador</button>
+    </div>
+    
+    <div class="adestrador-card">
+        <h3>Maria Santos - Especialista em Comportamento</h3>
+        <p><strong>Especialidade:</strong> Correção de comportamentos agressivos</p>
+        <p><strong>Experiência:</strong> 12 anos</p>
+        <p><strong>Avaliação:</strong> ⭐⭐⭐⭐⭐ (5.0/5)</p>
+        <p><strong>Valor:</strong> R$ 200,00 por sessão</p>
+        <button class="btn-contratar" onclick="contratarAdestrador('2')">Contratar Adestrador</button>
+    </div>
+    
+    <div id="wallet_container"></div>
+    
+    <script>
+        function contratarAdestrador(adestradorId) {
+            fetch('/contratar-adestrador', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ adestradorId: adestradorId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.initPoint) {
+                    window.open(data.initPoint, '_blank');
+                } else {
+                    alert('Erro: ' + (data.erro || 'Erro desconhecido'));
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao processar pagamento');
+            });
+        }
+    </script>
+</body>
+</html>

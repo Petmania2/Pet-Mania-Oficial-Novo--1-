@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function iaReply(userMsg) {
         appendMsg('...', 'ia-chat-msg-ia');
         try {
-            const res = await fetch('/chat', {
+            const res = await fetch('/chat/send', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: userMsg })
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Remove o placeholder
             const lastIaMsg = chatBody.querySelector('.ia-chat-msg-ia:last-child');
             if (lastIaMsg) lastIaMsg.remove();
-            appendMsg(data.reply || data.error || 'Erro ao obter resposta da IA.', 'ia-chat-msg-ia');
+            appendMsg(data.message || data.error || 'Erro ao obter resposta da IA.', 'ia-chat-msg-ia');
         } catch (err) {
             const lastIaMsg = chatBody.querySelector('.ia-chat-msg-ia:last-child');
             if (lastIaMsg) lastIaMsg.remove();

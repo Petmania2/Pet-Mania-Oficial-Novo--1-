@@ -53,6 +53,16 @@ async function executeQuery(query, params = []) {
 }
 
 // Teste de conexão simples
+// Função para fechar o pool de conexões
+async function closePool() {
+    try {
+        await pool.end();
+        console.log('Pool de conexões fechado com sucesso');
+    } catch (error) {
+        console.error('Erro ao fechar pool de conexões:', error.message);
+        throw error;
+    }
+}
 async function testConnection() {
     try {
         await executeQuery('SELECT 1 as test');
@@ -67,5 +77,6 @@ async function testConnection() {
 module.exports = {
     pool,
     executeQuery,
-    testConnection
+    testConnection,
+    closePool
 };

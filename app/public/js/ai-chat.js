@@ -124,7 +124,7 @@ class AIChat {
         this.showTypingIndicator();
 
         try {
-            const response = await fetch('/chat', {
+            const response = await fetch('/chat/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

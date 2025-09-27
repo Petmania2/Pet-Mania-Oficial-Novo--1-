@@ -5,8 +5,11 @@ const hqController = require("../controllers/hqController");
 const favoritoModel = require("../models/favoritoModel");
 const mercadopago = require('mercadopago');
 const ClienteModel = require("../models/clienteModel");
-// const aiChatService = require('../services/aiChatService'); // Removido temporariamente
-mercadopago.access_token = process.env.MERCADOPAGO_ACCESS_TOKEN || 'SEU_ACCESS_TOKEN_AQUI';
+
+// Configuração do Mercado Pago versão 1.x
+mercadopago.configure({
+  access_token: process.env.MP_ACCESS_TOKEN
+});
 
 // Middleware para rate limiting simples (em memória)
 const rateLimitMap = new Map();
@@ -205,10 +208,6 @@ router.get("/perfilcliente.ejs", async function (req, res) {
 
 // === ROTAS POST ===
 
-// ROTA DE SUPORTE IA - DESABILITADA TEMPORARIAMENTE
-// router.post('/chat', rateLimit, async (req, res) => {
-//   res.json({ reply: { message: 'Chat temporariamente desabilitado' } });
-// });
 router.post("/atualizar-cliente", rateLimit, async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.redirect("/Login.ejs");
@@ -564,46 +563,41 @@ router.get("/favoritar", async (req, res) => {
 // Rota para criar pagamento com Mercado Pago
 router.post('/criar-pagamento', async (req, res) => {
   try {
-    const { descricao, valor, token, paymentMethodId, payerEmail, paymentMethod } = req.body;
-    // Pagamento via cartão de crédito (real)
-    if (token && paymentMethodId && payerEmail) {
-      const payment_data = {
-        transaction_amount: parseFloat(valor),
-        token: token,
-        description: descricao,
-        installments: 1,
-        payment_method_id: paymentMethodId,
-        payer: {
-          email: payerEmail
-        }
-      };
-      const payment = await mercadopago.payment.create(payment_data);
-      if (payment.body.status === 'approved') {
-        return res.json({ status: 'approved' });
-      } else {
-        return res.json({ status: payment.body.status });
-      }
+    console.log('=== CRIAR PAGAMENTO ===');
+    console.log('Body:', req.body);
+    console.log('Token MP configurado:', !!process.env.MP_ACCESS_TOKEN);
+    
+    const { descricao, valor } = req.body;
+    
+    if (!descricao || !valor) {
+      return res.status(400).json({ erro: 'Descrição e valor são obrigatórios' });
     }
 
-    // Pagamento via Pix
-    if (paymentMethod === 'pix') {
-      preference.payment_methods = { excluded_payment_types: [{ id: 'credit_card' }] };
-      const response = await mercadopago.preferences.create(preference);
-      // Buscar QR Code Pix
-      if (response.body && response.body.init_point) {
-        // Mercado Pago não retorna o QR Code diretamente na preferência, é necessário usar o endpoint de pagamento Pix
-        // Aqui, apenas retorna o link de pagamento Pix (o QR Code será gerado pelo SDK ou pelo usuário)
-        return res.json({ checkout_url: response.body.init_point });
-      }
-      return res.status(500).json({ erro: 'Erro ao gerar pagamento Pix.' });
-    }
+    const preference = {
+      items: [{
+        title: descricao,
+        quantity: 1,
+        unit_price: parseFloat(valor),
+        currency_id: 'BRL'
+      }]
+    };
 
-    // Checkout padrão (redirecionamento)
+    console.log('Preferência:', preference);
     const response = await mercadopago.preferences.create(preference);
+    console.log('Resposta MP:', response.body);
+    
     res.json({ checkout_url: response.body.init_point });
+    
   } catch (error) {
-    console.error('Erro Mercado Pago:', error);
-    res.status(500).json({ erro: 'Erro ao criar pagamento.' });
+    console.error('=== ERRO MERCADO PAGO ===');
+    console.error('Mensagem:', error.message);
+    console.error('Stack:', error.stack);
+    console.error('Erro completo:', error);
+    res.status(500).json({ 
+      erro: 'Erro ao criar pagamento',
+      detalhes: error.message,
+      stack: error.stack
+    });
   }
 });
 
@@ -619,10 +613,10 @@ router.get('/pagamento-pendente', (req, res) => {
   res.render('pages/pagamento-pendente');
 });
 
-// Rotas para Chat com IA
+// Rotas para Chat com respostas programadas
 router.post('/chat/send', async (req, res) => {
   try {
-    const { message, history } = req.body;
+    const { message } = req.body;
     
     if (!message || message.trim().length === 0) {
       return res.status(400).json({
@@ -632,7 +626,7 @@ router.post('/chat/send', async (req, res) => {
     }
     
     const aiChatService = require('../services/aiChatService');
-    const response = await aiChatService.sendMessage(message, history || []);
+    const response = await aiChatService.sendMessage(message);
     
     res.json(response);
   } catch (error) {
@@ -640,28 +634,6 @@ router.post('/chat/send', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Erro interno do servidor'
-    });
-  }
-});
-
-// Rota de teste para email (remover em produção)
-router.get('/teste-email', async (req, res) => {
-  try {
-    const emailService = require('../services/emailService');
-    const resultado = await emailService.enviarEmailBoasVindas(
-      'teste@exemplo.com', 
-      'Usuário Teste', 
-      'cliente'
-    );
-    res.json({ 
-      sucesso: true, 
-      mensagem: 'Email de teste enviado!', 
-      resultado 
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      sucesso: false, 
-      erro: error.message 
     });
   }
 });
@@ -732,6 +704,112 @@ router.post('/teste-login', (req, res) => {
   console.log('=== TESTE LOGIN CHAMADO ===');
   console.log('Body:', req.body);
   res.json({ sucesso: true, mensagem: 'Teste funcionando!' });
+});
+
+// Rota para página de contratação
+router.get('/contratar-adestrador', (req, res) => {
+  res.render('pages/contratar-adestrador');
+});
+
+// Rota para teste simples
+router.get('/teste-checkout', (req, res) => {
+  res.render('pages/teste-checkout');
+});
+
+// Rota para processar contratação
+router.post('/contratar-adestrador', async (req, res) => {
+  console.log('=== CONTRATAÇÃO INICIADA ===');
+  console.log('Body:', req.body);
+  console.log('MP Token:', process.env.MP_ACCESS_TOKEN ? 'Configurado' : 'Não configurado');
+  
+  try {
+    const { adestradorId } = req.body;
+    
+    if (!adestradorId) {
+      return res.status(400).json({ erro: 'ID do adestrador é obrigatório' });
+    }
+    
+    const adestradores = {
+      '1': { nome: 'João Silva', preco: 150.00 },
+      '2': { nome: 'Maria Santos', preco: 200.00 }
+    };
+    
+    const adestrador = adestradores[adestradorId];
+    console.log('Adestrador encontrado:', adestrador);
+    
+    if (!adestrador) {
+      return res.status(400).json({ erro: 'Adestrador não encontrado' });
+    }
+    
+    const preference = {
+      items: [{
+        title: `Sessão com ${adestrador.nome}`,
+        quantity: 1,
+        unit_price: adestrador.preco,
+        currency_id: 'BRL'
+      }]
+    };
+    
+    console.log('Preferência criada:', preference);
+    
+    const result = await mercadopago.preferences.create(preference);
+    console.log('Resultado MP:', result.body);
+    
+    res.json({ 
+      sucesso: true,
+      preferenceId: result.body.id, 
+      initPoint: result.body.init_point 
+    });
+    
+  } catch (error) {
+    console.error('=== ERRO COMPLETO ===');
+    console.error('Mensagem:', error.message);
+    console.error('Código:', error.code);
+    console.error('Status:', error.status);
+    console.error('Stack:', error.stack);
+    
+    res.status(500).json({ 
+      erro: 'Erro interno',
+      detalhes: error.message 
+    });
+  }
+});
+
+// Rotas de retorno
+router.get('/contratacao-sucesso', (req, res) => {
+  res.send('<h1>Contratação realizada com sucesso!</h1>');
+});
+
+router.get('/contratacao-falha', (req, res) => {
+  res.send('<h1>Falha na contratação</h1>');
+});
+
+router.get('/contratacao-pendente', (req, res) => {
+  res.send('<h1>Pagamento pendente</h1>');
+});
+
+// Rota de teste Mercado Pago
+router.get('/teste-mp', async (req, res) => {
+  try {
+    const preference = {
+      items: [{
+        title: 'Teste Pet Mania',
+        quantity: 1,
+        unit_price: 10.00,
+        currency_id: 'BRL'
+      }]
+    };
+    const result = await mercadopago.preferences.create(preference);
+    res.json({ sucesso: true, init_point: result.body.init_point });
+  } catch (error) {
+    res.json({ sucesso: false, erro: error.message });
+  }
+});
+
+// Webhook para receber notificações do Mercado Pago
+router.post('/webhook/mercadopago', (req, res) => {
+  console.log('Webhook Mercado Pago:', req.body);
+  res.status(200).send('OK');
 });
 
 module.exports = router;

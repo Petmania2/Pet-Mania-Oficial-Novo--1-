@@ -1,3 +1,29 @@
+<script>
+// Integração Mercado Pago Checkout
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.trainer-btn').forEach(function(btn) {
+        btn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const card = btn.closest('.trainer-card');
+            const name = card.querySelector('.trainer-name').textContent.trim();
+            const specialty = card.querySelector('.trainer-specialty').textContent.trim();
+            const price = card.querySelector('.price-value').textContent.replace('R$','').replace(',','.').trim();
+            // Envia dados ao backend
+            const res = await fetch('/criar-preferencia', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: `Adestramento com ${name}`, price, quantity: 1 })
+            });
+            const data = await res.json();
+            if (data.initPoint) {
+                window.location.href = data.initPoint;
+            } else {
+                alert('Erro ao gerar checkout Mercado Pago!');
+            }
+        });
+    });
+});
+</script>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>

@@ -279,3 +279,124 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+document.addEventListener('DOMContentLoaded', function() {
+  const loginForm = document.getElementById('loginForm');
+
+  if (loginForm) {
+    loginForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      // Limpar mensagens de erro
+      clearErrors();
+
+      // Coletar dados do formulário
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const tipo = document.querySelector('input[name="tipo"]:checked').value;
+
+      // Validações básicas
+      if (!email || !password) {
+        showGenericError('Preencha todos os campos!');
+        return;
+      }
+
+      try {
+        // Desabilitar botão
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Entrando...';
+        submitBtn.disabled = true;
+
+        // Enviar requisição
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password, tipo })
+        });
+
+        const result = await response.json();
+
+        if (result.sucesso) {
+          // Sucesso - redirecionar
+          window.location.href = result.redirect;
+        } else {
+          // Erro - mostrar mensagem
+          showGenericError(result.mensagem);
+          
+          // Reabilitar botão
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+
+      } catch (error) {
+        console.error('Erro no login:', error);
+        showGenericError('Erro de conexão. Tente novamente.');
+        
+        // Reabilitar botão
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        submitBtn.textContent = 'Entrar';
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  // Função para mostrar erro genérico
+  function showGenericError(message) {
+    // Remove erro anterior se existir
+    const existingError = document.querySelector('.login-error');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Cria novo elemento de erro
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'login-error';
+    errorDiv.style.cssText = `
+      background-color: #fee;
+      border: 1px solid #fcc;
+      color: #c33;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      text-align: center;
+    `;
+    errorDiv.textContent = message;
+
+    // Inserir antes do formulário
+    const loginContainer = document.querySelector('.login-container form');
+    loginContainer.insertBefore(errorDiv, loginContainer.firstChild);
+
+    // Remover após 5 segundos
+    setTimeout(() => {
+      if (errorDiv.parentNode) {
+        errorDiv.remove();
+      }
+    }, 5000);
+  }
+
+  // Função para limpar erros individuais
+  function clearErrors() {
+    const errorMessages = document.querySelectorAll('.error-message');
+    errorMessages.forEach(error => {
+      error.style.display = 'none';
+    });
+    
+    const loginError = document.querySelector('.login-error');
+    if (loginError) {
+      loginError.remove();
+    }
+  }
+
+  // Menu mobile (se existir)
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  
+  if (menuBtn && navLinks) {
+    menuBtn.addEventListener('click', function() {
+      navLinks.classList.toggle('active');
+    });
+  }
+});

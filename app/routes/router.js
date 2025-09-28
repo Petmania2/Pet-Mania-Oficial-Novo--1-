@@ -811,5 +811,71 @@ router.post('/webhook/mercadopago', (req, res) => {
   console.log('Webhook Mercado Pago:', req.body);
   res.status(200).send('OK');
 });
+// Controllers
+const authController = require('../controllers/authController');
+const clienteController = require('../controllers/clienteController');
+// const adestradorController = require('../controllers/adestradorController'); // quando criar
+
+// Middleware de autenticação
+const requireAuth = (req, res, next) => {
+  if (!req.session.usuario) {
+    return res.redirect('/login');
+  }
+  next();
+};
+
+const requireCliente = (req, res, next) => {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect('/login');
+  }
+  next();
+};
+
+// ============== ROTAS PÚBLICAS ==============
+// Página inicial
+router.get('/', (req, res) => {
+  res.render('pages/index');
+});
+
+// ============== AUTENTICAÇÃO ==============
+// Login
+router.get('/login', authController.exibirLogin);
+router.post('/login', authController.login);
+router.get('/logout', authController.logout);
+
+// ============== CLIENTE ==============
+// Cadastro de cliente
+router.get('/cadastro-cliente', clienteController.exibirCadastro);
+router.post('/cadastro-cliente', clienteController.cadastrar);
+
+// Perfil do cliente (protegido)
+router.get('/perfil-cliente', requireCliente, clienteController.exibirPerfil);
+router.post('/atualizar-cliente', requireCliente, clienteController.atualizarPerfil);
+
+// ============== OUTRAS PÁGINAS ==============
+// Páginas estáticas que podem precisar de ajustes
+router.get('/meuspets.ejs', requireCliente, (req, res) => {
+  res.render('pages/meuspets', { cliente: req.session.usuario });
+});
+
+router.get('/painelcliente.ejs', requireCliente, (req, res) => {
+  res.render('pages/painelcliente', { cliente: req.session.usuario });
+});
+
+// ============== REDIRECIONAMENTOS ==============
+// Redirecionamentos para URLs antigas (se necessário)
+router.get('/cliente.ejs', (req, res) => {
+  res.redirect('/cadastro-cliente');
+});
+
+router.get('/Login.ejs', (req, res) => {
+  res.redirect('/login');
+});
+
+router.get('/perfilcliente.ejs', (req, res) => {
+  res.redirect('/perfil-cliente');
+});
+
+
 
 module.exports = router;

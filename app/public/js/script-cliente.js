@@ -195,3 +195,157 @@
             
             return isValid;
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('cadastroForm');
+  const successMessage = document.getElementById('successMessage');
+
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      // Limpar mensagens de erro anteriores
+      clearErrors();
+
+      // Validar formulário
+      if (!validateForm()) {
+        return;
+      }
+
+      // Coletar dados do formulário
+      const formData = new FormData(form);
+      const dados = {};
+      
+      for (let [key, value] of formData.entries()) {
+        dados[key] = value;
+      }
+
+      try {
+        // Desabilitar botão submit
+        const submitBtn = form.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Cadastrando...';
+        submitBtn.disabled = true;
+
+        // Enviar dados para o servidor
+        const response = await fetch('/cadastro-cliente', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dados)
+        });
+
+        const result = await response.json();
+
+        if (result.sucesso) {
+          // Mostrar mensagem de sucesso
+          successMessage.style.display = 'block';
+          form.style.display = 'none';
+          
+          // Redirecionar após 2 segundos
+          setTimeout(() => {
+            window.location.href = '/login';
+          }, 2000);
+          
+        } else {
+          // Mostrar erro
+          alert(result.mensagem || 'Erro ao realizar cadastro');
+          
+          // Reabilitar botão
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+
+      } catch (error) {
+        console.error('Erro ao cadastrar:', error);
+        alert('Erro de conexão. Tente novamente.');
+        
+        // Reabilitar botão
+        const submitBtn = form.querySelector('.submit-btn');
+        submitBtn.textContent = 'Cadastrar';
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  // Função de validação
+  function validateForm() {
+    let isValid = true;
+
+    // Validar campos obrigatórios
+    const requiredFields = [
+      'nome', 'email', 'telefone', 'cidade', 'endereco',
+      'nomePet', 'racaPet', 'idadePet', 'tipoCadastro', 'senha', 'confirmarSenha'
+    ];
+
+    requiredFields.forEach(fieldName => {
+      const field = document.getElementById(fieldName);
+      const errorEl = document.getElementById(fieldName + 'Error');
+      
+      if (!field.value.trim()) {
+        showError(fieldName, 'Este campo é obrigatório');
+        isValid = false;
+      }
+    });
+
+    // Validar email
+    const email = document.getElementById('email').value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailRegex.test(email)) {
+      showError('email', 'Digite um email válido');
+      isValid = false;
+    }
+
+    // Validar senhas
+    const senha = document.getElementById('senha').value;
+    const confirmarSenha = document.getElementById('confirmarSenha').value;
+    
+    if (senha.length < 8) {
+      showError('senha', 'A senha deve ter pelo menos 8 caracteres');
+      isValid = false;
+    }
+    
+    if (senha !== confirmarSenha) {
+      showError('confirmarSenha', 'As senhas não coincidem');
+      isValid = false;
+    }
+
+    // Validar termos
+    const termos = document.getElementById('termos');
+    if (!termos.checked) {
+      alert('Você deve concordar com os termos e condições');
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  // Função para mostrar erro
+  function showError(fieldName, message) {
+    const errorEl = document.getElementById(fieldName + 'Error');
+    if (errorEl) {
+      errorEl.textContent = message;
+      errorEl.style.display = 'block';
+    }
+  }
+
+  // Função para limpar erros
+  function clearErrors() {
+    const errorElements = document.querySelectorAll('.error-message');
+    errorElements.forEach(el => {
+      el.style.display = 'none';
+    });
+  }
+
+  // Máscara para telefone
+  const telefoneField = document.getElementById('telefone');
+  if (telefoneField) {
+    telefoneField.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+      value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+      e.target.value = value;
+    });
+  }
+});

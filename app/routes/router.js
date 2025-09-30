@@ -169,18 +169,33 @@ router.get("/index.ejs", function (req, res) {
   res.render("pages/index");    
 });
 
+// ROTA DO PAINEL DO CLIENTE - ATUALIZADA
 router.get("/painelcliente.ejs", async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.redirect("/Login.ejs");
   }
+  
   try {
+    // Buscar dados completos do cliente
     const { executeQuery } = require('../config/pool_conexoes');
-    const rows = await executeQuery('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
+    const rows = await executeQuery(`
+      SELECT id, nome, email, telefone, cidade, endereco, 
+             nome_pet, raca_pet, idade_pet, tipo_adestramento, 
+             descricao, newsletter, data_cadastro 
+      FROM clientes 
+      WHERE id = ?
+    `, [req.session.usuario.id]);
+    
     const cliente = rows[0] || null;
+    
+    if (!cliente) {
+      return res.redirect("/Login.ejs");
+    }
+    
     res.render("pages/painelcliente", { cliente });
   } catch (err) {
     console.error('Erro ao carregar painel cliente:', err);
-    res.render("pages/painelcliente", { cliente: null });
+    res.redirect("/Login.ejs");
   }
 });
 
@@ -188,14 +203,29 @@ router.get("/buscaradestrador.ejs", function (req, res) {
   res.render("pages/buscaradestrador");    
 });
 
+// ROTA DO PERFIL DO CLIENTE - ATUALIZADA
 router.get("/perfilcliente.ejs", async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.redirect("/Login.ejs");
   }
+  
   try {
+    // Buscar dados completos do cliente
     const { executeQuery } = require('../config/pool_conexoes');
-    const rows = await executeQuery('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
+    const rows = await executeQuery(`
+      SELECT id, nome, email, telefone, cidade, endereco, 
+             nome_pet, raca_pet, idade_pet, tipo_adestramento, 
+             descricao, newsletter, data_cadastro 
+      FROM clientes 
+      WHERE id = ?
+    `, [req.session.usuario.id]);
+    
     const cliente = rows[0] || null;
+    
+    if (!cliente) {
+      return res.redirect("/Login.ejs");
+    }
+    
     res.render("pages/perfilcliente", { cliente });
   } catch (err) {
     console.error('Erro ao carregar perfil cliente:', err);
@@ -219,24 +249,57 @@ router.post('/chat', rateLimit, async (req, res) => {
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
+
+// ROTA PARA ATUALIZAR CLIENTE - ATUALIZADA
 router.post("/atualizar-cliente", rateLimit, async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
-    return res.redirect("/Login.ejs");
+    return res.status(401).json({ 
+      sucesso: false, 
+      erro: "Acesso negado" 
+    });
   }
-  const { nome, email } = req.body;
+  
+  const { 
+    nome, email, telefone, cidade, endereco, 
+    nomePet, racaPet, idadePet, tipoCadastro, descricao 
+  } = req.body;
+  
   if (!nome || !email) {
-    return res.status(400).send("Nome e email são obrigatórios.");
+    return res.status(400).json({ 
+      sucesso: false, 
+      erro: "Nome e email são obrigatórios" 
+    });
   }
+  
   try {
     const { executeQuery } = require('../config/pool_conexoes');
-    await executeQuery('UPDATE clientes SET nome = ?, email = ? WHERE id = ?', [nome, email, req.session.usuario.id]);
+    
+    await executeQuery(`
+      UPDATE clientes SET 
+        nome = ?, email = ?, telefone = ?, cidade = ?, endereco = ?,
+        nome_pet = ?, raca_pet = ?, idade_pet = ?, 
+        tipo_adestramento = ?, descricao = ?
+      WHERE id = ?
+    `, [
+      nome, email, telefone, cidade, endereco,
+      nomePet, racaPet, parseInt(idadePet), tipoCadastro, descricao,
+      req.session.usuario.id
+    ]);
+    
     // Atualiza sessão
     req.session.usuario.nome = nome;
     req.session.usuario.email = email;
-    res.redirect("/perfilcliente.ejs");
+    
+    res.json({ 
+      sucesso: true, 
+      mensagem: "Dados atualizados com sucesso!" 
+    });
   } catch (err) {
     console.error('Erro ao atualizar cliente:', err);
-    res.status(500).send("Erro interno ao atualizar dados.");
+    res.status(500).json({ 
+      sucesso: false, 
+      erro: "Erro interno ao atualizar dados" 
+    });
   }
 });
 
@@ -486,12 +549,22 @@ router.post("/logout", function (req, res) {
   });
 });
 
-// Rota para cadastro de cliente
+// ROTA PARA CADASTRAR CLIENTE - ATUALIZADA COM TODOS OS CAMPOS
 router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
   try {
-    const { nome, email, senha } = req.body;
-    if (!nome || !email || !senha) {
-      return res.status(400).json({ sucesso: false, erro: "Todos os campos são obrigatórios" });
+    const { 
+      nome, email, telefone, cidade, endereco, 
+      nomePet, racaPet, idadePet, tipoCadastro, descricao, 
+      senha, newsletter 
+    } = req.body;
+    
+    // Validações básicas
+    if (!nome || !email || !senha || !telefone || !cidade || !endereco || 
+        !nomePet || !racaPet || !idadePet || !tipoCadastro) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Todos os campos obrigatórios devem ser preenchidos" 
+      });
     }
     
     // Validação de senha forte
@@ -508,40 +581,85 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
         erro: "A senha deve conter pelo menos: 1 letra minúscula, 1 maiúscula e 1 número" 
       });
     }
+    
     // Verifica se já existe cliente com o mesmo email
     const existente = await ClienteModel.buscarPorEmail(email);
     if (existente) {
-      return res.status(400).json({ sucesso: false, erro: "Email já cadastrado" });
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Este email já está cadastrado. Tente fazer login ou use outro email." 
+      });
     }
+    
     // Criptografa a senha
     const bcrypt = require('bcrypt');
     const senhaHash = await bcrypt.hash(senha, 10);
-    // Insere no banco
-    const { executeQuery } = require('../config/pool_conexoes');
-    await executeQuery('INSERT INTO clientes (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senhaHash]);
-    // Busca o cliente cadastrado
-    const cliente = await ClienteModel.buscarPorEmail(email);
-    // Cria sessão
-    req.session.usuario = {
-      id: cliente.id,
-      nome: cliente.nome,
-      email: cliente.email,
-      tipo: 'cliente'
-    };
+    
+    // Insere no banco com todos os campos
+    const { executeQuery } = require('../../config/pool_conexoes.js');
+    const result = await executeQuery(`
+      INSERT INTO clientes ( 
+        nome, email, telefone, cidade, endereco, nome_pet, 
+        raca_pet, idade_pet, tipo_adestramento, descricao_pet, 
+        senha, 
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, [
+      nome.trim(), 
+      email.toLowerCase().trim(), 
+      telefone, 
+      cidade, 
+      endereco.trim(), 
+      nomePet.trim(),
+      racaPet.trim(), 
+      parseInt(idadePet), 
+      tipoCadastro, 
+      descricao ? descricao.trim() : null,
+      senhaHash, 
+      newsletter || false
+    ]);
+    
+    if (!result.insertId) {
+      throw new Error('Erro ao inserir cliente no banco de dados');
+    }
     
     // Enviar email de boas-vindas
     try {
       const emailService = require('../services/emailService');
-      await emailService.enviarEmailBoasVindas(cliente.email, cliente.nome, 'cliente');
+      await emailService.enviarEmailBoasVindas(email, nome, 'cliente');
     } catch (emailError) {
       console.error('Erro ao enviar email de boas-vindas:', emailError.message);
+      // Não falhar o cadastro por causa do email
     }
     
-    // Redireciona para perfil do cliente
-    res.json({ sucesso: true, redirecionarPara: "/perfilcliente.ejs" });
+    res.json({ 
+      sucesso: true, 
+      mensagem: "Cadastro realizado com sucesso! Redirecionando para o login..."
+    });
+    
   } catch (error) {
     console.error("Erro ao cadastrar cliente:", error);
-    res.status(500).json({ sucesso: false, erro: "Erro interno ao cadastrar cliente" });
+    
+    // Tratar diferentes tipos de erro
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Este email já está cadastrado" 
+      });
+    }
+    
+    if (error.code === 'ER_TOO_MANY_USER_CONNECTIONS' || 
+        error.code === 'ER_USER_LIMIT_REACHED' || 
+        error.errno === 1226) {
+      return res.status(503).json({ 
+        sucesso: false, 
+        erro: "Servidor temporariamente ocupado. Tente em alguns minutos." 
+      });
+    }
+    
+    res.status(500).json({ 
+      sucesso: false, 
+      erro: "Erro interno do servidor. Tente novamente mais tarde." 
+    });
   }
 });
 

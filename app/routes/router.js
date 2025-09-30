@@ -589,7 +589,6 @@ router.post('/criar-pagamento', async (req, res) => {
     res.json({ checkout_url: response.body.init_point });
     
   } catch (error) {
-    console.error('=== ERRO MERCADO PAGO ===');
     console.error('Mensagem:', error.message);
     console.error('Stack:', error.stack);
     console.error('Erro completo:', error);

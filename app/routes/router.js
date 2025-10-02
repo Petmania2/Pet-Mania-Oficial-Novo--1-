@@ -501,14 +501,10 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
   }
 });
 
-// Rota para login - COM DEBUG
+// Rota para login
 router.post("/login", async function (req, res) {
-  console.log('=== ROTA DE LOGIN CHAMADA ===');
-  console.log('Body recebido:', req.body);
-  
   try {
     const { email, password, tipo } = req.body;
-    console.log('Dados extraídos:', { email, tipo, temSenha: !!password });
 
     if (!email || !password || !tipo) {
       return res.status(400).json({ 
@@ -519,25 +515,18 @@ router.post("/login", async function (req, res) {
 
     let usuario;
     if (tipo === "adestrador") {
-      console.log('Buscando adestrador por email:', email);
       usuario = await AdestradorModel.buscarPorEmail(email);
-      console.log('Adestrador encontrado:', !!usuario);
     } else if (tipo === "cliente") {
-      console.log('Buscando cliente por email:', email);
       usuario = await ClienteModel.buscarPorEmail(email);
-      console.log('Cliente encontrado:', !!usuario);
     } else {
       return res.status(400).json({ sucesso: false, erro: "Tipo de usuário inválido" });
     }
 
     if (!usuario) {
-      console.log('Usuário não encontrado para email:', email);
       return res.status(400).json({ sucesso: false, erro: "Email ou senha incorretos" });
     }
 
-    console.log('Verificando senha...');
     const senhaValida = await (tipo === "adestrador" ? AdestradorModel.verificarSenha(password, usuario.senha) : ClienteModel.verificarSenha(password, usuario.senha));
-    console.log('Senha válida:', senhaValida);
     
     if (!senhaValida) {
       return res.status(400).json({ sucesso: false, erro: "Email ou senha incorretos" });
@@ -733,9 +722,6 @@ router.get("/favoritar", async (req, res) => {
 // Rota para criar pagamento com Mercado Pago
 router.post('/criar-pagamento', async (req, res) => {
   try {
-    console.log('=== CRIAR PAGAMENTO ===');
-    console.log('Body:', req.body);
-    console.log('Token MP configurado:', !!process.env.MP_ACCESS_TOKEN);
     
     const { descricao, valor } = req.body;
     
@@ -752,21 +738,15 @@ router.post('/criar-pagamento', async (req, res) => {
       }]
     };
 
-    console.log('Preferência:', preference);
     const response = await mercadopago.preferences.create(preference);
-    console.log('Resposta MP:', response.body);
     
     res.json({ checkout_url: response.body.init_point });
     
   } catch (error) {
-    console.error('=== ERRO MERCADO PAGO ===');
-    console.error('Mensagem:', error.message);
-    console.error('Stack:', error.stack);
-    console.error('Erro completo:', error);
+    console.error('Erro ao criar pagamento:', error.message);
     res.status(500).json({ 
       erro: 'Erro ao criar pagamento',
-      detalhes: error.message,
-      stack: error.stack
+      detalhes: error.message
     });
   }
 });

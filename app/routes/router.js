@@ -563,12 +563,9 @@ router.get("/favoritar", async (req, res) => {
 // Rota para criar pagamento com Mercado Pago
 router.post('/criar-pagamento', async (req, res) => {
   try {
-    console.log('=== CRIAR PAGAMENTO ===');
-    console.log('Body:', req.body);
-    console.log('Token MP configurado:', !!process.env.MP_ACCESS_TOKEN);
-    
+    // Sempre use as credenciais de teste do .env
+    // Mercado Pago SDK já está configurado no topo do arquivo
     const { descricao, valor } = req.body;
-    
     if (!descricao || !valor) {
       return res.status(400).json({ erro: 'Descrição e valor são obrigatórios' });
     }
@@ -579,19 +576,23 @@ router.post('/criar-pagamento', async (req, res) => {
         quantity: 1,
         unit_price: parseFloat(valor),
         currency_id: 'BRL'
-      }]
+      }],
+      // URLs de retorno
+      back_urls: {
+        success: `${req.protocol}://${req.get('host')}/pagamento-sucesso`,
+        failure: `${req.protocol}://${req.get('host')}/pagamento-falha`,
+        pending: `${req.protocol}://${req.get('host')}/pagamento-pendente`
+      },
+      auto_return: 'approved',
+      // Forçar modo sandbox
+      marketplace: 'PetManiaTest',
+      statement_descriptor: 'PETMANIA TESTE'
     };
 
-    console.log('Preferência:', preference);
     const response = await mercadopago.preferences.create(preference);
-    console.log('Resposta MP:', response.body);
-    
-    res.json({ checkout_url: response.body.init_point });
-    
+    // Sempre retornar o sandbox_init_point para testes
+    res.json({ checkout_url: response.body.sandbox_init_point });
   } catch (error) {
-    console.error('Mensagem:', error.message);
-    console.error('Stack:', error.stack);
-    console.error('Erro completo:', error);
     res.status(500).json({ 
       erro: 'Erro ao criar pagamento',
       detalhes: error.message,

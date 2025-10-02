@@ -8,19 +8,7 @@
     <link rel="stylesheet" href="/css/style-adestrador.css">
    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- TESTE: CSS para botão de assinatura Mercado Pago -->
-    <style>
-    .mp-subscription-btn {
-        background-color: #3483FA !important;
-        color: white !important;
-        text-decoration: none !important;
-        transition: background-color 0.3s;
-    }
-    .mp-subscription-btn:hover {
-        background-color: #2a68c8 !important;
-        color: white !important;
-    }
-    </style>
+
 </head>
 <body>
     <!-- Navbar -->
@@ -121,9 +109,7 @@
                             </ul>
                         </section>
                         <section class="plan-actions">
-                            <!-- TESTE: Botão de assinatura Mercado Pago -->
-                            <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=cdd76c00db2249138cb535698b1f9bd8" name="MP-payButton" class="btn btn-primary btn-plan mp-subscription-btn">Assinar Plano</a>
-                            <!-- ORIGINAL: <button class="btn btn-primary btn-plan" data-plan="prata" data-valor="89">Assinar Plano</button> -->
+                            <button class="btn btn-primary btn-plan" data-plan="prata" data-valor="89">Assinar Plano</button>
                         </section>
                     </section>
 
@@ -152,9 +138,7 @@
                             </ul>
                         </section>
                         <section class="plan-actions">
-                            <!-- TESTE: Botão de assinatura Mercado Pago -->
-                            <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=cdd76c00db2249138cb535698b1f9bd8" name="MP-payButton" class="btn btn-primary btn-plan mp-subscription-btn">Assinar Plano</a>
-                            <!-- ORIGINAL: <button class="btn btn-primary btn-plan" data-plan="ouro" data-valor="149">Assinar Plano</button> -->
+                            <button class="btn btn-primary btn-plan" data-plan="ouro" data-valor="149">Assinar Plano</button>
                         </section>
                     </section>
                 </section>
@@ -257,34 +241,7 @@
 
 
 
-    <!-- TESTE: Script do Mercado Pago para assinaturas -->
-    <script type="text/javascript">
-       (function() {
-          function $MPC_load() {
-             window.$MPC_loaded !== true && (function() {
-             var s = document.createElement("script");
-             s.type = "text/javascript";
-             s.async = true;
-             s.src = document.location.protocol + "//secure.mlstatic.com/mptools/render.js";
-             var x = document.getElementsByTagName('script')[0];
-             x.parentNode.insertBefore(s, x);
-             window.$MPC_loaded = true;
-          })();
-       }
-       window.$MPC_loaded !== true ? (window.attachEvent ? window.attachEvent('onload', $MPC_load) : window.addEventListener('load', $MPC_load, false)) : null;
-       })();
-      /*
-            // to receive event with message when closing modal from congrants back to site
-            function $MPC_message(event) {
-              // onclose modal ->CALLBACK FUNCTION
-             // !!!!!!!!FUNCTION_CALLBACK HERE Received message: {event.data} preapproval_id !!!!!!!!
-            }
-            window.$MPC_loaded !== true ? (window.addEventListener("message", $MPC_message)) : null; 
-            */
-    </script>
-    
-    <!-- ORIGINAL: Sistema de pagamento customizado (comentado para teste) -->
-    <!--
+    <!-- Sistema de pagamento customizado -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Sistema de pagamento simplificado
@@ -329,7 +286,6 @@
         });
     });
     </script>
-    -->
     <script src="/js/script-planos.js"></script>
     
 </body>

@@ -601,7 +601,7 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
       INSERT INTO clientes ( 
         nome, email, telefone, cidade, endereco, nome_pet, 
         raca_pet, idade_pet, tipo_adestramento, descricao_pet, 
-        senha, 
+        senha 
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [
       nome.trim(), 

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.initPoint) {
                 window.location.href = data.initPoint;
             } else {
-                alert('Erro ao gerar checkout Mercado Pago!');
+                alert('Erro ao gerar checkout: ' + (data.erro || 'Erro desconhecido'));
             }
         });
     });

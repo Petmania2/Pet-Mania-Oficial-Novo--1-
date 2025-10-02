@@ -218,7 +218,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             
             // Redirecionar após breve delay
             setTimeout(() => {
-                window.location.href = resultado.redirecionarPara || '/paineladestrador.ejs';
+                window.location.href = resultado.redirecionarPara;
             }, 1000);
             
         } else {
@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (result.sucesso) {
           // Sucesso - redirecionar
-          window.location.href = result.redirect;
+          window.location.href = result.redirecionarPara;
         } else {
           // Erro - mostrar mensagem
           showGenericError(result.mensagem);

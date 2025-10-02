@@ -132,6 +132,27 @@ router.get("/paineladestrador.ejs", async function (req, res) {
   }
 });
 
+router.get("/paineladestrador", async function (req, res) {
+  if (!req.session.usuario) {
+    return res.redirect("/Login.ejs");
+  }
+  
+  try {
+    const adestrador = await AdestradorModel.buscarPorId(req.session.usuario.id);
+    if (!adestrador) {
+      return res.redirect("/Login.ejs");
+    }
+    
+    res.render("pages/paineladestrador", { 
+      usuario: req.session.usuario,
+      adestrador: adestrador 
+    });
+  } catch (error) {
+    console.error("Erro ao carregar painel:", error);
+    res.redirect("/Login.ejs");
+  }
+});
+
 router.get("/perfiladestrador.ejs", async function (req, res) {
   // Verificar se o usuário está logado
   if (!req.session.usuario) {
@@ -173,6 +194,21 @@ router.get("/index.ejs", function (req, res) {
 });
 
 router.get("/painelcliente.ejs", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect("/Login.ejs");
+  }
+  try {
+    const { executeQuery } = require('../../config/pool_conexoes');
+    const rows = await executeQuery('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
+    const cliente = rows[0] || null;
+    res.render("pages/painelcliente", { cliente });
+  } catch (err) {
+    console.error('Erro ao carregar painel cliente:', err);
+    res.render("pages/painelcliente", { cliente: null });
+  }
+});
+
+router.get("/painelcliente", async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.redirect("/Login.ejs");
   }
@@ -431,8 +467,8 @@ router.post("/login", async function (req, res) {
 
     res.json({ 
       sucesso: true, 
-      mensagem: "Login realizado com sucesso! Verifique seu email.",
-      redirecionarPara: tipo === "adestrador" ? "/paineladestrador.ejs" : "/painelcliente.ejs"
+      mensagem: "Login realizado com sucesso!",
+      redirecionarPara: tipo === "adestrador" ? "/paineladestrador" : "/painelcliente"
     });
 
   } catch (error) {
@@ -786,6 +822,47 @@ router.get('/contratacao-falha', (req, res) => {
 
 router.get('/contratacao-pendente', (req, res) => {
   res.send('<h1>Pagamento pendente</h1>');
+});
+
+// Rota para criar preferência do Mercado Pago
+router.post('/criar-preferencia', async (req, res) => {
+  try {
+    const { title, price, quantity = 1 } = req.body;
+    
+    if (!title || !price) {
+      return res.status(400).json({ erro: 'Título e preço são obrigatórios' });
+    }
+
+    const preference = {
+      items: [{
+        title: title,
+        quantity: parseInt(quantity),
+        unit_price: parseFloat(price),
+        currency_id: 'BRL'
+      }],
+      back_urls: {
+        success: `${req.protocol}://${req.get('host')}/pagamento-sucesso`,
+        failure: `${req.protocol}://${req.get('host')}/pagamento-falha`,
+        pending: `${req.protocol}://${req.get('host')}/pagamento-pendente`
+      },
+      auto_return: 'approved'
+    };
+
+    const result = await mercadopago.preferences.create(preference);
+    
+    res.json({ 
+      sucesso: true,
+      initPoint: result.body.init_point || result.body.sandbox_init_point,
+      preferenceId: result.body.id
+    });
+    
+  } catch (error) {
+    console.error('Erro ao criar preferência:', error);
+    res.status(500).json({ 
+      erro: 'Erro ao criar preferência de pagamento',
+      detalhes: error.message 
+    });
+  }
 });
 
 // Rota de teste Mercado Pago

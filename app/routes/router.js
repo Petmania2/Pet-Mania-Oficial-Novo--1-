@@ -5,8 +5,11 @@ const hqController = require("../controllers/hqController");
 const favoritoModel = require("../models/favoritoModel");
 const mercadopago = require('mercadopago');
 const ClienteModel = require("../models/clienteModel");
-const aiChatService = require('../services/aiChatService');
-mercadopago.access_token = process.env.MERCADOPAGO_ACCESS_TOKEN || 'SEU_ACCESS_TOKEN_AQUI';
+
+// Configuração do Mercado Pago versão 1.x
+mercadopago.configure({
+  access_token: process.env.MP_ACCESS_TOKEN
+});
 
 // Middleware para rate limiting simples (em memória)
 const rateLimitMap = new Map();
@@ -129,6 +132,27 @@ router.get("/paineladestrador.ejs", async function (req, res) {
   }
 });
 
+router.get("/paineladestrador", async function (req, res) {
+  if (!req.session.usuario) {
+    return res.redirect("/Login.ejs");
+  }
+  
+  try {
+    const adestrador = await AdestradorModel.buscarPorId(req.session.usuario.id);
+    if (!adestrador) {
+      return res.redirect("/Login.ejs");
+    }
+    
+    res.render("pages/paineladestrador", { 
+      usuario: req.session.usuario,
+      adestrador: adestrador 
+    });
+  } catch (error) {
+    console.error("Erro ao carregar painel:", error);
+    res.redirect("/Login.ejs");
+  }
+});
+
 router.get("/perfiladestrador.ejs", async function (req, res) {
   // Verificar se o usuário está logado
   if (!req.session.usuario) {
@@ -176,6 +200,7 @@ router.get("/painelcliente.ejs", async function (req, res) {
   }
   
   try {
+<<<<<<< HEAD
     // Buscar dados completos do cliente
     const { executeQuery } = require('../config/pool_conexoes');
     const rows = await executeQuery(`
@@ -186,6 +211,25 @@ router.get("/painelcliente.ejs", async function (req, res) {
       WHERE id = ?
     `, [req.session.usuario.id]);
     
+=======
+    const { executeQuery } = require('../../config/pool_conexoes');
+    const rows = await executeQuery('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
+    const cliente = rows[0] || null;
+    res.render("pages/painelcliente", { cliente });
+  } catch (err) {
+    console.error('Erro ao carregar painel cliente:', err);
+    res.render("pages/painelcliente", { cliente: null });
+  }
+});
+
+router.get("/painelcliente", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect("/Login.ejs");
+  }
+  try {
+    const { executeQuery } = require('../../config/pool_conexoes');
+    const rows = await executeQuery('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
+>>>>>>> 1f9194e83daeca453bd3d87fcb95dee7d185a1a8
     const cliente = rows[0] || null;
     
     if (!cliente) {
@@ -210,6 +254,7 @@ router.get("/perfilcliente.ejs", async function (req, res) {
   }
   
   try {
+<<<<<<< HEAD
     // Buscar dados completos do cliente
     const { executeQuery } = require('../config/pool_conexoes');
     const rows = await executeQuery(`
@@ -220,6 +265,10 @@ router.get("/perfilcliente.ejs", async function (req, res) {
       WHERE id = ?
     `, [req.session.usuario.id]);
     
+=======
+    const { executeQuery } = require('../../config/pool_conexoes');
+    const rows = await executeQuery('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
+>>>>>>> 1f9194e83daeca453bd3d87fcb95dee7d185a1a8
     const cliente = rows[0] || null;
     
     if (!cliente) {
@@ -235,6 +284,7 @@ router.get("/perfilcliente.ejs", async function (req, res) {
 
 // === ROTAS POST ===
 
+<<<<<<< HEAD
 // ROTA DE SUPORTE IA
 router.post('/chat', rateLimit, async (req, res) => {
   const { message } = req.body;
@@ -251,6 +301,8 @@ router.post('/chat', rateLimit, async (req, res) => {
 });
 
 // ROTA PARA ATUALIZAR CLIENTE - ATUALIZADA
+=======
+>>>>>>> 1f9194e83daeca453bd3d87fcb95dee7d185a1a8
 router.post("/atualizar-cliente", rateLimit, async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.status(401).json({ 
@@ -272,6 +324,7 @@ router.post("/atualizar-cliente", rateLimit, async function (req, res) {
   }
   
   try {
+<<<<<<< HEAD
     const { executeQuery } = require('../config/pool_conexoes');
     
     await executeQuery(`
@@ -286,6 +339,10 @@ router.post("/atualizar-cliente", rateLimit, async function (req, res) {
       req.session.usuario.id
     ]);
     
+=======
+    const { executeQuery } = require('../../config/pool_conexoes');
+    await executeQuery('UPDATE clientes SET nome = ?, email = ? WHERE id = ?', [nome, email, req.session.usuario.id]);
+>>>>>>> 1f9194e83daeca453bd3d87fcb95dee7d185a1a8
     // Atualiza sessão
     req.session.usuario.nome = nome;
     req.session.usuario.email = email;
@@ -359,17 +416,17 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
       });
     }
 
-    // Verificar duplicados com UMA ÚNICA query
-    const duplicados = await AdestradorModel.verificarDuplicados(email, cpf);
-    
-    if (duplicados.emailExiste) {
+    // Verificar duplicados
+    const emailExiste = await AdestradorModel.emailExiste(email);
+    if (emailExiste) {
       return res.status(400).json({ 
         sucesso: false, 
         erro: "Este email já está cadastrado" 
       });
     }
 
-    if (duplicados.cpfExiste) {
+    const cpfExiste = await AdestradorModel.cpfExiste(cpf);
+    if (cpfExiste) {
       return res.status(400).json({ 
         sucesso: false, 
         erro: "Este CPF já está cadastrado" 
@@ -400,13 +457,7 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
     // Criar adestrador no banco
     await AdestradorModel.criar(dadosAdestrador);
     
-    // Enviar email de boas-vindas
-    try {
-      const emailService = require('../services/emailService');
-      await emailService.enviarEmailBoasVindas(dadosAdestrador.email, dadosAdestrador.nome, 'adestrador');
-    } catch (emailError) {
-      console.error('Erro ao enviar email de boas-vindas:', emailError.message);
-    }
+    // Email removido temporariamente
 
     res.json({ 
       sucesso: true, 
@@ -458,10 +509,14 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
   }
 });
 
-// Rota para login - OTIMIZADA COM EMAIL
-router.post("/login", rateLimit, async function (req, res) {
+// Rota para login - COM DEBUG
+router.post("/login", async function (req, res) {
+  console.log('=== ROTA DE LOGIN CHAMADA ===');
+  console.log('Body recebido:', req.body);
+  
   try {
     const { email, password, tipo } = req.body;
+    console.log('Dados extraídos:', { email, tipo, temSenha: !!password });
 
     if (!email || !password || !tipo) {
       return res.status(400).json({ 
@@ -472,18 +527,26 @@ router.post("/login", rateLimit, async function (req, res) {
 
     let usuario;
     if (tipo === "adestrador") {
+      console.log('Buscando adestrador por email:', email);
       usuario = await AdestradorModel.buscarPorEmail(email);
+      console.log('Adestrador encontrado:', !!usuario);
     } else if (tipo === "cliente") {
+      console.log('Buscando cliente por email:', email);
       usuario = await ClienteModel.buscarPorEmail(email);
+      console.log('Cliente encontrado:', !!usuario);
     } else {
       return res.status(400).json({ sucesso: false, erro: "Tipo de usuário inválido" });
     }
 
     if (!usuario) {
+      console.log('Usuário não encontrado para email:', email);
       return res.status(400).json({ sucesso: false, erro: "Email ou senha incorretos" });
     }
 
+    console.log('Verificando senha...');
     const senhaValida = await (tipo === "adestrador" ? AdestradorModel.verificarSenha(password, usuario.senha) : ClienteModel.verificarSenha(password, usuario.senha));
+    console.log('Senha válida:', senhaValida);
+    
     if (!senhaValida) {
       return res.status(400).json({ sucesso: false, erro: "Email ou senha incorretos" });
     }
@@ -495,19 +558,12 @@ router.post("/login", rateLimit, async function (req, res) {
       tipo: tipo
     };
 
-    // Enviar email de boas-vindas (não bloquear o login se falhar)
-    try {
-      const emailService = require('../services/emailService');
-      await emailService.enviarEmailBoasVindas(usuario.email, usuario.nome, tipo);
-    } catch (emailError) {
-      console.error('Erro ao enviar email de boas-vindas:', emailError.message);
-      // Não falhar o login por causa do email
-    }
+    // Email removido temporariamente
 
     res.json({ 
       sucesso: true, 
-      mensagem: "Login realizado com sucesso! Verifique seu email.",
-      redirecionarPara: tipo === "adestrador" ? "/paineladestrador.ejs" : "/painelcliente.ejs"
+      mensagem: "Login realizado com sucesso!",
+      redirecionarPara: tipo === "adestrador" ? "/paineladestrador" : "/painelcliente"
     });
 
   } catch (error) {
@@ -549,6 +605,7 @@ router.post("/logout", function (req, res) {
   });
 });
 
+<<<<<<< HEAD
 // ROTA PARA CADASTRAR CLIENTE - ATUALIZADA COM TODOS OS CAMPOS
 router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
   try {
@@ -565,16 +622,24 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
         sucesso: false, 
         erro: "Todos os campos obrigatórios devem ser preenchidos" 
       });
+=======
+// Rota para cadastro de cliente - SIMPLIFICADA
+router.post("/cadastrar-cliente", async function (req, res) {
+  try {
+    console.log('Dados recebidos para cadastro cliente:', req.body);
+    
+    const { nome, email, senha } = req.body;
+    
+    if (!nome || !email || !senha) {
+      return res.status(400).json({ sucesso: false, erro: "Todos os campos são obrigatórios" });
+>>>>>>> 1f9194e83daeca453bd3d87fcb95dee7d185a1a8
     }
     
-    // Validação de senha forte
-    if (senha.length < 8) {
-      return res.status(400).json({ 
-        sucesso: false, 
-        erro: "A senha deve ter pelo menos 8 caracteres" 
-      });
-    }
+    // Verificar se email já existe
+    const { executeQuery } = require('../../config/pool_conexoes');
+    const existente = await executeQuery('SELECT id FROM clientes WHERE email = ?', [email]);
     
+<<<<<<< HEAD
     if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(senha)) {
       return res.status(400).json({ 
         sucesso: false, 
@@ -660,6 +725,40 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
       sucesso: false, 
       erro: "Erro interno do servidor. Tente novamente mais tarde." 
     });
+=======
+    if (existente && existente.length > 0) {
+      return res.status(400).json({ sucesso: false, erro: "Email já cadastrado" });
+    }
+    
+    // Hash da senha
+    const bcrypt = require('bcrypt');
+    const senhaHash = await bcrypt.hash(senha, 8);
+    
+    // Inserir cliente
+    console.log('Inserindo cliente no banco...');
+    const resultado = await executeQuery('INSERT INTO clientes (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senhaHash]);
+    console.log('Cliente inserido com ID:', resultado.insertId);
+    
+    // Criar sessão
+    req.session.usuario = {
+      id: resultado.insertId,
+      nome: nome,
+      email: email,
+      tipo: 'cliente'
+    };
+    
+    console.log('Sessão criada para cliente:', req.session.usuario);
+    
+    res.json({ 
+      sucesso: true, 
+      mensagem: "Cadastro realizado com sucesso!",
+      redirecionarPara: "/painelcliente.ejs" 
+    });
+    
+  } catch (error) {
+    console.error("Erro ao cadastrar cliente:", error);
+    res.status(500).json({ sucesso: false, erro: "Erro interno: " + error.message });
+>>>>>>> 1f9194e83daeca453bd3d87fcb95dee7d185a1a8
   }
 });
 
@@ -679,52 +778,64 @@ router.post("/", (req, res) => {
   res.render("pages/mostrar", { dadosEnviados: objJson });
 });
 
-// Rota para favoritar/desfavoritar uma HQ
-router.get("/favoritar", hqController.favoritar);
+// Rota para favoritar/desfavoritar - SIMPLIFICADA
+router.get("/favoritar", async (req, res) => {
+  try {
+    if (!req.session.usuario) {
+      return res.status(401).json({
+        sucesso: false,
+        mensagem: "Para favoritar é necessário estar logado!"
+      });
+    }
+    
+    // Aqui você pode implementar a lógica de favoritar
+    // Por enquanto, apenas retorna sucesso
+    res.json({ sucesso: true, mensagem: "Favorito atualizado!" });
+    
+  } catch (error) {
+    console.error('Erro ao favoritar:', error);
+    res.status(500).json({ sucesso: false, mensagem: "Erro interno" });
+  }
+});
 
 // Rota para criar pagamento com Mercado Pago
 router.post('/criar-pagamento', async (req, res) => {
   try {
-    const { descricao, valor, token, paymentMethodId, payerEmail, paymentMethod } = req.body;
-    // Pagamento via cartão de crédito (real)
-    if (token && paymentMethodId && payerEmail) {
-      const payment_data = {
-        transaction_amount: parseFloat(valor),
-        token: token,
-        description: descricao,
-        installments: 1,
-        payment_method_id: paymentMethodId,
-        payer: {
-          email: payerEmail
-        }
-      };
-      const payment = await mercadopago.payment.create(payment_data);
-      if (payment.body.status === 'approved') {
-        return res.json({ status: 'approved' });
-      } else {
-        return res.json({ status: payment.body.status });
-      }
+    console.log('=== CRIAR PAGAMENTO ===');
+    console.log('Body:', req.body);
+    console.log('Token MP configurado:', !!process.env.MP_ACCESS_TOKEN);
+    
+    const { descricao, valor } = req.body;
+    
+    if (!descricao || !valor) {
+      return res.status(400).json({ erro: 'Descrição e valor são obrigatórios' });
     }
 
-    // Pagamento via Pix
-    if (paymentMethod === 'pix') {
-      preference.payment_methods = { excluded_payment_types: [{ id: 'credit_card' }] };
-      const response = await mercadopago.preferences.create(preference);
-      // Buscar QR Code Pix
-      if (response.body && response.body.init_point) {
-        // Mercado Pago não retorna o QR Code diretamente na preferência, é necessário usar o endpoint de pagamento Pix
-        // Aqui, apenas retorna o link de pagamento Pix (o QR Code será gerado pelo SDK ou pelo usuário)
-        return res.json({ checkout_url: response.body.init_point });
-      }
-      return res.status(500).json({ erro: 'Erro ao gerar pagamento Pix.' });
-    }
+    const preference = {
+      items: [{
+        title: descricao,
+        quantity: 1,
+        unit_price: parseFloat(valor),
+        currency_id: 'BRL'
+      }]
+    };
 
-    // Checkout padrão (redirecionamento)
+    console.log('Preferência:', preference);
     const response = await mercadopago.preferences.create(preference);
+    console.log('Resposta MP:', response.body);
+    
     res.json({ checkout_url: response.body.init_point });
+    
   } catch (error) {
-    console.error('Erro Mercado Pago:', error);
-    res.status(500).json({ erro: 'Erro ao criar pagamento.' });
+    console.error('=== ERRO MERCADO PAGO ===');
+    console.error('Mensagem:', error.message);
+    console.error('Stack:', error.stack);
+    console.error('Erro completo:', error);
+    res.status(500).json({ 
+      erro: 'Erro ao criar pagamento',
+      detalhes: error.message,
+      stack: error.stack
+    });
   }
 });
 
@@ -740,10 +851,10 @@ router.get('/pagamento-pendente', (req, res) => {
   res.render('pages/pagamento-pendente');
 });
 
-// Rotas para Chat com IA
+// Rotas para Chat com respostas programadas
 router.post('/chat/send', async (req, res) => {
   try {
-    const { message, history } = req.body;
+    const { message } = req.body;
     
     if (!message || message.trim().length === 0) {
       return res.status(400).json({
@@ -753,7 +864,7 @@ router.post('/chat/send', async (req, res) => {
     }
     
     const aiChatService = require('../services/aiChatService');
-    const response = await aiChatService.sendMessage(message, history || []);
+    const response = await aiChatService.sendMessage(message);
     
     res.json(response);
   } catch (error) {
@@ -765,26 +876,285 @@ router.post('/chat/send', async (req, res) => {
   }
 });
 
-// Rota de teste para email (remover em produção)
-router.get('/teste-email', async (req, res) => {
+// Rota de debug para verificar usuários (remover em produção)
+router.get('/debug-usuarios', async (req, res) => {
   try {
-    const emailService = require('../services/emailService');
-    const resultado = await emailService.enviarEmailBoasVindas(
-      'teste@exemplo.com', 
-      'Usuário Teste', 
-      'cliente'
-    );
+    const { executeQuery } = require('../../config/pool_conexoes');
+    
+    let adestradores = [];
+    let clientes = [];
+    
+    try {
+      adestradores = await executeQuery('SELECT id, nome, email FROM adestradores ORDER BY id DESC LIMIT 5');
+    } catch (e) {
+      console.log('Erro ao buscar adestradores:', e.message);
+    }
+    
+    try {
+      clientes = await executeQuery('SELECT id, nome, email FROM clientes ORDER BY id DESC LIMIT 5');
+    } catch (e) {
+      console.log('Erro ao buscar clientes:', e.message);
+    }
+    
     res.json({ 
-      sucesso: true, 
-      mensagem: 'Email de teste enviado!', 
-      resultado 
+      adestradores: adestradores || [],
+      clientes: clientes || [],
+      total_adestradores: adestradores ? adestradores.length : 0,
+      total_clientes: clientes ? clientes.length : 0
     });
   } catch (error) {
     res.status(500).json({ 
-      sucesso: false, 
       erro: error.message 
     });
   }
 });
+
+// Rota para criar tabela clientes se não existir
+router.get('/criar-tabela-clientes', async (req, res) => {
+  try {
+    const { executeQuery } = require('../../config/pool_conexoes');
+    
+    const createTable = `
+      CREATE TABLE IF NOT EXISTS clientes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nome VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        senha VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+    
+    await executeQuery(createTable);
+    
+    res.json({ 
+      sucesso: true,
+      mensagem: 'Tabela clientes criada/verificada com sucesso!' 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      erro: error.message 
+    });
+  }
+});
+
+// Rota de teste simples
+router.post('/teste-login', (req, res) => {
+  console.log('=== TESTE LOGIN CHAMADO ===');
+  console.log('Body:', req.body);
+  res.json({ sucesso: true, mensagem: 'Teste funcionando!' });
+});
+
+// Rota para página de contratação
+router.get('/contratar-adestrador', (req, res) => {
+  res.render('pages/contratar-adestrador');
+});
+
+// Rota para teste simples
+router.get('/teste-checkout', (req, res) => {
+  res.render('pages/teste-checkout');
+});
+
+// Rota para processar contratação
+router.post('/contratar-adestrador', async (req, res) => {
+  console.log('=== CONTRATAÇÃO INICIADA ===');
+  console.log('Body:', req.body);
+  console.log('MP Token:', process.env.MP_ACCESS_TOKEN ? 'Configurado' : 'Não configurado');
+  
+  try {
+    const { adestradorId } = req.body;
+    
+    if (!adestradorId) {
+      return res.status(400).json({ erro: 'ID do adestrador é obrigatório' });
+    }
+    
+    const adestradores = {
+      '1': { nome: 'João Silva', preco: 150.00 },
+      '2': { nome: 'Maria Santos', preco: 200.00 }
+    };
+    
+    const adestrador = adestradores[adestradorId];
+    console.log('Adestrador encontrado:', adestrador);
+    
+    if (!adestrador) {
+      return res.status(400).json({ erro: 'Adestrador não encontrado' });
+    }
+    
+    const preference = {
+      items: [{
+        title: `Sessão com ${adestrador.nome}`,
+        quantity: 1,
+        unit_price: adestrador.preco,
+        currency_id: 'BRL'
+      }]
+    };
+    
+    console.log('Preferência criada:', preference);
+    
+    const result = await mercadopago.preferences.create(preference);
+    console.log('Resultado MP:', result.body);
+    
+    res.json({ 
+      sucesso: true,
+      preferenceId: result.body.id, 
+      initPoint: result.body.init_point 
+    });
+    
+  } catch (error) {
+    console.error('=== ERRO COMPLETO ===');
+    console.error('Mensagem:', error.message);
+    console.error('Código:', error.code);
+    console.error('Status:', error.status);
+    console.error('Stack:', error.stack);
+    
+    res.status(500).json({ 
+      erro: 'Erro interno',
+      detalhes: error.message 
+    });
+  }
+});
+
+// Rotas de retorno
+router.get('/contratacao-sucesso', (req, res) => {
+  res.send('<h1>Contratação realizada com sucesso!</h1>');
+});
+
+router.get('/contratacao-falha', (req, res) => {
+  res.send('<h1>Falha na contratação</h1>');
+});
+
+router.get('/contratacao-pendente', (req, res) => {
+  res.send('<h1>Pagamento pendente</h1>');
+});
+
+// Rota para criar preferência do Mercado Pago
+router.post('/criar-preferencia', async (req, res) => {
+  try {
+    const { title, price, quantity = 1 } = req.body;
+    
+    if (!title || !price) {
+      return res.status(400).json({ erro: 'Título e preço são obrigatórios' });
+    }
+
+    const preference = {
+      items: [{
+        title: title,
+        quantity: parseInt(quantity),
+        unit_price: parseFloat(price),
+        currency_id: 'BRL'
+      }],
+      back_urls: {
+        success: `${req.protocol}://${req.get('host')}/pagamento-sucesso`,
+        failure: `${req.protocol}://${req.get('host')}/pagamento-falha`,
+        pending: `${req.protocol}://${req.get('host')}/pagamento-pendente`
+      },
+      auto_return: 'approved'
+    };
+
+    const result = await mercadopago.preferences.create(preference);
+    
+    res.json({ 
+      sucesso: true,
+      initPoint: result.body.init_point || result.body.sandbox_init_point,
+      preferenceId: result.body.id
+    });
+    
+  } catch (error) {
+    console.error('Erro ao criar preferência:', error);
+    res.status(500).json({ 
+      erro: 'Erro ao criar preferência de pagamento',
+      detalhes: error.message 
+    });
+  }
+});
+
+// Rota de teste Mercado Pago
+router.get('/teste-mp', async (req, res) => {
+  try {
+    const preference = {
+      items: [{
+        title: 'Teste Pet Mania',
+        quantity: 1,
+        unit_price: 10.00,
+        currency_id: 'BRL'
+      }]
+    };
+    const result = await mercadopago.preferences.create(preference);
+    res.json({ sucesso: true, init_point: result.body.init_point });
+  } catch (error) {
+    res.json({ sucesso: false, erro: error.message });
+  }
+});
+
+// Webhook para receber notificações do Mercado Pago
+router.post('/webhook/mercadopago', (req, res) => {
+  console.log('Webhook Mercado Pago:', req.body);
+  res.status(200).send('OK');
+});
+// Controllers
+const authController = require('../controllers/authController');
+const clienteController = require('../controllers/clienteController');
+// const adestradorController = require('../controllers/adestradorController'); // quando criar
+
+// Middleware de autenticação
+const requireAuth = (req, res, next) => {
+  if (!req.session.usuario) {
+    return res.redirect('/login');
+  }
+  next();
+};
+
+const requireCliente = (req, res, next) => {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect('/login');
+  }
+  next();
+};
+
+// ============== ROTAS PÚBLICAS ==============
+// Página inicial
+router.get('/', (req, res) => {
+  res.render('pages/index');
+});
+
+// ============== AUTENTICAÇÃO ==============
+// Login
+router.get('/login', authController.exibirLogin);
+router.post('/login', authController.login);
+router.get('/logout', authController.logout);
+
+// ============== CLIENTE ==============
+// Cadastro de cliente
+router.get('/cadastro-cliente', clienteController.exibirCadastro);
+router.post('/cadastro-cliente', clienteController.cadastrar);
+
+// Perfil do cliente (protegido)
+router.get('/perfil-cliente', requireCliente, clienteController.exibirPerfil);
+router.post('/atualizar-cliente', requireCliente, clienteController.atualizarPerfil);
+
+// ============== OUTRAS PÁGINAS ==============
+// Páginas estáticas que podem precisar de ajustes
+router.get('/meuspets.ejs', requireCliente, (req, res) => {
+  res.render('pages/meuspets', { cliente: req.session.usuario });
+});
+
+router.get('/painelcliente.ejs', requireCliente, (req, res) => {
+  res.render('pages/painelcliente', { cliente: req.session.usuario });
+});
+
+// ============== REDIRECIONAMENTOS ==============
+// Redirecionamentos para URLs antigas (se necessário)
+router.get('/cliente.ejs', (req, res) => {
+  res.redirect('/cadastro-cliente');
+});
+
+router.get('/Login.ejs', (req, res) => {
+  res.redirect('/login');
+});
+
+router.get('/perfilcliente.ejs', (req, res) => {
+  res.redirect('/perfil-cliente');
+});
+
+
 
 module.exports = router;

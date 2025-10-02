@@ -8,6 +8,19 @@
     <link rel="stylesheet" href="/css/style-adestrador.css">
    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- TESTE: CSS para botão de assinatura Mercado Pago -->
+    <style>
+    .mp-subscription-btn {
+        background-color: #3483FA !important;
+        color: white !important;
+        text-decoration: none !important;
+        transition: background-color 0.3s;
+    }
+    .mp-subscription-btn:hover {
+        background-color: #2a68c8 !important;
+        color: white !important;
+    }
+    </style>
 </head>
 <body>
     <!-- Navbar -->
@@ -108,7 +121,9 @@
                             </ul>
                         </section>
                         <section class="plan-actions">
-                            <button class="btn btn-primary btn-plan">Assinar Plano</button>
+                            <!-- TESTE: Botão de assinatura Mercado Pago -->
+                            <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=cdd76c00db2249138cb535698b1f9bd8" name="MP-payButton" class="btn btn-primary btn-plan mp-subscription-btn">Assinar Plano</a>
+                            <!-- ORIGINAL: <button class="btn btn-primary btn-plan" data-plan="prata" data-valor="89">Assinar Plano</button> -->
                         </section>
                     </section>
 
@@ -137,7 +152,9 @@
                             </ul>
                         </section>
                         <section class="plan-actions">
-                            <button class="btn btn-primary btn-plan">Assinar Plano</button>
+                            <!-- TESTE: Botão de assinatura Mercado Pago -->
+                            <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=cdd76c00db2249138cb535698b1f9bd8" name="MP-payButton" class="btn btn-primary btn-plan mp-subscription-btn">Assinar Plano</a>
+                            <!-- ORIGINAL: <button class="btn btn-primary btn-plan" data-plan="ouro" data-valor="149">Assinar Plano</button> -->
                         </section>
                     </section>
                 </section>
@@ -237,131 +254,82 @@
         <span class="notif-count">3</span>
     </section>
 
-    <!-- Mercado Pago SDK -->
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
 
-    <!-- Modal de Pagamento Customizado -->
-    <section id="paymentModal" class="modal">
-        <section class="modal-content">
-            <span id="closeModal" class="close">&times;</span>
-            <h2>Assinar Plano <span id="selectedPlan"></span></h2>
-            <section class="payment-options">
-                <label>
-                    <input type="radio" name="paymentMethod" value="card" checked> Cartão de Crédito
-                </label>
-                <label>
-                    <input type="radio" name="paymentMethod" value="pix"> Pix
-                </label>
-            </section>
-            <section id="cardFormContainer">
-                <form id="cardPaymentForm">
-                    <section id="form-mp"></section>
-                    <button type="submit" id="payCardBtn" class="btn btn-primary">Pagar com Cartão</button>
-                </form>
-            </section>
-            <section id="pixContainer" style="display:none;">
-                <button id="payPixBtn" class="btn btn-primary">Gerar QR Code Pix</button>
-                <section id="pixQrCode" style="margin-top:20px;"></section>
-            </section>
-        </section>
-    </section>
 
-    <style>
-        .modern-modal { border-radius: 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.18); background: #fff; }
-        .modern-payment { display: flex; flex-direction: column; align-items: center; padding: 2rem; }
-        .modern-payment-visual { text-align: center; margin-bottom: 1.5rem; }
-        .modern-payment-options { display: flex; gap: 2rem; margin-bottom: 1.5rem; }
-        .modern-radio { font-size: 1.1em; background: #f8f8f8; border-radius: 8px; padding: 0.7em 1.2em; cursor: pointer; transition: background 0.2s; }
-        .modern-radio input { display: none; }
-        .modern-radio input:checked + span { color: #4a69bd; font-weight: bold; }
-        .modern-summary-label { font-size: 1.2em; color: #888; margin-right: 0.5em; }
-        .modern-summary-value { font-size: 1.5em; color: #4a69bd; font-weight: bold; }
-        .btn-modern-pay { background: linear-gradient(90deg,#4a69bd,#6a89cc); color: #fff; border:none; border-radius: 8px; padding: 1em 2em; font-size: 1.2em; cursor:pointer; margin-top: 1.5em; box-shadow: 0 2px 8px rgba(74,105,189,0.12); transition: background 0.2s; }
-        .btn-modern-pay:hover { background: linear-gradient(90deg,#6a89cc,#4a69bd); }
-        .modern-payment-feedback { margin-top: 1.5em; font-size: 1.1em; text-align: center; }
-        .modern-payment-feedback.success { color: #388e3c; background: #e8f5e9; border-radius: 6px; padding: 1em; }
-        .modern-payment-feedback.error { color: #d32f2f; background: #ffebee; border-radius: 6px; padding: 1em; }
-    </style>
+
+    <!-- TESTE: Script do Mercado Pago para assinaturas -->
+    <script type="text/javascript">
+       (function() {
+          function $MPC_load() {
+             window.$MPC_loaded !== true && (function() {
+             var s = document.createElement("script");
+             s.type = "text/javascript";
+             s.async = true;
+             s.src = document.location.protocol + "//secure.mlstatic.com/mptools/render.js";
+             var x = document.getElementsByTagName('script')[0];
+             x.parentNode.insertBefore(s, x);
+             window.$MPC_loaded = true;
+          })();
+       }
+       window.$MPC_loaded !== true ? (window.attachEvent ? window.attachEvent('onload', $MPC_load) : window.addEventListener('load', $MPC_load, false)) : null;
+       })();
+      /*
+            // to receive event with message when closing modal from congrants back to site
+            function $MPC_message(event) {
+              // onclose modal ->CALLBACK FUNCTION
+             // !!!!!!!!FUNCTION_CALLBACK HERE Received message: {event.data} preapproval_id !!!!!!!!
+            }
+            window.$MPC_loaded !== true ? (window.addEventListener("message", $MPC_message)) : null; 
+            */
+    </script>
+    
+    <!-- ORIGINAL: Sistema de pagamento customizado (comentado para teste) -->
+    <!--
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const confirmBtn = document.getElementById('modernConfirmPayment');
-        const feedback = document.getElementById('modernPaymentFeedback');
-        const priceSpan = document.getElementById('modernSummaryPrice');
-        const planNameSpan = document.getElementById('modernPlanName');
-        const planTitle = document.getElementById('modernPlanTitle');
-        const planDesc = document.getElementById('modernPlanDesc');
-        // Atualiza preço e nome do plano conforme seleção
+        // Sistema de pagamento simplificado
         document.querySelectorAll('.btn-plan').forEach(btn => {
-            btn.addEventListener('click', function() {
-                let plan = 'Prata'; let price = 'R$ 89,00'; let desc = 'Tenha destaque, mais clientes e recursos exclusivos!';
-                if (this.closest('.plan-card').classList.contains('gold-plan')) { plan = 'Ouro'; price = 'R$ 149,00'; desc = 'Tenha prioridade máxima, clientes ilimitados e suporte 24/7!'; }
-                if (this.closest('.plan-card').classList.contains('bronze-plan')) { plan = 'Bronze'; price = 'R$ 49,00'; desc = 'Comece sua jornada, visibilidade básica e até 30 clientes.'; }
-                planNameSpan.textContent = plan;
-                planTitle.innerHTML = 'Plano <span id="modernPlanName">' + plan + '</span>';
-                planDesc.textContent = desc;
-                priceSpan.textContent = price;
-                feedback.style.display = 'none';
-                document.getElementById('paymentModal').classList.add('active');
-            });
-        });
-        document.querySelectorAll('input[name="period"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                let plan = planNameSpan.textContent;
-                let price = 'R$ 89,00';
-                if (plan === 'Ouro') price = this.value === 'monthly' ? 'R$ 149,00' : 'R$ 1639,00';
-                if (plan === 'Prata') price = this.value === 'monthly' ? 'R$ 89,00' : 'R$ 979,00';
-                if (plan === 'Bronze') price = this.value === 'monthly' ? 'R$ 49,00' : 'R$ 539,00';
-                priceSpan.textContent = price;
-            });
-        });
-        confirmBtn.addEventListener('click', async function() {
-            confirmBtn.disabled = true;
-            confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
-            feedback.style.display = 'none';
-            // Dados do plano
-            const descricao = planNameSpan.textContent + ' - ' + (document.querySelector('input[name="period"]:checked').value === 'monthly' ? 'Mensal' : 'Anual');
-            const valor = priceSpan.textContent.replace('R$', '').replace(',', '.').trim();
-            try {
-                const response = await fetch('/criar-pagamento', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ descricao, valor })
-                });
-                const result = await response.json();
-                if (result.checkout_url) {
-                    feedback.className = 'modern-payment-feedback success';
-                    feedback.innerHTML = '<i class="fas fa-check-circle"></i> Redirecionando para pagamento seguro...';
-                    feedback.style.display = 'block';
-                    setTimeout(() => { window.location.href = result.checkout_url; }, 1200);
-                } else {
-                    feedback.className = 'modern-payment-feedback error';
-                    feedback.innerHTML = '<i class="fas fa-times-circle"></i> Erro ao criar pagamento. Tente novamente.';
-                    feedback.style.display = 'block';
-                    confirmBtn.disabled = false;
-                    confirmBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Assinar Agora';
+            btn.addEventListener('click', async function() {
+                if (this.classList.contains('current-plan') || this.classList.contains('btn-renew')) {
+                    return;
                 }
-            } catch (error) {
-                feedback.className = 'modern-payment-feedback error';
-                feedback.innerHTML = '<i class="fas fa-times-circle"></i> Erro de conexão com Mercado Pago.';
-                feedback.style.display = 'block';
-                confirmBtn.disabled = false;
-                confirmBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Assinar Agora';
-            }
-        });
-        document.getElementById('closeModal').addEventListener('click', function() {
-            document.getElementById('paymentModal').classList.remove('active');
-            confirmBtn.disabled = false;
-            confirmBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Assinar Agora';
-            feedback.style.display = 'none';
-        });
-        document.getElementById('cancelPayment')?.addEventListener('click', function() {
-            document.getElementById('paymentModal').classList.remove('active');
-            confirmBtn.disabled = false;
-            confirmBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Assinar Agora';
-            feedback.style.display = 'none';
+                
+                const plan = this.getAttribute('data-plan');
+                const valor = this.getAttribute('data-valor');
+                
+                if (!plan || !valor) return;
+                
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+                
+                const descricao = `Plano ${plan.charAt(0).toUpperCase() + plan.slice(1)} - Pet Mania`;
+                
+                try {
+                    const response = await fetch('/criar-pagamento', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ descricao, valor })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.checkout_url) {
+                        window.location.href = result.checkout_url;
+                    } else {
+                        alert('Erro ao criar pagamento. Tente novamente.');
+                        this.disabled = false;
+                        this.innerHTML = 'Assinar Plano';
+                    }
+                } catch (error) {
+                    alert('Erro de conexão. Tente novamente.');
+                    this.disabled = false;
+                    this.innerHTML = 'Assinar Plano';
+                }
+            });
         });
     });
     </script>
+    -->
     <script src="/js/script-planos.js"></script>
     
 </body>

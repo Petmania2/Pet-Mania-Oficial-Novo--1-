@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste Checkout - Pet Mania</title>
+</head>
+<body>
+    <h1>Teste de Checkout</h1>
+    
+    <button onclick="testarPagamento()">Testar Pagamento - R$ 150,00</button>
+    
+    <script>
+        function testarPagamento() {
+            fetch('/contratar-adestrador', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ adestradorId: '1' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Resposta:', data);
+                if (data.initPoint) {
+                    window.open(data.initPoint, '_blank');
+                } else {
+                    alert('Erro: ' + (data.erro || data.detalhes || 'Erro desconhecido'));
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro na requisição');
+            });
+        }
+    </script>
+</body>
+</html>

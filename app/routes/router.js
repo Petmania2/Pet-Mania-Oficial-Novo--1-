@@ -112,12 +112,31 @@ router.get("/painelcliente.ejs", async function (req, res) {
   }
   try {
     const { executeQuery } = require('../../config/pool_conexoes');
-    const rows = await executeQuery('SELECT nome, email FROM clientes WHERE id = ?', [req.session.usuario.id]);
-    const cliente = rows[0] || null;
+    // MODIFICADOPELAIA: Buscar mais campos do cliente para o painel
+    const rows = await executeQuery('SELECT nome, email, telefone, cidade, endereco, tipo_adestramento, descricao FROM clientes WHERE id = ?', [req.session.usuario.id]);
+    const cliente = rows[0] || {
+      nome: req.session.usuario.nome || 'Cliente',
+      email: req.session.usuario.email || '',
+      telefone: '',
+      cidade: '',
+      endereco: '',
+      tipo_adestramento: '',
+      descricao: ''
+    };
     res.render("pages/painelcliente", { cliente });
   } catch (err) {
     console.error('Erro ao carregar painel cliente:', err);
-    res.render("pages/painelcliente", { cliente: null });
+    // MODIFICADOPELAIA: Fallback com dados da sessão
+    const cliente = {
+      nome: req.session.usuario.nome || 'Cliente',
+      email: req.session.usuario.email || '',
+      telefone: '',
+      cidade: '',
+      endereco: '',
+      tipo_adestramento: '',
+      descricao: ''
+    };
+    res.render("pages/painelcliente", { cliente });
   }
 });
 
@@ -239,10 +258,10 @@ router.post("/logout", function (req, res) {
 
 router.post("/cadastrar-cliente", async function (req, res) {
   try {
-    const { nome, email, senha } = req.body;
+    const { nome, email, senha, telefone, cidade, endereco, tipo_adestramento, descricao } = req.body;
     
     if (!nome || !email || !senha) {
-      return res.status(400).json({ sucesso: false, erro: "Todos os campos são obrigatórios" });
+      return res.status(400).json({ sucesso: false, erro: "Nome, email e senha são obrigatórios" });
     }
     
     const { executeQuery } = require('../../config/pool_conexoes');
@@ -255,7 +274,11 @@ router.post("/cadastrar-cliente", async function (req, res) {
     const bcrypt = require('bcrypt');
     const senhaHash = await bcrypt.hash(senha, 8);
     
-    const resultado = await executeQuery('INSERT INTO clientes (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senhaHash]);
+    // MODIFICADOPELAIA: Inserir campos adicionais do cliente
+    const resultado = await executeQuery(
+      'INSERT INTO clientes (nome, email, senha, telefone, cidade, endereco, tipo_adestramento, descricao) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 
+      [nome, email, senhaHash, telefone || '', cidade || '', endereco || '', tipo_adestramento || '', descricao || '']
+    );
     
     req.session.usuario = {
       id: resultado.insertId,
@@ -273,6 +296,46 @@ router.post("/cadastrar-cliente", async function (req, res) {
   } catch (error) {
     console.error("Erro ao cadastrar cliente:", error);
     res.status(500).json({ sucesso: false, erro: "Erro interno: " + error.message });
+  }
+});
+
+// MODIFICADOPELAIA: Rota para criar preferência (compatibilidade)
+router.post('/criar-preferencia', async (req, res) => {
+  try {
+    const { title, price, quantity = 1 } = req.body;
+    
+    if (!title || !price) {
+      return res.status(400).json({ erro: 'Título e preço são obrigatórios' });
+    }
+
+    const valorNumerico = parseFloat(price);
+    if (isNaN(valorNumerico)) {
+      return res.status(400).json({ erro: 'Preço deve ser um número válido' });
+    }
+
+    const preference = {
+      items: [{
+        title: title,
+        quantity: parseInt(quantity),
+        unit_price: valorNumerico,
+        currency_id: 'BRL'
+      }]
+    };
+    
+    const response = await mercadopago.preferences.create(preference);
+    
+    if (response.body && response.body.init_point) {
+      res.json({ initPoint: response.body.init_point });
+    } else {
+      res.status(500).json({ erro: 'Não foi possível criar preferência' });
+    }
+    
+  } catch (error) {
+    console.error('Erro ao criar preferência:', error);
+    res.status(500).json({ 
+      erro: 'Erro ao criar pagamento',
+      detalhes: error.message
+    });
   }
 });
 
@@ -321,7 +384,11 @@ router.post('/criar-pagamento', async (req, res) => {
     
     if (response.body && response.body.init_point) {
       console.log('Sucesso! Retornando init_point:', response.body.init_point);
-      res.json({ checkout_url: response.body.init_point });
+      // MODIFICADOPELAIA: Retornar tanto checkout_url quanto initPoint para compatibilidade
+      res.json({ 
+        checkout_url: response.body.init_point,
+        initPoint: response.body.init_point 
+      });
     } else {
       console.log('ERRO: Não foi possível obter init_point');
       res.status(500).json({ erro: 'Não foi possível criar preferência' });
@@ -412,6 +479,32 @@ router.get('/teste-mp', async (req, res) => {
 // Rota para favicon
 router.get('/favicon.ico', (req, res) => {
   res.status(204).send();
+});
+
+// MODIFICADOPELAIA: Rota para imagens placeholder
+router.get('/api/placeholder/:width/:height', (req, res) => {
+  const { width, height } = req.params;
+  
+  // Gera uma imagem SVG simples como placeholder
+  const svg = `
+    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100%" height="100%" fill="#f0f0f0"/>
+      <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="14" fill="#999" text-anchor="middle" dy=".3em">${width}x${height}</text>
+    </svg>
+  `;
+  
+  res.setHeader('Content-Type', 'image/svg+xml');
+  res.send(svg);
+});
+
+// MODIFICADOPELAIA: Rota para logout via GET
+router.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Erro ao fazer logout:', err);
+    }
+    res.redirect('/');
+  });
 });
 
 module.exports = router;

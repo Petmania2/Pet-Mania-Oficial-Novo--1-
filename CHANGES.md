@@ -40,9 +40,37 @@
 ## Arquivos Modificados
 - `app/views/pages/painelcliente.ejs` - Completado e corrigido
 - `app/views/pages/index.ejs` - Mapa funcional adicionado
+- `app/routes/router.js` - Correções de produção aplicadas
 - `CHANGES.md` - Este arquivo
 - `TESTS.md` - Plano de testes
 - `summary.json` - Resumo das alterações
+
+## Correções de Produção (10/03/2025)
+
+### 7. Imagens Placeholder - ERRO 404
+**Problema**: Chamadas para /api/placeholder/45/45 e /api/placeholder/50/50 retornando 404
+**Solução**: Criada rota dinâmica que gera SVG placeholder
+**Arquivo**: router.js
+**Funcionalidade**: Gera imagens SVG com dimensões solicitadas
+
+### 8. Rota de Logout GET
+**Problema**: Logout só funcionava via POST
+**Solução**: Adicionada rota GET /logout para compatibilidade
+**Redirecionamento**: Redireciona para página inicial após logout
+
+### 9. Painel Cliente - Campos Ausentes
+**Problema**: Painel cliente não carregava todos os campos necessários
+**Solução**: Expandida query para buscar telefone, cidade, endereço, tipo_adestramento, descricao
+**Fallback**: Dados da sessão quando query falha
+
+### 10. Cadastro Cliente Expandido
+**Problema**: Cadastro só salvava nome, email, senha
+**Solução**: Adicionados campos opcionais: telefone, cidade, endereço, tipo_adestramento, descrição
+
+### 11. Compatibilidade Mercado Pago
+**Problema**: Frontend esperava rota /criar-preferencia
+**Solução**: Criada rota adicional para compatibilidade
+**Retorno**: Ambos checkout_url e initPoint para máxima compatibilidade
 
 ## Comentários de Modificação
 Todos os trechos alterados estão marcados com `// MODIFICADOPELAIA:`

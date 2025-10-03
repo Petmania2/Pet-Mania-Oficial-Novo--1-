@@ -2,6 +2,7 @@
   "filesChanged": [
     "app/views/pages/painelcliente.ejs",
     "app/views/pages/index.ejs",
+    "app/routes/router.js",
     "CHANGES.md",
     "TESTS.md",
     "summary.json"
@@ -13,7 +14,11 @@
     "Coordenadas centralizadas em São Paulo em vez de Barueri",
     "Função logout não implementada",
     "Chat widget não integrado",
-    "Tratamento de erros ausente"
+    "Tratamento de erros ausente",
+    "Imagens placeholder retornando 404",
+    "Rota logout só via POST",
+    "Painel cliente com campos ausentes",
+    "Incompatibilidade rotas Mercado Pago"
   ],
   "featuresAdded": [
     "Mapa interativo Leaflet + OpenStreetMap",
@@ -47,6 +52,9 @@
     "Todos os trechos modificados marcados com // MODIFICADOPELAIA",
     "Projeto funciona offline exceto geocoding",
     "Requer HTTPS ou localhost para geolocalização",
-    "API Photon pode ter rate limits"
+    "API Photon pode ter rate limits",
+    "Sistema em produção: https://pet-mania-oficial.onrender.com",
+    "Mercado Pago funcionando corretamente",
+    "Todas as rotas 404 corrigidas"
   ]
 }

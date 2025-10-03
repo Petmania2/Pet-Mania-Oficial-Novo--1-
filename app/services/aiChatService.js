@@ -87,9 +87,7 @@ async function sendMessage(message) {
     
     return {
       success: true,
-      reply: {
-        message: resposta
-      }
+      message: resposta
     };
   } catch (error) {
     return {

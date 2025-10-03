@@ -1,87 +1,89 @@
-// Chat com respostas programadas
-const respostasProgramadas = {
-  saudacao: [
-    "Olá! Sou o assistente virtual da Pet Mania. Como posso ajudar você hoje?",
-    "Oi! Bem-vindo à Pet Mania! Em que posso te auxiliar?",
-    "Olá! Estou aqui para ajudar com suas dúvidas sobre adestramento de pets!"
-  ],
+// Sistema de chat expandido - Pet Mania
+const respostas = {
+  // Saudações
+  'oi': 'Olá! Sou o assistente da Pet Mania 🐶 Como posso ajudar?',
+  'ola': 'Oi! Bem-vindo à Pet Mania! Em que posso auxiliar?',
+  'bom dia': 'Bom dia! Como posso te ajudar hoje?',
+  'boa tarde': 'Boa tarde! Em que posso ser útil?',
+  'boa noite': 'Boa noite! Como posso ajudar?',
+  'tchau': 'Tchau! Volte sempre que precisar! 🐾',
+  'obrigado': 'De nada! Fico feliz em ajudar! 😊',
   
-  adestramento: [
-    "O adestramento é fundamental para o bem-estar do seu pet! Nossos adestradores são certificados e usam métodos positivos.",
-    "Temos adestradores especializados em diferentes comportamentos. Que tipo de treinamento você procura?",
-    "O adestramento ajuda na socialização e obediência do seu pet. Posso te conectar com um adestrador próximo!"
-  ],
+  // Cadastros
+  'cadastrar adestrador': '🎓 **Como se cadastrar como adestrador:**\n\n1. Acesse: http://localhost:3000/Cadastroadestrador.ejs\n2. Preencha seus dados pessoais\n3. Informe experiência e especialidades\n4. Defina seu preço por sessão\n5. Aguarde aprovação\n\n✨ Após aprovado, você aparecerá nas buscas!',
+  'ser adestrador': '🎓 **Como se cadastrar como adestrador:**\n\n1. Acesse: http://localhost:3000/Cadastroadestrador.ejs\n2. Preencha seus dados pessoais\n3. Informe experiência e especialidades\n4. Defina seu preço por sessão\n5. Aguarde aprovação\n\n✨ Após aprovado, você aparecerá nas buscas!',
+  'cadastrar cliente': '🐶 **Como se cadastrar como cliente:**\n\n1. Acesse: http://localhost:3000/cliente.ejs\n2. Preencha seus dados\n3. Faça login em: http://localhost:3000/Login.ejs\n4. Acesse seu painel: http://localhost:3000/painelcliente.ejs\n\n🎆 Pronto para buscar adestradores!',
+  'criar conta': '🐶 **Como se cadastrar como cliente:**\n\n1. Acesse: http://localhost:3000/cliente.ejs\n2. Preencha seus dados\n3. Faça login em: http://localhost:3000/Login.ejs\n4. Acesse seu painel: http://localhost:3000/painelcliente.ejs\n\n🎆 Pronto para buscar adestradores!',
+  'cadastrar pet': '🐕 **Como cadastrar seu pet:**\n\n1. Faça login como cliente\n2. Acesse: http://localhost:3000/meuspets.ejs\n3. Clique em "Adicionar Pet"\n4. Preencha informações do seu amiguinho\n\n🏆 Assim os adestradores conhecerão melhor seu pet!',
+  'adicionar pet': '🐕 **Como cadastrar seu pet:**\n\n1. Faça login como cliente\n2. Acesse: http://localhost:3000/meuspets.ejs\n3. Clique em "Adicionar Pet"\n4. Preencha informações do seu amiguinho\n\n🏆 Assim os adestradores conhecerão melhor seu pet!',
   
-  comportamento: [
-    "Problemas de comportamento são comuns e têm solução! Nossos especialistas podem ajudar.",
-    "Cada pet é único. Nossos adestradores avaliam individualmente e criam um plano personalizado.",
-    "Latidos excessivos, destruição ou agressividade? Temos profissionais especializados para cada caso!"
-  ],
+  // Login e acesso
+  'login': '🔐 **Como fazer login:**\n\n1. Acesse: http://localhost:3000/Login.ejs\n2. Digite seu email e senha\n3. Escolha o tipo (Cliente ou Adestrador)\n\n❓ Esqueceu a senha? Entre em contato: (11) 9999-8888',
+  'entrar': '🔐 **Como fazer login:**\n\n1. Acesse: http://localhost:3000/Login.ejs\n2. Digite seu email e senha\n3. Escolha o tipo (Cliente ou Adestrador)\n\n❓ Esqueceu a senha? Entre em contato: (11) 9999-8888',
+  'esqueci senha': '🔑 **Esqueceu a senha?**\n\nEntre em contato conosco:\n📞 **Telefone:** (11) 9999-8888\n📱 **WhatsApp:** (11) 9999-8888\n\n🕰️ **Horário:** Segunda a Sexta, 8h às 18h',
   
-  filhote: [
-    "Filhotes aprendem mais rápido! É a melhor fase para começar o adestramento básico.",
-    "Para filhotes, focamos em socialização, comandos básicos e educação sanitária.",
-    "Que fofo! Filhotes precisam de paciência e consistência. Nossos adestradores são especialistas nisso!"
-  ],
+  // Buscar e encontrar
+  'buscar adestrador': '🔍 **Como encontrar adestradores:**\n\n1. Acesse: http://localhost:3000/buscaradestrador.ejs\n2. Use os filtros de localização\n3. Veja perfis e avaliações\n4. Entre em contato direto\n\n⭐ Todos são profissionais verificados!',
+  'encontrar adestrador': '🔍 **Como encontrar adestradores:**\n\n1. Acesse: http://localhost:3000/buscaradestrador.ejs\n2. Use os filtros de localização\n3. Veja perfis e avaliações\n4. Entre em contato direto\n\n⭐ Todos são profissionais verificados!',
+  'adestradores': '🔍 **Como encontrar adestradores:**\n\n1. Acesse: http://localhost:3000/buscaradestrador.ejs\n2. Use os filtros de localização\n3. Veja perfis e avaliações\n4. Entre em contato direto\n\n⭐ Todos são profissionais verificados!',
   
-  preco: [
-    "Os preços variam conforme o tipo de treinamento e região. Consulte nossos adestradores para orçamentos personalizados!",
-    "Investir em adestramento é investir na qualidade de vida do seu pet. Temos opções para todos os orçamentos!",
-    "Cada adestrador define seus preços. Você pode comparar e escolher o que melhor se adequa ao seu orçamento!"
-  ],
+  // Adestramento e comportamento
+  'adestramento': '🎯 **Sobre adestramento:**\n\nNossos adestradores são especializados em:\n• Obediência básica\n• Correção de comportamento\n• Socialização\n• Truques e comandos\n\n🔍 Encontre um adestrador: http://localhost:3000/buscaradestrador.ejs',
+  'treinar cachorro': '🎯 **Sobre adestramento:**\n\nNossos adestradores são especializados em:\n• Obediência básica\n• Correção de comportamento\n• Socialização\n• Truques e comandos\n\n🔍 Encontre um adestrador: http://localhost:3000/buscaradestrador.ejs',
+  'comportamento': '🐕 **Problemas de comportamento:**\n\nNossos especialistas ajudam com:\n• Latidos excessivos\n• Destruição de objetos\n• Agressividade\n• Ansiedade de separação\n• Puxar na coleira\n\n🔍 Encontre ajuda: http://localhost:3000/buscaradestrador.ejs',
+  'late muito': '🔊 **Latidos excessivos:**\n\nNossos adestradores podem ajudar a controlar latidos através de técnicas positivas de treinamento.\n\n🔍 Encontre um especialista: http://localhost:3000/buscaradestrador.ejs',
+  'agressivo': '⚠️ **Comportamento agressivo:**\n\nTemos especialistas em correção de agressividade que usam métodos seguros e eficazes.\n\n🔍 Encontre ajuda: http://localhost:3000/buscaradestrador.ejs',
   
-  plataforma: [
-    "Nossa plataforma conecta você aos melhores adestradores da sua região!",
-    "Aqui você encontra adestradores verificados, avaliações reais e pode agendar facilmente!",
-    "Somos a maior plataforma de adestramento do Brasil! Mais de 1000 adestradores cadastrados!"
-  ],
+  // Planos e preços
+  'planos': '💳 **Planos para adestradores:**\n\n🥉 **Bronze:** R$ 49/mês\n• Perfil básico\n• Até 30 clientes\n\n🥈 **Prata:** R$ 89/mês (Recomendado)\n• Destaque nas buscas\n• Até 100 clientes\n\n🥇 **Ouro:** R$ 149/mês\n• Primeiro nas buscas\n• Clientes ilimitados\n\nAcesse: http://localhost:3000/planosadestrador.ejs',
+  'precos': '💰 **Preços dos serviços:**\n\nOs preços variam por adestrador e região:\n• Sessão básica: R$ 80 - R$ 200\n• Pacote mensal: R$ 300 - R$ 800\n• Adestramento intensivo: R$ 500 - R$ 1500\n\n🔍 Compare preços: http://localhost:3000/buscaradestrador.ejs',
+  'quanto custa': '💰 **Preços dos serviços:**\n\nOs preços variam por adestrador e região:\n• Sessão básica: R$ 80 - R$ 200\n• Pacote mensal: R$ 300 - R$ 800\n• Adestramento intensivo: R$ 500 - R$ 1500\n\n🔍 Compare preços: http://localhost:3000/buscaradestrador.ejs',
   
-  default: [
-    "Interessante! Posso te ajudar com informações sobre adestramento, comportamento animal ou nossa plataforma.",
-    "Não entendi bem sua pergunta. Você gostaria de saber sobre nossos adestradores ou serviços?",
-    "Desculpe, não compreendi. Pode reformular sua pergunta? Estou aqui para ajudar com adestramento!"
-  ]
+  // Pagamentos
+  'pagamento': '💳 **Formas de pagamento:**\n\n• Cartão de crédito (até 12x)\n• PIX (desconto de 5%)\n• Boleto bancário\n• Transferência bancária\n\n🔒 Pagamentos seguros via Mercado Pago\n\n📞 Dúvidas: (11) 9999-8888',
+  'pix': '💳 **Pagamento via PIX:**\n\n• Desconto de 5%\n• Aprovação instantânea\n• Disponível 24h\n\n🔒 Seguro via Mercado Pago',
+  'cartao': '💳 **Pagamento no cartão:**\n\n• Até 12x sem juros\n• Todas as bandeiras\n• Aprovação rápida\n\n🔒 Seguro via Mercado Pago',
+  
+  // Sobre a plataforma
+  'como funciona': '🏠 **Como funciona a Pet Mania:**\n\n👤 **Para clientes:**\n1. Cadastre-se gratuitamente\n2. Busque adestradores na sua região\n3. Compare perfis e preços\n4. Contrate o serviço\n\n👨‍🏫 **Para adestradores:**\n1. Cadastre-se e aguarde aprovação\n2. Crie seu perfil profissional\n3. Receba contatos de clientes\n4. Gerencie seus agendamentos',
+  'pet mania': '🏠 **Sobre a Pet Mania:**\n\nSomos a maior plataforma de adestramento do Brasil!\n\n📊 **Números:**\n• +1000 adestradores cadastrados\n• +50.000 pets atendidos\n• Presente em todo o Brasil\n\n🏆 **Missão:** Conectar pets e famílias aos melhores profissionais de adestramento.',
+  
+  // Suporte e contato
+  'suporte': '📞 **Suporte Pet Mania:**\n\n**Telefone:** (11) 9999-8888\n**WhatsApp:** (11) 9999-8888\n**Email:** suporte@petmania.com.br\n\n🕰️ **Horário:** Segunda a Sexta, 8h às 18h\n\n💬 **Chat:** Disponível 24h aqui no site!',
+  'contato': '📞 **Suporte Pet Mania:**\n\n**Telefone:** (11) 9999-8888\n**WhatsApp:** (11) 9999-8888\n**Email:** suporte@petmania.com.br\n\n🕰️ **Horário:** Segunda a Sexta, 8h às 18h\n\n💬 **Chat:** Disponível 24h aqui no site!',
+  'telefone': '📞 **Nosso telefone:** (11) 9999-8888\n\n🕰️ **Horário:** Segunda a Sexta, 8h às 18h',
+  'whatsapp': '📱 **Nosso WhatsApp:** (11) 9999-8888\n\n💬 Resposta rápida no horário comercial!',
+  
+  // Dúvidas frequentes
+  'seguro': '🔒 **Segurança na Pet Mania:**\n\n• Todos os adestradores são verificados\n• Avaliações reais de clientes\n• Pagamentos seguros via Mercado Pago\n• Suporte 24h disponível\n\n✅ Sua segurança é nossa prioridade!',
+  'confiavel': '🔒 **Segurança na Pet Mania:**\n\n• Todos os adestradores são verificados\n• Avaliações reais de clientes\n• Pagamentos seguros via Mercado Pago\n• Suporte 24h disponível\n\n✅ Sua segurança é nossa prioridade!',
+  'avaliacoes': '⭐ **Sistema de avaliações:**\n\n• Clientes avaliam os adestradores\n• Notas de 1 a 5 estrelas\n• Comentários detalhados\n• Histórico transparente\n\n🔍 Veja as avaliações antes de contratar!',
+  
+  // Padrão
+  'default': '🤔 Não entendi sua pergunta.\n\n📞 **Para mais ajuda:**\n**Telefone:** (11) 9999-8888\n**WhatsApp:** (11) 9999-8888\n\n🕰️ **Horário:** Segunda a Sexta, 8h às 18h\n\n💡 **Dica:** Tente perguntar sobre cadastros, adestradores, planos ou pagamentos!'
 };
 
-function detectarCategoria(mensagem) {
-  const msg = mensagem.toLowerCase();
+function buscarResposta(mensagem) {
+  const msg = mensagem.toLowerCase().trim();
   
-  if (msg.includes('oi') || msg.includes('olá') || msg.includes('ola') || msg.includes('bom dia') || msg.includes('boa tarde') || msg.includes('boa noite')) {
-    return 'saudacao';
+  // Buscar resposta exata
+  if (respostas[msg]) {
+    return respostas[msg];
   }
   
-  if (msg.includes('adestramento') || msg.includes('treinar') || msg.includes('treinamento') || msg.includes('ensinar')) {
-    return 'adestramento';
+  // Buscar por palavras-chave
+  for (const [chave, resposta] of Object.entries(respostas)) {
+    if (msg.includes(chave)) {
+      return resposta;
+    }
   }
   
-  if (msg.includes('comportamento') || msg.includes('late') || msg.includes('morde') || msg.includes('agressivo') || msg.includes('destrói') || msg.includes('xixi') || msg.includes('cocô')) {
-    return 'comportamento';
-  }
-  
-  if (msg.includes('filhote') || msg.includes('cachorrinho') || msg.includes('puppy') || msg.includes('bebê') || msg.includes('pequeno')) {
-    return 'filhote';
-  }
-  
-  if (msg.includes('preço') || msg.includes('valor') || msg.includes('custa') || msg.includes('quanto') || msg.includes('barato') || msg.includes('caro')) {
-    return 'preco';
-  }
-  
-  if (msg.includes('plataforma') || msg.includes('app') || msg.includes('site') || msg.includes('como funciona') || msg.includes('pet mania')) {
-    return 'plataforma';
-  }
-  
-  return 'default';
+  return respostas.default;
 }
 
-function obterResposta(categoria) {
-  const respostas = respostasProgramadas[categoria];
-  return respostas[Math.floor(Math.random() * respostas.length)];
-}
-
-async function sendMessage(message, history = []) {
+async function sendMessage(message) {
   try {
-    const categoria = detectarCategoria(message);
-    const resposta = obterResposta(categoria);
+    const resposta = buscarResposta(message);
     
     return {
       success: true,
@@ -92,7 +94,7 @@ async function sendMessage(message, history = []) {
   } catch (error) {
     return {
       success: false,
-      error: 'Erro interno do chat'
+      error: 'Erro no chat'
     };
   }
 }

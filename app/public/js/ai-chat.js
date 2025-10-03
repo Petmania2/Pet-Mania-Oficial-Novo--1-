@@ -1,7 +1,6 @@
 class AIChat {
     constructor() {
         this.isOpen = false;
-        this.conversationHistory = [];
         this.init();
     }
 
@@ -16,7 +15,7 @@ class AIChat {
         const chatButton = document.createElement('button');
         chatButton.className = 'ai-chat-button';
         chatButton.innerHTML = '<i class="fas fa-robot"></i>';
-        chatButton.title = 'Chat com PetBot - Assistente Virtual';
+        chatButton.title = 'Chat com PetBot';
         document.body.appendChild(chatButton);
 
         // Container do chat
@@ -29,7 +28,7 @@ class AIChat {
             </div>
             <div class="ai-chat-messages" id="chatMessages"></div>
             <div class="ai-chat-input-container">
-                <input type="text" class="ai-chat-input" id="chatInput" placeholder="Digite sua pergunta sobre pets...">
+                <input type="text" class="ai-chat-input" id="chatInput" placeholder="Digite sua pergunta...">
                 <button class="ai-chat-send" id="chatSend"><i class="fas fa-paper-plane"></i></button>
             </div>
         `;
@@ -44,11 +43,8 @@ class AIChat {
 
     bindEvents() {
         this.chatButton.addEventListener('click', () => this.toggleChat());
-        
         this.chatContainer.querySelector('.ai-chat-close').addEventListener('click', () => this.closeChat());
-        
         this.sendButton.addEventListener('click', () => this.sendMessage());
-        
         this.chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.sendMessage();
         });
@@ -74,93 +70,46 @@ class AIChat {
     }
 
     addWelcomeMessage() {
-        const welcomeMessage = '🐾 Olá! Sou o PetBot da Pet Mania! Posso ajudar com dúvidas sobre adestramento, comportamento canino e como usar nossa plataforma. Como posso ajudar você hoje?';
+        const welcomeMessage = '🐾 Olá! Sou o PetBot da Pet Mania!\n\nPosso ajudar com:\n• Cadastros\n• Buscar adestradores\n• Planos e pagamentos\n\nComo posso ajudar?';
         this.addMessage(welcomeMessage, 'ai');
     }
 
     addMessage(text, sender) {
         const messageDiv = document.createElement('div');
         messageDiv.className = sender === 'user' ? 'user-message' : 'ai-message';
-        messageDiv.textContent = text;
+        messageDiv.innerHTML = text.replace(/\n/g, '<br>');
         
         this.messagesContainer.appendChild(messageDiv);
         this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
-    }
-
-    showTypingIndicator() {
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'typing-indicator';
-        typingDiv.id = 'typingIndicator';
-        typingDiv.innerHTML = `
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-        `;
-        
-        this.messagesContainer.appendChild(typingDiv);
-        this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
-    }
-
-    hideTypingIndicator() {
-        const typingIndicator = document.getElementById('typingIndicator');
-        if (typingIndicator) {
-            typingIndicator.remove();
-        }
     }
 
     async sendMessage() {
         const message = this.chatInput.value.trim();
         if (!message) return;
 
-        // Adicionar mensagem do usuário
         this.addMessage(message, 'user');
         this.chatInput.value = '';
         
-        // Desabilitar input
         this.chatInput.disabled = true;
         this.sendButton.disabled = true;
-        
-        // Mostrar indicador de digitação
-        this.showTypingIndicator();
 
         try {
             const response = await fetch('/chat/send', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: message,
-                    history: this.conversationHistory
-                })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
             });
 
             const data = await response.json();
-            
-            this.hideTypingIndicator();
 
             if (data.success) {
-                this.addMessage(data.message, 'ai');
-                
-                // Atualizar histórico
-                this.conversationHistory.push(
-                    { role: 'user', content: message },
-                    { role: 'assistant', content: data.message }
-                );
-                
-                // Manter apenas últimas 10 mensagens
-                if (this.conversationHistory.length > 20) {
-                    this.conversationHistory = this.conversationHistory.slice(-20);
-                }
+                this.addMessage(data.reply.message, 'ai');
             } else {
-                this.addMessage(data.message || 'Desculpe, ocorreu um erro. Tente novamente.', 'ai');
+                this.addMessage('Erro ao processar mensagem.', 'ai');
             }
         } catch (error) {
-            console.error('Erro no chat:', error);
-            this.hideTypingIndicator();
-            this.addMessage('Desculpe, não consegui processar sua mensagem. Tente novamente.', 'ai');
+            this.addMessage('Erro de conexão.', 'ai');
         } finally {
-            // Reabilitar input
             this.chatInput.disabled = false;
             this.sendButton.disabled = false;
             this.chatInput.focus();
@@ -168,7 +117,6 @@ class AIChat {
     }
 }
 
-// Inicializar chat quando a página carregar
 document.addEventListener('DOMContentLoaded', () => {
     new AIChat();
 });

@@ -284,20 +284,7 @@ router.get("/perfilcliente.ejs", async function (req, res) {
 
 // === ROTAS POST ===
 
-// ROTA DE SUPORTE IA
-router.post('/chat', rateLimit, async (req, res) => {
-  const { message } = req.body;
-  if (!message) {
-    return res.status(400).json({ error: 'Mensagem é obrigatória' });
-  }
-  try {
-    const reply = await aiChatService.processMessage(message);
-    res.json({ reply });
-  } catch (error) {
-    console.error('Erro no chat:', error);
-    res.status(500).json({ error: 'Erro interno do servidor' });
-  }
-});
+
 
 // ROTA PARA ATUALIZAR CLIENTE - ATUALIZADA
 router.post("/atualizar-cliente", rateLimit, async function (req, res) {
@@ -771,7 +758,7 @@ router.post('/chat/send', async (req, res) => {
     if (!message || message.trim().length === 0) {
       return res.status(400).json({
         success: false,
-        error: 'Mensagem é obrigatória'
+        message: 'Mensagem é obrigatória'
       });
     }
     
@@ -783,7 +770,7 @@ router.post('/chat/send', async (req, res) => {
     console.error('Erro no chat:', error);
     res.status(500).json({
       success: false,
-      error: 'Erro interno do servidor'
+      message: 'Erro interno do servidor'
     });
   }
 });

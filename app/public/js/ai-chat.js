@@ -74,14 +74,28 @@ class AIChat {
     }
 
     addWelcomeMessage() {
-        const welcomeMessage = '🐾 Olá! Sou o PetBot da Pet Mania! Posso ajudar com dúvidas sobre adestramento, comportamento canino e como usar nossa plataforma. Como posso ajudar você hoje?';
-        this.addMessage(welcomeMessage, 'ai');
+        const welcomeMessages = [
+            '🐾 Olá! Sou o PetBot da Pet Mania! Posso ajudar com dúvidas sobre adestramento, comportamento canino e como usar nossa plataforma. Como posso ajudar você hoje?',
+            '🐕 Oi! Bem-vindo à Pet Mania! Estou aqui para tirar suas dúvidas sobre adestramento, preços, agendamentos e muito mais!',
+            '🎾 Olá! Sou seu assistente virtual especializado em adestramento canino. Posso ajudar você a encontrar o adestrador perfeito para seu pet!'
+        ];
+        
+        const randomMessage = welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
+        this.addMessage(randomMessage, 'ai');
+        
+        // Adicionar sugestões de perguntas após 2 segundos
+        setTimeout(() => {
+            const suggestions = '💡 Algumas coisas que posso ajudar:\n• Encontrar adestradores na sua região\n• Explicar tipos de adestramento\n• Informações sobre preços\n• Como agendar sessões\n• Dicas de comportamento canino';
+            this.addMessage(suggestions, 'ai');
+        }, 2000);
     }
 
     addMessage(text, sender) {
         const messageDiv = document.createElement('div');
         messageDiv.className = sender === 'user' ? 'user-message' : 'ai-message';
-        messageDiv.textContent = text;
+        
+        // Preservar quebras de linha e emojis
+        messageDiv.innerHTML = text.replace(/\n/g, '<br>');
         
         this.messagesContainer.appendChild(messageDiv);
         this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;

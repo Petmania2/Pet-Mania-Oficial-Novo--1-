@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pet Mania - Meu Perfil</title>
     <link rel="stylesheet" href="/css/style-cliente.css">
+    <link rel="stylesheet" href="/css/ai-chat.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .painel-container {
@@ -233,3 +234,78 @@
                                 <%= cliente.descricao %>
                             </p>
                         </div
+                        <% } %>
+                    </section>
+                    
+                    <!-- Informações do Pet -->
+                    <section class="pet-card">
+                        <div class="pet-avatar">
+                            🐕
+                        </div>
+                        <h3><%= cliente.nome_pet %></h3>
+                        <div class="info-item">
+                            <i class="fas fa-paw"></i>
+                            <strong>Raça:</strong> <%= cliente.raca_pet %>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-birthday-cake"></i>
+                            <strong>Idade:</strong> <%= cliente.idade_pet %> anos
+                        </div>
+                    </section>
+                </section>
+                
+                <!-- Ações Rápidas -->
+                <section class="actions-grid">
+                    <div class="action-card" onclick="window.location.href='/perfilcliente.ejs'">
+                        <i class="fas fa-edit"></i>
+                        <h3>Editar Perfil</h3>
+                        <p>Atualize suas informações pessoais e do seu pet</p>
+                    </div>
+                    
+                    <div class="action-card" onclick="window.location.href='/#trainers'">
+                        <i class="fas fa-search"></i>
+                        <h3>Buscar Adestradores</h3>
+                        <p>Encontre o adestrador perfeito para seu pet</p>
+                    </div>
+                    
+                    <div class="action-card" onclick="window.location.href='/meuspets.ejs'">
+                        <i class="fas fa-heart"></i>
+                        <h3>Meus Pets</h3>
+                        <p>Gerencie informações dos seus animais</p>
+                    </div>
+                    
+                    <div class="action-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Agendamentos</h3>
+                        <p>Veja suas sessões marcadas</p>
+                    </div>
+                </section>
+            </section>
+        </section>
+    </section>
+
+    <script>
+        function logout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                fetch('/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.sucesso) {
+                        window.location.href = '/';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao fazer logout:', error);
+                    window.location.href = '/';
+                });
+            }
+        }
+    </script>
+    <script src="/js/ai-chat.js"></script>
+</body>
+</html>

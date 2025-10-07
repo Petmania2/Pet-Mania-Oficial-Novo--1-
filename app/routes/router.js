@@ -81,6 +81,10 @@ router.get("/Login.ejs", function (req, res) {
   res.render("pages/Login");    
 });
 
+router.get("/adestradores.ejs", function (req, res) {
+  res.render("pages/adestradores");    
+});
+
 router.get("/paineladestrador.ejs", async function (req, res) {
   if (!req.session.usuario) {
     return res.redirect("/Login.ejs");
@@ -474,6 +478,11 @@ router.get('/teste-mp', async (req, res) => {
       codigo: error.status || 'N/A'
     });
   }
+});
+
+// Rota para verificar se usuário está logado
+router.get('/check-auth', (req, res) => {
+  res.json({ loggedIn: !!req.session.usuario });
 });
 
 // Rota para favicon

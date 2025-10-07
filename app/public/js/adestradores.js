@@ -580,7 +580,16 @@ function resetAllFilters() {
 }
 
 // Funções de ação dos botões
-function agendarSessao(adestradorId) {
+async function agendarSessao(adestradorId) {
+    // Verificar se usuário está logado
+    const authRes = await fetch('/check-auth');
+    const authData = await authRes.json();
+    
+    if (!authData.loggedIn) {
+        window.location.href = '/Login.ejs';
+        return;
+    }
+    
     const adestrador = adestradoresData.find(a => a.id === adestradorId);
     
     // Simular redirecionamento para página de agendamento
@@ -732,7 +741,16 @@ function setupModalButtons(adestrador) {
     };
 
     // Botão agendar sessão
-    scheduleBtn.onclick = function() {
+    scheduleBtn.onclick = async function() {
+        // Verificar se usuário está logado
+        const authRes = await fetch('/check-auth');
+        const authData = await authRes.json();
+        
+        if (!authData.loggedIn) {
+            window.location.href = '/Login.ejs';
+            return;
+        }
+        
         agendarSessao(adestrador.id);
         hideModal();
     };

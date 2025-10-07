@@ -4,6 +4,16 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.trainer-btn').forEach(function(btn) {
         btn.addEventListener('click', async function(e) {
             e.preventDefault();
+            
+            // Verificar se usuário está logado
+            const authRes = await fetch('/check-auth');
+            const authData = await authRes.json();
+            
+            if (!authData.loggedIn) {
+                window.location.href = '/Login.ejs';
+                return;
+            }
+            
             const card = btn.closest('.trainer-card');
             const name = card.querySelector('.trainer-name').textContent.trim();
             const specialty = card.querySelector('.trainer-specialty').textContent.trim();
@@ -46,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <ul class="nav-links" id="navLinks">
                     <li><a href="perfilcliente.ejs" class="nav-item">Conta</a></li>
                     <li><a href="#find-trainer" class="nav-item">Encontrar</a></li>
-                    <li><a href="adestradores.ejs" class="nav-item">Adestradores</a></li>
+                    <li><a href="/adestradores.ejs" class="nav-item">Adestradores</a></li>
                     <li><a href="#how-it-works" class="nav-item">Como Funciona</a></li>
                     <li><a href="#contact" class="nav-item">Contato</a></li>
                     <li><a href="Login.ejs" class="btn btn-outline">Entrar</a></li>

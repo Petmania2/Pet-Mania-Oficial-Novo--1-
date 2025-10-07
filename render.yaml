@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: pet-mania
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000

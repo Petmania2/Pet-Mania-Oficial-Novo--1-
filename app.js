@@ -5,7 +5,7 @@ const { closePool } = require('./config/pool_conexoes'); // Importar função de
 const app = express();
 require('dotenv').config();
 
-const port = process.env.APP_PORT || 3000;
+const port = process.env.PORT || process.env.APP_PORT || 3000;
 
 // Configurar arquivos estáticos
 app.use(express.static("app/public"));
@@ -54,19 +54,21 @@ app.use("/", rotas);
 // Middleware de erro 404
 app.use((req, res) => {
   console.log(`404 - Página não encontrada: ${req.path}`);
-  res.status(404).render('pages/404', { 
-    title: 'Página não encontrada',
-    message: `A página "${req.path}" não foi encontrada.`
-  });
+  res.status(404).send(`
+    <h1>404 - Página não encontrada</h1>
+    <p>A página "${req.path}" não foi encontrada.</p>
+    <a href="/">Voltar ao início</a>
+  `);
 });
 
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {
   console.error('❌ Erro na aplicação:', err.stack);
-  res.status(500).render('pages/error', { 
-    title: 'Erro interno do servidor',
-    message: 'Algo deu errado! Tente novamente mais tarde.'
-  });
+  res.status(500).send(`
+    <h1>500 - Erro interno do servidor</h1>
+    <p>Algo deu errado! Tente novamente mais tarde.</p>
+    <a href="/">Voltar ao início</a>
+  `);
 });
 
 const server = app.listen(port, () => {

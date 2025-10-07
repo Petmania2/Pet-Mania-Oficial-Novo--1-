@@ -16,19 +16,23 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const card = btn.closest('.trainer-card');
             const name = card.querySelector('.trainer-name').textContent.trim();
-            const specialty = card.querySelector('.trainer-specialty').textContent.trim();
-            const price = card.querySelector('.price-value').textContent.replace('R$','').replace(',','.').trim();
-            // Envia dados ao backend
-            const res = await fetch('/criar-preferencia', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title: `Adestramento com ${name}`, price, quantity: 1 })
-            });
-            const data = await res.json();
-            if (data.initPoint) {
-                window.location.href = data.initPoint;
-            } else {
-                alert('Erro ao gerar checkout: ' + (data.erro || 'Erro desconhecido'));
+            
+            // Mapear telefones dos adestradores
+            const telefones = {
+                'Ricardo Almeida': '(11) 99999-1111',
+                'Juliana Costa': '(21) 99999-2222',
+                'Carlos Mendes': '(31) 99999-3333',
+                'Ana Silva': '(41) 99999-4444',
+                'Pedro Santos': '(51) 99999-5555',
+                'Mariana Lima': '(61) 99999-6666'
+            };
+            
+            const telefone = telefones[name];
+            const whatsappNumber = telefone.replace(/\D/g, '');
+            const whatsappUrl = `https://wa.me/55${whatsappNumber}?text=Olá! Gostaria de agendar uma sessão de adestramento.`;
+            
+            if (confirm(`Entrar em contato com ${name}?\nTelefone: ${telefone}\n\nClique OK para abrir WhatsApp`)) {
+                window.open(whatsappUrl, '_blank');
             }
         });
     });
@@ -127,14 +131,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="map-container">
                             <div id="map" style="height: 400px; border-radius: 10px;"></div>
                             <div class="map-controls" style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
-                                <button id="findMyLocation" class="btn btn-outline" style="padding: 8px 12px; font-size: 0.9rem;">
+                                <button id="findMyLocation" class="btn btn-outline" style="padding: 8px 12px; font-size: 0.9rem;" aria-label="Encontrar minha localização">
                                     <i class="fas fa-crosshairs"></i> Minha Localização
                                 </button>
-                                <input type="text" id="addressSearch" placeholder="Digite um endereço..." style="flex: 1; min-width: 200px; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
-                                <button id="searchAddress" class="btn btn-primary" style="padding: 8px 12px; font-size: 0.9rem;">
+                                <input type="text" id="addressSearch" placeholder="Digite um endereço..." style="flex: 1; min-width: 200px; padding: 8px; border: 1px solid #ddd; border-radius: 5px;" aria-label="Campo de busca de endereço">
+                                <button id="searchAddress" class="btn btn-primary" style="padding: 8px 12px; font-size: 0.9rem;" aria-label="Buscar endereço">
                                     <i class="fas fa-search"></i> Buscar
                                 </button>
-                                <select id="radiusFilter" style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                                <select id="radiusFilter" style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;" aria-label="Filtrar por raio de distância">
                                     <option value="5">5 km</option>
                                     <option value="10" selected>10 km</option>
                                     <option value="20">20 km</option>
@@ -184,21 +188,21 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button id="searchBtn"><i class="fas fa-search"></i> Buscar</button>
                     </div>
                     <div class="filters">
-                        <select class="filter-select" id="cityFilter">
+                        <select class="filter-select" id="cityFilter" aria-label="Filtrar por cidade">
                             <option value="">Todas as Cidades</option>
                             <option value="sao-paulo">São Paulo</option>
                             <option value="rio-de-janeiro">Rio de Janeiro</option>
                             <option value="belo-horizonte">Belo Horizonte</option>
                             <option value="curitiba">Curitiba</option>
                         </select>
-                        <select class="filter-select" id="priceFilter">
+                        <select class="filter-select" id="priceFilter" aria-label="Filtrar por preço">
                             <option value="">Todos os Preços</option>
                             <option value="ate-100">Até R$ 100</option>
                             <option value="100-200">R$ 100 - R$ 200</option>
                             <option value="200-300">R$ 200 - R$ 300</option>
                             <option value="acima-300">Acima de R$ 300</option>
                         </select>
-                        <select class="filter-select" id="trainingFilter">
+                        <select class="filter-select" id="trainingFilter" aria-label="Filtrar por tipo de treinamento">
                             <option value="">Todos os Treinamentos</option>
                             <option value="obediencia-basica">Obediência Básica</option>
                             <option value="comportamento">Problemas de Comportamento</option>

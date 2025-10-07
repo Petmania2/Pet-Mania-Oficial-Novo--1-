@@ -591,12 +591,12 @@ async function agendarSessao(adestradorId) {
     }
     
     const adestrador = adestradoresData.find(a => a.id === adestradorId);
+    const whatsappNumber = adestrador.telefone.replace(/\D/g, '');
+    const whatsappUrl = `https://wa.me/55${whatsappNumber}?text=Olá! Gostaria de agendar uma sessão de adestramento.`;
     
-    // Simular redirecionamento para página de agendamento
-    alert(`Redirecionando para agendamento com ${adestrador.nome}...`);
-    
-    // Aqui você implementaria o redirecionamento real
-    // window.location.href = `/agendamento?adestrador=${adestradorId}`;
+    if (confirm(`Entrar em contato com ${adestrador.nome}?\nTelefone: ${adestrador.telefone}\n\nClique OK para abrir WhatsApp`)) {
+        window.open(whatsappUrl, '_blank');
+    }
 }
 
 function verPerfil(adestradorId) {
@@ -751,7 +751,12 @@ function setupModalButtons(adestrador) {
             return;
         }
         
-        agendarSessao(adestrador.id);
+        const whatsappNumber = adestrador.telefone.replace(/\D/g, '');
+        const whatsappUrl = `https://wa.me/55${whatsappNumber}?text=Olá! Gostaria de agendar uma sessão de adestramento.`;
+        
+        if (confirm(`Entrar em contato com ${adestrador.nome}?\nTelefone: ${adestrador.telefone}\n\nClique OK para abrir WhatsApp`)) {
+            window.open(whatsappUrl, '_blank');
+        }
         hideModal();
     };
 

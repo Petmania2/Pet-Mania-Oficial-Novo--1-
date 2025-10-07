@@ -85,6 +85,10 @@ router.get("/adestradores.ejs", function (req, res) {
   res.render("pages/adestradores");    
 });
 
+router.get("/test-chat.ejs", function (req, res) {
+  res.render("pages/test-chat");    
+});
+
 router.get("/paineladestrador.ejs", async function (req, res) {
   if (!req.session.usuario) {
     return res.redirect("/Login.ejs");
@@ -427,21 +431,45 @@ router.get('/pagamento-pendente', (req, res) => {
   res.render('pages/pagamento-pendente');
 });
 
-// Chat simples
+// Chat com PetBot
 router.post('/chat/send', async (req, res) => {
   try {
     const { message } = req.body;
     
-    if (!message) {
-      return res.status(400).json({ success: false, error: 'Mensagem obrigatória' });
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Mensagem obrigatória e deve ser um texto válido' 
+      });
+    }
+    
+    // Limitar tamanho da mensagem
+    if (message.length > 500) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Mensagem muito longa. Máximo 500 caracteres.' 
+      });
     }
     
     const aiChatService = require('../services/aiChatService');
-    const response = await aiChatService.sendMessage(message);
+    const response = await aiChatService.sendMessage(message.trim());
     
-    res.json(response);
+    // Garantir que a resposta tenha o formato correto
+    if (response && response.success) {
+      res.json(response);
+    } else {
+      res.status(500).json({ 
+        success: false, 
+        error: 'Erro ao processar mensagem' 
+      });
+    }
+    
   } catch (error) {
-    res.status(500).json({ success: false, error: 'Erro no chat' });
+    console.error('Erro no chat:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Erro interno do servidor' 
+    });
   }
 });
 
@@ -482,13 +510,35 @@ router.get('/teste-mp', async (req, res) => {
 
 // Rota para verificar se usuário está logado
 router.get('/check-auth', (req, res) => {
-  res.json({ loggedIn: !!req.session.usuario });
+  try {
+    res.json({ 
+      loggedIn: !!req.session.usuario,
+      user: req.session.usuario ? {
+        id: req.session.usuario.id,
+        nome: req.session.usuario.nome,
+        tipo: req.session.usuario.tipo
+      } : null
+    });
+  } catch (error) {
+    console.error('Erro ao verificar autenticação:', error);
+    res.json({ loggedIn: false, user: null });
+  }
+});
+
+// Rota de teste para o chat
+router.get('/chat/test', (req, res) => {
+  res.json({ 
+    status: 'Chat funcionando!', 
+    timestamp: new Date().toISOString() 
+  });
 });
 
 // Rota para favicon
 router.get('/favicon.ico', (req, res) => {
   res.status(204).send();
 });
+
+
 
 // MODIFICADOPELAIA: Rota para imagens placeholder
 router.get('/api/placeholder/:width/:height', (req, res) => {
@@ -513,6 +563,15 @@ router.get('/logout', (req, res) => {
       console.error('Erro ao fazer logout:', err);
     }
     res.redirect('/');
+  });
+});
+
+// Middleware para capturar erros gerais
+router.use((error, req, res, next) => {
+  console.error('Erro no router:', error);
+  res.status(500).json({ 
+    error: 'Erro interno do servidor',
+    message: process.env.NODE_ENV === 'development' ? error.message : 'Algo deu errado'
   });
 });
 

@@ -1,7 +1,7 @@
 /* Variáveis CSS */
 :root {
-    --primary-color: #3498db; /* Azul */
-    --secondary-color: #2ecc71; /* Verde */
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
     --text-color: #333;
     --light-color: #f9f9f9;
     --dark-color: #2c3e50;
@@ -59,7 +59,7 @@ a:hover {
 }
 
 .btn-primary {
-     background: white;
+    background: white;
     color: #FFA500;
     border: 2px solid #FFA500;
     padding: 12px 24px;
@@ -77,7 +77,7 @@ a:hover {
 }
 
 .btn-primary:hover {
- background: #FFA500;
+    background: #FFA500;
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
@@ -111,7 +111,7 @@ a:hover {
     border-radius: 2px;
 }
 
-/* Navbar - ATUALIZADA PARA SER IGUAL AO INDEX */
+/* Navbar */
 .navbar {
     position: fixed;
     top: 0;
@@ -119,7 +119,7 @@ a:hover {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     z-index: 1000;
-    height: 80px; /* Altura fixa da navbar */
+    height: 80px;
     transition: all 0.3s ease;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -133,8 +133,8 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 80px; /* Mesma altura da navbar */
-    padding: 0; /* Remove qualquer padding que possa interferir */
+    height: 80px;
+    padding: 0;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
@@ -241,9 +241,8 @@ a:hover {
     width: 100%;
 }
 
-/* Para manter compatibilidade com o código antigo */
 .nav-links li {
-    margin: 0; /* Remove margin para usar gap */
+    margin: 0;
 }
 
 .nav-links a {
@@ -377,6 +376,163 @@ a:hover {
     margin-bottom: 20px;
 }
 
+/* Estilos para campos de senha - Estrutura simples */
+.form-group label small {
+    font-weight: 400;
+    color: #666;
+    font-size: 0.85rem;
+    display: block;
+    margin-top: 3px;
+}
+
+/* Input de senha */
+#password,
+#confirmPassword {
+    width: 100% !important;
+    display: block !important;
+    margin: 0 !important;
+}
+
+/* Password Strength Indicator */
+.password-strength {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.strength-bar {
+    height: 6px;
+    background: #eee;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+    width: 100%;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    background: #ddd;
+}
+
+.strength-text {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 500;
+    display: block;
+}
+
+/* Cores da força da senha */
+.strength-fill[style*="width: 33"] {
+    background: #e74c3c !important;
+}
+
+.strength-fill[style*="width: 66"] {
+    background: #f39c12 !important;
+}
+
+.strength-fill[style*="width: 100"] {
+    background: #27ae60 !important;
+}
+
+.strength-text.weak {
+    color: #e74c3c;
+}
+
+.strength-text.medium {
+    color: #f39c12;
+}
+
+.strength-text.strong {
+    color: #27ae60;
+}
+
+/* Password Match Indicator */
+.password-match {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.password-match.show {
+    display: flex !important;
+}
+
+.password-match.match {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.password-match.no-match {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.match-icon {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.match-text {
+    font-weight: 500;
+}
+
+/* Checkbox de Termos - Apenas ajuste de posição */
+.form-group:has(#terms) {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.form-group:has(#terms) .checkbox-label {
+    display: flex !important;
+    align-items: flex-start !important;
+    cursor: pointer;
+    margin: 0;
+}
+
+.form-group:has(#terms) input[type="checkbox"] {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    margin-right: 12px !important;
+    margin-top: 2px !important;
+    cursor: pointer;
+    accent-color: #FFA500;
+    flex-shrink: 0;
+}
+
+.form-group:has(#terms) .checkbox-label a {
+    color: #FFA500 !important;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.form-group:has(#terms) .checkbox-label a:hover {
+    color: #FF8C00 !important;
+}
+
+.form-group:has(#terms) .error-message {
+    margin-top: 10px;
+    margin-left: 0;
+    padding-left: 32px;
+}
+
+#successMessage {
+    display: none;
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
     .mobile-menu-btn {
@@ -396,7 +552,7 @@ a:hover {
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
-        gap: 1rem; /* Adiciona espaçamento vertical no mobile */
+        gap: 1rem;
     }
 
     .nav-links.active {
@@ -406,20 +562,20 @@ a:hover {
     }
 
     .nav-links li {
-        margin: 0; /* Remove margens no mobile também */
+        margin: 0;
     }
 
     .form-container {
         padding: 20px;
     }
-}
 
-#successMessage {
-    display: none;
-    background-color: #d4edda;
-    color: #155724;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-}
+    .terms-checkbox .checkbox-label {
+        padding: 12px;
+    }
 
+    .terms-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+    }
+}

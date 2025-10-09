@@ -32,20 +32,27 @@
     <!-- Login Section -->
     <section class="login-section">
         <section class="container">
-            <section class="login-container">
-                <section class="login-header">
-                    <h2>Login</h2>
-                    <p>Entre na sua conta para continuar</p>
-                </section>
+            <section class="login-grid">
+                <!-- Lado Esquerdo - Formulário -->
+                <section class="login-form-side">
+                    <section class="login-header">
+                        <h2>Bem-vindo de volta!</h2>
+                        <p>Entre na sua conta para continuar</p>
+                    </section>
                 <form id="loginForm" novalidate>
                     <section class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" required>
                         <span class="error-message" id="emailError">Por favor, insira um email válido</span>
                     </section>
-                    <section class="form-group">
+                    <section class="form-group password-group">
                         <label for="password">Senha</label>
-                        <input type="password" id="password" name="password" required>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="password" name="password" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                <i class="fas fa-eye" id="passwordIcon"></i>
+                            </button>
+                        </div>
                         <span class="error-message" id="passwordError">A senha é obrigatória</span>
                     </section>
                     <section class="form-group">
@@ -64,9 +71,21 @@
                     </section>
                     <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Entrar</button>
                 </form>
-                <section class="login-options">
-                    <p>Não tem uma conta?</p>
-                    <a href="/tipodeusuario.ejs" class="btn btn-secondary">Criar Nova Conta</a>
+                    <section class="login-options">
+                        <p>Não tem uma conta?</p>
+                        <a href="/tipodeusuario.ejs" class="btn btn-secondary">Criar Nova Conta</a>
+                    </section>
+                </section>
+                
+                <!-- Lado Direito - Imagem -->
+                <section class="login-image-side">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Pessoa feliz com seu cachorro">
+                        <div class="image-overlay">
+                            <h3>Conecte-se com os melhores adestradores</h3>
+                            <p>Transforme a vida do seu pet com profissionais qualificados</p>
+                        </div>
+                    </div>
                 </section>
             </section>
         </section>
@@ -75,6 +94,20 @@
 
 
 
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordIcon = document.getElementById('passwordIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.className = 'fas fa-eye';
+            }
+        }
+    </script>
     <script src="/js/ai-chat.js"></script>
     <script src="/js/script-login.js"></script>
 

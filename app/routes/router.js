@@ -586,4 +586,9 @@ router.use((error, req, res, next) => {
   });
 });
 
+// MODIFICADOPELAIA: Rota para página de seleção de tipo de usuário
+router.get('/tipodeusuario.ejs', (req, res) => {
+  res.render('pages/tipodeusuario');
+});
+
 module.exports = router;

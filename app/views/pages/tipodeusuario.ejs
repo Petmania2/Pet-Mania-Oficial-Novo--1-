@@ -3,61 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Mania - Escolha seu perfil</title>
-        <link rel="stylesheet" href="/css/style-tipousuario.css">
-    
+    <title>Pet Mania - Escolha seu Tipo de Conta</title>
+    <link rel="stylesheet" href="/css/style-tipousuario.css">
+    <link rel="stylesheet" href="/css/ai-chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
-        <section class="container">
-            <a href="index.ejs" class="logo">
-                🐾 Pet Mania
+        <section class="container navbar-container">
+            <a href="/" class="logo">
+                <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
             </a>
             <button class="mobile-menu-btn" id="menuBtn">☰</button>
             <ul class="nav-links" id="navLinks">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#how-it-works">Planos</a></li>
-                <li><a href="index.html#trainers">Adestradores</a></li>
-                <li><a href="index.html#blog">Blog</a></li>
-                <li><a href="index.html#contact">Contato</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/#how-it-works">Como funciona</a></li>
+                <li><a href="/#trainers">Adestradores</a></li>
+                <li><a href="Login.ejs">Login</a></li>
             </ul>
         </section>
     </nav>
 
-    <!-- User Type Selection Section -->
-    <section class="user-type-section">
+    <!-- Main Content -->
+    <section class="tipo-usuario-section">
         <section class="container">
-            <section class="selection-header">
-                <h2>Qual é o seu perfil?</h2>
-                <p>Escolha como você deseja participar da Pet Mania</p>
+            <section class="header-content">
+                <h1>Escolha seu Tipo de Conta</h1>
+                <p>Selecione a opção que melhor descreve você</p>
             </section>
-            <section class="user-types">
-                <section class="user-type-card">
-                    <section class="user-type-icon trainer-icon">🧑‍🏫</section>
-                    <h3>Sou Adestrador</h3>
-                    <p>Quero oferecer meus serviços de adestramento e encontrar novos clientes.</p>
-                    <a href="Cadastroadestrador.ejs" class="btn btn-primary">Cadastrar como Adestrador</a>
+
+            <section class="cards-container">
+                <!-- Card Cliente -->
+                <section class="user-type-card" onclick="window.location.href='/cliente.ejs'">
+                    <section class="card-icon">
+                        <i class="fas fa-user"></i>
+                    </section>
+                    <section class="card-content">
+                        <h3>Sou Cliente</h3>
+                        <p>Tenho um pet e preciso de serviços de adestramento</p>
+                        <ul class="benefits-list">
+                            <li><i class="fas fa-check"></i> Encontrar adestradores próximos</li>
+                            <li><i class="fas fa-check"></i> Agendar sessões</li>
+                            <li><i class="fas fa-check"></i> Avaliar profissionais</li>
+                            <li><i class="fas fa-check"></i> Acompanhar progresso</li>
+                        </ul>
+                        <section class="card-button">
+                            <span class="btn btn-primary">Cadastrar como Cliente</span>
+                        </section>
+                    </section>
                 </section>
-                <section class="user-type-card">
-                    <section class="user-type-icon dog-owner-icon">🐕</section>
-                    <h3>Tenho um Pet</h3>
-                    <p>Quero encontrar um adestrador profissional para o meu pet.</p>
-                    <a href="cliente.ejs" class="btn btn-secondary">Cadastrar como Cliente</a>
+
+                <!-- Card Adestrador -->
+                <section class="user-type-card" onclick="window.location.href='/Cadastroadestrador.ejs'">
+                    <section class="card-icon">
+                        <i class="fas fa-paw"></i>
+                    </section>
+                    <section class="card-content">
+                        <h3>Sou Adestrador</h3>
+                        <p>Sou profissional e quero oferecer meus serviços</p>
+                        <ul class="benefits-list">
+                            <li><i class="fas fa-check"></i> Criar perfil profissional</li>
+                            <li><i class="fas fa-check"></i> Receber clientes</li>
+                            <li><i class="fas fa-check"></i> Gerenciar agenda</li>
+                            <li><i class="fas fa-check"></i> Aumentar renda</li>
+                        </ul>
+                        <section class="card-button">
+                            <span class="btn btn-secondary">Cadastrar como Adestrador</span>
+                        </section>
+                    </section>
                 </section>
             </section>
-            <p class="login-link">
-                Já tem uma conta? <a href="login.html">Faça login</a>
-            </p>
+
+            <section class="login-link">
+                <p>Já tem uma conta? <a href="/Login.ejs">Faça login aqui</a></p>
+            </section>
         </section>
     </section>
 
-    <script>
-        // Mobile menu toggle
-        document.getElementById('menuBtn').addEventListener('click', function() {
-            document.getElementById('navLinks').classList.toggle('active');
-            
-        });  
-    </script>
+    <script src="/js/ai-chat.js"></script>
 </body>
 </html>

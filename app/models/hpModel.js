@@ -1,10 +1,10 @@
 const moment = require("moment");
-var pool = require("../../config/pool_conexoes");
+const { executeQuery } = require("../../config/pool_conexoes");
 
 const hqModel = {
   findAll: async (id = null) => {
     try {
-      const [resultados] = await pool.query(
+      const resultados = await executeQuery(
         "SELECT h.id_hq, h.nome_hq, h.descr_hq, h.imagem_hq, " +
         "h.preco_hq, h.status_hq, IF(f.hq_id_hq IS NULL, 'favoritar', 'favorito') as favorito " +
         "FROM hq h " +

@@ -1,10 +1,10 @@
 const moment = require("moment");
-var pool = require("../../config/pool_conexoes");
+const { executeQuery } = require("../../config/pool_conexoes");
 
 const favoritoModel = {
   findID: async (idHq, idUsuario) => {
     try {
-      const [resultados] = await pool.query(
+      const resultados = await executeQuery(
         "SELECT * FROM favorito where hq_id_hq = ? and usuario_id_usuario = ?",
         [idHq, idUsuario]
       );
@@ -17,7 +17,10 @@ const favoritoModel = {
 
   create: async (camposJson) => {
     try {
-      const [resultados] = await pool.query("insert into favorito set ?", camposJson);
+      const resultados = await executeQuery(
+        "INSERT INTO favorito SET ?", 
+        [camposJson]
+      );
       return resultados;
     } catch (error) {
       console.log(error);
@@ -27,7 +30,7 @@ const favoritoModel = {
 
   update: async (camposJson, idHq, idUsuario) => {
     try {
-      const [resultados] = await pool.query(
+      const resultados = await executeQuery(
         "UPDATE favorito SET ? WHERE hq_id_hq = ? and usuario_id_usuario = ?",
         [camposJson, idHq, idUsuario]
       );

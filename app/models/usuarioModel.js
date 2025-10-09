@@ -4,6 +4,13 @@ const bcrypt = require('bcryptjs');
 
 class UsuarioModel {
   
+  // Função auxiliar para limpar números (remove formatação)
+  static limparNumeros(valor) {
+    if (!valor) return '';
+    // Remove todos os caracteres não numéricos
+    return valor.replace(/\D/g, '');
+  }
+  
   // Criar novo usuário (adestrador ou cliente)
   static async criar(dadosUsuario) {
     try {
@@ -18,8 +25,8 @@ class UsuarioModel {
       const valores = [
         dadosUsuario.nome,
         dadosUsuario.email.toLowerCase().trim(),
-        dadosUsuario.celular || '00000000000',
-        dadosUsuario.cpf,
+        this.limparNumeros(dadosUsuario.celular) || '00000000000',
+        this.limparNumeros(dadosUsuario.cpf),
         senhaHash,
         dadosUsuario.tipo, // 'A' = Adestrador, 'C' = Cliente
         dadosUsuario.dataNasc || new Date().toISOString().split('T')[0]
@@ -92,7 +99,8 @@ class UsuarioModel {
   static async cpfExiste(cpf) {
     try {
       const query = 'SELECT ID_USUARIO FROM USUARIOS WHERE CPF_USUARIO = ?';
-      const rows = await executeQuery(query, [cpf]);
+      const cpfLimpo = this.limparNumeros(cpf);
+      const rows = await executeQuery(query, [cpfLimpo]);
       return rows.length > 0;
     } catch (error) {
       console.error('Erro ao verificar CPF:', error);

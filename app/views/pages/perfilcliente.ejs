@@ -28,7 +28,7 @@
 <body>
     <nav class="navbar" id="navbar">
         <section class="container navbar-container">
-            <a href="index.ejs" class="logo">
+            <a href="/" class="logo">
                 <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
             </a>
             <ul class="nav-links" id="navLinks">
@@ -37,7 +37,7 @@
                 <li><a href="adestradores.ejs" class="nav-item">Adestradores</a></li>
                 <li><a href="#how-it-works" class="nav-item">Como Funciona</a></li>
                 <li><a href="#contact" class="nav-item">Contato</a></li>
-                <li><a href="/logout" class="btn btn-logout">Sair</a></li>
+                <li><button onclick="logout()" class="btn btn-logout">Sair</button></li>
             </ul>
             <button class="mobile-menu-btn" id="menuBtn">
                 <i class="fas fa-bars"></i>
@@ -79,6 +79,31 @@
             <!-- Espaço para conteúdo dinâmico das abas -->
         </section>
     </section>
+    
+    <script>
+        function logout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                fetch('/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.sucesso) {
+                        window.location.href = '/';
+                    } else {
+                        alert('Erro ao fazer logout');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    window.location.href = '/';
+                });
+            }
+        }
+    </script>
 </body>
 </html>
                             <h1 class="content-title">Meu Perfil</h1>

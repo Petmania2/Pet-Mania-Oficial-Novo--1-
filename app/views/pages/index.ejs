@@ -713,6 +713,29 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     </script>
+    <script>
+        async function verificarLogin() {
+            try {
+                const response = await fetch('/check-auth');
+                const data = await response.json();
+                
+                if (data.loggedIn && data.user) {
+                    if (data.user.tipo === 'cliente') {
+                        window.location.href = '/perfilcliente.ejs';
+                    } else if (data.user.tipo === 'adestrador') {
+                        window.location.href = '/paineladestrador.ejs';
+                    } else {
+                        window.location.href = '/Login.ejs';
+                    }
+                } else {
+                    window.location.href = '/Login.ejs';
+                }
+            } catch (error) {
+                console.error('Erro ao verificar login:', error);
+                window.location.href = '/Login.ejs';
+            }
+        }
+    </script>
     <script src="/js/javascript.js"></script>
     <script src="/js/adestradores.js"></script>
     <script src="/js/ai-chat.js"></script>

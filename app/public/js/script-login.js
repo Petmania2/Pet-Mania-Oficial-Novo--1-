@@ -73,10 +73,17 @@ function mostrarErroGeral(mensagem) {
     `;
     errorDiv.textContent = mensagem;
 
-    // Inserir antes do formulário
-    const loginContainer = document.querySelector('.login-container');
+    // Inserir antes do formulário - com verificação de segurança
     const form = document.getElementById('loginForm');
-    loginContainer.insertBefore(errorDiv, form);
+    const loginContainer = document.querySelector('.login-form-side') || document.querySelector('.login-section');
+    
+    if (form && form.parentNode) {
+        form.parentNode.insertBefore(errorDiv, form);
+    } else if (loginContainer) {
+        loginContainer.insertBefore(errorDiv, loginContainer.firstChild);
+    } else {
+        document.body.insertBefore(errorDiv, document.body.firstChild);
+    }
     
     // Remover após 5 segundos
     setTimeout(() => {
@@ -110,10 +117,17 @@ function mostrarSucesso(mensagem) {
     `;
     successDiv.textContent = mensagem;
 
-    // Inserir antes do formulário
-    const loginContainer = document.querySelector('.login-container');
+    // Inserir antes do formulário - com verificação de segurança
     const form = document.getElementById('loginForm');
-    loginContainer.insertBefore(successDiv, form);
+    const loginContainer = document.querySelector('.login-form-side') || document.querySelector('.login-section');
+    
+    if (form && form.parentNode) {
+        form.parentNode.insertBefore(successDiv, form);
+    } else if (loginContainer) {
+        loginContainer.insertBefore(successDiv, loginContainer.firstChild);
+    } else {
+        document.body.insertBefore(successDiv, document.body.firstChild);
+    }
 }
 
 // Desabilitar/habilitar botão de submit
@@ -195,12 +209,21 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     toggleSubmitButton(true);
     
     try {
+        // Verificar se o tipo foi selecionado
+        const tipoSelecionado = document.querySelector('input[name="tipo"]:checked');
+        if (!tipoSelecionado) {
+            mostrarErroGeral('Selecione o tipo de usuário (Cliente ou Adestrador)');
+            return;
+        }
+        
         // Preparar dados para envio
         const dadosLogin = {
             email: emailInput.value.trim(),
             password: passwordInput.value,
-            tipo: document.querySelector('input[name="tipo"]:checked')?.value || 'cliente'
+            tipo: tipoSelecionado.value
         };
+        
+        console.log('Dados do login:', dadosLogin);
         
         // Enviar dados para o servidor
         const response = await fetch('/login', {
@@ -293,7 +316,14 @@ document.addEventListener('DOMContentLoaded', function() {
       // Coletar dados do formulário
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
-      const tipo = document.querySelector('input[name="tipo"]:checked').value;
+      const tipoElement = document.querySelector('input[name="tipo"]:checked');
+      
+      if (!tipoElement) {
+        showGenericError('Selecione o tipo de usuário');
+        return;
+      }
+      
+      const tipo = tipoElement.value;
 
       // Validações básicas
       if (!email || !password) {
@@ -324,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function() {
           window.location.href = result.redirecionarPara;
         } else {
           // Erro - mostrar mensagem
-          showGenericError(result.mensagem);
+          showGenericError(result.erro || result.mensagem || 'Erro no login');
           
           // Reabilitar botão
           submitBtn.textContent = originalText;
@@ -365,9 +395,17 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     errorDiv.textContent = message;
 
-    // Inserir antes do formulário
-    const loginContainer = document.querySelector('.login-container form');
-    loginContainer.insertBefore(errorDiv, loginContainer.firstChild);
+    // Inserir antes do formulário - com verificação de segurança
+    const form = document.querySelector('form');
+    const loginContainer = document.querySelector('.login-form-side') || document.querySelector('.login-section') || document.body;
+    
+    if (form && form.parentNode) {
+      form.parentNode.insertBefore(errorDiv, form);
+    } else if (loginContainer) {
+      loginContainer.insertBefore(errorDiv, loginContainer.firstChild);
+    } else {
+      document.body.insertBefore(errorDiv, document.body.firstChild);
+    }
 
     // Remover após 5 segundos
     setTimeout(() => {

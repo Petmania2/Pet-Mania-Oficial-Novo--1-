@@ -130,6 +130,24 @@ router.get("/painelcliente.ejs", async function (req, res) {
   }
 });
 
+router.get("/perfilcliente.ejs", async function (req, res) {
+  // Dados temporários para teste (sem banco de dados)
+  const clienteTemp = {
+    nome: 'João Silva',
+    email: 'joao@email.com',
+    telefone: '(11) 99999-9999',
+    cidade: 'São Paulo',
+    endereco: 'Rua das Flores, 123',
+    numero: '123',
+    complemento: 'Apto 45',
+    bairro: 'Centro',
+    estado: 'SP',
+    cep: '01234-567'
+  };
+  
+  res.render("pages/perfilcliente", { cliente: clienteTemp });
+});
+
 // === ROTAS POST ===
 
 router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
@@ -277,34 +295,67 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
 
 router.post("/login", async function (req, res) {
   try {
+    console.log('Login attempt:', req.body);
     const { email, password, tipo } = req.body;
 
     if (!email || !password || !tipo) {
       return res.status(400).json({ 
         sucesso: false, 
-        erro: "Email, senha e tipo são obrigatórios" 
+        erro: "Email, senha e tipo são obrigatórios",
+        mensagem: "Email, senha e tipo são obrigatórios"
       });
     }
 
     let usuario;
-    if (tipo === "adestrador") {
-      usuario = await AdestradorModel.buscarPorEmail(email);
-    } else if (tipo === "cliente") {
-      usuario = await ClienteModel.buscarPorEmail(email);
-    } else {
-      return res.status(400).json({ sucesso: false, erro: "Tipo de usuário inválido" });
+    try {
+      if (tipo === "adestrador") {
+        usuario = await AdestradorModel.buscarPorEmail(email);
+      } else if (tipo === "cliente") {
+        usuario = await ClienteModel.buscarPorEmail(email);
+      } else {
+        return res.status(400).json({ 
+          sucesso: false, 
+          erro: "Tipo de usuário inválido",
+          mensagem: "Tipo de usuário inválido"
+        });
+      }
+    } catch (modelError) {
+      console.error('Erro ao buscar usuário:', modelError);
+      return res.status(500).json({ 
+        sucesso: false, 
+        erro: "Erro interno do servidor",
+        mensagem: "Erro interno do servidor"
+      });
     }
 
     if (!usuario) {
-      return res.status(400).json({ sucesso: false, erro: "Email ou senha incorretos" });
+      return res.status(401).json({ 
+        sucesso: false, 
+        erro: "Email ou senha incorretos",
+        mensagem: "Email ou senha incorretos"
+      });
     }
 
-    const senhaValida = await (tipo === "adestrador" 
-      ? AdestradorModel.verificarSenha(password, usuario.senha) 
-      : ClienteModel.verificarSenha(password, usuario.senha));
+    let senhaValida = false;
+    try {
+      senhaValida = await (tipo === "adestrador" 
+        ? AdestradorModel.verificarSenha(password, usuario.senha) 
+        : ClienteModel.verificarSenha(password, usuario.senha));
+    } catch (senhaError) {
+      console.error('Erro ao verificar senha:', senhaError);
+      return res.status(500).json({ 
+        sucesso: false, 
+        erro: "Erro interno do servidor",
+        mensagem: "Erro interno do servidor"
+      });
+    }
     
     if (!senhaValida) {
-      return res.status(400).json({ sucesso: false, erro: "Email ou senha incorretos" });
+      return res.status(401).json({ 
+        sucesso: false, 
+        erro: "Email ou senha incorretos",
+        mensagem: "Email ou senha incorretos"
+      });
     }
 
     req.session.usuario = {
@@ -314,6 +365,7 @@ router.post("/login", async function (req, res) {
       tipo: tipo
     };
 
+    console.log('Login successful for:', email);
     res.json({ 
       sucesso: true, 
       mensagem: "Login realizado com sucesso!",
@@ -324,7 +376,8 @@ router.post("/login", async function (req, res) {
     console.error("Erro ao fazer login:", error);
     res.status(500).json({ 
       sucesso: false, 
-      erro: "Erro interno. Tente novamente mais tarde." 
+      erro: "Erro interno. Tente novamente mais tarde.",
+      mensagem: "Erro interno. Tente novamente mais tarde."
     });
   }
 });

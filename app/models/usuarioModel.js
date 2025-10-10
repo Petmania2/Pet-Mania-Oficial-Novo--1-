@@ -11,6 +11,13 @@ class UsuarioModel {
     return valor.replace(/\D/g, '');
   }
   
+  // Validar formato de email
+  static validarEmail(email) {
+    if (!email || typeof email !== 'string') return false;
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email.trim());
+  }
+  
   // Criar novo usuário (adestrador ou cliente)
   static async criar(dadosUsuario) {
     try {
@@ -19,7 +26,7 @@ class UsuarioModel {
       const query = `
         INSERT INTO USUARIOS 
         (NOME_USUARIO, EMAIL_USUARIO, CELULAR_USUARIO, CPF_USUARIO, SENHA_USUARIO, TIPO_USUARIO, DATA_NASC_USUARIO, ID_PERFIL) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, NULL)
+        VALUES (?, ?, ?, ?, ?, ?, ?, 1)
       `;
       
       const valores = [
@@ -29,7 +36,8 @@ class UsuarioModel {
         this.limparNumeros(dadosUsuario.cpf),
         senhaHash,
         dadosUsuario.tipo, // 'A' = Adestrador, 'C' = Cliente
-        dadosUsuario.dataNasc || new Date().toISOString().split('T')[0]
+        dadosUsuario.dataNasc || new Date().toISOString().split('T')[0],
+        1 // ID_PERFIL padrão
       ];
       
       const resultado = await executeQuery(query, valores);

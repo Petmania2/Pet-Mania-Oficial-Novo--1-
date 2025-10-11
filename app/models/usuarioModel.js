@@ -18,8 +18,8 @@ class UsuarioModel {
       
       const query = `
         INSERT INTO USUARIOS 
-        (NOME_USUARIO, EMAIL_USUARIO, CELULAR_USUARIO, CPF_USUARIO, SENHA_USUARIO, TIPO_USUARIO, DATA_NASC_USUARIO) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        (NOME_USUARIO, EMAIL_USUARIO, CELULAR_USUARIO, CPF_USUARIO, SENHA_USUARIO, TIPO_USUARIO, DATA_NASC_USUARIO, ID_PERFIL) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, NULL)
       `;
       
       const valores = [

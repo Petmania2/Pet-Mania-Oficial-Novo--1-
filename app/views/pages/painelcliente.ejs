@@ -348,3 +348,28 @@
 
     <script src="/js/ai-chat.js"></script>
     <link rel="stylesheet" href="/css/ai-chat.css">
+    
+    <script>
+        function logout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                fetch('/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.sucesso) {
+                        window.location.href = '/';
+                    } else {
+                        alert('Erro ao fazer logout');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    window.location.href = '/';
+                });
+            }
+        }
+    </script>

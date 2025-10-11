@@ -73,8 +73,7 @@ function mostrarErroGeral(mensagem) {
     `;
     errorSection.textContent = mensagem;
 
-    // Inserir antes do formulário
-    const loginContainer = document.querySelector('.login-container');
+    // Inserir antes do formulário - com verificação de segurança
     const form = document.getElementById('loginForm');
     loginContainer.insertBefore(errorSection, form);
     
@@ -110,8 +109,7 @@ function mostrarSucesso(mensagem) {
     `;
     successSection.textContent = mensagem;
 
-    // Inserir antes do formulário
-    const loginContainer = document.querySelector('.login-container');
+    // Inserir antes do formulário - com verificação de segurança
     const form = document.getElementById('loginForm');
     loginContainer.insertBefore(successSection, form);
 }
@@ -195,12 +193,21 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     toggleSubmitButton(true);
     
     try {
+        // Verificar se o tipo foi selecionado
+        const tipoSelecionado = document.querySelector('input[name="tipo"]:checked');
+        if (!tipoSelecionado) {
+            mostrarErroGeral('Selecione o tipo de usuário (Cliente ou Adestrador)');
+            return;
+        }
+        
         // Preparar dados para envio
         const dadosLogin = {
             email: emailInput.value.trim(),
             password: passwordInput.value,
-            tipo: document.querySelector('input[name="tipo"]:checked')?.value || 'cliente'
+            tipo: tipoSelecionado.value
         };
+        
+        console.log('Dados do login:', dadosLogin);
         
         // Enviar dados para o servidor
         const response = await fetch('/login', {
@@ -293,7 +300,14 @@ document.addEventListener('DOMContentLoaded', function() {
       // Coletar dados do formulário
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
-      const tipo = document.querySelector('input[name="tipo"]:checked').value;
+      const tipoElement = document.querySelector('input[name="tipo"]:checked');
+      
+      if (!tipoElement) {
+        showGenericError('Selecione o tipo de usuário');
+        return;
+      }
+      
+      const tipo = tipoElement.value;
 
       // Validações básicas
       if (!email || !password) {
@@ -324,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
           window.location.href = result.redirecionarPara;
         } else {
           // Erro - mostrar mensagem
-          showGenericError(result.mensagem);
+          showGenericError(result.erro || result.mensagem || 'Erro no login');
           
           // Reabilitar botão
           submitBtn.textContent = originalText;

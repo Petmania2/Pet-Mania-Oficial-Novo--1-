@@ -70,29 +70,29 @@
 </section>
 
 <!-- Modal for Add/Edit Pet -->
-<div class="modal" id="petModal">
-    <div class="modal-content">
-        <div class="modal-header">
+<section class="modal" id="petModal">
+    <section class="modal-content">
+        <header class="modal-header">
             <h2 id="modalTitle">Adicionar Pet</h2>
             <button class="modal-close" id="closeModal">
                 <i class="fas fa-times"></i>
             </button>
-        </div>
+        </header>
         
         <form id="petForm" class="modal-body">
-            <div class="form-section">
+            <section class="form-section">
                 <h3 class="section-title">
                     <i class="fas fa-paw"></i>
                     Informações Básicas
                 </h3>
                 
-                <div class="form-grid">
-                    <div class="form-group">
+                <section class="form-grid">
+                    <section class="form-group">
                         <label class="form-label">Nome do Pet *</label>
                         <input type="text" class="form-input" id="petName" name="petName" required>
-                    </div>
+                    </section>
                     
-                    <div class="form-group">
+                    <section class="form-group">
                         <label class="form-label">Tipo de Animal *</label>
                         <select class="form-input" id="animalType" name="animalType" required>
                             <option value="">Selecione o tipo</option>
@@ -101,49 +101,49 @@
                             <option value="bird">Pássaro</option>
                             <option value="other">Outro</option>
                         </select>
-                    </div>
+                    </section>
                     
-                    <div class="form-group">
+                    <section class="form-group">
                         <label class="form-label">Raça</label>
                         <select class="form-input" id="breed" name="breed">
                             <option value="">Selecione primeiro o tipo de animal</option>
                         </select>
-                    </div>
+                    </section>
                     
-                    <div class="form-group">
+                    <section class="form-group">
                         <label class="form-label">Sexo *</label>
                         <select class="form-input" id="gender" name="gender" required>
                             <option value="">Selecione o sexo</option>
                             <option value="male">Macho</option>
                             <option value="female">Fêmea</option>
                         </select>
-                    </div>
-                </div>
-            </div>
+                    </section>
+                </section>
+            </section>
 
-            <div class="form-section">
+            <section class="form-section">
                 <h3 class="section-title">
                     <i class="fas fa-ruler-combined"></i>
                     Características Físicas
                 </h3>
                 
-                <div class="form-grid">
-                    <div class="form-group">
+                <section class="form-grid">
+                    <section class="form-group">
                         <label class="form-label">Idade</label>
-                        <div class="age-inputs">
+                        <section class="age-inputs">
                             <input type="number" class="form-input age-input" id="ageYears" name="ageYears" min="0" max="30" placeholder="0">
                             <span class="age-label">anos</span>
                             <input type="number" class="form-input age-input" id="ageMonths" name="ageMonths" min="0" max="11" placeholder="0">
                             <span class="age-label">meses</span>
-                        </div>
-                    </div>
+                        </section>
+                    </section>
                     
-                    <div class="form-group">
+                    <section class="form-group">
                         <label class="form-label">Peso (kg)</label>
                         <input type="number" class="form-input" id="weight" name="weight" min="0" max="200" step="0.1" placeholder="0.0">
-                    </div>
+                    </section>
                     
-                    <div class="form-group">
+                    <section class="form-group">
                         <label class="form-label">Tamanho *</label>
                         <select class="form-input" id="size" name="size" required>
                             <option value="">Selecione o tamanho</option>
@@ -153,32 +153,32 @@
                             <option value="large">Grande (25-45kg)</option>
                             <option value="giant">Gigante (acima de 45kg)</option>
                         </select>
-                    </div>
+                    </section>
                     
-                    <div class="form-group">
+                    <section class="form-group">
                         <label class="form-label">Cor</label>
                         <input type="text" class="form-input" id="color" name="color" placeholder="Ex: Dourado, Preto, Malhado...">
-                    </div>
-                </div>
-            </div>
+                    </section>
+                </section>
+            </section>
 
-            <div class="form-section">
+            <section class="form-section">
                 <h3 class="section-title">
                     <i class="fas fa-heart"></i>
                     Informações de Saúde
                 </h3>
                 
-                <div class="form-grid">
-                    <div class="form-group">
+                <section class="form-grid">
+                    <section class="form-group">
                         <label class="form-label">Status de Castração</label>
                         <select class="form-input" id="neutered" name="neutered">
                             <option value="">Não informado</option>
                             <option value="yes">Castrado</option>
                             <option value="no">Não castrado</option>
                         </select>
-                    </div>
+                    </section>
                     
-                    <div class="form-group">
+                    <section class="form-group">
                         <label class="form-label">Vacinação em Dia</label>
                         <select class="form-input" id="vaccinated" name="vaccinated">
                             <option value="">Não informado</option>
@@ -186,24 +186,24 @@
                             <option value="no">Não, atrasada</option>
                             <option value="partial">Parcialmente</option>
                         </select>
-                    </div>
-                </div>
+                    </section>
+                </section>
                 
-                <div class="form-group">
+                <section class="form-group">
                     <label class="form-label">Observações de Saúde</label>
                     <textarea class="form-input form-textarea" id="healthNotes" name="healthNotes" placeholder="Alergias, medicações, condições especiais..."></textarea>
-                </div>
-            </div>
+                </section>
+            </section>
 
-            <div class="form-section">
+            <section class="form-section">
                 <h3 class="section-title">
                     <i class="fas fa-smile"></i>
                     Comportamento
                 </h3>
                 
-                <div class="form-group">
+                <section class="form-group">
                     <label class="form-label">Temperamento</label>
-                    <div class="checkbox-grid">
+                    <section class="checkbox-grid">
                         <label class="checkbox-item">
                             <input type="checkbox" name="temperament" value="calm">
                             <span>Calmo</span>
@@ -228,17 +228,17 @@
                             <input type="checkbox" name="temperament" value="playful">
                             <span>Brincalhão</span>
                         </label>
-                    </div>
-                </div>
+                    </section>
+                </section>
                 
-                <div class="form-group">
+                <section class="form-group">
                     <label class="form-label">Observações Comportamentais</label>
                     <textarea class="form-input form-textarea" id="behaviorNotes" name="behaviorNotes" placeholder="Medos, preferências, comportamentos especiais..."></textarea>
-                </div>
-            </div>
+                </section>
+            </section>
         </form>
         
-        <div class="modal-footer">
+        <footer class="modal-footer">
             <button type="button" class="btn btn-secondary" id="cancelBtn">
                 <i class="fas fa-times"></i>
                 Cancelar
@@ -247,9 +247,9 @@
                 <i class="fas fa-save"></i>
                 Salvar Pet
             </button>
-        </div>
-    </div>
-</div>
+        </footer>
+    </section>
+</section>
 
 <script>
 // Pet breeds data

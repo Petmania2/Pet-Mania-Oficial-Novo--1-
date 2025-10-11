@@ -7,14 +7,14 @@
 <body>
     <h1>Teste de Pagamento - Pet Mania</h1>
     
-    <div>
+    <section>
         <h3>Produtos Disponíveis:</h3>
         <button onclick="comprarProduto('1')">Ração Premium - R$ 89,90</button>
         <button onclick="comprarProduto('2')">Coleira Antipulgas - R$ 45,50</button>
         <button onclick="comprarProduto('3')">Brinquedo Interativo - R$ 29,90</button>
-    </div>
+    </section>
     
-    <div id="wallet_container"></div>
+    <section id="wallet_container"></section>
     
     <script>
         const mp = new MercadoPago('<%= process.env.MP_PUBLIC_KEY %>');

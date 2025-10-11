@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         removerMensagemSemResultados();
         
-        const mensagem = document.createElement('div');
+        const mensagem = document.createElement('section');
         mensagem.className = 'sem-resultados';
         mensagem.style.textAlign = 'center';
         mensagem.style.padding = '2rem';
@@ -425,7 +425,7 @@ function mostrarMensagemSemAgendamentos() {
     const schedulingList = document.querySelector('.scheduling-list');
     if (!schedulingList) return;
     
-    const mensagem = document.createElement('div');
+    const mensagem = document.createElement('section');
     mensagem.className = 'sem-agendamentos';
     mensagem.style.cssText = `
         text-align: center;

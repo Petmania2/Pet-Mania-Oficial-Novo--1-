@@ -31,51 +31,32 @@
             </ul>
         </section>
     </nav>
-    <header>
-        <!-- Navbar -->
-        <nav class="navbar" id="navbar">
-            <div class="container navbar-container">
-                <a href="/app/views/pages/index.ejs" class="logo">
-                    <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
-                </a>
-                <button class="mobile-menu-btn" id="menuBtn">☰</button>
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="#home" class="nav-item">Home</a></li>
-                    <li><a href="#find-trainer" class="nav-item">Encontrar</a></li>
-                    <li><a href="/adestradores.ejs" class="nav-item">Adestradores</a></li>
-                    <li><a href="#how-it-works" class="nav-item">Como Funciona</a></li>
-                    <li><a href="#contact" class="nav-item">Contato</a></li>
-                    <li><a href="login.ejs" class="btn btn-primary">Entrar</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
 
     <main>
         <!-- Cadastro Section -->
         <section class="cadastro-section">
-            <div class="container">
-                <div class="cadastro-container">
+            <section class="container">
+                <section class="cadastro-container">
                     <h1 class="form-title">Cadastre-se como Cliente</h1>
                     <p class="form-subtitle">Crie sua conta para encontrar os melhores adestradores para seu pet</p>
                     
-                    <div class="success-message" id="successMessage">
+                    <section class="success-message" id="successMessage">
                         Cadastro realizado com sucesso! Redirecionando para página de login...
-                    </div>
+                    </section>
                     
                     <form id="cadastroForm">
-                        <div class="form-row">
-                            <div class="form-group">
+                        <section class="form-row">
+                            <section class="form-group">
                                 <label for="nome">Nome Completo*</label>
                                 <input type="text" id="nome" name="nome" required>
-                                <div class="error-message" id="nomeError">Por favor, informe seu nome completo</div>
-                            </div>
-                            <div class="form-group">
+                                <section class="error-message" id="nomeError">Por favor, informe seu nome completo</section>
+                            </section>
+                            <section class="form-group">
                                 <label for="email">E-mail*</label>
                                 <input type="email" id="email" name="email" required>
-                                <div class="error-message" id="emailError">Por favor, informe um e-mail válido</div>
-                            </div>
-                        </div>
+                                <section class="error-message" id="emailError">Por favor, informe um e-mail válido</section>
+                            </section>
+                        </section>
                     
                     <section class="form-row">
                         <section class="form-group">
@@ -149,29 +130,29 @@
                                 </button>
                             </legend>
                             
-                            <div class="form-row">
-                                <div class="form-group">
+                            <section class="form-row">
+                                <section class="form-group">
                                     <label for="senha">Senha* <small>(Mínimo 8 caracteres com letras, números e símbolos)</small></label>
                                     <input type="password" id="senha" name="senha" required>
-                                    <div class="password-strength">
-                                        <div class="strength-bar">
-                                            <div class="strength-fill" id="strengthFillCliente"></div>
-                                        </div>
-                                        <div class="strength-text" id="strengthTextCliente">Digite uma senha forte</div>
-                                    </div>
-                                    <div class="error-message" id="senhaError">A senha deve ter pelo menos 8 caracteres</div>
-                                </div>
+                                    <section class="password-strength">
+                                        <section class="strength-bar">
+                                            <section class="strength-fill" id="strengthFillCliente"></section>
+                                        </section>
+                                        <section class="strength-text" id="strengthTextCliente">Digite uma senha forte</section>
+                                    </section>
+                                    <section class="error-message" id="senhaError">A senha deve ter pelo menos 8 caracteres</section>
+                                </section>
                                 
-                                <div class="form-group">
+                                <section class="form-group">
                                     <label for="confirmarSenha">Confirmar Senha*</label>
                                     <input type="password" id="confirmarSenha" name="confirmarSenha" required>
-                                    <div class="password-match" id="passwordMatchCliente">
-                                        <div class="match-icon" id="matchIconCliente">✓</div>
-                                        <div class="match-text" id="matchTextCliente">Senhas coincidem</div>
-                                    </div>
-                                    <div class="error-message" id="confirmarSenhaError">As senhas não coincidem</div>
-                                </div>
-                            </div>
+                                    <section class="password-match" id="passwordMatchCliente">
+                                        <section class="match-icon" id="matchIconCliente">✓</section>
+                                        <section class="match-text" id="matchTextCliente">Senhas coincidem</section>
+                                    </section>
+                                    <section class="error-message" id="confirmarSenhaError">As senhas não coincidem</section>
+                                </section>
+                            </section>
                         </fieldset>
                     
                     <section class="checkbox-group">
@@ -188,25 +169,25 @@
                     
                     <p class="login-redirect">Já possui uma conta? <a href="Login.ejs">Faça login</a></p>
                     </form>
-                </div>
-            </div>
+                </section>
+            </section>
         </section>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-about">
+        <section class="container">
+            <section class="footer-container">
+                <section class="footer-about">
                     <h3 class="footer-logo">🐾 Pet Mania</h3>
                     <p>Conectando donos de cães a adestradores profissionais qualificados para transformar o comportamento do seu pet com treinamento personalizado e eficiente.</p>
-                    <div class="footer-social">
+                    <section class="footer-social">
                         <a href="#" aria-label="Facebook"><span>FB</span></a>
                         <a href="#" aria-label="Instagram"><span>IG</span></a>
                         <a href="#" aria-label="Twitter"><span>TW</span></a>
                         <a href="#" aria-label="YouTube"><span>YT</span></a>
-                    </div>
-                </div>
+                    </section>
+                </section>
                 
                 <nav class="footer-links">
                     <h3>Links Rápidos</h3>
@@ -229,12 +210,12 @@
                         <li><a href="#">Suporte</a></li>
                     </ul>
                 </nav>
-            </div>
+            </section>
             
-            <div class="footer-bottom">
+            <section class="footer-bottom">
                 <p>&copy; 2025 Pet Mania. Todos os direitos reservados.</p>
-            </div>
-        </div>
+            </section>
+        </section>
     </footer>
 
 

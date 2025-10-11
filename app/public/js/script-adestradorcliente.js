@@ -207,7 +207,7 @@ function hideModal(modal) {
 function showClientDetails(clientName) {
     const modalBody = clientDetailsModal.querySelector('.modal-body');
     modalBody.innerHTML = `
-        <div class="client-details">
+        <section class="client-details">
             <h3>${clientName}</h3>
             <p><strong>Telefone:</strong> (11) 98765-4321</p>
             <p><strong>Email:</strong> cliente@email.com</p>
@@ -215,7 +215,7 @@ function showClientDetails(clientName) {
             <p><strong>Serviço:</strong> Obediência Básica</p>
             <p><strong>Progresso:</strong> 1/10 sessões concluídas</p>
             <p><strong>Próxima sessão:</strong> 15/06/2025</p>
-        </div>
+        </section>
     `;
     showModal(clientDetailsModal);
 }
@@ -298,6 +298,3 @@ notificationFloat?.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Página de clientes carregada');
 });
-
-
-

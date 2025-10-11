@@ -19,19 +19,19 @@ class AIChat {
         document.body.appendChild(chatButton);
 
         // Container do chat
-        const chatContainer = document.createElement('div');
+        const chatContainer = document.createElement('section');
         chatContainer.className = 'ai-chat-container';
         chatContainer.innerHTML = `
-            <div class="ai-chat-header">
+            <header class="ai-chat-header">
                 <h3><i class="fas fa-robot"></i> PetBot</h3>
-                <div class="chat-status" id="chatStatus" title="Online"></div>
+                <section class="chat-status" id="chatStatus" title="Online"></section>
                 <button class="ai-chat-close" title="Fechar chat"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="ai-chat-messages" id="chatMessages"></div>
-            <div class="ai-chat-input-container">
+            </header>
+            <section class="ai-chat-messages" id="chatMessages"></section>
+            <section class="ai-chat-input-container">
                 <input type="text" class="ai-chat-input" id="chatInput" placeholder="Digite sua pergunta..." maxlength="500">
                 <button class="ai-chat-send" id="chatSend" title="Enviar mensagem"><i class="fas fa-paper-plane"></i></button>
-            </div>
+            </section>
         `;
         document.body.appendChild(chatContainer);
 
@@ -103,8 +103,8 @@ class AIChat {
     }
 
     addMessage(text, sender) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = sender === 'user' ? 'user-message' : 'ai-message';
+        const messageSection = document.createElement('section');
+        messageSection.className = sender === 'user' ? 'user-message' : 'ai-message';
         
         // Processar texto com emojis e quebras de linha
         let processedText = text.replace(/\n/g, '<br>');
@@ -115,20 +115,20 @@ class AIChat {
             minute: '2-digit' 
         });
         
-        messageDiv.innerHTML = `
-            <div class="message-content">${processedText}</div>
-            <div class="message-time" style="font-size: 10px; opacity: 0.7; margin-top: 4px;">${timestamp}</div>
+        messageSection.innerHTML = `
+            <section class="message-content">${processedText}</section>
+            <section class="message-time" style="font-size: 10px; opacity: 0.7; margin-top: 4px;">${timestamp}</section>
         `;
         
         // Adicionar animação de nova mensagem
-        messageDiv.classList.add('new-message');
+        messageSection.classList.add('new-message');
         
-        this.messagesContainer.appendChild(messageDiv);
+        this.messagesContainer.appendChild(messageSection);
         this.scrollToBottom();
         
         // Remover classe de animação após a animação
         setTimeout(() => {
-            messageDiv.classList.remove('new-message');
+            messageSection.classList.remove('new-message');
         }, 500);
     }
     
@@ -209,12 +209,12 @@ class AIChat {
     }
     
     addTypingIndicator() {
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'ai-message typing-indicator';
-        typingDiv.id = 'typing-indicator';
-        typingDiv.innerHTML = '🤖 PetBot está digitando...';
+        const typingSection = document.createElement('section');
+        typingSection.className = 'ai-message typing-indicator';
+        typingSection.id = 'typing-indicator';
+        typingSection.innerHTML = '🤖 PetBot está digitando...';
         
-        this.messagesContainer.appendChild(typingDiv);
+        this.messagesContainer.appendChild(typingSection);
         this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
     }
     
@@ -233,7 +233,7 @@ class AIChat {
             { text: '💳 Ver planos', action: 'planos' }
         ];
         
-        const buttonsContainer = document.createElement('div');
+        const buttonsContainer = document.createElement('section');
         buttonsContainer.className = 'chat-buttons';
         
         quickReplies.forEach(reply => {

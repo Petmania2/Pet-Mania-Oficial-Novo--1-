@@ -148,40 +148,40 @@ function loadMessages(contactId) {
     // Load messages
     contact.messages.forEach(message => {
         if (message.type === 'date') {
-            const dateDiv = document.createElement('div');
-            dateDiv.className = 'message-date';
-            dateDiv.innerHTML = `<span>${message.content}</span>`;
-            chatMessages.appendChild(dateDiv);
+            const dateSection = document.createElement('section');
+            dateSection.className = 'message-date';
+            dateSection.innerHTML = `<span>${message.content}</span>`;
+            chatMessages.appendChild(dateSection);
         } else {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${message.type}`;
+            const messageSection = document.createElement('section');
+            messageSection.className = `message ${message.type}`;
             
             if (message.type === 'sent' || message.type === 'received') {
-                messageDiv.innerHTML = `
-                    <div class="message-bubble">${message.content}</div>
-                    <div class="message-time-sent">${message.time}</div>
+                messageSection.innerHTML = `
+                    <section class="message-bubble">${message.content}</section>
+                    <section class="message-time-sent">${message.time}</section>
                 `;
             } else if (message.type === 'file') {
-                messageDiv.innerHTML = `
-                    <div class="message-file">
+                messageSection.innerHTML = `
+                    <section class="message-file">
                         <i class="fas fa-file-pdf"></i>
-                        <div class="file-info">
+                        <section class="file-info">
                             <p class="file-name">${message.filename}</p>
                             <p class="file-size">${message.filesize}</p>
-                        </div>
-                    </div>
-                    <div class="message-time-sent">${message.time}</div>
+                        </section>
+                    </section>
+                    <section class="message-time-sent">${message.time}</section>
                 `;
             } else if (message.type === 'image') {
-                messageDiv.innerHTML = `
-                    <div class="message-image">
+                messageSection.innerHTML = `
+                    <section class="message-image">
                         <img src="${message.url}" alt="Image">
-                    </div>
-                    <div class="message-time-sent">${message.time}</div>
+                    </section>
+                    <section class="message-time-sent">${message.time}</section>
                 `;
             }
             
-            chatMessages.appendChild(messageDiv);
+            chatMessages.appendChild(messageSection);
         }
     });
     
@@ -212,13 +212,13 @@ function sendMessage() {
     const timeString = `${hours}:${minutes}`;
     
     // Add message to UI
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message sent';
-    messageDiv.innerHTML = `
-        <div class="message-bubble">${content}</div>
-        <div class="message-time-sent">${timeString}</div>
+    const messageSection = document.createElement('section');
+    messageSection.className = 'message sent';
+    messageSection.innerHTML = `
+        <section class="message-bubble">${content}</section>
+        <section class="message-time-sent">${timeString}</section>
     `;
-    chatMessages.appendChild(messageDiv);
+    chatMessages.appendChild(messageSection);
     
     // Add to data model
     contactsData[currentContact].messages.push({
@@ -261,13 +261,13 @@ function simulateResponse() {
     const timeString = `${hours}:${minutes}`;
     
     // Add message to UI
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message received';
-    messageDiv.innerHTML = `
-        <div class="message-bubble">${randomResponse}</div>
-        <div class="message-time-sent">${timeString}</div>
+    const messageSection = document.createElement('section');
+    messageSection.className = 'message received';
+    messageSection.innerHTML = `
+        <section class="message-bubble">${randomResponse}</section>
+        <section class="message-time-sent">${timeString}</section>
     `;
-    chatMessages.appendChild(messageDiv);
+    chatMessages.appendChild(messageSection);
     
     // Add to data model
     contactsData[currentContact].messages.push({
@@ -313,19 +313,19 @@ function addFileMessage(fileType) {
     const timeString = `${hours}:${minutes}`;
     
     // Add message to UI
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message sent';
-    messageDiv.innerHTML = `
-        <div class="message-file">
+    const messageSection = document.createElement('section');
+    messageSection.className = 'message sent';
+    messageSection.innerHTML = `
+        <section class="message-file">
             <i class="fas ${file.icon}"></i>
-            <div class="file-info">
+            <section class="file-info">
                 <p class="file-name">${file.name}</p>
                 <p class="file-size">${file.size}</p>
-            </div>
-        </div>
-        <div class="message-time-sent">${timeString}</div>
+            </section>
+        </section>
+        <section class="message-time-sent">${timeString}</section>
     `;
-    chatMessages.appendChild(messageDiv);
+    chatMessages.appendChild(messageSection);
     
     // Add to data model
     contactsData[currentContact].messages.push({

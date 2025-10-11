@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para exibir notificação de salvamento
     function showSaveNotification() {
-        const notification = document.createElement('div');
+        const notification = document.createElement('section');
         notification.className = 'save-notification';
         notification.innerHTML = '<i class="fas fa-check-circle"></i> Alterações salvas com sucesso!';
         
@@ -146,45 +146,45 @@ document.addEventListener('DOMContentLoaded', function() {
     if (addServiceBtn && servicesList) {
         addServiceBtn.addEventListener('click', function() {
             // Criar modal para adicionar novo serviço
-            const modal = document.createElement('div');
+            const modal = document.createElement('section');
             modal.className = 'modal';
             modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
+                <section class="modal-content">
+                    <section class="modal-header">
                         <h3>Adicionar Novo Serviço</h3>
                         <button class="btn-close">&times;</button>
-                    </div>
-                    <div class="modal-body">
+                    </section>
+                    <section class="modal-body">
                         <form id="new-service-form">
-                            <div class="form-group">
+                            <section class="form-group">
                                 <label for="service-name">Nome do Serviço</label>
                                 <input type="text" id="service-name" required>
-                            </div>
-                            <div class="form-group">
+                            </section>
+                            <section class="form-group">
                                 <label for="service-price">Preço (R$)</label>
                                 <input type="number" id="service-price" min="0" step="0.01" required>
-                            </div>
-                            <div class="form-group">
+                            </section>
+                            <section class="form-group">
                                 <label for="service-description">Descrição</label>
                                 <textarea id="service-description" rows="3" required></textarea>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
+                            </section>
+                            <section class="form-row">
+                                <section class="form-group">
                                     <label for="service-duration">Duração</label>
                                     <input type="text" id="service-duration" placeholder="Ex: 1h30min" required>
-                                </div>
-                                <div class="form-group">
+                                </section>
+                                <section class="form-group">
                                     <label for="service-location">Local</label>
                                     <input type="text" id="service-location" placeholder="Ex: Residência ou Parque" required>
-                                </div>
-                            </div>
-                            <div class="form-actions">
+                                </section>
+                            </section>
+                            <section class="form-actions">
                                 <button type="button" class="btn btn-secondary" id="cancel-service">Cancelar</button>
                                 <button type="submit" class="btn btn-primary">Adicionar Serviço</button>
-                            </div>
+                            </section>
                         </form>
-                    </div>
-                </div>
+                    </section>
+                </section>
             `;
             
             document.body.appendChild(modal);
@@ -223,22 +223,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 const location = document.getElementById('service-location').value;
                 
                 // Criar novo elemento de serviço
-                const newService = document.createElement('div');
+                const newService = document.createElement('section');
                 newService.className = 'service-item';
                 newService.innerHTML = `
-                    <div class="service-header">
+                    <section class="service-header">
                         <h3>${name}</h3>
-                        <div class="service-price">R$ ${price}</div>
-                    </div>
+                        <section class="service-price">R$ ${price}</section>
+                    </section>
                     <p>${description}</p>
-                    <div class="service-details">
+                    <section class="service-details">
                         <span><i class="fas fa-clock"></i> ${duration}</span>
                         <span><i class="fas fa-map-marker-alt"></i> ${location}</span>
-                    </div>
-                    <div class="service-actions">
+                    </section>
+                    <section class="service-actions">
                         <button class="btn btn-small btn-outline"><i class="fas fa-edit"></i> Editar</button>
                         <button class="btn btn-small btn-danger"><i class="fas fa-trash"></i></button>
-                    </div>
+                    </section>
                 `;
                 
                 // Adicionar antes do botão

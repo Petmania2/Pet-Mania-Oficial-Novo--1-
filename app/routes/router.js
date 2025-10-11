@@ -5,7 +5,6 @@ const ClienteModel = require("../models/clienteModel");
 const hqController = require("../controllers/hqController");
 const favoritoModel = require("../models/favoritoModel");
 const mercadopago = require('mercadopago');
-
 // Configuração do Mercado Pago versão 1.x
 mercadopago.configure({
   access_token: process.env.MP_ACCESS_TOKEN

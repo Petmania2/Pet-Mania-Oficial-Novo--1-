@@ -11,6 +11,114 @@ mercadopago.configure({
   access_token: process.env.MP_ACCESS_TOKEN
 });
 
+// Adicionar este mapeamento NO INÍCIO do arquivo router.js
+
+// Mapa de especialidades (nome para ID)
+const mapEspecialidades = {
+  'obediencia-basica': 1,
+  'comportamento': 2,
+  'truques': 3,
+  'agressividade': 4,
+  'filhotes': 5
+};
+
+// ... resto do código ...
+
+// ROTA DE CADASTRO ADESTRADOR (corrigida)
+router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
+  try {
+    const {
+      name, cpf, email, phone, city, state, 
+      experience, specialty, price, about, password,
+      logradouro, numero, complemento, bairro, cep
+    } = req.body;
+
+    // Validações básicas
+    if (!name || !cpf || !email || !password || !price) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Campos obrigatórios não preenchidos" 
+      });
+    }
+
+    // Validar preço
+    const precoConvertido = parseFloat(price);
+    if (isNaN(precoConvertido) || precoConvertido < 50 || precoConvertido > 99999999.99) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Preço deve ser um valor válido entre R$ 50,00 e R$ 99.999.999,99" 
+      });
+    }
+
+    // ✅ NOVO: Converter especialidade de texto para ID
+    let especialidadeId = 1; // padrão
+    if (specialty) {
+      // specialty pode vir como string ou array
+      const especialidadeTexto = Array.isArray(specialty) 
+        ? specialty[0] 
+        : specialty;
+      
+      especialidadeId = mapEspecialidades[especialidadeTexto] || 1;
+      
+      console.log('Especialidade recebida:', especialidadeTexto);
+      console.log('ID da especialidade:', especialidadeId);
+    }
+
+    // Montar dados do adestrador
+    const dadosAdestrador = {
+      nome: name.trim(),
+      cpf: cpf.trim(),
+      email: email.toLowerCase().trim(),
+      telefone: phone?.trim() || '00000000000',
+      cidade: city?.trim() || '',
+      estado: state || '',
+      experiencia: parseInt(experience) || 0,
+      especialidade: especialidadeId, // ✅ AGORA é um número!
+      preco: precoConvertido,
+      sobre: about?.trim() || '',
+      senha: password,
+      logradouro: logradouro?.trim() || '',
+      numero: numero?.trim() || 'S/N',
+      complemento: complemento?.trim() || '',
+      bairro: bairro?.trim() || '',
+      cep: cep?.replace(/\D/g, '') || '00000000'
+    };
+
+    console.log('Dados do adestrador:', dadosAdestrador);
+
+    // Criar adestrador
+    await AdestradorModel.criar(dadosAdestrador);
+    
+    res.json({ 
+      sucesso: true, 
+      mensagem: "Cadastro realizado com sucesso!" 
+    });
+
+  } catch (error) {
+    console.error("Erro ao cadastrar adestrador:", error);
+    
+    if (error.message === 'Email já cadastrado') {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Este email já está cadastrado no sistema" 
+      });
+    }
+    
+    if (error.message === 'CPF já cadastrado') {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Este CPF já está cadastrado no sistema" 
+      });
+    }
+    
+    res.status(500).json({ 
+      sucesso: false, 
+      erro: "Erro interno. Tente novamente mais tarde." 
+    });
+  }
+});
+
+
 // Middleware para rate limiting simples (em memória)
 const rateLimitMap = new Map();
 

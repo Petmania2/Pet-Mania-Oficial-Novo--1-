@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
     closeBtn.onclick = () => iaPopup.style.display = 'none';
 
     function appendMsg(msg, type) {
-        const div = document.createElement('div');
-        div.className = 'ia-chat-msg ' + type;
-        div.textContent = msg;
-        chatBody.appendChild(div);
+        const section = document.createElement('section');
+        section.className = 'ia-chat-msg ' + type;
+        section.textContent = msg;
+        chatBody.appendChild(section);
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 

@@ -1,4 +1,4 @@
-// app/models/clienteModel.js - Versão corrigida
+// app/models/clienteModel.js - Versão Corrigida
 const { executeQuery } = require('../../config/pool_conexoes');
 const UsuarioModel = require('./usuarioModel');
 
@@ -7,12 +7,6 @@ class ClienteModel {
   // Criar novo cliente (usa USUARIOS como base)
   static async criar(dadosCliente) {
     try {
-      // Iniciar transação se suportado
-      try {
-        await executeQuery('START TRANSACTION');
-      } catch (e) {
-        // Ignorar se não suportar transações
-      }
       // Validações específicas do cliente
       if (!dadosCliente.nome || dadosCliente.nome.trim().length < 2) {
         throw new Error('Nome deve ter pelo menos 2 caracteres');
@@ -40,13 +34,12 @@ class ClienteModel {
         cpf: dadosCliente.cpf || '00000000000',
         senha: dadosCliente.senha,
         tipo: 'C', // C = Cliente
-        dataNasc: dadosCliente.dataNasc || new Date().toISOString().split('T')[0],
-        ip: dadosCliente.ip
+        dataNasc: dadosCliente.dataNasc || new Date().toISOString().split('T')[0]
       };
       
       const idUsuario = await UsuarioModel.criar(dadosUsuario);
       
-      // 3. Criar registro de cliente com nomenclatura corrigida
+      // 3. Criar registro de cliente com nomes CORRETOS
       const query = `
         INSERT INTO clientes 
         (ID_USUARIO, logradouro_cliente, num_resid_cliente, complemento_cliente, 
@@ -61,25 +54,15 @@ class ClienteModel {
         dadosCliente.complemento?.trim() || '',
         dadosCliente.bairro?.trim() || '',
         dadosCliente.cidade?.trim() || '',
-        dadosCliente.estado?.trim() || dadosCliente.uf?.trim() || '',
+        dadosCliente.estado?.trim() || dadosCliente.uf?.trim() || 'SP',
         UsuarioModel.limparNumeros ? UsuarioModel.limparNumeros(dadosCliente.cep) : (dadosCliente.cep || '00000000')
       ];
       
       const resultado = await executeQuery(query, valores);
       
-      try {
-        await executeQuery('COMMIT');
-      } catch (e) {
-        // Ignorar se não suportar transações
-      }
       return { idUsuario, idCliente: resultado.insertId };
       
     } catch (error) {
-      try {
-        await executeQuery('ROLLBACK');
-      } catch (e) {
-        // Ignorar se não suportar transações
-      }
       console.error('Erro ao criar cliente:', error);
       throw error;
     }
@@ -124,8 +107,7 @@ class ClienteModel {
                u.CELULAR_USUARIO as telefone, c.cidade_cliente as cidade, 
                c.logradouro_cliente as endereco, c.num_resid_cliente as numero,
                c.complemento_cliente as complemento, c.bairro_cliente as bairro,
-               c.uf_cliente as estado, c.cep_cliente as cep, u.CPF_USUARIO as cpf,
-               c.data_cadastro
+               c.uf_cliente as estado, c.cep_cliente as cep, u.CPF_USUARIO as cpf
         FROM clientes c
         INNER JOIN USUARIOS u ON c.ID_USUARIO = u.ID_USUARIO
         WHERE u.ID_USUARIO = ?
@@ -143,10 +125,10 @@ class ClienteModel {
     try {
       const query = `
         SELECT c.id_cliente as id, u.NOME_USUARIO as nome, u.EMAIL_USUARIO as email,
-               c.cidade_cliente as cidade, c.uf_cliente as estado, c.data_cadastro
+               c.cidade_cliente as cidade, c.uf_cliente as estado
         FROM clientes c
         INNER JOIN USUARIOS u ON c.ID_USUARIO = u.ID_USUARIO
-        ORDER BY c.data_cadastro DESC
+        ORDER BY c.id_cliente DESC
         LIMIT ? OFFSET ?
       `;
       const rows = await executeQuery(query, [limite, offset]);

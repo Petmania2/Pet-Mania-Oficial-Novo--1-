@@ -47,12 +47,12 @@ class EmailService {
         <title>Bem-vindo à Pet Mania</title>
     </head>
     <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+        <section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1 style="color: white; margin: 0; font-size: 28px;">🐾 Pet Mania</h1>
             <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Conectando pets e adestradores</p>
-        </div>
+        </section>
         
-        <div style="background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #ddd;">
+        <section style="background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #ddd;">
             <h2 style="color: #333; margin-top: 0;">Olá, ${nome}! 👋</h2>
             
             <p style="font-size: 16px; margin-bottom: 20px;">
@@ -60,7 +60,7 @@ class EmailService {
             </p>
             
             ${isAdestrador ? `
-            <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #4CAF50;">
+            <section style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #4CAF50;">
                 <h3 style="color: #2e7d32; margin-top: 0;">🎯 Como Adestrador, você pode:</h3>
                 <ul style="color: #2e7d32; margin: 10px 0;">
                     <li>Gerenciar seu perfil profissional</li>
@@ -69,9 +69,9 @@ class EmailService {
                     <li>Acompanhar seus ganhos</li>
                     <li>Expandir sua rede de clientes</li>
                 </ul>
-            </div>
+            </section>
             ` : `
-            <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2196F3;">
+            <section style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2196F3;">
                 <h3 style="color: #1565c0; margin-top: 0;">🐕 Como Cliente, você pode:</h3>
                 <ul style="color: #1565c0; margin: 10px 0;">
                     <li>Encontrar adestradores qualificados</li>
@@ -80,25 +80,25 @@ class EmailService {
                     <li>Avaliar os serviços recebidos</li>
                     <li>Gerenciar informações dos seus pets</li>
                 </ul>
-            </div>
+            </section>
             `}
             
-            <div style="text-align: center; margin: 30px 0;">
+            <section style="text-align: center; margin: 30px 0;">
                 <a href="http://localhost:3000/${isAdestrador ? 'paineladestrador.ejs' : 'painelcliente.ejs'}" 
                    style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; display: inline-block; font-size: 16px;">
                     🚀 Acessar Meu Painel
                 </a>
-            </div>
+            </section>
             
-            <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
+            <section style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
                 <p style="margin: 0; color: #856404;">
                     <strong>💡 Dica:</strong> Complete seu perfil para ter mais visibilidade e melhores resultados na plataforma!
                 </p>
-            </div>
+            </section>
             
             <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
             
-            <div style="text-align: center; color: #666; font-size: 14px;">
+            <section style="text-align: center; color: #666; font-size: 14px;">
                 <p>Precisa de ajuda? Entre em contato conosco:</p>
                 <p>
                     📧 <a href="mailto:contato@petmania.com.br" style="color: #667eea;">contato@petmania.com.br</a><br>
@@ -106,14 +106,14 @@ class EmailService {
                     🌐 <a href="http://localhost:3000" style="color: #667eea;">www.petmania.com.br</a>
                 </p>
                 
-                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                <section style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
                     <p style="margin: 0; font-size: 12px; color: #999;">
                         © 2025 Pet Mania. Todos os direitos reservados.<br>
                         Este é um email automático, não responda a esta mensagem.
                     </p>
-                </div>
-            </div>
-        </div>
+                </section>
+            </section>
+        </section>
     </body>
     </html>
     `;

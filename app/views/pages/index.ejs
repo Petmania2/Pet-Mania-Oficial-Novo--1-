@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <body>
     <header>
         <nav class="navbar" id="navbar">
-            <div class="container navbar-container">
+            <section class="container navbar-container">
                 <a href="/" class="logo">
                     <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
                 </a>
@@ -68,69 +68,69 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="mobile-menu-btn" id="menuBtn">
                     <i class="fas fa-bars"></i>
                 </button>
-            </div>
+            </section>
         </nav>
     </header>
     <main>
         <!-- Hero Section -->
         <section class="hero" id="home">
-            <div class="hero-overlay"></div>
-            <div class="container hero-content">
-                <div class="hero-text">
+            <section class="hero-overlay"></section>
+            <section class="container hero-content">
+                <section class="hero-text">
                     <h1>Transforme o Comportamento do seu Pet</h1>
                     <p>Encontre os melhores adestradores profissionais para seu cão. Treinamento personalizado e resultados garantidos.</p>
-                    <div class="hero-buttons">
+                    <section class="hero-buttons">
                         <a href="/cliente.ejs" class="btn btn-primary">
                             <i class="fas fa-user-plus"></i> Cadastrar como Cliente
                         </a>
                         <a href="/Cadastroadestrador.ejs" class="btn btn-secondary">
                             <i class="fas fa-paw"></i> Cadastrar como Adestrador
                         </a>
-                    </div>
-                </div>
+                    </section>
+                </section>
                 <figure class="hero-image">
                     <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Cão feliz com seu treinador">
                 </figure>
-            </div>
+            </section>
         </section>
 
         <!-- Encontre um Adestrador Section -->
         <section class="find-trainer" id="find-trainer">
-            <div class="container">
+            <section class="container">
                 <h2 class="section-title">📍 Encontre um Adestrador Perto de Você</h2>
                 
-                <div class="location-search">
+                <section class="location-search">
                     <form class="location-search-form">
-                        <div class="form-content">
+                        <section class="form-content">
                             <h3>Busque por Localização</h3>
                             <p>Digite sua cidade ou estado para encontrar adestradores próximos a você</p>
                             
-                            <div class="search-group">
-                                <div class="input-wrapper">
+                            <section class="search-group">
+                                <section class="input-wrapper">
                                     <i class="fas fa-map-marker-alt"></i>
                                     <input type="text" id="locationInput" placeholder="Digite sua cidade ou estado">
-                                </div>
+                             
                                 <button class="btn btn-primary" id="findLocationBtn">
                                     <i class="fas fa-search"></i> Buscar
                                 </button>
-                            </div>
                             
-                            <div class="popular-locations">
+                            </section>
+                            <section class="popular-locations">
                                 <p>Locais populares:</p>
-                                <div class="location-tags">
+                                <section class="location-tags">
                                     <span class="location-tag">São Paulo</span>
                                     <span class="location-tag">Rio de Janeiro</span>
                                     <span class="location-tag">Belo Horizonte</span>
                                     <span class="location-tag">Curitiba</span>
-                                </div>
-                            </div>
-                        </div>
+                                </section>
+                            </section>
+                            </section>
                     </form>
                     
                     <aside class="location-map">
-                        <div class="map-container">
-                            <div id="map" style="height: 400px; border-radius: 10px;"></div>
-                            <div class="map-controls" style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <section class="map-container">
+                            <section id="map" style="height: 400px; border-radius: 10px;"></section>
+                            <section class="map-controls" style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
                                 <button id="findMyLocation" class="btn btn-outline" style="padding: 8px 12px; font-size: 0.9rem;" aria-label="Encontrar minha localização">
                                     <i class="fas fa-crosshairs"></i> Minha Localização
                                 </button>
@@ -144,50 +144,50 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <option value="20">20 km</option>
                                     <option value="50">50 km</option>
                                 </select>
-                            </div>
-                        </div>
+                            </section>
+                        </section>
                     </aside>
-                </div>
+                </section>
                 
-                <div class="location-benefits">
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
+                <section class="location-benefits">
+                    <section class="benefit-card">
+                        <section class="benefit-icon">
                             <i class="fas fa-walking"></i>
-                        </div>
+                        </section>
                         <h3>Adestradores Próximos</h3>
                         <p>Encontre profissionais que podem atender em sua residência ou região</p>
-                    </div>
+                    </section>
                     
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
+                    <section class="benefit-card">
+                        <section class="benefit-icon">
                             <i class="fas fa-star"></i>
-                        </div>
+                        </section>
                         <h3>Avaliações Verificadas</h3>
                         <p>Veja feedback de clientes anteriores para escolher o melhor</p>
-                    </div>
+                    </section>
                     
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
+                    <section class="benefit-card">
+                        <section class="benefit-icon">
                             <i class="fas fa-calendar-check"></i>
-                        </div>
+                        </section>
                         <h3>Agendamento Fácil</h3>
                         <p>Marque sessões conforme sua disponibilidade e necessidade</p>
-                    </div>
-                </div>
-            </div>
+                    </section>
+                </section>
+            </section>
         </section>
 
         <!-- Trainers Section -->
         <section class="trainers" id="trainers">
-            <div class="container">
+            <section class="container">
                 <h2 class="section-title">Adestradores em Destaque</h2>
                 
-                <div class="search-filters">
-                    <div class="search-bar">
+                <section class="search-filters">
+                    <section class="search-bar">
                         <input type="text" placeholder="Busque por nome ou especialidade..." id="searchInput">
                         <button id="searchBtn"><i class="fas fa-search"></i> Buscar</button>
-                    </div>
-                    <div class="filters">
+                    </section>
+                    <section class="filters">
                         <select class="filter-select" id="cityFilter" aria-label="Filtrar por cidade">
                             <option value="">Todas as Cidades</option>
                             <option value="sao-paulo">São Paulo</option>
@@ -209,40 +209,40 @@ document.addEventListener('DOMContentLoaded', function() {
                             <option value="truques">Truques e Comandos</option>
                             <option value="agressividade">Controle de Agressividade</option>
                         </select>
-                    </div>
-                </div>
+                    </section>
+                </section>
                 
-                <div class="trainers-grid">
+                <section class="trainers-grid">
                     <article class="trainer-card">
                         <header class="trainer-header">
-                            <div class="trainer-rating">
+                            <section class="trainer-rating">
                                 <i class="fas fa-star"></i> 5.0
-                            </div>
-                            <div class="trainer-badge">
+                            </section>
+                            <section class="trainer-badge">
                                 <i class="fas fa-medal"></i> Top Adestrador
-                            </div>
+                            </section>
                         </header>
                         <figure class="trainer-img">
                             <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Ricardo Almeida">
                         </figure>
-                        <div class="trainer-info">
+                        <section class="trainer-info">
                             <h3 class="trainer-name">Ricardo Almeida</h3>
                             <p class="trainer-specialty"><i class="fas fa-certificate"></i> Especialista em Obediência Básica</p>
                             <address class="trainer-location"><i class="fas fa-map-marker-alt"></i> São Paulo, SP</address>
                             <p class="trainer-experience"><i class="fas fa-clock"></i> 8 anos de experiência</p>
-                            <div class="trainer-reviews">
-                                <div class="stars">⭐⭐⭐⭐⭐</div>
+                            <section class="trainer-reviews">
+                                <span class="stars">⭐⭐⭐⭐⭐</span>
                                 <span>(57 avaliações)</span>
-                            </div>
-                            <div class="trainer-price-info" style="display: flex; align-items: center; gap: 8px;">
+                            </section>
+                            <section class="trainer-price-info" style="display: flex; align-items: center; gap: 8px;">
                                 <span class="price-label">Preço por sessão:</span>
                                 <data class="price-value" value="150">R$ 150</data>
                                 <button class="favorite-btn" title="Favoritar" style="background: none; border: none; cursor: pointer;">
                                     <i class="fas fa-heart" style="color: #e74c3c; font-size: 1.2em;"></i>
                                 </button>
-                            </div>
+                            </section>
                             <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
-                        </div>
+                        </section>
                     </article>
                 
                 <article class="trainer-card">
@@ -395,69 +395,69 @@ document.addEventListener('DOMContentLoaded', function() {
                         <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
                     </section>
                 </article>
-                </div>
+                </section>
                 
-                <div class="see-more-container">
+                <section class="see-more-container">
                     <a href="/adestradores.ejs" class="btn btn-outline-primary">Ver Mais Adestradores</a>
-                </div>
-            </div>
+                </section>
+            </section>
         </section>
 
         <!-- Como Funciona Section -->
         <section class="how-it-works" id="how-it-works">
-            <div class="container">
+            <section class="container">
                 <h2 class="section-title">Como Funciona?</h2>
                 <ol class="steps-container">
                     <li class="step">
-                        <div class="step-icon">
+                        <section class="step-icon">
                             <i class="fas fa-search"></i>
-                        </div>
+                        </section>
                         <h3>1. Escolha um Adestrador</h3>
                         <p>Encontre o profissional perfeito de acordo com sua localização, especialidade e avaliações de outros clientes.</p>
                     </li>
                     <li class="step">
-                        <div class="step-icon">
+                        <section class="step-icon">
                             <i class="fas fa-calendar-alt"></i>
-                        </div>
+                        </section>
                         <h3>2. Agende uma Sessão</h3>
                         <p>Escolha a data e horário mais convenientes para você através do nosso calendário interativo.</p>
                     </li>
                     <li class="step">
-                        <div class="step-icon">
+                        <section class="step-icon">
                             <i class="fas fa-credit-card"></i>
-                        </div>
+                        </section>
                         <h3>3. Pague Online</h3>
                         <p>Realize o pagamento de forma segura através de Pix, Cartão de Crédito ou Boleto.</p>
                     </li>
                     <li class="step">
-                        <div class="step-icon">
+                        <section class="step-icon">
                             <i class="fas fa-dog"></i>
-                        </div>
+                        </section>
                         <h3>4. Comece o Treinamento</h3>
                         <p>Inicie as sessões de adestramento e veja a transformação do comportamento do seu cão.</p>
                     </li>
                 </ol>
-            </div>
+            </section>
         </section>
     </main>
 
     <!-- Footer Section -->
     <footer class="footer" id="contact">
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-info">
-                    <div class="footer-logo">
+        <section class="container">
+            <section class="footer-container">
+                <section class="footer-info">
+                    <section class="footer-logo">
                         <img src="/imagens/petlogo.png" alt="Pet Mania" class="footer-logo-img">
                         <span>Pet Mania</span>
-                    </div>
+                    </section>
                     <p>Conectando donos de cães a adestradores profissionais qualificados. Transforme o comportamento do seu pet com treinamento personalizado e eficiente.</p>
-                    <div class="footer-social">
+                    <section class="footer-social">
                         <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                         <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                         <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
+                    </section>
+                </section>
                 
                 <nav class="footer-links">
                     <h3>Links Rápidos</h3>
@@ -483,25 +483,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 <address class="footer-contact">
                     <h3>Contato</h3>
-                    <div class="contact-item">
+                    <section class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <p>Av. Paulista, 1000, São Paulo - SP</p>
-                    </div>
-                    <div class="contact-item">
+                    </section>
+                    <section class="contact-item">
                         <i class="fas fa-phone"></i>
                         <p><a href="tel:+5511999999999">(11) 99999-9999</a></p>
-                    </div>
-                    <div class="contact-item">
+                    </section>
+                    <section class="contact-item">
                         <i class="fas fa-envelope"></i>
                         <p><a href="mailto:contato@petmania.com.br">contato@petmania.com.br</a></p>
-                    </div>
+                    </section>
                 </address>
-            </div>
+            </section>
             
-            <div class="footer-bottom">
+            <section class="footer-bottom">
                 <p>&copy; 2025 Pet Mania. Todos os direitos reservados.</p>
-            </div>
-        </div>
+            </section>
+        </section>
     </footer>
 
 
@@ -511,88 +511,88 @@ document.addEventListener('DOMContentLoaded', function() {
     </a>
 
     <!-- Modal de Perfil do Adestrador (igual adestradores.ejs) -->
-<div class="trainer-profile-modal" id="trainerProfileModal" style="display:none;">
-    <div class="modal-overlay" id="modalOverlay"></div>
-    <div class="modal-content">
-        <div class="modal-header">
+<section class="trainer-profile-modal" id="trainerProfileModal" style="display:none;">
+    <section class="modal-overlay" id="modalOverlay"></section>
+    <section class="modal-content">
+        <header class="modal-header">
             <h2>Perfil do Adestrador</h2>
             <button class="modal-close" id="modalClose">
                 <i class="fas fa-times"></i>
             </button>
-        </div>
-        <div class="modal-body">
-            <div class="trainer-profile-card">
-                <div class="profile-image">
+        </header>
+        <section class="modal-body">
+            <section class="trainer-profile-card">
+                <section class="profile-image">
                     <img id="profileImage" src="" alt="Foto do Adestrador">
-                    <div class="profile-badge" id="profileBadge" style="display: none;">
+                    <section class="profile-badge" id="profileBadge" style="display: none;">
                         <i class="fas fa-medal"></i>
                         <span id="badgeText"></span>
-                    </div>
-                </div>
-                <div class="profile-info">
-                    <div class="profile-section">
+                    </section>
+                </section>
+                <section class="profile-info">
+                    <section class="profile-section">
                         <h3 id="profileName">Nome do Adestrador</h3>
-                        <div class="profile-rating">
-                            <div class="stars" id="profileStars"></div>
+                        <section class="profile-rating">
+                            <span class="stars" id="profileStars"></span>
                             <span id="profileReviews">(0 avaliações)</span>
-                        </div>
-                    </div>
-                    <div class="profile-details">
-                        <div class="detail-item">
+                        </section>
+                    </section>
+                    <section class="profile-details">
+                        <section class="detail-item">
                             <i class="fas fa-phone"></i>
                             <label>Telefone:</label>
                             <span class="phone-number">
                                 <span id="phonePartial"></span>
                                 <button class="see-more-btn" id="seeMorePhone">Ver mais</button>
                             </span>
-                        </div>
-                        <div class="detail-item">
+                        </section>
+                        <section class="detail-item">
                             <i class="fas fa-map-marker-alt"></i>
                             <label>Endereço:</label>
                             <span id="profileAddress"></span>
-                        </div>
-                        <div class="detail-item">
+                        </section>
+                        <section class="detail-item">
                             <i class="fas fa-city"></i>
                             <label>Cidade:</label>
                             <span id="profileCity"></span>
-                        </div>
-                        <div class="detail-item">
+                        </section>
+                        <section class="detail-item">
                             <i class="fas fa-map"></i>
                             <label>Estado:</label>
                             <span id="profileState"></span>
-                        </div>
-                        <div class="detail-item">
+                        </section>
+                        <section class="detail-item">
                             <i class="fas fa-clock"></i>
                             <label>Experiência:</label>
                             <span id="profileExperience"></span>
-                        </div>
-                        <div class="detail-item">
+                        </section>
+                        <section class="detail-item">
                             <i class="fas fa-certificate"></i>
                             <label>Especialidades:</label>
-                            <div class="specialties-list" id="profileSpecialties"></div>
-                        </div>
-                        <div class="detail-item">
+                            <section class="specialties-list" id="profileSpecialties"></section>
+                        </section>
+                        <section class="detail-item">
                             <i class="fas fa-dollar-sign"></i>
                             <label>Preço por Sessão:</label>
                             <span class="price-highlight" id="profilePrice"></span>
-                        </div>
-                        <div class="detail-item biography-section">
+                        </section>
+                        <section class="detail-item biography-section">
                             <i class="fas fa-user"></i>
                             <label>Sobre:</label>
                             <p id="profileBiography"></p>
-                        </div>
-                    </div>
-                    <div class="profile-actions">
+                        </section>
+                    </section>
+                    <section class="profile-actions">
                         <button class="btn btn-primary" id="scheduleSessionBtn">
                             <i class="fas fa-calendar-alt"></i>
                             Agendar Sessão
                         </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // Mapa interativo de adestradores
@@ -619,13 +619,13 @@ document.addEventListener('DOMContentLoaded', function() {
             adestradores.forEach(adestrador => {
                 const marker = L.marker([adestrador.lat, adestrador.lng]).addTo(map);
                 marker.bindPopup(`
-                    <div style="text-align: center; min-width: 200px;">
+                    <section style="text-align: center; min-width: 200px;">
                         <h4 style="margin: 0 0 8px 0; color: #FFA500;">${adestrador.nome}</h4>
                         <p style="margin: 4px 0;"><i class="fas fa-certificate"></i> ${adestrador.especialidade}</p>
                         <p style="margin: 4px 0; font-weight: bold; color: #28a745;">${adestrador.preco}/sessão</p>
                         <p style="margin: 4px 0;"><i class="fas fa-phone"></i> ${adestrador.telefone}</p>
                         <button onclick="alert('Redirecionando para agendamento...')" style="background: #FFA500; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-top: 8px;">Agendar</button>
-                    </div>
+                    </section>
                 `);
             });
         }

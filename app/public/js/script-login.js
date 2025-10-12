@@ -59,9 +59,9 @@ function mostrarErroGeral(mensagem) {
     }
 
     // Criar nova mensagem de erro
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-general';
-    errorDiv.style.cssText = `
+    const errorSection = document.createElement('section');
+    errorSection.className = 'error-general';
+    errorSection.style.cssText = `
         background: #ff4444;
         color: white;
         padding: 15px;
@@ -71,25 +71,17 @@ function mostrarErroGeral(mensagem) {
         font-weight: 500;
         animation: slideDown 0.3s ease-out;
     `;
-    errorDiv.textContent = mensagem;
+    errorSection.textContent = mensagem;
 
     // Inserir antes do formulário - com verificação de segurança
     const form = document.getElementById('loginForm');
-    const loginContainer = document.querySelector('.login-form-side') || document.querySelector('.login-section');
-    
-    if (form && form.parentNode) {
-        form.parentNode.insertBefore(errorDiv, form);
-    } else if (loginContainer) {
-        loginContainer.insertBefore(errorDiv, loginContainer.firstChild);
-    } else {
-        document.body.insertBefore(errorDiv, document.body.firstChild);
-    }
+    loginContainer.insertBefore(errorSection, form);
     
     // Remover após 5 segundos
     setTimeout(() => {
-        if (errorDiv.parentNode) {
-            errorDiv.style.animation = 'slideUp 0.3s ease-out';
-            setTimeout(() => errorDiv.remove(), 300);
+        if (errorSection.parentNode) {
+            errorSection.style.animation = 'slideUp 0.3s ease-out';
+            setTimeout(() => errorSection.remove(), 300);
         }
     }, 5000);
 }
@@ -103,9 +95,9 @@ function mostrarSucesso(mensagem) {
     }
 
     // Criar nova mensagem de sucesso
-    const successDiv = document.createElement('div');
-    successDiv.className = 'success-general';
-    successDiv.style.cssText = `
+    const successSection = document.createElement('section');
+    successSection.className = 'success-general';
+    successSection.style.cssText = `
         background: #4CAF50;
         color: white;
         padding: 15px;
@@ -115,19 +107,11 @@ function mostrarSucesso(mensagem) {
         font-weight: 500;
         animation: slideDown 0.3s ease-out;
     `;
-    successDiv.textContent = mensagem;
+    successSection.textContent = mensagem;
 
     // Inserir antes do formulário - com verificação de segurança
     const form = document.getElementById('loginForm');
-    const loginContainer = document.querySelector('.login-form-side') || document.querySelector('.login-section');
-    
-    if (form && form.parentNode) {
-        form.parentNode.insertBefore(successDiv, form);
-    } else if (loginContainer) {
-        loginContainer.insertBefore(successDiv, loginContainer.firstChild);
-    } else {
-        document.body.insertBefore(successDiv, document.body.firstChild);
-    }
+    loginContainer.insertBefore(successSection, form);
 }
 
 // Desabilitar/habilitar botão de submit
@@ -382,9 +366,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Cria novo elemento de erro
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'login-error';
-    errorDiv.style.cssText = `
+    const errorSection = document.createElement('section');
+    errorSection.className = 'login-error';
+    errorSection.style.cssText = `
       background-color: #fee;
       border: 1px solid #fcc;
       color: #c33;
@@ -393,24 +377,16 @@ document.addEventListener('DOMContentLoaded', function() {
       margin-bottom: 15px;
       text-align: center;
     `;
-    errorDiv.textContent = message;
+    errorSection.textContent = message;
 
-    // Inserir antes do formulário - com verificação de segurança
-    const form = document.querySelector('form');
-    const loginContainer = document.querySelector('.login-form-side') || document.querySelector('.login-section') || document.body;
-    
-    if (form && form.parentNode) {
-      form.parentNode.insertBefore(errorDiv, form);
-    } else if (loginContainer) {
-      loginContainer.insertBefore(errorDiv, loginContainer.firstChild);
-    } else {
-      document.body.insertBefore(errorDiv, document.body.firstChild);
-    }
+    // Inserir antes do formulário
+    const loginContainer = document.querySelector('.login-container form');
+    loginContainer.insertBefore(errorSection, loginContainer.firstChild);
 
     // Remover após 5 segundos
     setTimeout(() => {
-      if (errorDiv.parentNode) {
-        errorDiv.remove();
+      if (errorSection.parentNode) {
+        errorSection.remove();
       }
     }, 5000);
   }

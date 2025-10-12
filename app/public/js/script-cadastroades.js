@@ -207,10 +207,10 @@ function validarTermos() {
 
 // Mostrar mensagem de sucesso
 function mostrarSucesso(mensagem) {
-    const successDiv = document.getElementById('successMessage');
-    successDiv.textContent = mensagem;
-    successDiv.style.display = 'block';
-    successDiv.scrollIntoView({ behavior: 'smooth' });
+    const successSection = document.getElementById('successMessage');
+    successSection.textContent = mensagem;
+    successSection.style.display = 'block';
+    successSection.scrollIntoView({ behavior: 'smooth' });
 }
 
 // Mostrar mensagem de erro geral
@@ -222,9 +222,9 @@ function mostrarErroGeral(mensagem) {
     }
 
     // Criar nova mensagem de erro
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-general';
-    errorDiv.style.cssText = `
+    const errorSection = document.createElement('section');
+    errorSection.className = 'error-general';
+    errorSection.style.cssText = `
         background: #ff4444;
         color: white;
         padding: 15px;
@@ -233,19 +233,19 @@ function mostrarErroGeral(mensagem) {
         text-align: center;
         font-weight: 500;
     `;
-    errorDiv.textContent = mensagem;
+    errorSection.textContent = mensagem;
 
     // Inserir antes do formulário
     const form = document.getElementById('trainerForm');
-    form.parentNode.insertBefore(errorDiv, form);
+    form.parentNode.insertBefore(errorSection, form);
     
     // Fazer scroll para a mensagem
-    errorDiv.scrollIntoView({ behavior: 'smooth' });
+    errorSection.scrollIntoView({ behavior: 'smooth' });
     
     // Remover após 5 segundos
     setTimeout(() => {
-        if (errorDiv.parentNode) {
-            errorDiv.remove();
+        if (errorSection.parentNode) {
+            errorSection.remove();
         }
     }, 5000);
 }

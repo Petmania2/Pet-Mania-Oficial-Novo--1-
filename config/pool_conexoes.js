@@ -1,7 +1,11 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-// Configuração simplificada e robusta
+console.log('🚀 Conectando ao Railway MySQL...');
+console.log('Host:', process.env.DB_HOST);
+console.log('Database:', process.env.DB_NAME);
+
+// Configuração otimizada para Railway
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -16,60 +20,103 @@ const pool = mysql.createPool({
     }
 });
 
-// Função simplificada para executar queries
+// Teste de conexão ao iniciar
+pool.getConnection()
+    .then(conn => {
+        console.log('✅ Conectado ao Railway MySQL com sucesso!');
+        conn.release();
+    })
+    .catch(err => {
+        console.error('❌ Erro ao conectar ao Railway:', err.message);
+        console.error('Verifique suas credenciais no .env');
+    });
+
+// Função para executar queries
 async function executeQuery(query, params = []) {
     let connection;
-    const maxRetries = 2;
+    const maxRetries = 3;
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
-            console.log(`Executando query (tentativa ${attempt})`);
+            console.log(`[Tentativa ${attempt}/${maxRetries}] Executando query...`);
             
             connection = await pool.getConnection();
-            const [rows] = await connection.execute(query, params);
             
-            console.log('Query executada com sucesso');
+            // Adicionar timeout de 30 segundos
+            const [rows] = await Promise.race([
+                connection.execute(query, params),
+                new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Query timeout (30s)')), 30000)
+                )
+            ]);
+            
+            console.log('✅ Query executada com sucesso');
             return rows;
             
         } catch (error) {
-            console.error(`Erro na tentativa ${attempt}:`, error.message);
+            console.error(`❌ Erro na tentativa ${attempt}:`, error.message);
             
+            // Erros de conexão que valem retry
+            if (error.code === 'ER_MALFORMED_PACKET' || 
+                error.code === 'PROTOCOL_CONNECTION_LOST' ||
+                error.code === 'PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR' ||
+                error.code === 'ECONNREFUSED' ||
+                error.code === 'ENOTFOUND') {
+                
+                if (attempt < maxRetries) {
+                    const delayMs = 2000 * attempt;
+                    console.log(`⏳ Aguardando ${delayMs}ms antes de tentar novamente...`);
+                    await new Promise(resolve => setTimeout(resolve, delayMs));
+                    continue;
+                }
+            }
+            
+            // Última tentativa - lançar erro
             if (attempt === maxRetries) {
                 throw error;
             }
             
             // Aguardar antes de tentar novamente
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
             
         } finally {
             if (connection) {
-                connection.release();
+                try {
+                    connection.release();
+                } catch (e) {
+                    console.error('Erro ao liberar conexão:', e.message);
+                }
             }
         }
     }
 }
 
-// Teste de conexão simples
-// Função para fechar o pool de conexões
-async function closePool() {
-    try {
-        await pool.end();
-        console.log('Pool de conexões fechado com sucesso');
-    } catch (error) {
-        console.error('Erro ao fechar pool de conexões:', error.message);
-        throw error;
-    }
-}
+// Teste de conexão
 async function testConnection() {
     try {
-        await executeQuery('SELECT 1 as test');
-        console.log('Conexão com banco OK');
+        console.log('🔍 Testando conexão com Railway...');
+        const result = await executeQuery('SELECT 1 as test');
+        console.log('✅ Conexão com Railway OK!');
         return true;
     } catch (error) {
-        console.error('Erro na conexão:', error.message);
+        console.error('❌ Erro na conexão com Railway:', error.message);
         return false;
     }
 }
+
+// Fechar pool
+async function closePool() {
+    try {
+        await pool.end();
+        console.log('✅ Pool de conexões fechado');
+    } catch (error) {
+        console.error('❌ Erro ao fechar pool:', error.message);
+        throw error;
+    }
+}
+
+// Testar conexão ao iniciar
+testConnection();
 
 module.exports = {
     pool,

@@ -165,32 +165,32 @@
                     <!-- Informações Pessoais -->
                     <section class="info-card">
                         <h3><i class="fas fa-user"></i> Informações Pessoais</h3>
-                        <div class="info-item">
+                        <section class="info-item">
                             <i class="fas fa-user-circle"></i>
                             <strong>Nome:</strong> <%= cliente.nome %>
-                        </div>
-                        <div class="info-item">
+                        </section>
+                        <section class="info-item">
                             <i class="fas fa-envelope"></i>
                             <strong>Email:</strong> <%= cliente.email %>
-                        </div>
-                        <div class="info-item">
+                        </section>
+                        <section class="info-item">
                             <i class="fas fa-phone"></i>
                             <strong>Telefone:</strong> <%= cliente.telefone %>
-                        </div>
-                        <div class="info-item">
+                        </section>
+                        <section class="info-item">
                             <i class="fas fa-map-marker-alt"></i>
                             <strong>Cidade:</strong> <%= cliente.cidade %>
-                        </div>
-                        <div class="info-item">
+                        </section>
+                        <section class="info-item">
                             <i class="fas fa-home"></i>
                             <strong>Endereço:</strong> <%= cliente.endereco %>
-                        </div>
+                        </section>
                     </section>
                     
                     <!-- Informações de Adestramento -->
                     <section class="info-card">
                         <h3><i class="fas fa-graduation-cap"></i> Adestramento</h3>
-                        <div class="info-item">
+                        <section class="info-item">
                             <i class="fas fa-bullhorn"></i>
                             <strong>Tipo:</strong> 
                             <% 
@@ -202,17 +202,17 @@
                             };
                             %>
                             <%= tiposAdestramento[cliente.tipo_adestramento] || cliente.tipo_adestramento %>
-                        </div>
+                        </section>
                         <% if (cliente.descricao) { %>
-                        <div class="info-item" style="flex-direction: column; align-items: flex-start;">
-                            <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                        <section class="info-item" style="flex-direction: column; align-items: flex-start;">
+                            <section style="display: flex; align-items: center; margin-bottom: 0.5rem;">
                                 <i class="fas fa-comment"></i>
                                 <strong>Observações:</strong>
-                            </div>
+                            </section>
                             <p style="margin-left: 30px; color: #666; line-height: 1.4;">
                                 <%= cliente.descricao %>
                             </p>
-                        </div>
+                        </section>
                         <% } %>
                     </section>
                 </section>
@@ -221,7 +221,7 @@
                 <section class="info-card" style="grid-column: 1 / -1; margin-top: 2rem;">
                     <h3><i class="fas fa-map-marker-alt"></i> Encontrar Adestradores Próximos</h3>
                     
-                    <div style="margin: 8px 0; display:flex; gap:8px; flex-wrap:wrap;">
+                    <section style="margin: 8px 0; display:flex; gap:8px; flex-wrap:wrap;">
                         <button id="btn-locate">Encontrar meu local</button>
                         <input id="address" type="text" placeholder="Digite um endereço" style="min-width:200px; padding:6px;" />
                         <button id="btn-geocode">Buscar</button>
@@ -229,10 +229,10 @@
                             <input id="radius" type="number" value="5" min="0.1" step="0.1" style="width:60px; padding:4px;" />
                         </label>
                         <button id="btn-filter">Aplicar</button>
-                    </div>
+                    </section>
 
-                    <div id="map" style="height: 400px; border: 1px solid #ccc; margin: 10px 0;"></div>
-                    <div id="nearest"></div>
+                    <section id="map" style="height: 400px; border: 1px solid #ccc; margin: 10px 0;"></section>
+                    <section id="nearest"></section>
                 </section>
             </section>
         </section>
@@ -293,10 +293,10 @@
             
             container.innerHTML = '<h4>Adestradores próximos:</h4>' +
                 filtered.slice(0, 5).map(t => 
-                    `<div style="padding:8px; border-bottom:1px solid #eee;">
+                    `<section style="padding:8px; border-bottom:1px solid #eee;">
                         <strong>${t.name}</strong> - ${t.distance.toFixed(2)} km<br>
                         <small>${t.info}</small>
-                    </div>`
+                    </section>`
                 ).join('');
         }
 

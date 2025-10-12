@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para exibir notificação de salvamento
     function showSaveNotification() {
-        const notification = document.createElement('div');
+        const notification = document.createElement('section');
         notification.className = 'save-notification';
         notification.innerHTML = '<i class="fas fa-check-circle"></i> Alterações salvas com sucesso!';
         document.body.appendChild(notification);
@@ -116,21 +116,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const petsGrid = document.querySelector('.pets-grid');
     if (addPetBtn && petsGrid) {
         addPetBtn.addEventListener('click', function() {
-            const modal = document.createElement('div');
+            const modal = document.createElement('section');
             modal.className = 'modal';
             modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
+                <section class="modal-content">
+                    <header class="modal-header">
                         <h3>Adicionar Novo Pet</h3>
                         <button class="btn-close">&times;</button>
-                    </div>
-                    <div class="modal-body">
+                    </header>
+                    <section class="modal-body">
                         <form id="new-pet-form">
-                            <div class="form-group">
+                            <section class="form-group">
                                 <label for="pet-name">Nome do Pet</label>
                                 <input type="text" id="pet-name" required>
-                            </div>
-                            <div class="form-group">
+                            </section>
+                            <section class="form-group">
                                 <label for="pet-species">Espécie</label>
                                 <select id="pet-species" required>
                                     <option value="">Selecione...</option>
@@ -139,36 +139,36 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <option value="bird">Pássaro</option>
                                     <option value="other">Outro</option>
                                 </select>
-                            </div>
-                            <div class="form-group">
+                            </section>
+                            <section class="form-group">
                                 <label for="pet-breed">Raça</label>
                                 <input type="text" id="pet-breed" required>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
+                            </section>
+                            <section class="form-row">
+                                <section class="form-group">
                                     <label for="pet-age">Idade</label>
                                     <input type="number" id="pet-age" min="0" required>
-                                </div>
-                                <div class="form-group">
+                                </section>
+                                <section class="form-group">
                                     <label for="pet-weight">Peso (kg)</label>
                                     <input type="number" id="pet-weight" min="0" step="0.1" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
+                                </section>
+                            </section>
+                            <section class="form-group">
                                 <label for="pet-gender">Sexo</label>
                                 <select id="pet-gender" required>
                                     <option value="">Selecione...</option>
                                     <option value="male">Macho</option>
                                     <option value="female">Fêmea</option>
                                 </select>
-                            </div>
-                            <div class="form-actions">
+                            </section>
+                            <footer class="form-actions">
                                 <button type="button" class="btn btn-secondary" id="cancel-pet">Cancelar</button>
                                 <button type="submit" class="btn btn-primary">Adicionar Pet</button>
-                            </div>
+                            </footer>
                         </form>
-                    </div>
-                </div>
+                    </section>
+                </section>
             `;
             document.body.appendChild(modal);
             const closeBtn = modal.querySelector('.btn-close');

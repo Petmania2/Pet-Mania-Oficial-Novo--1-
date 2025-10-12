@@ -118,9 +118,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <i class="fas fa-map-marked-alt"></i>
                 <p>Adestradores encontrados em ${location}</p>
                 <span><strong>${trainersFound}</strong> profissionais disponíveis na sua região</span>
-                <div style="margin-top: 15px;">
+                <section style="margin-top: 15px;">
                     <button class="btn btn-primary" onclick="scrollToTrainers()">Ver Adestradores</button>
-                </div>
+                </section>
             `;
             
             findLocationBtn.innerHTML = '<i class="fas fa-search"></i> Buscar';
@@ -370,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const existingNotifications = document.querySelectorAll('.notification');
         existingNotifications.forEach(notification => notification.remove());
         
-        const notification = document.createElement('div');
+        const notification = document.createElement('section');
         notification.className = `notification ${type}`;
         
         const colors = {
@@ -416,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function showBookingModal(trainerName, price) {
         // Create modal
-        const modal = document.createElement('div');
+        const modal = document.createElement('section');
         modal.className = 'booking-modal';
         modal.style.cssText = `
             position: fixed;
@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
             transition: opacity 0.3s ease;
         `;
         
-        const modalContent = document.createElement('div');
+        const modalContent = document.createElement('section');
         modalContent.style.cssText = `
             background: white;
             padding: 2rem;
@@ -450,13 +450,13 @@ document.addEventListener('DOMContentLoaded', function() {
             <p style="color: #666; margin-bottom: 1.5rem;">
                 Você está agendando uma sessão com <strong>${trainerName}</strong>
             </p>
-            <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem;">
+            <section style="background: #f8f9fa; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem;">
                 <p><strong>Valor da sessão:</strong> ${price}</p>
-            </div>
-            <div style="display: flex; gap: 1rem; justify-content: center;">
+            </section>
+            <section style="display: flex; gap: 1rem; justify-content: center;">
                 <button class="btn btn-primary confirm-booking">Confirmar Agendamento</button>
                 <button class="btn btn-outline close-modal">Cancelar</button>
-            </div>
+            </section>
         `;
         
         modal.appendChild(modalContent);
@@ -578,4 +578,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-

@@ -355,18 +355,18 @@ function createTrainerCard(adestrador) {
     const card = document.createElement('article');
     card.className = 'trainer-card';
     card.innerHTML = `
-        <div class="trainer-header">
-            <div class="trainer-rating">
+        <section class="trainer-header">
+            <section class="trainer-rating">
                 <i class="fas fa-star"></i> ${adestrador.rating}
-            </div>
-            ${adestrador.badge ? `<div class="trainer-badge">
+            </section>
+            ${adestrador.badge ? `<section class="trainer-badge">
                 <i class="fas fa-medal"></i> ${adestrador.badge}
-            </div>` : ''}
-        </div>
-        <div class="trainer-img" onclick="verPerfil(${adestrador.id})" style="cursor: pointer;">
+            </section>` : ''}
+        </section>
+        <section class="trainer-img" onclick="verPerfil(${adestrador.id})" style="cursor: pointer;">
             <img src="${adestrador.imagem}" alt="${adestrador.nome}">
-        </div>
-        <div class="trainer-info">
+        </section>
+        <section class="trainer-info">
             <h3 class="trainer-name" onclick="verPerfil(${adestrador.id})" style="cursor: pointer;">${adestrador.nome}</h3>
             <p class="trainer-specialty">
                 <i class="fas fa-certificate"></i> ${especialidadesMap[adestrador.especialidade]}
@@ -377,43 +377,43 @@ function createTrainerCard(adestrador) {
             <p class="trainer-experience">
                 <i class="fas fa-clock"></i> ${adestrador.experiencia} anos de experiência
             </p>
-            <div class="trainer-reviews">
-                <div class="stars">${generateStars(adestrador.rating)}</div>
+            <section class="trainer-reviews">
+                <span class="stars">${generateStars(adestrador.rating)}</span>
                 <span>(${adestrador.reviews} avaliações)</span>
-            </div>
-            <div class="trainer-price-info">
+            </section>
+            <section class="trainer-price-info">
                 <span class="price-label">Preço por sessão:</span>
                 <span class="price-value">R$ ${adestrador.preco}</span>
-            </div>
-            <div class="trainer-buttons">
+            </section>
+            <section class="trainer-buttons">
                 <button class="btn btn-primary trainer-btn" onclick="agendarSessao(${adestrador.id})">
                     Agendar Sessão
                 </button>
                 <button class="btn btn-outline trainer-btn" onclick="verPerfil(${adestrador.id})" style="margin-top: 0.5rem;">
                     Ver Perfil
                 </button>
-            </div>
-        </div>
+            </section>
+        </section>
     `;
     return card;
 }
 function createTrainerListItem(adestrador) {
-    const item = document.createElement('div');
+    const item = document.createElement('section');
     item.className = 'trainer-list-item';
     item.innerHTML = `
-        <div class="trainer-list-img" onclick="verPerfil(${adestrador.id})" style="cursor: pointer;">
+        <section class="trainer-list-img" onclick="verPerfil(${adestrador.id})" style="cursor: pointer;">
             <img src="${adestrador.imagem}" alt="${adestrador.nome}">
-            ${adestrador.badge ? `<div class="trainer-badge">
+            ${adestrador.badge ? `<section class="trainer-badge">
                 <i class="fas fa-medal"></i> ${adestrador.badge}
-            </div>` : ''}
-        </div>
-        <div class="trainer-list-content">
-            <div class="trainer-list-main">
+            </section>` : ''}
+        </section>
+        <section class="trainer-list-content">
+            <section class="trainer-list-main">
                 <h3 onclick="verPerfil(${adestrador.id})" style="cursor: pointer;">${adestrador.nome}</h3>
-                <div class="trainer-rating">
+                <section class="trainer-rating">
                     <i class="fas fa-star"></i> ${adestrador.rating}
                     <span>(${adestrador.reviews} avaliações)</span>
-                </div>
+                </section>
                 <p class="trainer-specialty">
                     <i class="fas fa-certificate"></i> ${especialidadesMap[adestrador.especialidade]}
                 </p>
@@ -424,20 +424,20 @@ function createTrainerListItem(adestrador) {
                     <i class="fas fa-clock"></i> ${adestrador.experiencia} anos de experiência
                 </p>
                 <p class="trainer-description">${adestrador.descricao}</p>
-            </div>
-        </div>
-        <div class="trainer-list-actions">
-            <div class="price-info">
+            </section>
+        </section>
+        <section class="trainer-list-actions">
+            <section class="price-info">
                 <span class="price-value">R$ ${adestrador.preco}</span>
                 <span class="price-label">por sessão</span>
-            </div>
+            </section>
             <button class="btn btn-primary" onclick="agendarSessao(${adestrador.id})">
                 Agendar Sessão
             </button>
             <button class="btn btn-outline" onclick="verPerfil(${adestrador.id})">
                 Ver Perfil
             </button>
-        </div>
+        </section>
     `;
     return item;
 }
@@ -511,7 +511,7 @@ function renderPagination() {
     }
 
     for (let i = startPage; i <= endPage; i++) {
-        const pageBtn = document.createElement('button');
+        const pageBtn = document.createElement('button'); // button is semantic here
         pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
         pageBtn.textContent = i;
         pageBtn.addEventListener('click', () => changePage(i));
@@ -831,100 +831,100 @@ document.addEventListener('DOMContentLoaded', function() {
 // Função para adicionar o modal ao DOM (caso não esteja no HTML)
 function addModalToDOM() {
     const modalHTML = `
-        <div class="trainer-profile-modal" id="trainerProfileModal">
-            <div class="modal-overlay" id="modalOverlay"></div>
-            <div class="modal-content">
-                <div class="modal-header">
+        <section class="trainer-profile-modal" id="trainerProfileModal">
+            <section class="modal-overlay" id="modalOverlay"></section>
+            <section class="modal-content">
+                <header class="modal-header">
                     <h2>Perfil do Adestrador</h2>
                     <button class="modal-close" id="modalClose">
                         <i class="fas fa-times"></i>
                     </button>
-                </div>
+                </header>
                 
-                <div class="modal-body">
-                    <div class="trainer-profile-card">
-                        <div class="profile-image">
+                <section class="modal-body">
+                    <section class="trainer-profile-card">
+                        <section class="profile-image">
                             <img id="profileImage" src="" alt="Foto do Adestrador">
-                            <div class="profile-badge" id="profileBadge" style="display: none;">
+                            <section class="profile-badge" id="profileBadge" style="display: none;">
                                 <i class="fas fa-medal"></i>
                                 <span id="badgeText"></span>
-                            </div>
-                        </div>
+                            </section>
+                        </section>
                         
-                        <div class="profile-info">
-                            <div class="profile-section">
+                        <section class="profile-info">
+                            <section class="profile-section">
                                 <h3 id="profileName">Nome do Adestrador</h3>
-                                <div class="profile-rating">
-                                    <div class="stars" id="profileStars"></div>
+                                <section class="profile-rating">
+                                    <span class="stars" id="profileStars"></span>
                                     <span id="profileReviews">(0 avaliações)</span>
-                                </div>
-                            </div>
+                                </section>
+                            </section>
 
-                            <div class="profile-details">
-                                <div class="detail-item">
+                            <section class="profile-details">
+                                <section class="detail-item">
                                     <i class="fas fa-phone"></i>
                                     <label>Telefone:</label>
                                     <span class="phone-number">
                                         <span id="phonePartial"></span>
                                         <button class="see-more-btn" id="seeMorePhone">Ver mais</button>
                                     </span>
-                                </div>
+                                </section>
 
-                                <div class="detail-item">
+                                <section class="detail-item">
                                     <i class="fas fa-map-marker-alt"></i>
                                     <label>Endereço:</label>
                                     <span id="profileAddress"></span>
-                                </div>
+                                </section>
 
-                                <div class="detail-item">
+                                <section class="detail-item">
                                     <i class="fas fa-city"></i>
                                     <label>Cidade:</label>
                                     <span id="profileCity"></span>
-                                </div>
+                                </section>
 
-                                <div class="detail-item">
+                                <section class="detail-item">
                                     <i class="fas fa-map"></i>
                                     <label>Estado:</label>
                                     <span id="profileState"></span>
-                                </div>
+                                </section>
 
-                                <div class="detail-item">
+                                <section class="detail-item">
                                     <i class="fas fa-clock"></i>
                                     <label>Experiência:</label>
                                     <span id="profileExperience"></span>
-                                </div>
+                                </section>
 
-                                <div class="detail-item">
+                                <section class="detail-item">
                                     <i class="fas fa-certificate"></i>
                                     <label>Especialidades:</label>
-                                    <div class="specialties-list" id="profileSpecialties"></div>
-                                </div>
+                                    <section class="specialties-list" id="profileSpecialties"></section>
+                                </section>
 
-                                <div class="detail-item">
+                                <section class="detail-item">
                                     <i class="fas fa-dollar-sign"></i>
                                     <label>Preço por Sessão:</label>
                                     <span class="price-highlight" id="profilePrice"></span>
-                                </div>
+                                </section>
 
-                                <div class="detail-item biography-section">
+                                <section class="detail-item biography-section">
                                     <i class="fas fa-user"></i>
                                     <label>Sobre:</label>
                                     <p id="profileBiography"></p>
-                                </div>
-                            </div>
+                                </section>
+                            </section>
 
-                            <div class="profile-actions">
+                            <section class="profile-actions">
                                 <button class="btn btn-primary" id="scheduleSessionBtn">
                                     <i class="fas fa-calendar-alt"></i>
                                     Agendar Sessão
                                 </button>
                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            </section>
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
     `;
     
     document.body.insertAdjacentHTML('beforeend', modalHTML);
@@ -1009,4 +1009,3 @@ if (typeof adestradoresCompletos === 'undefined') {
         }
     };
 }
-

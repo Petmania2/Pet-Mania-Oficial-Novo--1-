@@ -226,13 +226,21 @@ router.get("/painelcliente.ejs", async function (req, res) {
     return res.redirect("/Login.ejs");
   }
   try {
-    const cliente = await ClienteModel.buscarPorId(req.session.usuario.id);
+    let cliente = await ClienteModel.buscarPorId(req.session.usuario.id);
     if (!cliente) {
       return res.redirect("/Login.ejs");
     }
-    res.render("pages/painelcliente", { cliente });
+    
+    // Adicionar dados extras se não existirem
+    cliente = {
+      ...cliente,
+      tipo_adestramento: cliente.tipo_adestramento || 'obediencia-basica',
+      descricao: cliente.descricao || 'Sem observações específicas'
+    };
+    
+    res.render("pages/perfilcliente", { cliente });
   } catch (err) {
-    console.error('Erro ao carregar painel cliente:', err);
+    console.error('Erro ao carregar perfil cliente:', err);
     res.redirect("/Login.ejs");
   }
 });
@@ -727,8 +735,18 @@ router.get('/api/placeholder/:width/:height', (req, res) => {
   res.send(svg);
 });
 
-// Rota para logout via GET
+// Rota para logout via GET - corrigida
 router.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Erro ao fazer logout:', err);
+    }
+    res.redirect('/');
+  });
+});
+
+// Rota adicional para sair
+router.get('/sair', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.error('Erro ao fazer logout:', err);

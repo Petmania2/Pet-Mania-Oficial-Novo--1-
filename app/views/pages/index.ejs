@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
                 </a>
                 <ul class="nav-links" id="navLinks">
-                    <li><a href="perfilcliente.ejs" class="nav-item">Conta</a></li>
+                    <li><a href="painelcliente.ejs" class="nav-item" id="contaLink">Conta</a></li>
                     <li><a href="#find-trainer" class="nav-item">Encontrar</a></li>
                     <li><a href="/adestradores.ejs" class="nav-item">Adestradores</a></li>
                     <li><a href="#how-it-works" class="nav-item">Como Funciona</a></li>
@@ -721,7 +721,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (data.loggedIn && data.user) {
                     if (data.user.tipo === 'cliente') {
-                        window.location.href = '/perfilcliente.ejs';
+                        window.location.href = '/painelcliente.ejs';
                     } else if (data.user.tipo === 'adestrador') {
                         window.location.href = '/paineladestrador.ejs';
                     } else {
@@ -735,6 +735,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = '/Login.ejs';
             }
         }
+
+        // Verificação de login para o link "Conta"
+        document.addEventListener('DOMContentLoaded', function() {
+            const contaLink = document.getElementById('contaLink');
+            if (contaLink) {
+                contaLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    verificarLogin();
+                });
+            }
+        });
     </script>
     <script src="/js/javascript.js"></script>
     <script src="/js/adestradores.js"></script>

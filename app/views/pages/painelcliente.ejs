@@ -3,217 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Mania - Meu Perfil</title>
-    <link rel="stylesheet" href="/css/style-cliente.css">
-    <link rel="stylesheet" href="/css/ai-chat.css">
+    <title>Dashboard Premium - Pet Mania</title>
+    <link rel="stylesheet" href="/css/painelcliente-clean.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        .painel-container {
-            padding: 120px 0 80px;
-            background-color: #f5f7fa;
-        }
-        
-        .painel-content {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .perfil-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .perfil-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .info-card {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            border-left: 4px solid #FFA500;
-        }
-        
-        .info-card h3 {
-            color: #FFA500;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-        
-        .info-item {
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .info-item i {
-            color: #FFA500;
-            margin-right: 10px;
-            width: 20px;
-        }
-        
-        .info-item strong {
-            color: #333;
-            margin-right: 8px;
-        }
-        
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .action-card {
-            background: white;
-            border: 2px solid #f0f0f0;
-            border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .action-card:hover {
-            border-color: #FFA500;
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(255, 165, 0, 0.15);
-        }
-        
-        .action-card i {
-            font-size: 2.5rem;
-            color: #FFA500;
-            margin-bottom: 1rem;
-        }
-        
-        .logout-btn {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-        
-        .logout-btn:hover {
-            background: #c82333;
-            transform: translateY(-2px);
-        }
-        
-        @media (max-width: 768px) {
-            .perfil-info {
-                grid-template-columns: 1fr;
-            }
-            
-            .logout-btn {
-                position: relative;
-                top: auto;
-                right: auto;
-                margin: 1rem auto;
-                display: block;
-            }
-        }
-    </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar" id="navbar">
-        <section class="container navbar-container">
-            <a href="/" class="logo-subtle">
-                <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img-subtle">
+    <!-- Navbar Premium -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="logo">
+                <img src="/imagens/petlogo.png" alt="Pet Mania">
             </a>
-            <button class="mobile-menu-btn" id="menuBtn">☰</button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="/" class="nav-item">Home</a></li>
-                <li><a href="/#find-trainer" class="nav-item">Encontrar</a></li>
-                <li><a href="/#trainers" class="nav-item">Adestradores</a></li>
-                <li><span class="nav-item" style="color: #FFA500; font-weight: 600;">Olá, <%= cliente.nome.split(' ')[0] %>!</span></li>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/#find-trainer">Encontrar</a></li>
+                <li><a href="/adestradores.ejs">Adestradores</a></li>
+                <li><a href="#contact">Contato</a></li>
+                <li><button onclick="logout()" class="btn-logout">Sair</button></li>
             </ul>
-        </section>
+        </div>
     </nav>
 
-    <!-- Botão de Logout -->
-    <button class="logout-btn" onclick="logout()">
-        <i class="fas fa-sign-out-alt"></i> Sair
-    </button>
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Header Compacto -->
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div class="avatar">
+                    <%= cliente ? cliente.nome.split(' ').map(n => n[0]).join('') : 'U' %>
+                </div>
+                <div>
+                    <h2>Olá, <%= cliente ? cliente.nome.split(' ')[0] : 'Usuário' %>!</h2>
+                    <p><%= cliente ? cliente.email : 'email@exemplo.com' %></p>
+                </div>
+            </div>
+        </div>
 
-    <!-- Painel Section -->
-    <section class="painel-container">
-        <section class="container">
-            <section class="painel-content">
-                <section class="perfil-header">
-                    <h1>🐾 Meu Perfil</h1>
-                    <p>Bem-vindo(a) de volta, <%= cliente.nome %>!</p>
-                </section>
+        <!-- Cards Grid -->
+        <div class="cards-grid">
+            <!-- Meu Perfil Card -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-user"></i>
+                    <h3>Meu Perfil</h3>
+                </div>
+                <form action="/atualizar-cliente" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="nome" value="<%= cliente ? cliente.nome : '' %>" placeholder="Nome completo" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" value="<%= cliente ? cliente.email : '' %>" placeholder="Email" required>
+                    </div>
+                    <button type="submit" class="btn-save">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                </form>
+            </div>
+
+            <!-- Stats Card -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Estatísticas</h3>
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="number">12</span>
+                        <span class="label">Sessões</span>
+                    </div>
+                    <div class="stat">
+                        <span class="number">3</span>
+                        <span class="label">Pets</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pets Card -->
+            <div class="card" data-tab="pets">
+                <div class="card-header">
+                    <i class="fas fa-paw"></i>
+                    <h3>Meus Pets</h3>
+                </div>
+                <div class="pets-list">
+                    <div class="pet-item">
+                        <span>🐕 Rex</span>
+                        <small>Golden, 3 anos</small>
+                    </div>
+                    <div class="pet-item">
+                        <span>🐱 Luna</span>
+                        <small>Persa, 2 anos</small>
+                    </div>
+                </div>
+                <button class="btn-add" onclick="openAddPetModal()">
+                    <i class="fas fa-plus"></i> Adicionar Pet
+                </button>
+            </div>
+
+            <!-- Ações Card -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-cog"></i>
+                    <h3>Ações Rápidas</h3>
+                </div>
+                <div class="actions">
+                    <button class="action-btn" data-tab="sessions">
+                        <i class="fas fa-calendar"></i> Sessões
+                    </button>
+                    <button class="action-btn" data-tab="payments">
+                        <i class="fas fa-credit-card"></i> Pagamentos
+                    </button>
+                    <button class="action-btn" data-tab="security">
+                        <i class="fas fa-shield-alt"></i> Segurança
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Sections -->
+        <div id="sessions-modal" class="modal-content" style="display: none;">
+            <h3>Minhas Sessões</h3>
+            <p>Gerencie suas sessões de adestramento.</p>
+        </div>
+
+        <div id="payments-modal" class="modal-content" style="display: none;">
+            <h3>Pagamentos</h3>
+            <p>Histórico de pagamentos e métodos.</p>
+        </div>
+
+        <div id="security-modal" class="modal-content" style="display: none;">
+            <h3>Segurança</h3>
+            <input type="password" placeholder="Nova senha" id="new-password">
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Pet -->
+    <div id="addPetModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Adicionar Novo Pet</h3>
+                <button class="btn-close" onclick="closeAddPetModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addPetForm">
+                    <div class="form-group">
+                        <label class="form-label">Nome do Pet</label>
+                        <input type="text" class="form-input" id="petName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Espécie</label>
+                        <select class="form-input" id="petSpecies" required>
+                            <option value="">Selecione...</option>
+                            <option value="dog">Cão</option>
+                            <option value="cat">Gato</option>
+                            <option value="bird">Pássaro</option>
+                            <option value="other">Outro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Raça</label>
+                        <input type="text" class="form-input" id="petBreed" required>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Idade</label>
+                            <input type="number" class="form-input" id="petAge" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Peso (kg)</label>
+                            <input type="number" class="form-input" id="petWeight" min="0" step="0.1" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i> Adicionar Pet
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Operação realizada com sucesso!</span>
+    </div>
+
+    <script src="/js/perfilcliente.js"></script>
+    <script>
+        // Action buttons
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
                 
-                <section class="perfil-info">
-                    <!-- Informações Pessoais -->
-                    <section class="info-card">
-                        <h3><i class="fas fa-user"></i> Informações Pessoais</h3>
-                        <section class="info-item">
-                            <i class="fas fa-user-circle"></i>
-                            <strong>Nome:</strong> <%= cliente.nome %>
-                        </section>
-                        <section class="info-item">
-                            <i class="fas fa-envelope"></i>
-                            <strong>Email:</strong> <%= cliente.email %>
-                        </section>
-                        <section class="info-item">
-                            <i class="fas fa-phone"></i>
-                            <strong>Telefone:</strong> <%= cliente.telefone %>
-                        </section>
-                        <section class="info-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <strong>Cidade:</strong> <%= cliente.cidade %>
-                        </section>
-                        <section class="info-item">
-                            <i class="fas fa-home"></i>
-                            <strong>Endereço:</strong> <%= cliente.endereco %>
-                        </section>
+                // Hide all modals
+                document.querySelectorAll('[id$="-modal"]').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+                
+                // Show selected modal
+                const modal = document.getElementById(tabId + '-modal');
+                if (modal) {
+                    modal.style.display = 'block';
+                }
+            });
+        });
+
+        // Modal Functions
+        function openAddPetModal() {
+            document.getElementById('addPetModal').classList.add('show');
+        }
+
+        function closeAddPetModal() {
+            document.getElementById('addPetModal').classList.remove('show');
+        }
+
+        // Add Pet Form
+        document.getElementById('addPetForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('petName').value;
+            const species = document.getElementById('petSpecies').value;
+            const breed = document.getElementById('petBreed').value;
+            const age = document.getElementById('petAge').value;
+            const weight = document.getElementById('petWeight').value;
+            
+            // Add pet to grid (simulation)
+            const petsGrid = document.querySelector('.pets-grid');
+            const addCard = petsGrid.querySelector('.add-pet-card');
+            
+            const newPetCard = document.createElement('div');
+            newPetCard.className = 'pet-card';
+            const emoji = species === 'dog' ? '🐕' : species === 'cat' ? '🐱' : species === 'bird' ? '🐦' : '🐾';
+            newPetCard.innerHTML = `
+                <div class="pet-avatar">${emoji}</div>
+                <h3 class="pet-name">${name}</h3>
+                <p class="pet-details">${breed} • ${age} anos • ${weight}kg</p>
+            `;
+            
+            petsGrid.insertBefore(newPetCard, addCard);
+            closeAddPetModal();
+            showNotification('Pet adicionado com sucesso!');
+            this.reset();
+        });
+
+        // Password Strength
+        document.getElementById('new-password').addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            if (password.length > 0) strength++;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password) && /[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            strength = Math.min(strength, 4);
+            
+            const segments = document.querySelectorAll('.strength-segment');
+            const strengthText = document.querySelector('.strength-text');
+            const colors = ['#ddd', '#ff4d4d', '#ffa64d', '#ffff4d', '#4CAF50'];
+            const texts = ['Digite uma nova senha', 'Muito fraca', 'Fraca', 'Média', 'Forte'];
+            
+            segments.forEach((segment, index) => {
+                segment.style.backgroundColor = index < strength ? colors[strength] : colors[0];
+            });
+            strengthText.textContent = texts[strength];
+            strengthText.style.color = colors[strength];
+        });
+
+        // Notification
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            document.getElementById('notificationText').textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Logout Function
+        function logout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                fetch('/logout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.sucesso) {
+                        window.location.href = '/';
+                    } else {
+                        alert('Erro ao fazer logout');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    window.location.href = '/';
+                });
+            }
+        }
+
+        // Close modal on outside click
+        document.getElementById('addPetModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAddPetModal();
+            }
+        });
+    </script>
+</body>
+</html>ick="openTrainers()">
+                        <i class="fas fa-search"></i>
+                        <h3>Buscar Adestradores</h3>
+                        <p>Encontre profissionais próximos</p>
                     </section>
                     
-                    <!-- Informações de Adestramento -->
-                    <section class="info-card">
-                        <h3><i class="fas fa-graduation-cap"></i> Adestramento</h3>
-                        <section class="info-item">
-                            <i class="fas fa-bullhorn"></i>
-                            <strong>Tipo:</strong> 
-                            <% 
-                            const tiposAdestramento = {
-                                'obediencia-basica': 'Obediência Básica',
-                                'comportamento': 'Problemas de Comportamento',
-                                'truques': 'Truques e Comandos',
-                                'agressividade': 'Controle de Agressividade'
-                            };
-                            %>
-                            <%= tiposAdestramento[cliente.tipo_adestramento] || cliente.tipo_adestramento %>
-                        </section>
-                        <% if (cliente.descricao) { %>
-                        <section class="info-item" style="flex-direction: column; align-items: flex-start;">
-                            <section style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-                                <i class="fas fa-comment"></i>
-                                <strong>Observações:</strong>
-                            </section>
-                            <p style="margin-left: 30px; color: #666; line-height: 1.4;">
-                                <%= cliente.descricao %>
-                            </p>
-                        </section>
-                        <% } %>
+                    <section class="action-card" onclick="openHistory()">
+                        <i class="fas fa-history"></i>
+                        <h3>Histórico</h3>
+                        <p>Veja seus agendamentos anteriores</p>
                     </section>
                 </section>
                 
@@ -347,6 +451,7 @@
     </script>
 
     <script src="/js/ai-chat.js"></script>
+    <script src="/js/script-painelcliente.js"></script>
     <link rel="stylesheet" href="/css/ai-chat.css">
     
     <script>
@@ -371,5 +476,22 @@
                     window.location.href = '/';
                 });
             }
+        }
+        
+        // Funções dos botões
+        function openMyPets() {
+            window.location.href = '/meuspets.ejs';
+        }
+        
+        function openAccountSettings() {
+            window.location.href = '/perfilcliente.ejs';
+        }
+        
+        function openTrainers() {
+            window.location.href = '/#trainers';
+        }
+        
+        function openHistory() {
+            alert('Funcionalidade "Histórico" em desenvolvimento!');
         }
     </script>

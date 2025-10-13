@@ -23,99 +23,7 @@ const mapEspecialidades = {
 
 // ... resto do código ...
 
-// ROTA DE CADASTRO ADESTRADOR (corrigida)
-router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
-  try {
-    const {
-      name, cpf, email, phone, city, state, 
-      experience, specialty, price, about, password,
-      logradouro, numero, complemento, bairro, cep
-    } = req.body;
 
-    // Validações básicas
-    if (!name || !cpf || !email || !password || !price) {
-      return res.status(400).json({ 
-        sucesso: false, 
-        erro: "Campos obrigatórios não preenchidos" 
-      });
-    }
-
-    // Validar preço
-    const precoConvertido = parseFloat(price);
-    if (isNaN(precoConvertido) || precoConvertido < 50 || precoConvertido > 99999999.99) {
-      return res.status(400).json({ 
-        sucesso: false, 
-        erro: "Preço deve ser um valor válido entre R$ 50,00 e R$ 99.999.999,99" 
-      });
-    }
-
-    // ✅ NOVO: Converter especialidade de texto para ID
-    let especialidadeId = 1; // padrão
-    if (specialty) {
-      // specialty pode vir como string ou array
-      const especialidadeTexto = Array.isArray(specialty) 
-        ? specialty[0] 
-        : specialty;
-      
-      especialidadeId = mapEspecialidades[especialidadeTexto] || 1;
-      
-      console.log('Especialidade recebida:', especialidadeTexto);
-      console.log('ID da especialidade:', especialidadeId);
-    }
-
-    // Montar dados do adestrador
-    const dadosAdestrador = {
-      nome: name.trim(),
-      cpf: cpf.trim(),
-      email: email.toLowerCase().trim(),
-      telefone: phone?.trim() || '00000000000',
-      cidade: city?.trim() || '',
-      estado: state || '',
-      experiencia: parseInt(experience) || 0,
-      especialidade: especialidadeId, // ✅ AGORA é um número!
-      preco: precoConvertido,
-      sobre: about?.trim() || '',
-      senha: password,
-      logradouro: logradouro?.trim() || '',
-      numero: numero?.trim() || 'S/N',
-      complemento: complemento?.trim() || '',
-      bairro: bairro?.trim() || '',
-      cep: cep?.replace(/\D/g, '') || '00000000'
-    };
-
-    console.log('Dados do adestrador:', dadosAdestrador);
-
-    // Criar adestrador
-    await AdestradorModel.criar(dadosAdestrador);
-    
-    res.json({ 
-      sucesso: true, 
-      mensagem: "Cadastro realizado com sucesso!" 
-    });
-
-  } catch (error) {
-    console.error("Erro ao cadastrar adestrador:", error);
-    
-    if (error.message === 'Email já cadastrado') {
-      return res.status(400).json({ 
-        sucesso: false, 
-        erro: "Este email já está cadastrado no sistema" 
-      });
-    }
-    
-    if (error.message === 'CPF já cadastrado') {
-      return res.status(400).json({ 
-        sucesso: false, 
-        erro: "Este CPF já está cadastrado no sistema" 
-      });
-    }
-    
-    res.status(500).json({ 
-      sucesso: false, 
-      erro: "Erro interno. Tente novamente mais tarde." 
-    });
-  }
-});
 
 
 // Middleware para rate limiting simples (em memória)
@@ -221,6 +129,30 @@ router.get("/planosadestrador.ejs", function (req, res) {
   res.render("pages/planosadestrador");    
 });
 
+router.get("/painelcliente", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect("/Login.ejs");
+  }
+  try {
+    let cliente = await ClienteModel.buscarPorId(req.session.usuario.id);
+    if (!cliente) {
+      return res.redirect("/Login.ejs");
+    }
+    
+    // Adicionar dados extras se não existirem
+    cliente = {
+      ...cliente,
+      tipo_adestramento: cliente.tipo_adestramento || 'obediencia-basica',
+      descricao: cliente.descricao || 'Sem observações específicas'
+    };
+    
+    res.render("pages/painelcliente", { cliente });
+  } catch (err) {
+    console.error('Erro ao carregar perfil cliente:', err);
+    res.redirect("/Login.ejs");
+  }
+});
+
 router.get("/painelcliente.ejs", async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.redirect("/Login.ejs");
@@ -241,6 +173,38 @@ router.get("/painelcliente.ejs", async function (req, res) {
     res.render("pages/painelcliente", { cliente });
   } catch (err) {
     console.error('Erro ao carregar perfil cliente:', err);
+    res.redirect("/Login.ejs");
+  }
+});
+
+router.get("/agendamentos", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect("/Login.ejs");
+  }
+  try {
+    let cliente = await ClienteModel.buscarPorId(req.session.usuario.id);
+    if (!cliente) {
+      return res.redirect("/Login.ejs");
+    }
+    res.render("pages/agendamentos", { cliente });
+  } catch (err) {
+    console.error('Erro ao carregar agendamentos:', err);
+    res.redirect("/Login.ejs");
+  }
+});
+
+router.get("/agendamentos.ejs", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect("/Login.ejs");
+  }
+  try {
+    let cliente = await ClienteModel.buscarPorId(req.session.usuario.id);
+    if (!cliente) {
+      return res.redirect("/Login.ejs");
+    }
+    res.render("pages/agendamentos", { cliente });
+  } catch (err) {
+    console.error('Erro ao carregar agendamentos:', err);
     res.redirect("/Login.ejs");
   }
 });
@@ -388,7 +352,7 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
     res.json({ 
       sucesso: true, 
       mensagem: "Cadastro realizado com sucesso!",
-      redirecionarPara: "/painelcliente.ejs" 
+      redirecionarPara: "/painelcliente" 
     });
     
   } catch (error) {
@@ -484,7 +448,7 @@ router.post("/login", async function (req, res) {
     res.json({ 
       sucesso: true, 
       mensagem: "Login realizado com sucesso!",
-      redirecionarPara: tipo === "adestrador" ? "/paineladestrador.ejs" : "/painelcliente.ejs"
+      redirecionarPara: tipo === "adestrador" ? "/paineladestrador.ejs" : "/painelcliente"
     });
 
   } catch (error) {
@@ -533,7 +497,7 @@ router.post("/atualizar-cliente", async function (req, res) {
     req.session.usuario.nome = nome.trim();
     req.session.usuario.email = email.toLowerCase().trim();
     
-    res.redirect("/painelcliente.ejs");
+    res.redirect("/painelcliente");
     
   } catch (error) {
     console.error("Erro ao atualizar cliente:", error);

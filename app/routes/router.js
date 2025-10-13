@@ -176,6 +176,30 @@ router.get("/Cadastroadestrador.ejs", function (req, res) {
   res.render("pages/Cadastroadestrador");    
 });
 
+router.get("/clientesadestrador.ejs", function (req, res) {
+  res.render("pages/clientesadestrador");    
+});
+
+
+router.get("/mensagensadestrador.ejs", function (req, res) {
+  res.render("pages/mensagensadestrador");    
+});
+
+
+router.get("/agendamentoadestrador.ejs", function (req, res) {
+  res.render("pages/agendamentoadestrador");    
+});
+
+
+router.get("/perfiladestrador.ejs", function (req, res) {
+  res.render("pages/perfiladestrador");    
+});
+
+router.get("/planosadestrador.ejs", function (req, res) {
+  res.render("pages/planosadestrador");    
+});
+
+
 router.get("/cliente.ejs", function (req, res) {
   res.render("pages/cliente");    
 });

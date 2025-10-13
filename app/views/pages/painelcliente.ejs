@@ -3,200 +3,421 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Painel - Pet Mania</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Minha Home - Pet Mania</title>
+    <link rel="stylesheet" href="homecliente.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/css/painelcliente.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="navbar-container">
+    <!-- Header Fixo -->
+    <header class="navbar" id="navbar">
+        <nav class="navbar-container">
             <a href="/" class="logo">
-                <img src="/imagens/petlogo.png" alt="Pet Mania">
+                <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
             </a>
-            <ul class="nav-links">
-                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="/#find-trainer"><i class="fas fa-search"></i> Encontrar</a></li>
-                <li><a href="/adestradores.ejs"><i class="fas fa-users"></i> Adestradores</a></li>
-                <li><a href="#contact"><i class="fas fa-envelope"></i> Contato</a></li>
-                <li><button onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</button></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Dashboard Container -->
-    <div class="dashboard-container">
-        <!-- Welcome Card -->
-        <div class="welcome-card">
-            <div class="welcome-header">
-                <div class="avatar">
-                    <%= cliente ? cliente.nome.split(' ').map(n => n[0]).join('') : 'U' %>
-                </div>
-                <div class="welcome-info">
-                    <h1>Olá, <%= cliente ? cliente.nome.split(' ')[0] : 'Usuário' %>! 👋</h1>
-                    <p><i class="fas fa-envelope"></i> <%= cliente ? cliente.email : 'email@exemplo.com' %></p>
-                </div>
-            </div>
-
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">12</div>
-                    <div class="stat-label">Sessões Realizadas</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Pets Cadastrados</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">5</div>
-                    <div class="stat-label">Adestradores Favoritos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">Satisfação</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cards Container -->
-        <div class="cards-container">
-            <!-- Meu Perfil Card -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h3 class="card-title">Meu Perfil</h3>
-                </div>
-                <form action="/atualizar-cliente" method="POST">
-                    <div class="form-group">
-                        <input type="text" class="form-input" name="nome" value="<%= cliente ? cliente.nome : '' %>" placeholder="Nome completo" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-input" name="email" value="<%= cliente ? cliente.email : '' %>" placeholder="Email" required>
-                    </div>
-                    <button type="submit" class="btn-primary">
-                        <i class="fas fa-save"></i> Salvar Alterações
-                    </button>
-                </form>
-            </div>
-
-            <!-- Meus Pets Card -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-paw"></i>
-                    </div>
-                    <h3 class="card-title">Meus Pets</h3>
-                </div>
-                <div class="pets-list">
-                    <div class="pet-item">
-                        <div class="pet-info">
-                            <span class="pet-emoji">🐕</span>
-                            <div class="pet-details">
-                                <h4>Rex</h4>
-                                <small>Golden Retriever • 3 anos</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pet-item">
-                        <div class="pet-info">
-                            <span class="pet-emoji">🐱</span>
-                            <div class="pet-details">
-                                <h4>Luna</h4>
-                                <small>Persa • 2 anos</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn-secondary" onclick="openAddPetModal()">
-                    <i class="fas fa-plus"></i> Adicionar Pet
+            
+            <section class="navbar-actions">
+                <button class="notification-btn" id="notificationBtn" title="Notificações">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
                 </button>
-            </div>
-
-            <!-- Ações Rápidas Card -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3 class="card-title">Ações Rápidas</h3>
-                </div>
-                <div class="actions-grid">
-                    <button class="action-btn" onclick="window.location.href='/agendamentos'">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Agendamentos</span>
+                
+                <section class="avatar-menu">
+                    <button class="avatar-btn" id="avatarBtn" title="Menu do usuário">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Seu Avatar" class="avatar-img">
+                        <span class="user-name">João Silva</span>
+                        <i class="fas fa-chevron-down"></i>
                     </button>
-                    <button class="action-btn" onclick="showModal('security')">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Segurança</span>
+                    
+                    <section class="dropdown-menu" id="dropdownMenu">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-user"></i> Perfil
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-cog"></i> Configurações
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-heart"></i> Meus Favoritos
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item logout">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </a>
+                    </section>
+                </section>
+            </section>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- Seção de Boas-vindas -->
+        <section class="welcome-section">
+            <section class="container">
+                <section class="welcome-header">
+                    <h1>Olá, João 👋</h1>
+                    <p>Veja adestradores recomendados e novidades para você</p>
+                </section>
+                
+                <a href="#" class="btn btn-primary btn-large">
+                    <i class="fas fa-search"></i> Encontrar Adestrador
+                </a>
+            </section>
+        </section>
+
+        <!-- Seção de Adestradores Recomendados -->
+        <section class="recommended-trainers">
+            <section class="container">
+                <header class="section-header">
+                    <h2>Adestradores Recomendados</h2>
+                    <a href="#" class="see-all">Ver todos →</a>
+                </header>
+                
+                <section class="carousel-container">
+                    <button class="carousel-arrow left" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i>
                     </button>
-                </div>
-            </div>
-        </div>
-    </div>
+                    
+                    <section class="trainers-carousel">
+                        <article class="trainer-card-compact">
+                            <figure class="trainer-img-compact">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Ricardo Almeida">
+                                <section class="trainer-rating-badge">
+                                    <i class="fas fa-star"></i> 5.0
+                                </section>
+                            </figure>
+                            <section class="trainer-info-compact">
+                                <h3>Ricardo Almeida</h3>
+                                <p class="specialty">Obediência Básica</p>
+                                <section class="trainer-tags">
+                                    <span class="tag">Obediência</span>
+                                    <span class="tag">Comportamento</span>
+                                </section>
+                                <section class="trainer-actions">
+                                    <a href="#" class="btn btn-outline-small">Ver Perfil</a>
+                                    <a href="#" class="btn btn-primary-small">Mensagem</a>
+                                </section>
+                            </section>
+                        </article>
 
-    <!-- Modal para Adicionar Pet -->
-    <div id="addPetModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Adicionar Novo Pet</h3>
-                <button class="btn-close" onclick="closeAddPetModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="addPetForm">
-                    <div class="form-group">
-                        <input type="text" class="form-input" id="petName" placeholder="Nome do Pet" required>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-input" id="petSpecies" required>
-                            <option value="">Selecione a espécie...</option>
-                            <option value="dog">Cão</option>
-                            <option value="cat">Gato</option>
-                            <option value="bird">Pássaro</option>
-                            <option value="other">Outro</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-input" id="petBreed" placeholder="Raça" required>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
-                            <input type="number" class="form-input" id="petAge" placeholder="Idade" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="number" class="form-input" id="petWeight" placeholder="Peso (kg)" min="0" step="0.1" required>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-primary">
-                        <i class="fas fa-plus"></i> Adicionar Pet
+                        <article class="trainer-card-compact">
+                            <figure class="trainer-img-compact">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Juliana Costa">
+                                <section class="trainer-rating-badge">
+                                    <i class="fas fa-star"></i> 4.9
+                                </section>
+                            </figure>
+                            <section class="trainer-info-compact">
+                                <h3>Juliana Costa</h3>
+                                <p class="specialty">Comportamento Canino</p>
+                                <section class="trainer-tags">
+                                    <span class="tag">Comportamento</span>
+                                    <span class="tag">Agressividade</span>
+                                </section>
+                                <section class="trainer-actions">
+                                    <a href="#" class="btn btn-outline-small">Ver Perfil</a>
+                                    <a href="#" class="btn btn-primary-small">Mensagem</a>
+                                </section>
+                            </section>
+                        </article>
+
+                        <article class="trainer-card-compact">
+                            <figure class="trainer-img-compact">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Carlos Mendes">
+                                <section class="trainer-rating-badge">
+                                    <i class="fas fa-star"></i> 4.8
+                                </section>
+                            </figure>
+                            <section class="trainer-info-compact">
+                                <h3>Carlos Mendes</h3>
+                                <p class="specialty">Controle de Agressividade</p>
+                                <section class="trainer-tags">
+                                    <span class="tag">Agressividade</span>
+                                    <span class="tag">Avançado</span>
+                                </section>
+                                <section class="trainer-actions">
+                                    <a href="#" class="btn btn-outline-small">Ver Perfil</a>
+                                    <a href="#" class="btn btn-primary-small">Mensagem</a>
+                                </section>
+                            </section>
+                        </article>
+
+                        <article class="trainer-card-compact">
+                            <figure class="trainer-img-compact">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Ana Silva">
+                                <section class="trainer-rating-badge">
+                                    <i class="fas fa-star"></i> 4.7
+                                </section>
+                            </figure>
+                            <section class="trainer-info-compact">
+                                <h3>Ana Silva</h3>
+                                <p class="specialty">Truques Avançados</p>
+                                <section class="trainer-tags">
+                                    <span class="tag">Truques</span>
+                                    <span class="tag">Diversão</span>
+                                </section>
+                                <section class="trainer-actions">
+                                    <a href="#" class="btn btn-outline-small">Ver Perfil</a>
+                                    <a href="#" class="btn btn-primary-small">Mensagem</a>
+                                </section>
+                            </section>
+                        </article>
+                    </section>
+                    
+                    <button class="carousel-arrow right" id="nextBtn">
+                        <i class="fas fa-chevron-right"></i>
                     </button>
-                </form>
-            </div>
-        </div>
-    </div>
+                </section>
+            </section>
+        </section>
 
-    <!-- Modal Genérico -->
-    <div id="genericModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modalTitle">Título</h3>
-                <button class="btn-close" onclick="closeGenericModal()">&times;</button>
-            </div>
-            <div class="modal-body" id="modalBody">
-                Conteúdo do modal...
-            </div>
-        </div>
-    </div>
+        <!-- Seção de Mensagens Recentes -->
+        <section class="recent-messages">
+            <section class="container">
+                <header class="section-header">
+                    <h2>Suas Conversas Recentes</h2>
+                    <a href="#" class="see-all">Ver todas →</a>
+                </header>
+                
+                <section class="messages-list">
+                    <article class="message-card">
+                        <figure class="message-avatar">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Ricardo Almeida">
+                        </figure>
+                        <section class="message-info">
+                            <section class="message-header">
+                                <h3>Ricardo Almeida</h3>
+                                <time>2h atrás</time>
+                            </section>
+                            <p class="message-text">Perfeito! Vou confirmar o agendamento em breve...</p>
+                        </section>
+                        <button class="message-action">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </article>
 
-    <!-- Notification -->
-    <div id="notification" class="notification">
-        <i class="fas fa-check-circle"></i>
-        <span id="notificationText">Operação realizada com sucesso!</span>
-    </div>
+                    <article class="message-card">
+                        <figure class="message-avatar">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Juliana Costa">
+                        </figure>
+                        <section class="message-info">
+                            <section class="message-header">
+                                <h3>Juliana Costa</h3>
+                                <time>5h atrás</time>
+                            </section>
+                            <p class="message-text">Seu cão foi muito bem na última sessão!</p>
+                        </section>
+                        <button class="message-action">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </article>
 
-    <script src="/js/painelcliente.js"></script>
+                    <article class="message-card">
+                        <figure class="message-avatar">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Carlos Mendes">
+                        </figure>
+                        <section class="message-info">
+                            <section class="message-header">
+                                <h3>Carlos Mendes</h3>
+                                <time>Ontem</time>
+                            </section>
+                            <p class="message-text">Qual é a disponibilidade para próxima semana?</p>
+                        </section>
+                        <button class="message-action">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </article>
+                </section>
+            </section>
+        </section>
+
+        <!-- Seção Meus Pets -->
+        <section class="my-pets">
+            <section class="container">
+                <header class="section-header">
+                    <h2>Seus Pets</h2>
+                </header>
+                
+                <section class="pets-grid">
+                    <article class="pet-card">
+                        <figure class="pet-image">
+                            <img src="https://images.unsplash.com/photo-1633722715463-d30628519d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Max">
+                        </figure>
+                        <section class="pet-info">
+                            <h3>Max</h3>
+                            <p class="pet-details">
+                                <i class="fas fa-dog"></i> Golden Retriever
+                                <br>
+                                <i class="fas fa-birthday-cake"></i> 3 anos
+                            </p>
+                        </section>
+                        <section class="pet-actions">
+                            <button class="btn-icon" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon delete" title="Excluir">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </section>
+                    </article>
+
+                    <article class="pet-card">
+                        <figure class="pet-image">
+                            <img src="https://images.unsplash.com/photo-1552053831-71594a27c62d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Luna">
+                        </figure>
+                        <section class="pet-info">
+                            <h3>Luna</h3>
+                            <p class="pet-details">
+                                <i class="fas fa-dog"></i> Poodle
+                                <br>
+                                <i class="fas fa-birthday-cake"></i> 2 anos
+                            </p>
+                        </section>
+                        <section class="pet-actions">
+                            <button class="btn-icon" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon delete" title="Excluir">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </section>
+                    </article>
+
+                    <article class="pet-card add-pet">
+                        <section class="add-pet-content">
+                            <i class="fas fa-plus"></i>
+                            <p>Adicionar Pet</p>
+                        </section>
+                    </article>
+                </section>
+            </section>
+        </section>
+
+        <!-- Seção de Favoritos -->
+        <section class="favorites">
+            <section class="container">
+                <header class="section-header">
+                    <h2>Adestradores Favoritos</h2>
+                    <a href="#" class="see-all">Ver todos →</a>
+                </header>
+                
+                <section class="favorites-grid">
+                    <article class="favorite-card">
+                        <figure class="favorite-image">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Ricardo Almeida">
+                            <section class="favorite-actions">
+                                <button class="favorite-btn active" title="Remover de favoritos">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </section>
+                        </figure>
+                        <section class="favorite-info">
+                            <h3>Ricardo Almeida</h3>
+                            <p class="rating">
+                                <i class="fas fa-star"></i> 5.0 (57 avaliações)
+                            </p>
+                        </section>
+                    </article>
+
+                    <article class="favorite-card">
+                        <figure class="favorite-image">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Juliana Costa">
+                            <section class="favorite-actions">
+                                <button class="favorite-btn active" title="Remover de favoritos">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </section>
+                        </figure>
+                        <section class="favorite-info">
+                            <h3>Juliana Costa</h3>
+                            <p class="rating">
+                                <i class="fas fa-star"></i> 4.9 (43 avaliações)
+                            </p>
+                        </section>
+                    </article>
+
+                    <article class="favorite-card">
+                        <figure class="favorite-image">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Carlos Mendes">
+                            <section class="favorite-actions">
+                                <button class="favorite-btn active" title="Remover de favoritos">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </section>
+                        </figure>
+                        <section class="favorite-info">
+                            <h3>Carlos Mendes</h3>
+                            <p class="rating">
+                                <i class="fas fa-star"></i> 4.8 (38 avaliações)
+                            </p>
+                        </section>
+                    </article>
+                </section>
+            </section>
+        </section>
+
+        <!-- Seção de Dicas e Conteúdo -->
+        <section class="tips-section">
+            <section class="container">
+                <header class="section-header">
+                    <h2>Dicas para Você e seu Cãozinho 🐾</h2>
+                </header>
+                
+                <section class="tips-grid">
+                    <article class="tip-card">
+                        <figure class="tip-image">
+                            <img src="https://images.unsplash.com/photo-1601758228600-f3fee5ecb86f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Dica sobre adestramento">
+                        </figure>
+                        <section class="tip-content">
+                            <h3>5 Dicas Essenciais para Começar o Adestramento</h3>
+                            <p>Descubra os fundamentais para treinar seu cão com sucesso desde o início...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </section>
+                    </article>
+
+                    <article class="tip-card">
+                        <figure class="tip-image">
+                            <img src="https://images.unsplash.com/photo-1577979797112-a4d5312339c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Socialização canina">
+                        </figure>
+                        <section class="tip-content">
+                            <h3>Socialização Canina: O que Você Precisa Saber</h3>
+                            <p>Como preparar seu cão para interagir melhor com outros animais e pessoas...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </section>
+                    </article>
+
+                    <article class="tip-card">
+                        <figure class="tip-image">
+                            <img src="https://images.unsplash.com/photo-1600320315023-b48caf2c5202?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Problemas comportamentais">
+                        </figure>
+                        <section class="tip-content">
+                            <h3>Resolvendo Problemas de Comportamento Comuns</h3>
+                            <p>Guia prático para lidar com latidos excessivos, puxadas na coleira e mais...</p>
+                            <a href="#" class="read-more">Ler mais →</a>
+                        </section>
+                    </article>
+                </section>
+                
+                <section class="tips-footer">
+                    <a href="#" class="btn btn-outline">Ver mais dicas</a>
+                </section>
+            </section>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <section class="container">
+            <section class="footer-content">
+                <section class="footer-links">
+                    <a href="#">Ajuda</a>
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Termos de Uso</a>
+                </section>
+                <p class="footer-text">© 2025 Pet Mania — Todos os direitos reservados.</p>
+            </section>
+        </section>
+    </footer>
+
+    <script src="homecliente.js"></script>
 </body>
 </html>

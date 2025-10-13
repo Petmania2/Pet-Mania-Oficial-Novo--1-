@@ -88,12 +88,13 @@ body {
 
 /* Container Principal */
 .dashboard-container {
-    max-width: 600px;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.09);
-    margin: 40px auto;
-    padding: 32px;
+    max-width: 600px !important;
+    width: 90%;
+    background: #fff !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.09) !important;
+    margin: 40px auto !important;
+    padding: 32px !important;
 }
 
 /* Header Compacto */
@@ -139,7 +140,7 @@ body {
 /* Cards Grid */
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: 1fr;
     gap: 1rem;
 }
 

@@ -3,137 +3,565 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Premium - Pet Mania</title>
-    <link rel="stylesheet" href="/css/painelcliente-clean.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Meu Painel - Pet Mania</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo img {
+            height: 65px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #FFA500;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4);
+        }
+
+        .dashboard-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .welcome-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #FFA500, #ff8c00);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.3);
+        }
+
+        .welcome-info h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-info p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(45deg, #FFA500, #FF8C00);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #FFA500, #ff8c00);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #FFA500;
+            box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #FFA500, #ff8c00);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.4);
+        }
+
+        .pets-list {
+            margin-bottom: 1.5rem;
+        }
+
+        .pet-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 165, 0, 0.1);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .pet-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .pet-emoji {
+            font-size: 2rem;
+        }
+
+        .pet-details h4 {
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .pet-details small {
+            color: #666;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+        }
+
+        .actions-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #e0e0e0;
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            background: #FFA500;
+            color: white;
+            border-color: #FFA500;
+            transform: translateX(5px);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s ease;
+        }
+
+        .btn-close:hover {
+            color: #333;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+            z-index: 10001;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            .navbar-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .dashboard-container {
+                padding: 0 0.5rem;
+            }
+
+            .welcome-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navbar Premium -->
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-container">
             <a href="/" class="logo">
                 <img src="/imagens/petlogo.png" alt="Pet Mania">
             </a>
             <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/#find-trainer">Encontrar</a></li>
-                <li><a href="/adestradores.ejs">Adestradores</a></li>
-                <li><a href="#contact">Contato</a></li>
-                <li><button onclick="logout()" class="btn-logout">Sair</button></li>
+                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/#find-trainer"><i class="fas fa-search"></i> Encontrar</a></li>
+                <li><a href="/adestradores.ejs"><i class="fas fa-users"></i> Adestradores</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contato</a></li>
+                <li><button onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</button></li>
             </ul>
         </div>
     </nav>
 
     <!-- Dashboard Container -->
     <div class="dashboard-container">
-        <!-- Header Compacto -->
-        <div class="dashboard-header">
-            <div class="user-info">
+        <!-- Welcome Card -->
+        <div class="welcome-card">
+            <div class="welcome-header">
                 <div class="avatar">
                     <%= cliente ? cliente.nome.split(' ').map(n => n[0]).join('') : 'U' %>
                 </div>
-                <div>
-                    <h2>Olá, <%= cliente ? cliente.nome.split(' ')[0] : 'Usuário' %>!</h2>
-                    <p><%= cliente ? cliente.email : 'email@exemplo.com' %></p>
+                <div class="welcome-info">
+                    <h1>Olá, <%= cliente ? cliente.nome.split(' ')[0] : 'Usuário' %>! 👋</h1>
+                    <p><i class="fas fa-envelope"></i> <%= cliente ? cliente.email : 'email@exemplo.com' %></p>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Sessões Realizadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Pets Cadastrados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Adestradores Favoritos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfação</div>
                 </div>
             </div>
         </div>
 
-        <!-- Cards Grid -->
-        <div class="cards-grid">
+        <!-- Cards Container -->
+        <div class="cards-container">
             <!-- Meu Perfil Card -->
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-user"></i>
-                    <h3>Meu Perfil</h3>
+                    <div class="card-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="card-title">Meu Perfil</h3>
                 </div>
                 <form action="/atualizar-cliente" method="POST">
                     <div class="form-group">
-                        <input type="text" name="nome" value="<%= cliente ? cliente.nome : '' %>" placeholder="Nome completo" required>
+                        <input type="text" class="form-input" name="nome" value="<%= cliente ? cliente.nome : '' %>" placeholder="Nome completo" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" name="email" value="<%= cliente ? cliente.email : '' %>" placeholder="Email" required>
+                        <input type="email" class="form-input" name="email" value="<%= cliente ? cliente.email : '' %>" placeholder="Email" required>
                     </div>
-                    <button type="submit" class="btn-save">
-                        <i class="fas fa-save"></i> Salvar
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Salvar Alterações
                     </button>
                 </form>
             </div>
 
-            <!-- Stats Card -->
+            <!-- Meus Pets Card -->
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-chart-bar"></i>
-                    <h3>Estatísticas</h3>
-                </div>
-                <div class="stats">
-                    <div class="stat">
-                        <span class="number">12</span>
-                        <span class="label">Sessões</span>
+                    <div class="card-icon">
+                        <i class="fas fa-paw"></i>
                     </div>
-                    <div class="stat">
-                        <span class="number">3</span>
-                        <span class="label">Pets</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pets Card -->
-            <div class="card" data-tab="pets">
-                <div class="card-header">
-                    <i class="fas fa-paw"></i>
-                    <h3>Meus Pets</h3>
+                    <h3 class="card-title">Meus Pets</h3>
                 </div>
                 <div class="pets-list">
                     <div class="pet-item">
-                        <span>🐕 Rex</span>
-                        <small>Golden, 3 anos</small>
+                        <div class="pet-info">
+                            <span class="pet-emoji">🐕</span>
+                            <div class="pet-details">
+                                <h4>Rex</h4>
+                                <small>Golden Retriever • 3 anos</small>
+                            </div>
+                        </div>
                     </div>
                     <div class="pet-item">
-                        <span>🐱 Luna</span>
-                        <small>Persa, 2 anos</small>
+                        <div class="pet-info">
+                            <span class="pet-emoji">🐱</span>
+                            <div class="pet-details">
+                                <h4>Luna</h4>
+                                <small>Persa • 2 anos</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button class="btn-add" onclick="openAddPetModal()">
+                <button class="btn-secondary" onclick="openAddPetModal()">
                     <i class="fas fa-plus"></i> Adicionar Pet
                 </button>
             </div>
 
-            <!-- Ações Card -->
+            <!-- Ações Rápidas Card -->
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-cog"></i>
-                    <h3>Ações Rápidas</h3>
+                    <div class="card-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="card-title">Ações Rápidas</h3>
                 </div>
-                <div class="actions">
-                    <button class="action-btn" data-tab="sessions">
-                        <i class="fas fa-calendar"></i> Sessões
+                <div class="actions-grid">
+                    <button class="action-btn" onclick="showModal('sessions')">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Minhas Sessões</span>
                     </button>
-                    <button class="action-btn" data-tab="payments">
-                        <i class="fas fa-credit-card"></i> Pagamentos
+                    <button class="action-btn" onclick="showModal('payments')">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Pagamentos</span>
                     </button>
-                    <button class="action-btn" data-tab="security">
-                        <i class="fas fa-shield-alt"></i> Segurança
+                    <button class="action-btn" onclick="showModal('security')">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Segurança</span>
                     </button>
                 </div>
             </div>
-        </div>
-
-        <!-- Modal Sections -->
-        <div id="sessions-modal" class="modal-content" style="display: none;">
-            <h3>Minhas Sessões</h3>
-            <p>Gerencie suas sessões de adestramento.</p>
-        </div>
-
-        <div id="payments-modal" class="modal-content" style="display: none;">
-            <h3>Pagamentos</h3>
-            <p>Histórico de pagamentos e métodos.</p>
-        </div>
-
-        <div id="security-modal" class="modal-content" style="display: none;">
-            <h3>Segurança</h3>
-            <input type="password" placeholder="Nova senha" id="new-password">
         </div>
     </div>
 
@@ -147,13 +575,11 @@
             <div class="modal-body">
                 <form id="addPetForm">
                     <div class="form-group">
-                        <label class="form-label">Nome do Pet</label>
-                        <input type="text" class="form-input" id="petName" required>
+                        <input type="text" class="form-input" id="petName" placeholder="Nome do Pet" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Espécie</label>
                         <select class="form-input" id="petSpecies" required>
-                            <option value="">Selecione...</option>
+                            <option value="">Selecione a espécie...</option>
                             <option value="dog">Cão</option>
                             <option value="cat">Gato</option>
                             <option value="bird">Pássaro</option>
@@ -161,17 +587,14 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Raça</label>
-                        <input type="text" class="form-input" id="petBreed" required>
+                        <input type="text" class="form-input" id="petBreed" placeholder="Raça" required>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div class="form-group">
-                            <label class="form-label">Idade</label>
-                            <input type="number" class="form-input" id="petAge" min="0" required>
+                            <input type="number" class="form-input" id="petAge" placeholder="Idade" min="0" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Peso (kg)</label>
-                            <input type="number" class="form-input" id="petWeight" min="0" step="0.1" required>
+                            <input type="number" class="form-input" id="petWeight" placeholder="Peso (kg)" min="0" step="0.1" required>
                         </div>
                     </div>
                     <button type="submit" class="btn-primary">
@@ -182,32 +605,26 @@
         </div>
     </div>
 
+    <!-- Modal Genérico -->
+    <div id="genericModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Título</h3>
+                <button class="btn-close" onclick="closeGenericModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                Conteúdo do modal...
+            </div>
+        </div>
+    </div>
+
     <!-- Notification -->
     <div id="notification" class="notification">
         <i class="fas fa-check-circle"></i>
         <span id="notificationText">Operação realizada com sucesso!</span>
     </div>
 
-    <script src="/js/perfilcliente.js"></script>
     <script>
-        // Action buttons
-        document.querySelectorAll('.action-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
-                
-                // Hide all modals
-                document.querySelectorAll('[id$="-modal"]').forEach(modal => {
-                    modal.style.display = 'none';
-                });
-                
-                // Show selected modal
-                const modal = document.getElementById(tabId + '-modal');
-                if (modal) {
-                    modal.style.display = 'block';
-                }
-            });
-        });
-
         // Modal Functions
         function openAddPetModal() {
             document.getElementById('addPetModal').classList.add('show');
@@ -215,6 +632,49 @@
 
         function closeAddPetModal() {
             document.getElementById('addPetModal').classList.remove('show');
+        }
+
+        function showModal(type) {
+            const modal = document.getElementById('genericModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+
+            switch(type) {
+                case 'sessions':
+                    title.textContent = 'Minhas Sessões';
+                    body.innerHTML = '<p>Aqui você pode visualizar e gerenciar suas sessões de adestramento.</p><p>Em breve, novas funcionalidades!</p>';
+                    break;
+                case 'payments':
+                    title.textContent = 'Pagamentos';
+                    body.innerHTML = '<p>Visualize seu histórico de pagamentos e gerencie métodos de pagamento.</p><p>Funcionalidade em desenvolvimento.</p>';
+                    break;
+                case 'security':
+                    title.textContent = 'Segurança';
+                    body.innerHTML = `
+                        <div class="form-group">
+                            <input type="password" class="form-input" placeholder="Nova senha" id="newPassword">
+                        </div>
+                        <button class="btn-primary" onclick="changePassword()">
+                            <i class="fas fa-lock"></i> Alterar Senha
+                        </button>
+                    `;
+                    break;
+            }
+            modal.classList.add('show');
+        }
+
+        function closeGenericModal() {
+            document.getElementById('genericModal').classList.remove('show');
+        }
+
+        function changePassword() {
+            const password = document.getElementById('newPassword').value;
+            if (password.length < 6) {
+                alert('A senha deve ter pelo menos 6 caracteres');
+                return;
+            }
+            showNotification('Senha alterada com sucesso!');
+            closeGenericModal();
         }
 
         // Add Pet Form
@@ -226,46 +686,26 @@
             const age = document.getElementById('petAge').value;
             const weight = document.getElementById('petWeight').value;
             
-            // Add pet to grid (simulation)
-            const petsGrid = document.querySelector('.pets-grid');
-            const addCard = petsGrid.querySelector('.add-pet-card');
-            
-            const newPetCard = document.createElement('div');
-            newPetCard.className = 'pet-card';
+            // Simulate adding pet
+            const petsList = document.querySelector('.pets-list');
             const emoji = species === 'dog' ? '🐕' : species === 'cat' ? '🐱' : species === 'bird' ? '🐦' : '🐾';
-            newPetCard.innerHTML = `
-                <div class="pet-avatar">${emoji}</div>
-                <h3 class="pet-name">${name}</h3>
-                <p class="pet-details">${breed} • ${age} anos • ${weight}kg</p>
+            
+            const newPetItem = document.createElement('div');
+            newPetItem.className = 'pet-item';
+            newPetItem.innerHTML = `
+                <div class="pet-info">
+                    <span class="pet-emoji">${emoji}</span>
+                    <div class="pet-details">
+                        <h4>${name}</h4>
+                        <small>${breed} • ${age} anos</small>
+                    </div>
+                </div>
             `;
             
-            petsGrid.insertBefore(newPetCard, addCard);
+            petsList.appendChild(newPetItem);
             closeAddPetModal();
             showNotification('Pet adicionado com sucesso!');
             this.reset();
-        });
-
-        // Password Strength
-        document.getElementById('new-password').addEventListener('input', function() {
-            const password = this.value;
-            let strength = 0;
-            if (password.length > 0) strength++;
-            if (password.length >= 8) strength++;
-            if (/[A-Z]/.test(password) && /[a-z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^A-Za-z0-9]/.test(password)) strength++;
-            strength = Math.min(strength, 4);
-            
-            const segments = document.querySelectorAll('.strength-segment');
-            const strengthText = document.querySelector('.strength-text');
-            const colors = ['#ddd', '#ff4d4d', '#ffa64d', '#ffff4d', '#4CAF50'];
-            const texts = ['Digite uma nova senha', 'Muito fraca', 'Fraca', 'Média', 'Forte'];
-            
-            segments.forEach((segment, index) => {
-                segment.style.backgroundColor = index < strength ? colors[strength] : colors[0];
-            });
-            strengthText.textContent = texts[strength];
-            strengthText.style.color = colors[strength];
         });
 
         // Notification
@@ -300,198 +740,12 @@
             }
         }
 
-        // Close modal on outside click
-        document.getElementById('addPetModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeAddPetModal();
+        // Close modals on outside click
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('show');
             }
         });
     </script>
 </body>
-</html>ick="openTrainers()">
-                        <i class="fas fa-search"></i>
-                        <h3>Buscar Adestradores</h3>
-                        <p>Encontre profissionais próximos</p>
-                    </section>
-                    
-                    <section class="action-card" onclick="openHistory()">
-                        <i class="fas fa-history"></i>
-                        <h3>Histórico</h3>
-                        <p>Veja seus agendamentos anteriores</p>
-                    </section>
-                </section>
-                
-                <!-- Mapa de Adestradores -->
-                <section class="info-card" style="grid-column: 1 / -1; margin-top: 2rem;">
-                    <h3><i class="fas fa-map-marker-alt"></i> Encontrar Adestradores Próximos</h3>
-                    
-                    <section style="margin: 8px 0; display:flex; gap:8px; flex-wrap:wrap;">
-                        <button id="btn-locate">Encontrar meu local</button>
-                        <input id="address" type="text" placeholder="Digite um endereço" style="min-width:200px; padding:6px;" />
-                        <button id="btn-geocode">Buscar</button>
-                        <label>Raio (km):
-                            <input id="radius" type="number" value="5" min="0.1" step="0.1" style="width:60px; padding:4px;" />
-                        </label>
-                        <button id="btn-filter">Aplicar</button>
-                    </section>
-
-                    <section id="map" style="height: 400px; border: 1px solid #ccc; margin: 10px 0;"></section>
-                    <section id="nearest"></section>
-                </section>
-            </section>
-        </section>
-    </section>
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        let trainers = [
-            { "id": 1, "name": "João Silva", "lat": -23.55052, "lng": -46.633308, "info": "Especialista em obediência básica" },
-            { "id": 2, "name": "Maria Santos", "lat": -23.5587, "lng": -46.6250, "info": "Comportamento agressivo" },
-            { "id": 3, "name": "Carlos Oliveira", "lat": -23.5450, "lng": -46.6400, "info": "Adestramento domiciliar" }
-        ];
-
-        const map = L.map('map').setView([-23.55, -46.63], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-
-        let trainerMarkers = L.layerGroup().addTo(map);
-        let userMarker = null;
-        let currentUserLocation = null;
-
-        function renderMarkers() {
-            trainerMarkers.clearLayers();
-            trainers.forEach(t => {
-                L.marker([t.lat, t.lng]).addTo(trainerMarkers)
-                    .bindPopup(`<strong>${t.name}</strong><br>${t.info}`);
-            });
-        }
-
-        function haversine(lat1, lon1, lat2, lon2) {
-            const R = 6371;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon/2) * Math.sin(dLon/2);
-            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        }
-
-        function showNearest(userLat, userLng, radiusKm = null) {
-            const distances = trainers.map(t => ({
-                ...t,
-                distance: haversine(userLat, userLng, t.lat, t.lng)
-            })).sort((a,b) => a.distance - b.distance);
-            
-            let filtered = distances;
-            if (radiusKm) {
-                filtered = distances.filter(t => t.distance <= radiusKm);
-            }
-            
-            const container = document.getElementById('nearest');
-            if (!filtered.length) {
-                container.innerHTML = '<p>Nenhum adestrador encontrado no raio selecionado.</p>';
-                return;
-            }
-            
-            container.innerHTML = '<h4>Adestradores próximos:</h4>' +
-                filtered.slice(0, 5).map(t => 
-                    `<section style="padding:8px; border-bottom:1px solid #eee;">
-                        <strong>${t.name}</strong> - ${t.distance.toFixed(2)} km<br>
-                        <small>${t.info}</small>
-                    </section>`
-                ).join('');
-        }
-
-        document.getElementById('btn-locate').addEventListener('click', () => {
-            if (!navigator.geolocation) return alert('Geolocalização não suportada.');
-            navigator.geolocation.getCurrentPosition(pos => {
-                const lat = pos.coords.latitude;
-                const lng = pos.coords.longitude;
-                if (userMarker) map.removeLayer(userMarker);
-                userMarker = L.marker([lat, lng]).addTo(map).bindPopup('Você está aqui');
-                map.setView([lat, lng], 13);
-                currentUserLocation = { lat, lng };
-                const radius = parseFloat(document.getElementById('radius').value);
-                showNearest(lat, lng, radius);
-            }, () => alert('Erro ao obter localização'));
-        });
-
-        document.getElementById('btn-geocode').addEventListener('click', async () => {
-            const address = document.getElementById('address').value.trim();
-            if (!address) return alert('Digite um endereço.');
-            try {
-                const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(address)}&limit=1`;
-                const res = await fetch(url);
-                const data = await res.json();
-                if (data.features?.length) {
-                    const [lng, lat] = data.features[0].geometry.coordinates;
-                    if (userMarker) map.removeLayer(userMarker);
-                    userMarker = L.marker([lat, lng]).addTo(map).bindPopup('Localização buscada');
-                    map.setView([lat, lng], 13);
-                    currentUserLocation = { lat, lng };
-                    const radius = parseFloat(document.getElementById('radius').value);
-                    showNearest(lat, lng, radius);
-                } else {
-                    alert('Endereço não encontrado.');
-                }
-            } catch (err) {
-                alert('Erro na busca.');
-            }
-        });
-
-        document.getElementById('btn-filter').addEventListener('click', () => {
-            if (!currentUserLocation) return alert('Defina sua localização primeiro.');
-            const radius = parseFloat(document.getElementById('radius').value);
-            showNearest(currentUserLocation.lat, currentUserLocation.lng, radius);
-        });
-
-        renderMarkers();
-    </script>
-
-    <script src="/js/ai-chat.js"></script>
-    <script src="/js/script-painelcliente.js"></script>
-    <link rel="stylesheet" href="/css/ai-chat.css">
-    
-    <script>
-        function logout() {
-            if (confirm('Tem certeza que deseja sair?')) {
-                fetch('/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.sucesso) {
-                        window.location.href = '/';
-                    } else {
-                        alert('Erro ao fazer logout');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    window.location.href = '/';
-                });
-            }
-        }
-        
-        // Funções dos botões
-        function openMyPets() {
-            window.location.href = '/meuspets.ejs';
-        }
-        
-        function openAccountSettings() {
-            window.location.href = '/perfilcliente.ejs';
-        }
-        
-        function openTrainers() {
-            window.location.href = '/#trainers';
-        }
-        
-        function openHistory() {
-            alert('Funcionalidade "Histórico" em desenvolvimento!');
-        }
-    </script>
+</html>

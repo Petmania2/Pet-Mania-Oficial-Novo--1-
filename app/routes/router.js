@@ -238,7 +238,7 @@ router.get("/painelcliente.ejs", async function (req, res) {
       descricao: cliente.descricao || 'Sem observações específicas'
     };
     
-    res.render("pages/perfilcliente", { cliente });
+    res.render("pages/painelcliente", { cliente });
   } catch (err) {
     console.error('Erro ao carregar perfil cliente:', err);
     res.redirect("/Login.ejs");
@@ -505,6 +505,43 @@ router.post("/logout", function (req, res) {
     }
     res.json({ sucesso: true });
   });
+});
+
+// Rota para atualizar dados do cliente
+router.post("/atualizar-cliente", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect("/Login.ejs");
+  }
+  
+  try {
+    const { nome, email } = req.body;
+    
+    if (!nome || !email) {
+      return res.status(400).json({ 
+        sucesso: false, 
+        erro: "Nome e email são obrigatórios" 
+      });
+    }
+    
+    // Atualizar dados do cliente
+    await ClienteModel.atualizar(req.session.usuario.id, {
+      nome: nome.trim(),
+      email: email.toLowerCase().trim()
+    });
+    
+    // Atualizar sessão
+    req.session.usuario.nome = nome.trim();
+    req.session.usuario.email = email.toLowerCase().trim();
+    
+    res.redirect("/painelcliente.ejs");
+    
+  } catch (error) {
+    console.error("Erro ao atualizar cliente:", error);
+    res.status(500).json({ 
+      sucesso: false, 
+      erro: "Erro interno. Tente novamente mais tarde." 
+    });
+  }
 });
 
 // Rota para criar preferência (compatibilidade)

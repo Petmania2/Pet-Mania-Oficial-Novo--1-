@@ -3,402 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Home - Pet Mania</title>
+    <title>Minha Conta - Pet Mania</title>
     <link rel="stylesheet" href="/css/homecliente.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header Fixo -->
-    <header class="navbar" id="navbar">
-        <nav class="navbar-container">
-            <a href="/" class="logo">
-                <img src="/imagens/petlogo.png" alt="Pet Mania" class="logo-img">
-            </a>
-            
-            <section class="navbar-actions">
-                <button class="notification-btn" id="notificationBtn" title="Notificações">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+    <!-- Navbar Superior -->
+    <header>
+        <nav class="navbar">
+            <section class="navbar-container">
+                <a href="/" class="logo" aria-label="Pet Mania - Voltar para home">
+                    <i class="fas fa-paw"></i>
+                    <span>Pet Mania</span>
+                </a>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#" class="nav-link active" data-page="inicio">
+                        <i class="fas fa-home"></i>
+                        <span>Início</span>
+                    </a></li>
+                    <li><a href="#buscar" class="nav-link" data-page="buscar">
+                        <i class="fas fa-search"></i>
+                        <span>Buscar Adestradores</span>
+                    </a></li>
+                    <li><a href="#mensagens" class="nav-link" data-page="mensagens">
+                        <i class="fas fa-envelope"></i>
+                        <span>Mensagens</span>
+                        <span class="badge">3</span>
+                    </a></li>
+                    <li><a href="#perfil" class="nav-link" data-page="perfil">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </a></li>
+                    <li><a href="/logout" class="nav-link nav-link-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </a></li>
+                </ul>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menu de navegação">
+                    <i class="fas fa-bars"></i>
                 </button>
-                
-                <section class="avatar-menu">
-                    <button class="avatar-btn" id="avatarBtn" title="Menu do usuário">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Seu Avatar" class="avatar-img">
-                        <span class="user-name">João Silva</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    
-                    <section class="dropdown-menu" id="dropdownMenu">
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-user"></i> Perfil
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-cog"></i> Configurações
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-heart"></i> Meus Favoritos
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item logout">
-                            <i class="fas fa-sign-out-alt"></i> Sair
-                        </a>
-                    </section>
-                </section>
             </section>
         </nav>
     </header>
 
+    <!-- Main Content -->
     <main class="main-content">
-        <!-- Seção de Boas-vindas -->
-        <section class="welcome-section">
-            <section class="container">
-                <section class="welcome-header">
-                    <h1>Olá, João 👋</h1>
-                    <p>Veja adestradores recomendados e novidades para você</p>
+        <section class="container">
+            <!-- Boas-vindas -->
+            <header class="welcome-header">
+                <section class="welcome-text">
+                    <h1>Olá, <span class="user-name">João Silva</span>!</h1>
+                    <p>Bem-vindo de volta ao Pet Mania</p>
                 </section>
-                
-                <a href="#" class="btn btn-primary btn-large">
-                    <i class="fas fa-search"></i> Encontrar Adestrador
-                </a>
-            </section>
-        </section>
+                <figure class="welcome-icon">
+                    <i class="fas fa-dog"></i>
+                </figure>
+            </header>
 
-        <!-- Seção de Adestradores Recomendados -->
-        <section class="recommended-trainers">
-            <section class="container">
+            <!-- Resumo Rápido -->
+            <section class="quick-summary">
+                <h2 class="section-title">Painel Rápido</h2>
+                <section class="summary-grid">
+                    <article class="summary-card">
+                        <figure class="card-icon card-icon-orange">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </figure>
+                        <section class="card-content">
+                            <h3>Adestradores Próximos</h3>
+                            <p class="card-number">12</p>
+                            <p class="card-description">Na sua região</p>
+                        </section>
+                    </article>
+
+                    <article class="summary-card">
+                        <figure class="card-icon card-icon-blue">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </figure>
+                        <section class="card-content">
+                            <h3>Mensagens Novas</h3>
+                            <p class="card-number">3</p>
+                            <p class="card-description">Aguardando resposta</p>
+                        </section>
+                    </article>
+
+                    <article class="summary-card">
+                        <figure class="card-icon card-icon-green">
+                            <i class="fas fa-calendar-check"></i>
+                        </figure>
+                        <section class="card-content">
+                            <h3>Sessões Agendadas</h3>
+                            <p class="card-number">2</p>
+                            <p class="card-description">Próximas 7 dias</p>
+                        </section>
+                    </article>
+
+                    <article class="summary-card">
+                        <figure class="card-icon card-icon-yellow">
+                            <i class="fas fa-star"></i>
+                        </figure>
+                        <section class="card-content">
+                            <h3>Avaliações Pendentes</h3>
+                            <p class="card-number">1</p>
+                            <p class="card-description">Avaliar adestrador</p>
+                        </section>
+                    </article>
+                </section>
+            </section>
+
+            <!-- Adestradores Recomendados -->
+            <section class="recommended-trainers">
                 <header class="section-header">
-                    <h2>Adestradores Recomendados</h2>
-                    <a href="#" class="see-all">Ver todos →</a>
+                    <h2 class="section-title">Adestradores Recomendados</h2>
+                    <section class="carousel-controls">
+                        <button class="carousel-btn carousel-prev" id="carouselPrev" aria-label="Anterior">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-btn carousel-next" id="carouselNext" aria-label="Próximo">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </section>
                 </header>
                 
-                <section class="carousel-container">
-                    <button class="carousel-arrow left" id="prevBtn">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    
-                    <section class="trainers-carousel">
-                        <article class="trainer-card-compact">
-                            <figure class="trainer-img-compact">
-                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Ricardo Almeida">
-                                <section class="trainer-rating-badge">
-                                    <i class="fas fa-star"></i> 5.0
-                                </section>
+                <section class="carousel-wrapper">
+                    <section class="trainers-carousel" id="trainersCarousel">
+                        <article class="trainer-card">
+                            <figure class="trainer-image">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop" alt="Ricardo Almeida">
+                                <span class="trainer-badge">
+                                    <i class="fas fa-medal"></i>
+                                    Top
+                                </span>
                             </figure>
-                            <section class="trainer-info-compact">
-                                <h3>Ricardo Almeida</h3>
-                                <p class="specialty">Obediência Básica</p>
-                                <section class="trainer-tags">
-                                    <span class="tag">Obediência</span>
-                                    <span class="tag">Comportamento</span>
+                            <section class="trainer-info">
+                                <h3 class="trainer-name">Ricardo Almeida</h3>
+                                <p class="trainer-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    São Paulo, SP
+                                </p>
+                                <section class="trainer-specialties">
+                                    <span class="specialty-tag">Obediência</span>
+                                    <span class="specialty-tag">Comportamento</span>
                                 </section>
-                                <section class="trainer-actions">
-                                    <a href="#" class="btn btn-outline-small">Ver Perfil</a>
-                                    <a href="#" class="btn btn-primary-small">Mensagem</a>
+                                <section class="trainer-rating">
+                                    <section class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </section>
+                                    <span class="rating-text">5.0 (57 avaliações)</span>
                                 </section>
+                                <a href="#" class="btn btn-view-profile">Ver Perfil</a>
                             </section>
                         </article>
 
-                        <article class="trainer-card-compact">
-                            <figure class="trainer-img-compact">
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Juliana Costa">
-                                <section class="trainer-rating-badge">
-                                    <i class="fas fa-star"></i> 4.9
-                                </section>
+                        <article class="trainer-card">
+                            <figure class="trainer-image">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop" alt="Juliana Costa">
                             </figure>
-                            <section class="trainer-info-compact">
-                                <h3>Juliana Costa</h3>
-                                <p class="specialty">Comportamento Canino</p>
-                                <section class="trainer-tags">
-                                    <span class="tag">Comportamento</span>
-                                    <span class="tag">Agressividade</span>
+                            <section class="trainer-info">
+                                <h3 class="trainer-name">Juliana Costa</h3>
+                                <p class="trainer-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Rio de Janeiro, RJ
+                                </p>
+                                <section class="trainer-specialties">
+                                    <span class="specialty-tag">Socialização</span>
+                                    <span class="specialty-tag">Filhotes</span>
                                 </section>
-                                <section class="trainer-actions">
-                                    <a href="#" class="btn btn-outline-small">Ver Perfil</a>
-                                    <a href="#" class="btn btn-primary-small">Mensagem</a>
+                                <section class="trainer-rating">
+                                    <section class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </section>
+                                    <span class="rating-text">4.9 (43 avaliações)</span>
                                 </section>
+                                <a href="#" class="btn btn-view-profile">Ver Perfil</a>
                             </section>
                         </article>
 
-                        <article class="trainer-card-compact">
-                            <figure class="trainer-img-compact">
-                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Carlos Mendes">
-                                <section class="trainer-rating-badge">
-                                    <i class="fas fa-star"></i> 4.8
-                                </section>
+                        <article class="trainer-card">
+                            <figure class="trainer-image">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" alt="Carlos Mendes">
+                                <span class="trainer-badge">
+                                    <i class="fas fa-award"></i>
+                                    Especialista
+                                </span>
                             </figure>
-                            <section class="trainer-info-compact">
-                                <h3>Carlos Mendes</h3>
-                                <p class="specialty">Controle de Agressividade</p>
-                                <section class="trainer-tags">
-                                    <span class="tag">Agressividade</span>
-                                    <span class="tag">Avançado</span>
+                            <section class="trainer-info">
+                                <h3 class="trainer-name">Carlos Mendes</h3>
+                                <p class="trainer-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Belo Horizonte, MG
+                                </p>
+                                <section class="trainer-specialties">
+                                    <span class="specialty-tag">Agressividade</span>
+                                    <span class="specialty-tag">Terapia</span>
                                 </section>
-                                <section class="trainer-actions">
-                                    <a href="#" class="btn btn-outline-small">Ver Perfil</a>
-                                    <a href="#" class="btn btn-primary-small">Mensagem</a>
+                                <section class="trainer-rating">
+                                    <section class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </section>
+                                    <span class="rating-text">4.8 (38 avaliações)</span>
                                 </section>
+                                <a href="#" class="btn btn-view-profile">Ver Perfil</a>
                             </section>
                         </article>
 
-                        <article class="trainer-card-compact">
-                            <figure class="trainer-img-compact">
-                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Ana Silva">
-                                <section class="trainer-rating-badge">
-                                    <i class="fas fa-star"></i> 4.7
-                                </section>
+                        <article class="trainer-card">
+                            <figure class="trainer-image">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop" alt="Ana Silva">
                             </figure>
-                            <section class="trainer-info-compact">
-                                <h3>Ana Silva</h3>
-                                <p class="specialty">Truques Avançados</p>
-                                <section class="trainer-tags">
-                                    <span class="tag">Truques</span>
-                                    <span class="tag">Diversão</span>
+                            <section class="trainer-info">
+                                <h3 class="trainer-name">Ana Silva</h3>
+                                <p class="trainer-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Curitiba, PR
+                                </p>
+                                <section class="trainer-specialties">
+                                    <span class="specialty-tag">Truques</span>
+                                    <span class="specialty-tag">Comandos</span>
                                 </section>
-                                <section class="trainer-actions">
-                                    <a href="#" class="btn btn-outline-small">Ver Perfil</a>
-                                    <a href="#" class="btn btn-primary-small">Mensagem</a>
+                                <section class="trainer-rating">
+                                    <section class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </section>
+                                    <span class="rating-text">4.7 (31 avaliações)</span>
                                 </section>
+                                <a href="#" class="btn btn-view-profile">Ver Perfil</a>
                             </section>
                         </article>
                     </section>
-                    
-                    <button class="carousel-arrow right" id="nextBtn">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
                 </section>
             </section>
-        </section>
 
-        <!-- Seção de Mensagens Recentes -->
-        <section class="recent-messages">
-            <section class="container">
-                <header class="section-header">
-                    <h2>Suas Conversas Recentes</h2>
-                    <a href="#" class="see-all">Ver todas →</a>
-                </header>
-                
-                <section class="messages-list">
-                    <article class="message-card">
-                        <figure class="message-avatar">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Ricardo Almeida">
-                        </figure>
-                        <section class="message-info">
-                            <section class="message-header">
-                                <h3>Ricardo Almeida</h3>
-                                <time>2h atrás</time>
+            <!-- Depoimentos -->
+            <section class="testimonials">
+                <h2 class="section-title">O que nossos clientes dizem</h2>
+                <section class="testimonials-grid">
+                    <article class="testimonial-card">
+                        <section class="testimonial-header">
+                            <figure class="testimonial-avatar">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="Maria Oliveira">
+                            </figure>
+                            <section class="testimonial-info">
+                                <h3>Maria Oliveira</h3>
+                                <section class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </section>
                             </section>
-                            <p class="message-text">Perfeito! Vou confirmar o agendamento em breve...</p>
                         </section>
-                        <button class="message-action">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
+                        <p class="testimonial-text">"Encontrei o adestrador perfeito para o meu cachorro. Em poucas semanas ele já estava obedecendo comandos básicos. Plataforma excelente!"</p>
                     </article>
 
-                    <article class="message-card">
-                        <figure class="message-avatar">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Juliana Costa">
-                        </figure>
-                        <section class="message-info">
-                            <section class="message-header">
-                                <h3>Juliana Costa</h3>
-                                <time>5h atrás</time>
+                    <article class="testimonial-card">
+                        <section class="testimonial-header">
+                            <figure class="testimonial-avatar">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" alt="Pedro Santos">
+                            </figure>
+                            <section class="testimonial-info">
+                                <h3>Pedro Santos</h3>
+                                <section class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </section>
                             </section>
-                            <p class="message-text">Seu cão foi muito bem na última sessão!</p>
                         </section>
-                        <button class="message-action">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
+                        <p class="testimonial-text">"Meu cão tinha problemas de agressividade. Graças ao Pet Mania, encontrei um especialista que transformou o comportamento dele completamente!"</p>
                     </article>
 
-                    <article class="message-card">
-                        <figure class="message-avatar">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Carlos Mendes">
-                        </figure>
-                        <section class="message-info">
-                            <section class="message-header">
-                                <h3>Carlos Mendes</h3>
-                                <time>Ontem</time>
+                    <article class="testimonial-card">
+                        <section class="testimonial-header">
+                            <figure class="testimonial-avatar">
+                                <img src="https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop" alt="Carla Lima">
+                            </figure>
+                            <section class="testimonial-info">
+                                <h3>Carla Lima</h3>
+                                <section class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </section>
                             </section>
-                            <p class="message-text">Qual é a disponibilidade para próxima semana?</p>
                         </section>
-                        <button class="message-action">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
+                        <p class="testimonial-text">"Processo super fácil e adestradores qualificados. Recomendo para todos que querem educar seu pet com profissionais de verdade."</p>
                     </article>
-                </section>
-            </section>
-        </section>
-
-        <!-- Seção Meus Pets -->
-        <section class="my-pets">
-            <section class="container">
-                <header class="section-header">
-                    <h2>Seus Pets</h2>
-                </header>
-                
-                <section class="pets-grid">
-                    <article class="pet-card">
-                        <figure class="pet-image">
-                            <img src="https://images.unsplash.com/photo-1633722715463-d30628519d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Max">
-                        </figure>
-                        <section class="pet-info">
-                            <h3>Max</h3>
-                            <p class="pet-details">
-                                <i class="fas fa-dog"></i> Golden Retriever
-                                <br>
-                                <i class="fas fa-birthday-cake"></i> 3 anos
-                            </p>
-                        </section>
-                        <section class="pet-actions">
-                            <button class="btn-icon" title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-icon delete" title="Excluir">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </section>
-                    </article>
-
-                    <article class="pet-card">
-                        <figure class="pet-image">
-                            <img src="https://images.unsplash.com/photo-1552053831-71594a27c62d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Luna">
-                        </figure>
-                        <section class="pet-info">
-                            <h3>Luna</h3>
-                            <p class="pet-details">
-                                <i class="fas fa-dog"></i> Poodle
-                                <br>
-                                <i class="fas fa-birthday-cake"></i> 2 anos
-                            </p>
-                        </section>
-                        <section class="pet-actions">
-                            <button class="btn-icon" title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-icon delete" title="Excluir">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </section>
-                    </article>
-
-                    <article class="pet-card add-pet">
-                        <section class="add-pet-content">
-                            <i class="fas fa-plus"></i>
-                            <p>Adicionar Pet</p>
-                        </section>
-                    </article>
-                </section>
-            </section>
-        </section>
-
-        <!-- Seção de Favoritos -->
-        <section class="favorites">
-            <section class="container">
-                <header class="section-header">
-                    <h2>Adestradores Favoritos</h2>
-                    <a href="#" class="see-all">Ver todos →</a>
-                </header>
-                
-                <section class="favorites-grid">
-                    <article class="favorite-card">
-                        <figure class="favorite-image">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Ricardo Almeida">
-                            <section class="favorite-actions">
-                                <button class="favorite-btn active" title="Remover de favoritos">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                            </section>
-                        </figure>
-                        <section class="favorite-info">
-                            <h3>Ricardo Almeida</h3>
-                            <p class="rating">
-                                <i class="fas fa-star"></i> 5.0 (57 avaliações)
-                            </p>
-                        </section>
-                    </article>
-
-                    <article class="favorite-card">
-                        <figure class="favorite-image">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Juliana Costa">
-                            <section class="favorite-actions">
-                                <button class="favorite-btn active" title="Remover de favoritos">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                            </section>
-                        </figure>
-                        <section class="favorite-info">
-                            <h3>Juliana Costa</h3>
-                            <p class="rating">
-                                <i class="fas fa-star"></i> 4.9 (43 avaliações)
-                            </p>
-                        </section>
-                    </article>
-
-                    <article class="favorite-card">
-                        <figure class="favorite-image">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Carlos Mendes">
-                            <section class="favorite-actions">
-                                <button class="favorite-btn active" title="Remover de favoritos">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                            </section>
-                        </figure>
-                        <section class="favorite-info">
-                            <h3>Carlos Mendes</h3>
-                            <p class="rating">
-                                <i class="fas fa-star"></i> 4.8 (38 avaliações)
-                            </p>
-                        </section>
-                    </article>
-                </section>
-            </section>
-        </section>
-
-        <!-- Seção de Dicas e Conteúdo -->
-        <section class="tips-section">
-            <section class="container">
-                <header class="section-header">
-                    <h2>Dicas para Você e seu Cãozinho 🐾</h2>
-                </header>
-                
-                <section class="tips-grid">
-                    <article class="tip-card">
-                        <figure class="tip-image">
-                            <img src="https://images.unsplash.com/photo-1601758228600-f3fee5ecb86f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Dica sobre adestramento">
-                        </figure>
-                        <section class="tip-content">
-                            <h3>5 Dicas Essenciais para Começar o Adestramento</h3>
-                            <p>Descubra os fundamentais para treinar seu cão com sucesso desde o início...</p>
-                            <a href="#" class="read-more">Ler mais →</a>
-                        </section>
-                    </article>
-
-                    <article class="tip-card">
-                        <figure class="tip-image">
-                            <img src="https://images.unsplash.com/photo-1577979797112-a4d5312339c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Socialização canina">
-                        </figure>
-                        <section class="tip-content">
-                            <h3>Socialização Canina: O que Você Precisa Saber</h3>
-                            <p>Como preparar seu cão para interagir melhor com outros animais e pessoas...</p>
-                            <a href="#" class="read-more">Ler mais →</a>
-                        </section>
-                    </article>
-
-                    <article class="tip-card">
-                        <figure class="tip-image">
-                            <img src="https://images.unsplash.com/photo-1600320315023-b48caf2c5202?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Problemas comportamentais">
-                        </figure>
-                        <section class="tip-content">
-                            <h3>Resolvendo Problemas de Comportamento Comuns</h3>
-                            <p>Guia prático para lidar com latidos excessivos, puxadas na coleira e mais...</p>
-                            <a href="#" class="read-more">Ler mais →</a>
-                        </section>
-                    </article>
-                </section>
-                
-                <section class="tips-footer">
-                    <a href="#" class="btn btn-outline">Ver mais dicas</a>
                 </section>
             </section>
         </section>
@@ -406,15 +317,14 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <section class="container">
-            <section class="footer-content">
-                <section class="footer-links">
-                    <a href="#">Ajuda</a>
-                    <a href="#">Política de Privacidade</a>
-                    <a href="#">Termos de Uso</a>
-                </section>
-                <p class="footer-text">© 2025 Pet Mania — Todos os direitos reservados.</p>
-            </section>
+        <section class="footer-container">
+            <nav class="footer-links">
+                <a href="#">Sobre</a>
+                <a href="#">Termos de Uso</a>
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Contato</a>
+            </nav>
+            <p class="footer-copyright">&copy; 2025 Pet Mania. Todos os direitos reservados.</p>
         </section>
     </footer>
 

@@ -88,6 +88,10 @@ router.get("/clientesadestrador.ejs", function (req, res) {
   res.render("pages/clientesadestrador");    
 });
 
+router.get("/perfilcliente.ejs", function (req, res) {
+  res.render("pages/perfilcliente");    
+});
+
 
 router.get("/mensagensadestrador.ejs", function (req, res) {
   res.render("pages/mensagensadestrador");    
@@ -107,6 +111,9 @@ router.get("/planosadestrador.ejs", function (req, res) {
   res.render("pages/planosadestrador");    
 });
 
+router.get("/mensagenscliente.ejs", function (req, res) {
+  res.render("pages/mensagenscliente");    
+});
 
 router.get("/cliente.ejs", function (req, res) {
   res.render("pages/cliente");    

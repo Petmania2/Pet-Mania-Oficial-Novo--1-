@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensagens - Pet Mania</title>
+    <link rel="stylesheet" href="/css/homecliente.css">
+    <link rel="stylesheet" href="/css/mensagenscliente.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar Superior -->
+    <header>
+        <nav class="navbar">
+            <section class="navbar-container">
+                <a href="/" class="logo" aria-label="Pet Mania - Voltar para home">
+                    <i class="fas fa-paw"></i>
+                    <span>Pet Mania</span>
+                </a>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/painelcliente.ejs" class="nav-link" data-page="inicio">
+                        <i class="fas fa-home"></i>
+                        <span>Início</span>
+                    </a></li>
+                    <li><a href="/buscaradestradorcliente.ejs" class="nav-link" data-page="buscar">
+                        <i class="fas fa-search"></i>
+                        <span>Buscar Adestradores</span>
+                    </a></li>
+                    <li><a href="/mensagenscliente.ejs" class="nav-link active" data-page="mensagens">
+                        <i class="fas fa-envelope"></i>
+                        <span>Mensagens</span>
+                        <span class="badge" id="badgeMensagens">3</span>
+                    </a></li>
+                    <li><a href="#perfil" class="nav-link" data-page="perfil">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </a></li>
+                    <li><a href="/logout" class="nav-link nav-link-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </a></li>
+                </ul>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menu de navegação">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </section>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="container-mensagens">
+            <!-- Sidebar - Lista de Conversas -->
+            <aside class="conversas-sidebar">
+                <header class="sidebar-header">
+                    <h2>Mensagens</h2>
+                    <button class="btn-close-sidebar" id="btnCloseSidebar" aria-label="Fechar sidebar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </header>
+
+                <section class="search-conversas">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchConversas" placeholder="Buscar conversa..." aria-label="Buscar conversa">
+                </section>
+
+                <section class="filtros-conversas">
+                    <button class="filtro-btn active" data-filtro="todas">
+                        <i class="fas fa-envelope"></i>
+                        Todas
+                    </button>
+                    <button class="filtro-btn" data-filtro="nao-lidas">
+                        <i class="fas fa-star"></i>
+                        Não Lidas
+                    </button>
+                </section>
+
+                <nav class="lista-conversas" id="listaConversas">
+                    <!-- Conversas geradas dinamicamente por JS -->
+                </nav>
+            </aside>
+
+            <!-- Chat Principal -->
+            <section class="chat-container">
+                <section class="chat-vazio" id="chatVazio">
+                    <figure class="vazio-icon">
+                        <i class="fas fa-comments"></i>
+                    </figure>
+                    <h3>Nenhuma conversa selecionada</h3>
+                    <p>Clique em uma conversa para iniciar</p>
+                </section>
+
+                <section class="chat-ativo" id="chatAtivo" style="display: none;">
+                    <!-- Header do Chat -->
+                    <header class="chat-header">
+                        <button class="btn-open-sidebar" id="btnOpenSidebar" aria-label="Abrir lista de conversas">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <section class="chat-header-info">
+                            <figure class="chat-avatar-header">
+                                <img id="chatAvatarImg" src="" alt="Avatar do adestrador">
+                                <span class="status-indicator" id="statusIndicator"></span>
+                            </figure>
+                            <section class="chat-header-text">
+                                <h3 id="chatNome">Nome</h3>
+                                <p id="chatStatus">Offline</p>
+                            </section>
+                        </section>
+                        <section class="chat-header-actions">
+                            <button class="btn-icon" aria-label="Mais opções">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </section>
+                    </header>
+
+                    <!-- Área de Mensagens -->
+                    <section class="mensagens-area" id="mensagensArea">
+                        <!-- Mensagens geradas dinamicamente -->
+                    </section>
+
+                    <!-- Footer de Input -->
+                    <footer class="chat-footer">
+                        <button class="btn-anexar" aria-label="Anexar arquivo">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <input type="text" id="inputMensagem" placeholder="Digite sua mensagem..." aria-label="Digite sua mensagem">
+                        <button class="btn-enviar" id="btnEnviar" aria-label="Enviar mensagem">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </footer>
+                </section>
+            </section>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <section class="footer-container">
+            <nav class="footer-links">
+                <a href="#">Sobre</a>
+                <a href="#">Termos de Uso</a>
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Contato</a>
+            </nav>
+            <p class="footer-copyright">&copy; 2025 Pet Mania. Todos os direitos reservados.</p>
+        </section>
+    </footer>
+
+    <script src="/js/mensagenscliente.js"></script>
+</body>
+</html>

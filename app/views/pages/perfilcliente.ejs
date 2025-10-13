@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Pet Mania</title>
+    <link rel="stylesheet" href="/css/perfil.cliente.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar Superior -->
+    <header>
+        <nav class="navbar">
+            <section class="navbar-container">
+                <a href="/" class="logo" aria-label="Pet Mania - Voltar para home">
+                    <i class="fas fa-paw"></i>
+                    <span>Pet Mania</span>
+                </a>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/painelcliente" class="nav-link" data-page="inicio">
+                        <i class="fas fa-home"></i>
+                        <span>Início</span>
+                    </a></li>
+                    <li><a href="/buscaradestradorcliente" class="nav-link" data-page="buscar">
+                        <i class="fas fa-search"></i>
+                        <span>Buscar Adestradores</span>
+                    </a></li>
+                    <li><a href="#mensagens" class="nav-link" data-page="mensagens">
+                        <i class="fas fa-envelope"></i>
+                        <span>Mensagens</span>
+                        <span class="badge">3</span>
+                    </a></li>
+                    <li><a href="#perfil" class="nav-link active" data-page="perfil">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </a></li>
+                    <li><a href="/logout" class="nav-link nav-link-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </a></li>
+                </ul>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menu de navegação">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </section>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="container">
+            <!-- Header do Perfil -->
+            <header class="profile-header">
+                <section class="profile-cover"></section>
+                <section class="profile-info">
+                    <figure class="profile-avatar">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop" alt="João Silva">
+                    </figure>
+                    <section class="profile-details">
+                        <h1 class="profile-name">João Silva</h1>
+                        <p class="profile-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Barueri, São Paulo - SP
+                        </p>
+                        <p class="profile-email">
+                            <i class="fas fa-envelope"></i>
+                            joao.silva@email.com
+                        </p>
+                        <section class="profile-actions">
+                            <button class="btn btn-primary" id="editProfileBtn">
+                                <i class="fas fa-edit"></i>
+                                Editar Perfil
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-cog"></i>
+                                Configurações
+                            </button>
+                        </section>
+                    </section>
+                </section>
+            </header>
+
+            <!-- Informações Pessoais -->
+            <section class="profile-section personal-info">
+                <h2 class="section-title">Informações Pessoais</h2>
+                <section class="info-grid">
+                    <article class="info-card">
+                        <h3>Telefone</h3>
+                        <p>(11) 98765-4321</p>
+                    </article>
+                    <article class="info-card">
+                        <h3>Data de Nascimento</h3>
+                        <p>15 de Março de 1990</p>
+                    </article>
+                    <article class="info-card">
+                        <h3>CPF</h3>
+                        <p>123.456.789-00</p>
+                    </article>
+                    <article class="info-card">
+                        <h3>Membro desde</h3>
+                        <p>Janeiro de 2024</p>
+                    </article>
+                </section>
+            </section>
+
+            <!-- Meus Pets -->
+            <section class="profile-section my-pets">
+                <header class="section-header">
+                    <h2 class="section-title">Meus Pets</h2>
+                    <button class="btn btn-primary" id="addPetBtn">
+                        <i class="fas fa-plus"></i>
+                        Adicionar Pet
+                    </button>
+                </header>
+                
+                <section class="pets-grid">
+                    <article class="pet-card">
+                        <figure class="pet-image">
+                            <img src="https://images.unsplash.com/photo-1633722715463-d30628319855?w=300&h=300&fit=crop" alt="Rex - Golden Retriever">
+                        </figure>
+                        <section class="pet-info">
+                            <h3 class="pet-name">Rex</h3>
+                            <section class="pet-details">
+                                <div>
+                                    <span class="detail-label">Raça:</span>
+                                    <span class="detail-value">Golden Retriever</span>
+                                </div>
+                                <div>
+                                    <span class="detail-label">Idade:</span>
+                                    <span class="detail-value">3 anos</span>
+                                </div>
+                                <div>
+                                    <span class="detail-label">Tamanho:</span>
+                                    <span class="detail-value">Grande</span>
+                                </div>
+                                <div>
+                                    <span class="detail-label">Gênero:</span>
+                                    <span class="detail-value">Macho</span>
+                                </div>
+                            </section>
+                            <p class="pet-description">Cão dócil e amigável, porém com dificuldade em obedecer comandos básicos.</p>
+                            <section class="pet-actions">
+                                <button class="btn-icon" aria-label="Editar pet">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon danger" aria-label="Remover pet">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </section>
+                        </section>
+                    </article>
+
+                    <article class="pet-card">
+                        <figure class="pet-image">
+                            <img src="https://images.unsplash.com/photo-1587300411107-ec16d7b26c17?w=300&h=300&fit=crop" alt="Luna - Poodle">
+                        </figure>
+                        <section class="pet-info">
+                            <h3 class="pet-name">Luna</h3>
+                            <section class="pet-details">
+                                <div>
+                                    <span class="detail-label">Raça:</span>
+                                    <span class="detail-value">Poodle</span>
+                                </div>
+                                <div>
+                                    <span class="detail-label">Idade:</span>
+                                    <span class="detail-value">2 anos</span>
+                                </div>
+                                <div>
+                                    <span class="detail-label">Tamanho:</span>
+                                    <span class="detail-value">Pequeno</span>
+                                </div>
+                                <div>
+                                    <span class="detail-label">Gênero:</span>
+                                    <span class="detail-value">Fêmea</span>
+                                </div>
+                            </section>
+                            <p class="pet-description">Cadela inteligente e sociável, está aprendendo obediência com prazer.</p>
+                            <section class="pet-actions">
+                                <button class="btn-icon" aria-label="Editar pet">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon danger" aria-label="Remover pet">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </section>
+                        </section>
+                    </article>
+                </section>
+            </section>
+
+            <!-- Histórico de Sessões -->
+            <section class="profile-section sessions-history">
+                <h2 class="section-title">Histórico de Sessões</h2>
+                <section class="sessions-list">
+                    <article class="session-item">
+                        <section class="session-header">
+                            <h3>Sessão com Ricardo Almeida</h3>
+                            <span class="session-status completed">Concluído</span>
+                        </section>
+                        <section class="session-details">
+                            <p><strong>Pet:</strong> Rex</p>
+                            <p><strong>Serviço:</strong> Obediência Básica</p>
+                            <p><strong>Data:</strong> 10 de Outubro de 2025</p>
+                            <p><strong>Duração:</strong> 1 hora</p>
+                        </section>
+                        <section class="session-footer">
+                            <button class="btn btn-link">Ver Detalhes</button>
+                        </section>
+                    </article>
+
+                    <article class="session-item">
+                        <section class="session-header">
+                            <h3>Sessão com Juliana Costa</h3>
+                            <span class="session-status upcoming">Agendado</span>
+                        </section>
+                        <section class="session-details">
+                            <p><strong>Pet:</strong> Luna</p>
+                            <p><strong>Serviço:</strong> Socialização e Truques</p>
+                            <p><strong>Data:</strong> 15 de Outubro de 2025</p>
+                            <p><strong>Duração:</strong> 1.5 horas</p>
+                        </section>
+                        <section class="session-footer">
+                            <button class="btn btn-link">Cancelar</button>
+                            <button class="btn btn-link">Remarcar</button>
+                        </section>
+                    </article>
+
+                    <article class="session-item">
+                        <section class="session-header">
+                            <h3>Sessão com Carlos Mendes</h3>
+                            <span class="session-status completed">Concluído</span>
+                        </section>
+                        <section class="session-details">
+                            <p><strong>Pet:</strong> Rex</p>
+                            <p><strong>Serviço:</strong> Controle de Agressividade</p>
+                            <p><strong>Data:</strong> 05 de Outubro de 2025</p>
+                            <p><strong>Duração:</strong> 2 horas</p>
+                        </section>
+                        <section class="session-footer">
+                            <button class="btn btn-link">Ver Detalhes</button>
+                        </section>
+                    </article>
+                </section>
+            </section>
+
+            <!-- Avaliações Deixadas -->
+            <section class="profile-section my-reviews">
+                <h2 class="section-title">Minhas Avaliações</h2>
+                <section class="reviews-list">
+                    <article class="review-item">
+                        <section class="review-header">
+                            <h3>Ricardo Almeida</h3>
+                            <section class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </section>
+                        </section>
+                        <p class="review-date">Avaliado em 10 de Outubro de 2025</p>
+                        <p class="review-text">"Ricardo foi excelente! Conseguiu ensinar ao Rex comandos básicos em poucas semanas. Muito profissional e dedicado. Recomendo!"</p>
+                    </article>
+
+                    <article class="review-item">
+                        <section class="review-header">
+                            <h3>Carlos Mendes</h3>
+                            <section class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </section>
+                        </section>
+                        <p class="review-date">Avaliado em 05 de Outubro de 2025</p>
+                        <p class="review-text">"Muito bom! Carlos tem muita experiência com comportamento agressivo. O Rex melhorou significativamente. Estou muito satisfeito."</p>
+                    </article>
+                </section>
+            </section>
+
+            <!-- Preferências -->
+            <section class="profile-section preferences">
+                <h2 class="section-title">Preferências</h2>
+                <section class="preferences-grid">
+                    <article class="preference-card">
+                        <h3>
+                            <i class="fas fa-bell"></i>
+                            Notificações
+                        </h3>
+                        <p>Gerenciar preferências de notificações por email e SMS</p>
+                        <button class="btn btn-link">Configurar</button>
+                    </article>
+                    <article class="preference-card">
+                        <h3>
+                            <i class="fas fa-lock"></i>
+                            Privacidade
+                        </h3>
+                        <p>Controlar quem pode ver seu perfil e histórico</p>
+                        <button class="btn btn-link">Configurar</button>
+                    </article>
+                    <article class="preference-card">
+                        <h3>
+                            <i class="fas fa-credit-card"></i>
+                            Pagamento
+                        </h3>
+                        <p>Gerenciar métodos de pagamento e faturamento</p>
+                        <button class="btn btn-link">Configurar</button>
+                    </article>
+                    <article class="preference-card">
+                        <h3>
+                            <i class="fas fa-user-shield"></i>
+                            Segurança
+                        </h3>
+                        <p>Alterar senha e ativar autenticação de dois fatores</p>
+                        <button class="btn btn-link">Configurar</button>
+                    </article>
+                </section>
+            </section>
+        </section>
+    </main>
+
+    <!-- Modal de Edição -->
+    <section class="modal" id="editModal">
+        <section class="modal-content">
+            <header class="modal-header">
+                <h2>Editar Perfil</h2>
+                <button class="modal-close" id="closeModal" aria-label="Fechar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </header>
+            <form class="modal-form">
+                <fieldset>
+                    <label for="fullName">Nome Completo</label>
+                    <input type="text" id="fullName" value="João Silva" required>
+                </fieldset>
+                <fieldset>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" value="joao.silva@email.com" required>
+                </fieldset>
+                <fieldset>
+                    <label for="phone">Telefone</label>
+                    <input type="tel" id="phone" value="(11) 98765-4321" required>
+                </fieldset>
+                <fieldset>
+                    <label for="location">Localização</label>
+                    <input type="text" id="location" value="Barueri, São Paulo - SP" required>
+                </fieldset>
+                <section class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </section>
+            </form>
+        </section>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <section class="footer-container">
+            <nav class="footer-links">
+                <a href="#">Sobre</a>
+                <a href="#">Termos de Uso</a>
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Contato</a>
+            </nav>
+            <p class="footer-copyright">&copy; 2025 Pet Mania. Todos os direitos reservados.</p>
+        </section>
+    </footer>
+
+    <script src="/js/perfil.cliente.js"></script>
+</body>
+</html>

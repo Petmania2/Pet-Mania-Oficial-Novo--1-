@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Adestradores - Pet Mania</title>
+    <link rel="stylesheet" href="/css/buscar.ades(cliente).css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar Superior -->
+    <header>
+        <nav class="navbar">
+            <section class="navbar-container">
+                <a href="/" class="logo" aria-label="Pet Mania - Voltar para home">
+                    <i class="fas fa-paw"></i>
+                    <span>Pet Mania</span>
+                </a>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/painelcliente.ejs" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Início</span>
+                    </a></li>
+                    <li><a href="/buscaradestradorcliente.ejs" class="nav-link active">
+                        <i class="fas fa-search"></i>
+                        <span>Buscar Adestradores</span>
+                    </a></li>
+                    <li><a href="#mensagens" class="nav-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>Mensagens</span>
+                        <span class="badge">3</span>
+                    </a></li>
+                    <li><a href="#perfil" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </a></li>
+                    <li><a href="/logout" class="nav-link nav-link-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </a></li>
+                </ul>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menu de navegação">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </section>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="container">
+            <!-- Page Header -->
+            <header class="page-header">
+                <h1>Encontre o Adestrador Perfeito</h1>
+                <p>Profissionais qualificados prontos para ajudar você e seu pet</p>
+            </header>
+
+            <section class="search-layout">
+                <!-- Filtros de Busca -->
+                <aside class="filters-panel" id="filtersPanel">
+                    <header class="filters-header">
+                        <h2>Filtros</h2>
+                        <button class="filter-toggle" id="filterToggle" aria-label="Fechar filtros">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </header>
+
+                    <form class="filters-form" id="filtersForm">
+                        <!-- Busca por Nome ou Cidade -->
+                        <section class="filter-group">
+                            <label for="searchInput" class="filter-label">
+                                <i class="fas fa-search"></i>
+                                Buscar
+                            </label>
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                class="filter-input" 
+                                placeholder="Nome ou cidade..."
+                                aria-label="Buscar por nome ou cidade"
+                            >
+                        </section>
+
+                        <!-- Especialidade -->
+                        <section class="filter-group">
+                            <label for="specialtySelect" class="filter-label">
+                                <i class="fas fa-graduation-cap"></i>
+                                Especialidade
+                            </label>
+                            <select id="specialtySelect" class="filter-select" aria-label="Selecionar especialidade">
+                                <option value="">Todas as especialidades</option>
+                                <option value="obediencia">Obediência</option>
+                                <option value="comportamento">Comportamento</option>
+                                <option value="socializacao">Socialização</option>
+                                <option value="filhotes">Filhotes</option>
+                                <option value="agressividade">Agressividade</option>
+                                <option value="terapia">Terapia</option>
+                                <option value="truques">Truques</option>
+                                <option value="comandos">Comandos</option>
+                            </select>
+                        </section>
+
+                        <!-- Faixa de Preço -->
+                        <section class="filter-group">
+                            <label class="filter-label">
+                                <i class="fas fa-dollar-sign"></i>
+                                Preço por Sessão
+                            </label>
+                            <section class="price-inputs">
+                                <input 
+                                    type="number" 
+                                    id="minPrice" 
+                                    class="price-input" 
+                                    placeholder="Mín."
+                                    min="0"
+                                    value="0"
+                                    aria-label="Preço mínimo"
+                                >
+                                <span class="price-separator">-</span>
+                                <input 
+                                    type="number" 
+                                    id="maxPrice" 
+                                    class="price-input" 
+                                    placeholder="Máx."
+                                    min="0"
+                                    value="500"
+                                    aria-label="Preço máximo"
+                                >
+                            </section>
+                            <input 
+                                type="range" 
+                                id="priceRange" 
+                                class="price-slider" 
+                                min="0" 
+                                max="500" 
+                                value="500"
+                                aria-label="Ajustar faixa de preço"
+                            >
+                            <section class="price-labels">
+                                <span>R$ 0</span>
+                                <span>R$ 500+</span>
+                            </section>
+                        </section>
+
+                        <!-- Avaliação -->
+                        <section class="filter-group">
+                            <label for="ratingSelect" class="filter-label">
+                                <i class="fas fa-star"></i>
+                                Avaliação Mínima
+                            </label>
+                            <select id="ratingSelect" class="filter-select" aria-label="Selecionar avaliação mínima">
+                                <option value="0">Todas as avaliações</option>
+                                <option value="3">3+ estrelas</option>
+                                <option value="4">4+ estrelas</option>
+                                <option value="4.5">4.5+ estrelas</option>
+                                <option value="5">5 estrelas</option>
+                            </select>
+                        </section>
+
+                        <!-- Disponibilidade -->
+                        <section class="filter-group">
+                            <label class="checkbox-label">
+                                <input 
+                                    type="checkbox" 
+                                    id="availableNow" 
+                                    class="filter-checkbox"
+                                    aria-label="Mostrar apenas disponíveis agora"
+                                >
+                                <span class="checkbox-text">
+                                    <i class="fas fa-clock"></i>
+                                    Disponíveis agora
+                                </span>
+                            </label>
+                        </section>
+
+                        <!-- Botões de Ação -->
+                        <section class="filter-actions">
+                            <button type="submit" class="btn btn-apply" aria-label="Aplicar filtros">
+                                <i class="fas fa-check"></i>
+                                Aplicar Filtros
+                            </button>
+                            <button type="button" class="btn btn-clear" id="clearFilters" aria-label="Limpar filtros">
+                                <i class="fas fa-redo"></i>
+                                Limpar Filtros
+                            </button>
+                        </section>
+                    </form>
+                </aside>
+
+                <!-- Resultados da Busca -->
+                <section class="results-section">
+                    <!-- Header dos Resultados -->
+                    <header class="results-header">
+                        <section class="results-info">
+                            <h2 id="resultsCount">30 adestradores encontrados</h2>
+                            <button class="mobile-filter-btn" id="mobileFilterBtn" aria-label="Abrir filtros">
+                                <i class="fas fa-sliders-h"></i>
+                                Filtros
+                            </button>
+                        </section>
+                        <section class="sort-section">
+                            <label for="sortSelect" class="sort-label">Ordenar por:</label>
+                            <select id="sortSelect" class="sort-select" aria-label="Ordenar resultados">
+                                <option value="relevance">Relevância</option>
+                                <option value="rating">Melhor Avaliados</option>
+                                <option value="price-asc">Menor Preço</option>
+                                <option value="price-desc">Maior Preço</option>
+                                <option value="distance">Mais Próximos</option>
+                            </select>
+                        </section>
+                    </header>
+
+                    <!-- Grid de Adestradores -->
+                    <section class="trainers-grid" id="trainersGrid">
+                        <!-- Os cards serão gerados dinamicamente via JavaScript -->
+                    </section>
+
+                    <!-- Mensagem de Nenhum Resultado -->
+                    <section class="no-results" id="noResults" style="display: none;">
+                        <i class="fas fa-search"></i>
+                        <h3>Nenhum adestrador encontrado</h3>
+                        <p>Tente ajustar seus filtros ou ampliar sua busca</p>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <section class="footer-container">
+            <nav class="footer-links">
+                <a href="#sobre">Sobre</a>
+                <a href="#termos">Termos de Uso</a>
+                <a href="#privacidade">Política de Privacidade</a>
+                <a href="#contato">Contato</a>
+            </nav>
+            <p class="footer-copyright">&copy; 2025 Pet Mania. Todos os direitos reservados.</p>
+        </section>
+    </footer>
+
+    <script src="/js/buscar.ades(cliente).js"></script>
+</body>
+</html>

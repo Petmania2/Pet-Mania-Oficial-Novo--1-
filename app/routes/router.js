@@ -124,6 +124,10 @@ router.get("/adestradores.ejs", function (req, res) {
   res.render("pages/adestradores");    
 });
 
+router.get("/buscaradestradorcliente.ejs", function (req, res) {
+  res.render("pages/buscaradestradorcliente");    
+});
+
 router.get("/test-chat.ejs", function (req, res) {
   res.render("pages/test-chat");    
 });

@@ -75,6 +75,7 @@ function mostrarErroGeral(mensagem) {
 
     // Inserir antes do formulário - com verificação de segurança
     const form = document.getElementById('loginForm');
+    const loginContainer = form.parentElement;
     loginContainer.insertBefore(errorSection, form);
     
     // Remover após 5 segundos
@@ -111,6 +112,7 @@ function mostrarSucesso(mensagem) {
 
     // Inserir antes do formulário - com verificação de segurança
     const form = document.getElementById('loginForm');
+    const loginContainer = form.parentElement;
     loginContainer.insertBefore(successSection, form);
 }
 

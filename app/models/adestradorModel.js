@@ -68,17 +68,57 @@ class AdestradorModel {
   // Buscar adestrador por email (busca através de USUARIOS)
   static async buscarPorEmail(email) {
     try {
-      const query = `
-        SELECT u.ID_USUARIO as id, u.NOME_USUARIO as nome, u.EMAIL_USUARIO as email, 
-               u.SENHA_USUARIO as senha, a.id_adestrador
-        FROM USUARIOS u
-        INNER JOIN adestradores a ON u.ID_USUARIO = a.ID_USUARIO
-        WHERE u.EMAIL_USUARIO = ? AND u.TIPO_USUARIO = 'A'
+      console.log('🔍 AdestradorModel.buscarPorEmail - Email:', email);
+      
+      // Primeiro, buscar o usuário
+      const queryUsuario = `
+        SELECT ID_USUARIO as id, NOME_USUARIO as nome, EMAIL_USUARIO as email, 
+               SENHA_USUARIO as senha, TIPO_USUARIO as tipo
+        FROM USUARIOS 
+        WHERE EMAIL_USUARIO = ? AND TIPO_USUARIO = 'A'
       `;
-      const rows = await executeQuery(query, [email.toLowerCase().trim()]);
-      return rows[0] || null;
+      
+      const usuarios = await executeQuery(queryUsuario, [email.toLowerCase().trim()]);
+      console.log('👤 Usuários encontrados:', usuarios.length);
+      
+      if (usuarios.length === 0) {
+        console.log('❌ Nenhum usuário adestrador encontrado com este email');
+        return null;
+      }
+      
+      const usuario = usuarios[0];
+      console.log('✅ Usuário encontrado:', usuario.nome);
+      
+      // Verificar se existe registro na tabela adestradores
+      const queryAdestrador = `
+        SELECT id_adestrador 
+        FROM adestradores 
+        WHERE ID_USUARIO = ?
+      `;
+      
+      const adestradores = await executeQuery(queryAdestrador, [usuario.id]);
+      
+      if (adestradores.length === 0) {
+        console.log('⚠️ Usuário existe mas não tem registro na tabela adestradores');
+        // Criar registro na tabela adestradores se não existir
+        const insertQuery = `
+          INSERT INTO adestradores (ID_USUARIO, valor_sessao, ativo) 
+          VALUES (?, 100.00, 1)
+        `;
+        await executeQuery(insertQuery, [usuario.id]);
+        console.log('✅ Registro de adestrador criado automaticamente');
+      }
+      
+      return {
+        id: usuario.id,
+        nome: usuario.nome,
+        email: usuario.email,
+        senha: usuario.senha,
+        id_adestrador: adestradores[0]?.id_adestrador || null
+      };
+      
     } catch (error) {
-      console.error('Erro ao buscar adestrador por email:', error);
+      console.error('❌ Erro ao buscar adestrador por email:', error);
       return null;
     }
   }

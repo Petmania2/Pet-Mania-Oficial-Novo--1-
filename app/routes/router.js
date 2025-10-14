@@ -130,62 +130,48 @@ router.get("/test-chat.ejs", function (req, res) {
   res.render("pages/test-chat");    
 });
 
-// ✅ ROTA DO PAINEL DO ADESTRADOR - VERSÃO CORRIGIDA
 router.get("/paineladestrador", async function (req, res) {
-  console.log('🔍 Tentando acessar paineladestrador...');
-  console.log('Sessão do usuário:', req.session.usuario);
-  
   if (!req.session.usuario || req.session.usuario.tipo !== 'adestrador') {
-    console.log('❌ Usuário não autenticado ou não é adestrador');
     return res.redirect("/Login.ejs");
   }
-  
   try {
-    console.log('✅ Carregando dados do adestrador ID:', req.session.usuario.id);
-    const adestrador = await AdestradorModel.buscarPorId(req.session.usuario.id);
-    
+    let adestrador = await AdestradorModel.buscarPorId(req.session.usuario.id);
     if (!adestrador) {
-      console.log('❌ Adestrador não encontrado no banco');
       return res.redirect("/Login.ejs");
     }
     
-    console.log('✅ Adestrador encontrado:', adestrador.nome);
-    res.render("pages/paineladestrador", { 
-      usuario: req.session.usuario,
-      adestrador: adestrador 
-    });
-  } catch (error) {
-    console.error("❌ Erro ao carregar painel:", error);
+    adestrador = {
+      ...adestrador,
+      experiencia: adestrador.experiencia || 0,
+      sobre: adestrador.sobre || 'Sem informações adicionais'
+    };
+    
+    res.render("pages/paineladestrador", { adestrador });
+  } catch (err) {
+    console.error('Erro ao carregar perfil adestrador:', err);
     res.redirect("/Login.ejs");
   }
 });
 
-// ✅ ROTA DO PAINEL DO ADESTRADOR COM .ejs (compatibilidade)
 router.get("/paineladestrador.ejs", async function (req, res) {
-  console.log('🔍 Tentando acessar paineladestrador.ejs...');
-  console.log('Sessão do usuário:', req.session.usuario);
-  
   if (!req.session.usuario || req.session.usuario.tipo !== 'adestrador') {
-    console.log('❌ Usuário não autenticado ou não é adestrador');
     return res.redirect("/Login.ejs");
   }
-  
   try {
-    console.log('✅ Carregando dados do adestrador ID:', req.session.usuario.id);
-    const adestrador = await AdestradorModel.buscarPorId(req.session.usuario.id);
-    
+    let adestrador = await AdestradorModel.buscarPorId(req.session.usuario.id);
     if (!adestrador) {
-      console.log('❌ Adestrador não encontrado no banco');
       return res.redirect("/Login.ejs");
     }
     
-    console.log('✅ Adestrador encontrado:', adestrador.nome);
-    res.render("pages/paineladestrador", { 
-      usuario: req.session.usuario,
-      adestrador: adestrador 
-    });
-  } catch (error) {
-    console.error("❌ Erro ao carregar painel:", error);
+    adestrador = {
+      ...adestrador,
+      experiencia: adestrador.experiencia || 0,
+      sobre: adestrador.sobre || 'Sem informações adicionais'
+    };
+    
+    res.render("pages/paineladestrador", { adestrador });
+  } catch (err) {
+    console.error('Erro ao carregar perfil adestrador:', err);
     res.redirect("/Login.ejs");
   }
 });
@@ -429,10 +415,12 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
 // ✅ ROTA LOGIN CORRIGIDA COM SESSION.SAVE()
 router.post("/login", async function (req, res) {
   try {
-    console.log('🔍 LOGIN ATTEMPT:', req.body);
+    console.log('\n=== TENTATIVA DE LOGIN ===');
+    console.log('🔍 Dados recebidos:', req.body);
     const { email, password, tipo } = req.body;
 
     if (!email || !password || !tipo) {
+      console.log('❌ Dados incompletos');
       return res.status(400).json({ 
         sucesso: false, 
         erro: "Email, senha e tipo são obrigatórios",
@@ -440,15 +428,20 @@ router.post("/login", async function (req, res) {
       });
     }
 
+    console.log(`🔍 Tentando login como ${tipo} com email: ${email}`);
+
     let usuario;
     try {
       if (tipo === "adestrador") {
-        console.log('🔍 Buscando adestrador por email:', email);
+        console.log('🐕 Buscando adestrador...');
         usuario = await AdestradorModel.buscarPorEmail(email);
+        console.log('🐕 Resultado busca adestrador:', usuario ? 'ENCONTRADO' : 'NÃO ENCONTRADO');
       } else if (tipo === "cliente") {
-        console.log('🔍 Buscando cliente por email:', email);
+        console.log('👤 Buscando cliente...');
         usuario = await ClienteModel.buscarPorEmail(email);
+        console.log('👤 Resultado busca cliente:', usuario ? 'ENCONTRADO' : 'NÃO ENCONTRADO');
       } else {
+        console.log('❌ Tipo inválido:', tipo);
         return res.status(400).json({ 
           sucesso: false, 
           erro: "Tipo de usuário inválido",
@@ -465,13 +458,15 @@ router.post("/login", async function (req, res) {
     }
 
     if (!usuario) {
-      console.log('❌ Usuário não encontrado:', email);
+      console.log('❌ Usuário não encontrado para email:', email);
       return res.status(401).json({ 
         sucesso: false, 
         erro: "Email ou senha incorretos",
         mensagem: "Email ou senha incorretos"
       });
     }
+
+    console.log('✅ Usuário encontrado:', usuario.nome);
 
     let senhaValida = false;
     try {

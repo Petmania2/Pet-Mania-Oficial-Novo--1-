@@ -75,17 +75,57 @@ class ClienteModel {
         return null;
       }
       
-      const query = `
-        SELECT u.ID_USUARIO as id, u.NOME_USUARIO as nome, u.EMAIL_USUARIO as email, 
-               u.SENHA_USUARIO as senha, c.id_cliente
-        FROM USUARIOS u
-        INNER JOIN clientes c ON u.ID_USUARIO = c.ID_USUARIO
-        WHERE u.EMAIL_USUARIO = ? AND u.TIPO_USUARIO = 'C'
+      console.log('🔍 ClienteModel.buscarPorEmail - Email:', email);
+      
+      // Primeiro, buscar o usuário
+      const queryUsuario = `
+        SELECT ID_USUARIO as id, NOME_USUARIO as nome, EMAIL_USUARIO as email, 
+               SENHA_USUARIO as senha, TIPO_USUARIO as tipo
+        FROM USUARIOS 
+        WHERE EMAIL_USUARIO = ? AND TIPO_USUARIO = 'C'
       `;
-      const rows = await executeQuery(query, [email.toLowerCase().trim()]);
-      return rows[0] || null;
+      
+      const usuarios = await executeQuery(queryUsuario, [email.toLowerCase().trim()]);
+      console.log('👤 Usuários encontrados:', usuarios.length);
+      
+      if (usuarios.length === 0) {
+        console.log('❌ Nenhum usuário cliente encontrado com este email');
+        return null;
+      }
+      
+      const usuario = usuarios[0];
+      console.log('✅ Usuário encontrado:', usuario.nome);
+      
+      // Verificar se existe registro na tabela clientes
+      const queryCliente = `
+        SELECT id_cliente 
+        FROM clientes 
+        WHERE ID_USUARIO = ?
+      `;
+      
+      const clientes = await executeQuery(queryCliente, [usuario.id]);
+      
+      if (clientes.length === 0) {
+        console.log('⚠️ Usuário existe mas não tem registro na tabela clientes');
+        // Criar registro na tabela clientes se não existir
+        const insertQuery = `
+          INSERT INTO clientes (ID_USUARIO) 
+          VALUES (?)
+        `;
+        await executeQuery(insertQuery, [usuario.id]);
+        console.log('✅ Registro de cliente criado automaticamente');
+      }
+      
+      return {
+        id: usuario.id,
+        nome: usuario.nome,
+        email: usuario.email,
+        senha: usuario.senha,
+        id_cliente: clientes[0]?.id_cliente || null
+      };
+      
     } catch (error) {
-      console.error('Erro ao buscar cliente por email:', error);
+      console.error('❌ Erro ao buscar cliente por email:', error);
       return null;
     }
   }

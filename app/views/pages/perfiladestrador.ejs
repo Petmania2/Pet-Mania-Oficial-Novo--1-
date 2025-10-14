@@ -103,7 +103,7 @@
        </section>
        <section class="profile-name">
         <h2>
-         <%= adestrador && adestrador.name ? adestrador.name : (adestrador && adestrador.nome ? adestrador.nome : 'Nome não informado') %>
+         <%= adestrador && adestrador.NOME_USUARIO ? adestrador.NOME_USUARIO : 'Nome não informado' %>
         </h2>
         <p class="profile-type">
          Adestrador Profissional
@@ -153,13 +153,13 @@
           <label for="name">
            Nome Completo
           </label>
-          <input id="name" type="text" value="<%= adestrador && adestrador.name ? adestrador.name : (adestrador && adestrador.nome ? adestrador.nome : '') %>"/>
+          <input id="name" type="text" value="<%= adestrador && adestrador.NOME_USUARIO ? adestrador.NOME_USUARIO : '' %>"/>
          </section>
          <section class="form-group">
           <label for="cpf">
            CPF
           </label>
-          <input disabled="" id="cpf" type="text" value="<%= adestrador && adestrador.cpf ? adestrador.cpf : 'Não informado' %>"/>
+          <input disabled="" id="cpf" type="text" value="<%= adestrador && adestrador.CPF_USUARIO ? adestrador.CPF_USUARIO : 'Não informado' %>"/>
         </section>
         </section>
         <section class="form-row">
@@ -167,13 +167,13 @@
           <label for="email">
            E-mail
           </label>
-          <input id="email" type="email" value="<%= adestrador && adestrador.email ? adestrador.email : '' %>"/>
+          <input id="email" type="email" value="<%= adestrador && adestrador.EMAIL_USUARIO ? adestrador.EMAIL_USUARIO : '' %>"/>
          </section>
          <section class="form-group">
           <label for="phone">
            Telefone/WhatsApp
           </label>
-          <input id="phone" type="text" value="<%= adestrador && adestrador.phone ? adestrador.phone : (adestrador && adestrador.telefone ? adestrador.telefone : '') %>"/>
+          <input id="phone" type="text" value="<%= adestrador && adestrador.CELULAR_USUARIO ? adestrador.CELULAR_USUARIO : '' %>"/>
          </section>
         </section>
         <section class="form-row">
@@ -181,7 +181,7 @@
           <label for="birth">
            Data de Nascimento
           </label>
-          <input id="birth" type="date" value="<%= adestrador && adestrador.dataNascimento ? adestrador.dataNascimento : '' %>"/>
+          <input id="birth" type="date" value="<%= adestrador && adestrador.DATA_NASC_USUARIO ? adestrador.DATA_NASC_USUARIO : '' %>"/>
          </section>
          <section class="form-group">
           <label for="gender">
@@ -205,16 +205,36 @@
         </section>
         <section class="form-group">
          <label for="address">
-          Endereço
+          Logradouro
          </label>
-         <input id="address" type="text" value="<%= adestrador && adestrador.endereco ? adestrador.endereco : '' %>"/>
+         <input id="address" type="text" value="<%= adestrador && adestrador.logradouro_adestrador ? adestrador.logradouro_adestrador : '' %>"/>
+        </section>
+        <section class="form-row">
+         <section class="form-group">
+          <label for="number">
+           Número
+          </label>
+          <input id="number" type="text" value="<%= adestrador && adestrador.num_resid_adestrador ? adestrador.num_resid_adestrador : '' %>"/>
+         </section>
+         <section class="form-group">
+          <label for="complement">
+           Complemento
+          </label>
+          <input id="complement" type="text" value="<%= adestrador && adestrador.complemento_adestrador ? adestrador.complemento_adestrador : '' %>"/>
+         </section>
+        </section>
+        <section class="form-group">
+         <label for="neighborhood">
+          Bairro
+         </label>
+         <input id="neighborhood" type="text" value="<%= adestrador && adestrador.bairro_adestrador ? adestrador.bairro_adestrador : '' %>"/>
         </section>
         <section class="form-row">
          <section class="form-group">
           <label for="city">
            Cidade
           </label>
-          <input id="city" type="text" value="<%= adestrador && adestrador.city ? adestrador.city : (adestrador && adestrador.cidade ? adestrador.cidade : '') %>"/>
+          <input id="city" type="text" value="<%= adestrador && adestrador.cidade_adestrador ? adestrador.cidade_adestrador : '' %>"/>
          </section>
          <section class="form-group">
           <label for="state">
@@ -222,40 +242,40 @@
           </label>
           <select id="state">
            <option value="">Selecione</option>
-           <option value="AC" <%= adestrador && adestrador.state === 'AC' ? 'selected' : (adestrador && adestrador.estado === 'AC' ? 'selected' : '') %>>Acre</option>
-           <option value="AL" <%= adestrador && adestrador.state === 'AL' ? 'selected' : (adestrador && adestrador.estado === 'AL' ? 'selected' : '') %>>Alagoas</option>
-           <option value="AP" <%= adestrador && adestrador.state === 'AP' ? 'selected' : (adestrador && adestrador.estado === 'AP' ? 'selected' : '') %>>Amapá</option>
-           <option value="AM" <%= adestrador && adestrador.state === 'AM' ? 'selected' : (adestrador && adestrador.estado === 'AM' ? 'selected' : '') %>>Amazonas</option>
-           <option value="BA" <%= adestrador && adestrador.state === 'BA' ? 'selected' : (adestrador && adestrador.estado === 'BA' ? 'selected' : '') %>>Bahia</option>
-           <option value="CE" <%= adestrador && adestrador.state === 'CE' ? 'selected' : (adestrador && adestrador.estado === 'CE' ? 'selected' : '') %>>Ceará</option>
-           <option value="DF" <%= adestrador && adestrador.state === 'DF' ? 'selected' : (adestrador && adestrador.estado === 'DF' ? 'selected' : '') %>>Distrito Federal</option>
-           <option value="ES" <%= adestrador && adestrador.state === 'ES' ? 'selected' : (adestrador && adestrador.estado === 'ES' ? 'selected' : '') %>>Espírito Santo</option>
-           <option value="GO" <%= adestrador && adestrador.state === 'GO' ? 'selected' : (adestrador && adestrador.estado === 'GO' ? 'selected' : '') %>>Goiás</option>
-           <option value="MA" <%= adestrador && adestrador.state === 'MA' ? 'selected' : (adestrador && adestrador.estado === 'MA' ? 'selected' : '') %>>Maranhão</option>
-           <option value="MT" <%= adestrador && adestrador.state === 'MT' ? 'selected' : (adestrador && adestrador.estado === 'MT' ? 'selected' : '') %>>Mato Grosso</option>
-           <option value="MS" <%= adestrador && adestrador.state === 'MS' ? 'selected' : (adestrador && adestrador.estado === 'MS' ? 'selected' : '') %>>Mato Grosso do Sul</option>
-           <option value="MG" <%= adestrador && adestrador.state === 'MG' ? 'selected' : (adestrador && adestrador.estado === 'MG' ? 'selected' : '') %>>Minas Gerais</option>
-           <option value="PA" <%= adestrador && adestrador.state === 'PA' ? 'selected' : (adestrador && adestrador.estado === 'PA' ? 'selected' : '') %>>Pará</option>
-           <option value="PB" <%= adestrador && adestrador.state === 'PB' ? 'selected' : (adestrador && adestrador.estado === 'PB' ? 'selected' : '') %>>Paraíba</option>
-           <option value="PR" <%= adestrador && adestrador.state === 'PR' ? 'selected' : (adestrador && adestrador.estado === 'PR' ? 'selected' : '') %>>Paraná</option>
-           <option value="PE" <%= adestrador && adestrador.state === 'PE' ? 'selected' : (adestrador && adestrador.estado === 'PE' ? 'selected' : '') %>>Pernambuco</option>
-           <option value="PI" <%= adestrador && adestrador.state === 'PI' ? 'selected' : (adestrador && adestrador.estado === 'PI' ? 'selected' : '') %>>Piauí</option>
-           <option value="RJ" <%= adestrador && adestrador.state === 'RJ' ? 'selected' : (adestrador && adestrador.estado === 'RJ' ? 'selected' : '') %>>Rio de Janeiro</option>
-           <option value="RN" <%= adestrador && adestrador.state === 'RN' ? 'selected' : (adestrador && adestrador.estado === 'RN' ? 'selected' : '') %>>Rio Grande do Norte</option>
-           <option value="RS" <%= adestrador && adestrador.state === 'RS' ? 'selected' : (adestrador && adestrador.estado === 'RS' ? 'selected' : '') %>>Rio Grande do Sul</option>
-           <option value="RO" <%= adestrador && adestrador.state === 'RO' ? 'selected' : (adestrador && adestrador.estado === 'RO' ? 'selected' : '') %>>Rondônia</option>
-           <option value="RR" <%= adestrador && adestrador.state === 'RR' ? 'selected' : (adestrador && adestrador.estado === 'RR' ? 'selected' : '') %>>Roraima</option>
-           <option value="SC" <%= adestrador && adestrador.state === 'SC' ? 'selected' : (adestrador && adestrador.estado === 'SC' ? 'selected' : '') %>>Santa Catarina</option>
-           <option value="SP" <%= adestrador && adestrador.state === 'SP' ? 'selected' : (adestrador && adestrador.estado === 'SP' ? 'selected' : '') %>>São Paulo</option>
-           <option value="SE" <%= adestrador && adestrador.state === 'SE' ? 'selected' : (adestrador && adestrador.estado === 'SE' ? 'selected' : '') %>>Sergipe</option>
-           <option value="TO" <%= adestrador && adestrador.state === 'TO' ? 'selected' : (adestrador && adestrador.estado === 'TO' ? 'selected' : '') %>>Tocantins</option>
+           <option value="AC" <%= adestrador && adestrador.uf_adestrador === 'AC' ? 'selected' : '' %>>Acre</option>
+           <option value="AL" <%= adestrador && adestrador.uf_adestrador === 'AL' ? 'selected' : '' %>>Alagoas</option>
+           <option value="AP" <%= adestrador && adestrador.uf_adestrador === 'AP' ? 'selected' : '' %>>Amapá</option>
+           <option value="AM" <%= adestrador && adestrador.uf_adestrador === 'AM' ? 'selected' : '' %>>Amazonas</option>
+           <option value="BA" <%= adestrador && adestrador.uf_adestrador === 'BA' ? 'selected' : '' %>>Bahia</option>
+           <option value="CE" <%= adestrador && adestrador.uf_adestrador === 'CE' ? 'selected' : '' %>>Ceará</option>
+           <option value="DF" <%= adestrador && adestrador.uf_adestrador === 'DF' ? 'selected' : '' %>>Distrito Federal</option>
+           <option value="ES" <%= adestrador && adestrador.uf_adestrador === 'ES' ? 'selected' : '' %>>Espírito Santo</option>
+           <option value="GO" <%= adestrador && adestrador.uf_adestrador === 'GO' ? 'selected' : '' %>>Goiás</option>
+           <option value="MA" <%= adestrador && adestrador.uf_adestrador === 'MA' ? 'selected' : '' %>>Maranhão</option>
+           <option value="MT" <%= adestrador && adestrador.uf_adestrador === 'MT' ? 'selected' : '' %>>Mato Grosso</option>
+           <option value="MS" <%= adestrador && adestrador.uf_adestrador === 'MS' ? 'selected' : '' %>>Mato Grosso do Sul</option>
+           <option value="MG" <%= adestrador && adestrador.uf_adestrador === 'MG' ? 'selected' : '' %>>Minas Gerais</option>
+           <option value="PA" <%= adestrador && adestrador.uf_adestrador === 'PA' ? 'selected' : '' %>>Pará</option>
+           <option value="PB" <%= adestrador && adestrador.uf_adestrador === 'PB' ? 'selected' : '' %>>Paraíba</option>
+           <option value="PR" <%= adestrador && adestrador.uf_adestrador === 'PR' ? 'selected' : '' %>>Paraná</option>
+           <option value="PE" <%= adestrador && adestrador.uf_adestrador === 'PE' ? 'selected' : '' %>>Pernambuco</option>
+           <option value="PI" <%= adestrador && adestrador.uf_adestrador === 'PI' ? 'selected' : '' %>>Piauí</option>
+           <option value="RJ" <%= adestrador && adestrador.uf_adestrador === 'RJ' ? 'selected' : '' %>>Rio de Janeiro</option>
+           <option value="RN" <%= adestrador && adestrador.uf_adestrador === 'RN' ? 'selected' : '' %>>Rio Grande do Norte</option>
+           <option value="RS" <%= adestrador && adestrador.uf_adestrador === 'RS' ? 'selected' : '' %>>Rio Grande do Sul</option>
+           <option value="RO" <%= adestrador && adestrador.uf_adestrador === 'RO' ? 'selected' : '' %>>Rondônia</option>
+           <option value="RR" <%= adestrador && adestrador.uf_adestrador === 'RR' ? 'selected' : '' %>>Roraima</option>
+           <option value="SC" <%= adestrador && adestrador.uf_adestrador === 'SC' ? 'selected' : '' %>>Santa Catarina</option>
+           <option value="SP" <%= adestrador && adestrador.uf_adestrador === 'SP' ? 'selected' : '' %>>São Paulo</option>
+           <option value="SE" <%= adestrador && adestrador.uf_adestrador === 'SE' ? 'selected' : '' %>>Sergipe</option>
+           <option value="TO" <%= adestrador && adestrador.uf_adestrador === 'TO' ? 'selected' : '' %>>Tocantins</option>
           </select>
          </section>
          <section class="form-group">
           <label for="cep">
            CEP
           </label>
-          <input id="cep" type="text" value="<%= adestrador && adestrador.cep ? adestrador.cep : '' %>"/>
+          <input id="cep" type="text" value="<%= adestrador && adestrador.cep_adestrador ? adestrador.cep_adestrador : '' %>"/>
          </section>
         </section>
         <section class="form-actions">
@@ -277,13 +297,13 @@
          <label for="experience">
           Anos de Experiência
          </label>
-         <input id="experience" type="number" value="<%= adestrador && adestrador.experience ? adestrador.experience : (adestrador && adestrador.experiencia ? adestrador.experiencia : '') %>"/>
+         <input id="experience" type="number" value="<%= adestrador && adestrador.anos_experiencia ? adestrador.anos_experiencia : '' %>"/>
         </section>
         <section class="form-group">
          <label for="bio">
           Biografia/Sobre Você
          </label>
-         <textarea id="bio" rows="5"><%= adestrador && adestrador.about ? adestrador.about : (adestrador && adestrador.sobre ? adestrador.sobre : 'Conte um pouco sobre sua experiência e metodologia de trabalho...') %></textarea>
+         <textarea id="bio" rows="5"><%= adestrador && adestrador.sobre_sua_experiencia ? adestrador.sobre_sua_experiencia : 'Conte um pouco sobre sua experiência e metodologia de trabalho...' %></textarea>
         </section>
         <section class="form-group">
          <label for="certifications">
@@ -295,7 +315,7 @@
          <label for="price">
           Preço por Sessão (R$)
          </label>
-         <input id="price" type="number" step="0.01" value="<%= adestrador && adestrador.price ? adestrador.price : (adestrador && adestrador.preco ? adestrador.preco : '') %>"/>
+         <input id="price" type="number" step="0.01" value="<%= adestrador && adestrador.valor_sessao ? adestrador.valor_sessao : '' %>"/>
         </section>
         
         <section class="form-group">
@@ -356,7 +376,7 @@
            Sessão de Obediência Básica
           </h3>
           <section class="service-price">
-           R$ <%= adestrador && adestrador.price ? parseFloat(adestrador.price).toFixed(2).replace('.', ',') : (adestrador && adestrador.preco ? parseFloat(adestrador.preco).toFixed(2).replace('.', ',') : '120,00') %>
+           R$ <%= adestrador && adestrador.valor_sessao ? parseFloat(adestrador.valor_sessao).toFixed(2).replace('.', ',') : '120,00' %>
           </section>
          </section>
          <p>
@@ -392,7 +412,7 @@
            Pacote de Socialização
           </h3>
           <section class="service-price">
-           R$ <%= adestrador && adestrador.price ? (parseFloat(adestrador.price) * 3.5).toFixed(2).replace('.', ',') : (adestrador && adestrador.preco ? (parseFloat(adestrador.preco) * 3.5).toFixed(2).replace('.', ',') : '450,00') %>
+           R$ <%= adestrador && adestrador.valor_sessao ? (parseFloat(adestrador.valor_sessao) * 3.5).toFixed(2).replace('.', ',') : '450,00' %>
           </section>
          </section>
          <p>
@@ -428,7 +448,7 @@
            Consultoria Comportamental
           </h3>
           <section class="service-price">
-           R$ <%= adestrador && adestrador.price ? (parseFloat(adestrador.price) * 1.25).toFixed(2).replace('.', ',') : (adestrador && adestrador.preco ? (parseFloat(adestrador.preco) * 1.25).toFixed(2).replace('.', ',') : '150,00') %>
+           R$ <%= adestrador && adestrador.valor_sessao ? (parseFloat(adestrador.valor_sessao) * 1.25).toFixed(2).replace('.', ',') : '150,00' %>
           </section>
          </section>
          <p>

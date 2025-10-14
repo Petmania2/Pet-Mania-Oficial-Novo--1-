@@ -40,24 +40,51 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 
-    // Evento de salvar alterações
-    const saveButtons = document.querySelectorAll('.btn-save');
-    saveButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Simular salvamento com delay
-            button.disabled = true;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
-            
-            setTimeout(() => {
-                button.disabled = false;
-                button.innerHTML = 'Salvar Alterações';
+   // SUBSTITUIR ESTA SEÇÃO:
+const saveButtons = document.querySelectorAll('.btn-save');
+saveButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // ✅ NOVO: Coletar dados do formulário
+        const form = this.closest('form');
+        const formData = new FormData(form);
+        
+        // Identificar qual aba está ativa
+        const activeTab = document.querySelector('.profile-tab-content.active').id;
+        
+        button.disabled = true;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+        
+        // ✅ NOVO: Enviar dados para o servidor
+        const data = Object.fromEntries(formData);
+        data.tab = activeTab;
+        
+        fetch('/api/adestrador/atualizar-perfil', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
                 showSaveNotification();
-            }, 1000);
+            } else {
+                alert('Erro: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao salvar alterações');
+        })
+        .finally(() => {
+            button.disabled = false;
+            button.innerHTML = 'Salvar Alterações';
         });
     });
-    
+});
     // Funcionalidade do toggle de autenticação de dois fatores
     const twoFactorToggle = document.getElementById('two-factor');
     const toggleLabel = twoFactorToggle?.parentElement.querySelector('.toggle-label');
@@ -404,54 +431,63 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Botão de alteração de avatar
-    const changeAvatarBtn = document.querySelector('.change-avatar-btn');
-    if (changeAvatarBtn) {
-        changeAvatarBtn.addEventListener('click', function() {
-            // Criar um input file invisível
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = 'image/*';
-            
-            // Simular clique para abrir o seletor de arquivos
-            fileInput.click();
-            
-            // Processar a imagem quando selecionada
-            fileInput.addEventListener('change', function() {
-                if (this.files && this.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        // Criar imagem e substituir o placeholder
-                        const avatarPlaceholder = document.querySelector('.avatar-placeholder');
-                        avatarPlaceholder.innerHTML = '';
-                        
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.style.width = '100%';
-                        img.style.height = '100%';
-                        img.style.objectFit = 'cover';
-                        
-                        avatarPlaceholder.appendChild(img);
-                        
-                        // Atualizar item de completude do perfil
-                        const avatarTask = document.querySelector('.task-item:not(.completed)');
-                        if (avatarTask && avatarTask.querySelector('span').textContent.includes('foto de perfil')) {
-                            avatarTask.classList.add('completed');
-                            avatarTask.querySelector('i').className = 'fas fa-check-circle';
-                            
-                            // Atualizar porcentagem
-                            const progressFill = document.querySelector('.progress-fill');
-                            progressFill.style.width = '95%';
-                            
-                            const progressText = document.querySelector('.progress-text');
-                            progressText.textContent = '95% Completo';
-                        }
-                        
-                        showSaveNotification();
-                    };
-                    reader.readAsDataURL(this.files[0]);
-                }
-            });
+ // SUBSTITUIR ESTA SEÇÃO (linhas 403-435):
+const changeAvatarBtn = document.querySelector('.change-avatar-btn');
+if (changeAvatarBtn) {
+    changeAvatarBtn.addEventListener('click', function() {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.click();
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const avatarPlaceholder = document.querySelector('.avatar-placeholder');
+                    avatarPlaceholder.innerHTML = '';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    avatarPlaceholder.appendChild(img);
+                    
+                    // ✅ NOVO: Enviar imagem para o servidor
+                    uploadProfileImage(file);
+                };
+                reader.readAsDataURL(file);
+            }
         });
-    }
+    });
+}
+
+// ✅ NOVA FUNÇÃO: Upload de imagem
+function uploadProfileImage(file) {
+    const formData = new FormData();
+    formData.append('profileImage', file);
+    
+    fetch('/api/adestrador/upload-image', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Atualizar progresso do perfil
+            updateProfileCompletion();
+            showSaveNotification();
+        } else {
+            alert('Erro ao salvar imagem: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao enviar imagem');
+    });
+}
+
 });

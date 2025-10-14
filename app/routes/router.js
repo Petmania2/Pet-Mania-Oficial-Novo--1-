@@ -5,12 +5,11 @@ const ClienteModel = require("../models/clienteModel");
 const hqController = require("../controllers/hqController");
 const favoritoModel = require("../models/favoritoModel");
 const mercadopago = require('mercadopago');
+
 // Configuração do Mercado Pago versão 1.x
 mercadopago.configure({
   access_token: process.env.MP_ACCESS_TOKEN
 });
-
-// Adicionar este mapeamento NO INÍCIO do arquivo router.js
 
 // Mapa de especialidades (nome para ID)
 const mapEspecialidades = {
@@ -20,11 +19,6 @@ const mapEspecialidades = {
   'agressividade': 4,
   'filhotes': 5
 };
-
-// ... resto do código ...
-
-
-
 
 // Middleware para rate limiting simples (em memória)
 const rateLimitMap = new Map();
@@ -92,16 +86,13 @@ router.get("/perfilcliente.ejs", function (req, res) {
   res.render("pages/perfilcliente");    
 });
 
-
 router.get("/mensagensadestrador.ejs", function (req, res) {
   res.render("pages/mensagensadestrador");    
 });
 
-
 router.get("/agendamentoadestrador.ejs", function (req, res) {
   res.render("pages/agendamentoadestrador");    
 });
-
 
 router.get("/perfiladestrador.ejs", function (req, res) {
   res.render("pages/perfiladestrador");    
@@ -139,23 +130,62 @@ router.get("/test-chat.ejs", function (req, res) {
   res.render("pages/test-chat");    
 });
 
-router.get("/paineladestrador.ejs", async function (req, res) {
-  if (!req.session.usuario) {
+// ✅ ROTA DO PAINEL DO ADESTRADOR - VERSÃO CORRIGIDA
+router.get("/paineladestrador", async function (req, res) {
+  console.log('🔍 Tentando acessar paineladestrador...');
+  console.log('Sessão do usuário:', req.session.usuario);
+  
+  if (!req.session.usuario || req.session.usuario.tipo !== 'adestrador') {
+    console.log('❌ Usuário não autenticado ou não é adestrador');
     return res.redirect("/Login.ejs");
   }
   
   try {
+    console.log('✅ Carregando dados do adestrador ID:', req.session.usuario.id);
     const adestrador = await AdestradorModel.buscarPorId(req.session.usuario.id);
+    
     if (!adestrador) {
+      console.log('❌ Adestrador não encontrado no banco');
       return res.redirect("/Login.ejs");
     }
     
+    console.log('✅ Adestrador encontrado:', adestrador.nome);
     res.render("pages/paineladestrador", { 
       usuario: req.session.usuario,
       adestrador: adestrador 
     });
   } catch (error) {
-    console.error("Erro ao carregar painel:", error);
+    console.error("❌ Erro ao carregar painel:", error);
+    res.redirect("/Login.ejs");
+  }
+});
+
+// ✅ ROTA DO PAINEL DO ADESTRADOR COM .ejs (compatibilidade)
+router.get("/paineladestrador.ejs", async function (req, res) {
+  console.log('🔍 Tentando acessar paineladestrador.ejs...');
+  console.log('Sessão do usuário:', req.session.usuario);
+  
+  if (!req.session.usuario || req.session.usuario.tipo !== 'adestrador') {
+    console.log('❌ Usuário não autenticado ou não é adestrador');
+    return res.redirect("/Login.ejs");
+  }
+  
+  try {
+    console.log('✅ Carregando dados do adestrador ID:', req.session.usuario.id);
+    const adestrador = await AdestradorModel.buscarPorId(req.session.usuario.id);
+    
+    if (!adestrador) {
+      console.log('❌ Adestrador não encontrado no banco');
+      return res.redirect("/Login.ejs");
+    }
+    
+    console.log('✅ Adestrador encontrado:', adestrador.nome);
+    res.render("pages/paineladestrador", { 
+      usuario: req.session.usuario,
+      adestrador: adestrador 
+    });
+  } catch (error) {
+    console.error("❌ Erro ao carregar painel:", error);
     res.redirect("/Login.ejs");
   }
 });
@@ -174,7 +204,6 @@ router.get("/painelcliente", async function (req, res) {
       return res.redirect("/Login.ejs");
     }
     
-    // Adicionar dados extras se não existirem
     cliente = {
       ...cliente,
       tipo_adestramento: cliente.tipo_adestramento || 'obediencia-basica',
@@ -198,7 +227,6 @@ router.get("/painelcliente.ejs", async function (req, res) {
       return res.redirect("/Login.ejs");
     }
     
-    // Adicionar dados extras se não existirem
     cliente = {
       ...cliente,
       tipo_adestramento: cliente.tipo_adestramento || 'obediencia-basica',
@@ -245,7 +273,6 @@ router.get("/agendamentos.ejs", async function (req, res) {
 });
 
 router.get("/perfilcliente.ejs", async function (req, res) {
-  // Dados temporários para teste (sem banco de dados)
   const clienteTemp = {
     nome: 'João Silva',
     email: 'joao@email.com',
@@ -272,7 +299,6 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
       logradouro, numero, complemento, bairro, cep
     } = req.body;
 
-    // Validações básicas
     if (!name || !cpf || !email || !password || !price) {
       return res.status(400).json({ 
         sucesso: false, 
@@ -280,7 +306,6 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
       });
     }
 
-    // Validar preço
     const precoConvertido = parseFloat(price);
     if (isNaN(precoConvertido) || precoConvertido < 50 || precoConvertido > 99999999.99) {
       return res.status(400).json({ 
@@ -289,7 +314,6 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
       });
     }
 
-    // Montar dados do adestrador
     const dadosAdestrador = {
       nome: name.trim(),
       cpf: cpf.trim(),
@@ -309,7 +333,6 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
       cep: cep?.replace(/\D/g, '') || '00000000'
     };
 
-    // Criar adestrador
     await AdestradorModel.criar(dadosAdestrador);
     
     res.json({ 
@@ -349,7 +372,6 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
       logradouro, numero, complemento, bairro, estado, cep
     } = req.body;
     
-    // Validações básicas
     if (!nome || !email || !senha) {
       return res.status(400).json({ 
         sucesso: false, 
@@ -357,7 +379,6 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
       });
     }
     
-    // Montar dados do cliente
     const dadosCliente = {
       nome: nome.trim(),
       email: email.toLowerCase().trim(),
@@ -373,10 +394,8 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
       cep: cep?.replace(/\D/g, '') || '00000000'
     };
     
-    // Criar cliente
     const resultado = await ClienteModel.criar(dadosCliente);
     
-    // Criar sessão
     req.session.usuario = {
       id: resultado.idUsuario,
       nome: nome,
@@ -407,9 +426,10 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
   }
 });
 
+// ✅ ROTA LOGIN CORRIGIDA COM SESSION.SAVE()
 router.post("/login", async function (req, res) {
   try {
-    console.log('Login attempt:', req.body);
+    console.log('🔍 LOGIN ATTEMPT:', req.body);
     const { email, password, tipo } = req.body;
 
     if (!email || !password || !tipo) {
@@ -423,8 +443,10 @@ router.post("/login", async function (req, res) {
     let usuario;
     try {
       if (tipo === "adestrador") {
+        console.log('🔍 Buscando adestrador por email:', email);
         usuario = await AdestradorModel.buscarPorEmail(email);
       } else if (tipo === "cliente") {
+        console.log('🔍 Buscando cliente por email:', email);
         usuario = await ClienteModel.buscarPorEmail(email);
       } else {
         return res.status(400).json({ 
@@ -434,7 +456,7 @@ router.post("/login", async function (req, res) {
         });
       }
     } catch (modelError) {
-      console.error('Erro ao buscar usuário:', modelError);
+      console.error('❌ Erro ao buscar usuário:', modelError);
       return res.status(500).json({ 
         sucesso: false, 
         erro: "Erro interno do servidor",
@@ -443,6 +465,7 @@ router.post("/login", async function (req, res) {
     }
 
     if (!usuario) {
+      console.log('❌ Usuário não encontrado:', email);
       return res.status(401).json({ 
         sucesso: false, 
         erro: "Email ou senha incorretos",
@@ -456,7 +479,7 @@ router.post("/login", async function (req, res) {
         ? AdestradorModel.verificarSenha(password, usuario.senha) 
         : ClienteModel.verificarSenha(password, usuario.senha));
     } catch (senhaError) {
-      console.error('Erro ao verificar senha:', senhaError);
+      console.error('❌ Erro ao verificar senha:', senhaError);
       return res.status(500).json({ 
         sucesso: false, 
         erro: "Erro interno do servidor",
@@ -465,6 +488,7 @@ router.post("/login", async function (req, res) {
     }
     
     if (!senhaValida) {
+      console.log('❌ Senha incorreta para:', email);
       return res.status(401).json({ 
         sucesso: false, 
         erro: "Email ou senha incorretos",
@@ -472,6 +496,7 @@ router.post("/login", async function (req, res) {
       });
     }
 
+    // ✅ CRIAR A SESSÃO
     req.session.usuario = {
       id: usuario.id,
       nome: usuario.nome,
@@ -479,15 +504,32 @@ router.post("/login", async function (req, res) {
       tipo: tipo
     };
 
-    console.log('Login successful for:', email);
-    res.json({ 
-      sucesso: true, 
-      mensagem: "Login realizado com sucesso!",
-      redirecionarPara: tipo === "adestrador" ? "/paineladestrador.ejs" : "/painelcliente"
+    console.log('✅ Sessão criada para:', email, 'Tipo:', tipo);
+
+    // ✅ SALVAR A SESSÃO EXPLICITAMENTE
+    req.session.save((err) => {
+      if (err) {
+        console.error('❌ ERRO CRÍTICO ao salvar sessão:', err);
+        return res.status(500).json({ 
+          sucesso: false, 
+          erro: "Erro ao salvar sessão",
+          mensagem: "Erro ao salvar sessão"
+        });
+      }
+
+      console.log('✅ Sessão salva com sucesso!');
+      const redirecionarPara = tipo === "adestrador" ? "/paineladestrador" : "/painelcliente";
+      console.log('Redirecionando para:', redirecionarPara);
+      
+      res.json({ 
+        sucesso: true, 
+        mensagem: "Login realizado com sucesso!",
+        redirecionarPara: redirecionarPara
+      });
     });
 
   } catch (error) {
-    console.error("Erro ao fazer login:", error);
+    console.error("❌ Erro ao fazer login:", error);
     res.status(500).json({ 
       sucesso: false, 
       erro: "Erro interno. Tente novamente mais tarde.",
@@ -506,7 +548,6 @@ router.post("/logout", function (req, res) {
   });
 });
 
-// Rota para atualizar dados do cliente
 router.post("/atualizar-cliente", async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.redirect("/Login.ejs");
@@ -522,13 +563,11 @@ router.post("/atualizar-cliente", async function (req, res) {
       });
     }
     
-    // Atualizar dados do cliente
     await ClienteModel.atualizar(req.session.usuario.id, {
       nome: nome.trim(),
       email: email.toLowerCase().trim()
     });
     
-    // Atualizar sessão
     req.session.usuario.nome = nome.trim();
     req.session.usuario.email = email.toLowerCase().trim();
     
@@ -543,7 +582,6 @@ router.post("/atualizar-cliente", async function (req, res) {
   }
 });
 
-// Rota para criar preferência (compatibilidade)
 router.post('/criar-preferencia', async (req, res) => {
   try {
     const { title, price, quantity = 1 } = req.body;
@@ -583,7 +621,6 @@ router.post('/criar-preferencia', async (req, res) => {
   }
 });
 
-// Rota para criar pagamento com Mercado Pago
 router.post('/criar-pagamento', async (req, res) => {
   console.log('=== ROTA CRIAR PAGAMENTO CHAMADA ===');
   
@@ -653,7 +690,6 @@ router.get('/pagamento-pendente', (req, res) => {
   res.render('pages/pagamento-pendente');
 });
 
-// Chat com PetBot
 router.post('/chat/send', async (req, res) => {
   try {
     const { message } = req.body;
@@ -693,7 +729,6 @@ router.post('/chat/send', async (req, res) => {
   }
 });
 
-// Rota de teste Mercado Pago
 router.get('/teste-mp', async (req, res) => {
   try {
     console.log('=== TESTE MERCADO PAGO ===');
@@ -726,7 +761,6 @@ router.get('/teste-mp', async (req, res) => {
   }
 });
 
-// Rota para verificar se usuário está logado
 router.get('/check-auth', (req, res) => {
   try {
     res.json({ 
@@ -743,7 +777,6 @@ router.get('/check-auth', (req, res) => {
   }
 });
 
-// Rota de teste para o chat
 router.get('/chat/test', (req, res) => {
   res.json({ 
     status: 'Chat funcionando!', 
@@ -751,12 +784,10 @@ router.get('/chat/test', (req, res) => {
   });
 });
 
-// Rota para favicon
 router.get('/favicon.ico', (req, res) => {
   res.status(204).send();
 });
 
-// Rota para imagens placeholder
 router.get('/api/placeholder/:width/:height', (req, res) => {
   const { width, height } = req.params;
   
@@ -771,7 +802,6 @@ router.get('/api/placeholder/:width/:height', (req, res) => {
   res.send(svg);
 });
 
-// Rota para logout via GET - corrigida
 router.get('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -781,7 +811,6 @@ router.get('/logout', (req, res) => {
   });
 });
 
-// Rota adicional para sair
 router.get('/sair', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -791,7 +820,6 @@ router.get('/sair', (req, res) => {
   });
 });
 
-// Middleware para capturar erros gerais
 router.use((error, req, res, next) => {
   console.error('Erro no router:', error);
   res.status(500).json({ 
@@ -800,7 +828,6 @@ router.use((error, req, res, next) => {
   });
 });
 
-// MODIFICADOPELAIA: Rota para página de seleção de tipo de usuário
 router.get('/tipodeusuario.ejs', (req, res) => {
   res.render('pages/tipodeusuario');
 });

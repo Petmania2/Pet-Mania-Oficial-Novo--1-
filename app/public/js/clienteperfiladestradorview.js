@@ -387,7 +387,8 @@ async function loadTrainer(id) {
                 reviews: data.total_avaliacoes || 0,
                 price: parseFloat(data.preco) || 150,
                 phone: data.telefone || 'Não informado',
-                image: data.ID_PERFIL && data.ID_PERFIL > 0 ? `/imagem/${data.ID_PERFIL}` : 'https://via.placeholder.com/400'
+                image: data.ID_PERFIL && data.ID_PERFIL > 0 ? `/imagem/${data.ID_PERFIL}` : 'https://via.placeholder.com/400',
+                about: data.sobre || 'Profissional dedicado ao adestramento canino.'
             };
         }
         return null;
@@ -439,8 +440,6 @@ async function displayTrainer() {
     
     if (!trainer) {
         console.error('Adestrador não encontrado');
-        alert('Adestrador não encontrado');
-        window.location.href = '/buscaradestradorcliente.ejs';
         return;
     }
     
@@ -478,31 +477,39 @@ async function displayTrainer() {
         .map(spec => `<span class="specialty-tag">${specNames[spec]}</span>`)
         .join('');
     document.getElementById('trainerSpecialties').innerHTML = specialtiesHTML;
+    
+    // Atualizar campo sobre se existir
+    const aboutElements = document.querySelectorAll('.detail-card p');
+    if (aboutElements.length > 2 && trainer.about) {
+        aboutElements[2].textContent = trainer.about;
+    }
 }
 
 displayTrainer();
 
-document.getElementById('btnMessage').addEventListener('click', async () => {
-    console.log('Botão mensagem clicado, trainerId:', trainerId);
-    if (trainerId) {
-        try {
-            const res = await fetch('/chat/iniciar', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ idAdestrador: parseInt(trainerId) })
-            });
-            
-            const data = await res.json();
-            console.log('Resposta do servidor:', data);
-            
-            if (data.idConversa) {
-                window.location.href = '/mensagenscliente.ejs';
-            } else {
-                alert('Erro: ' + (data.erro || 'Não foi possível iniciar conversa'));
+if (document.getElementById('btnMessage')) {
+    document.getElementById('btnMessage').addEventListener('click', async () => {
+        console.log('Botão mensagem clicado, trainerId:', trainerId);
+        if (trainerId) {
+            try {
+                const res = await fetch('/chat/iniciar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idAdestrador: parseInt(trainerId) })
+                });
+                
+                const data = await res.json();
+                console.log('Resposta do servidor:', data);
+                
+                if (data.idConversa) {
+                    window.location.href = '/mensagenscliente.ejs';
+                } else {
+                    alert('Erro: ' + (data.erro || 'Não foi possível iniciar conversa'));
+                }
+            } catch (erro) {
+                console.error('Erro ao iniciar chat:', erro);
+                alert('Erro ao iniciar conversa. Tente novamente.');
             }
-        } catch (erro) {
-            console.error('Erro ao iniciar chat:', erro);
-            alert('Erro ao iniciar conversa. Tente novamente.');
         }
-    }
-});
+    });
+}

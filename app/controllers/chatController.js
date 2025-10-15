@@ -86,6 +86,44 @@ const chatController = {
             console.error('Erro ao marcar como lida:', erro);
             res.status(500).json({ erro: 'Erro ao marcar como lida' });
         }
+    },
+
+    // Enviar mensagem
+    async enviarMensagem(req, res) {
+        try {
+            if (!req.session.usuario) {
+                return res.status(401).json({ erro: 'Não autenticado' });
+            }
+            
+            const { idConversa, idAdestrador, mensagem } = req.body;
+            const idUsuario = req.session.usuario.id;
+            const tipoUsuario = req.session.usuario.tipo;
+
+            let conversaId = idConversa;
+            
+            // Se não tem idConversa, criar nova conversa
+            if (!conversaId && idAdestrador) {
+                const { pool } = require('../../config/pool_conexoes');
+                const [clientes] = await pool.query(
+                    'SELECT id_cliente FROM clientes WHERE ID_USUARIO = ?',
+                    [idUsuario]
+                );
+                
+                if (clientes && clientes.length > 0) {
+                    conversaId = await chatModel.criarOuBuscarConversa(clientes[0].id_cliente, idAdestrador);
+                }
+            }
+
+            if (!conversaId) {
+                return res.status(400).json({ erro: 'Conversa não encontrada' });
+            }
+
+            await chatModel.enviarMensagem(conversaId, idUsuario, tipoUsuario, mensagem);
+            res.json({ sucesso: true });
+        } catch (erro) {
+            console.error('Erro ao enviar mensagem:', erro);
+            res.status(500).json({ erro: 'Erro ao enviar mensagem' });
+        }
     }
 };
 

@@ -271,7 +271,7 @@
                 </section>
 
                 <section class="modal-perfil-actions">
-                    <button class="btn-modal-message" onclick="iniciarChatComAdestrador()">
+                    <button class="btn-modal-message" id="btnModalMessage">
                         <i class="fas fa-envelope"></i>
                         Enviar Mensagem
                     </button>
@@ -308,21 +308,22 @@
         };
         
         async function iniciarChatComAdestrador() {
-            const idAdestrador = window.adestradorSelecionadoId || window.currentTrainerId;
-            console.log('Tentando iniciar chat com adestrador:', idAdestrador);
+            const idAdestrador = window.currentTrainerId || window.adestradorSelecionadoId || adestradorSelecionadoId;
+            console.log('Tentando iniciar chat. currentTrainerId:', window.currentTrainerId, 'adestradorSelecionadoId:', window.adestradorSelecionadoId, 'adestradorSelecionadoId:', adestradorSelecionadoId);
             
             if (!idAdestrador) {
+                console.error('Nenhum ID de adestrador encontrado');
                 alert('Erro: Selecione um adestrador primeiro');
                 return;
             }
             
-            adestradorSelecionadoId = idAdestrador;
+            console.log('ID do adestrador para chat:', idAdestrador);
             
             try {
                 const res = await fetch('/chat/iniciar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ idAdestrador: parseInt(adestradorSelecionadoId) })
+                    body: JSON.stringify({ idAdestrador: parseInt(idAdestrador) })
                 });
                 
                 const data = await res.json();

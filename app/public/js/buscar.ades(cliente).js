@@ -15,22 +15,23 @@ async function loadTrainers() {
         };
         
         const trainersDB = data.map(a => ({
-            id: a.id_adestrador,
+            id: a.id,
             name: a.nome,
             city: a.cidade || 'Não informado',
             state: a.estado || 'SP',
             specialties: [especialidadeMap[a.especialidade] || 'obediencia'],
-            rating: a.avaliacao || 5.0,
-            reviews: a.total_avaliacoes || 0,
+            rating: 5.0,
+            reviews: 0,
             price: parseFloat(a.preco) || 150,
             available: a.ativo !== false,
             image: a.ID_PERFIL && a.ID_PERFIL > 0 ? `/imagem/${a.ID_PERFIL}` : 'https://via.placeholder.com/400',
-            topTrainer: a.experiencia >= 5,
+            topTrainer: (a.anos_experiencia || 0) >= 5,
             phone: a.telefone || 'Não informado',
-            about: a.sobre || 'Profissional dedicado ao adestramento canino.'
+            about: a.sobre || 'Profissional dedicado ao adestramento canino.',
+            isReal: true
         }));
-        console.log('Adestradores carregados do banco:', trainersDB);
-        trainers = [...trainersDB, ...trainersFake];
+        console.log('Adestradores carregados:', trainersDB.length);
+        trainers = [...trainersDB, ...trainersFake.map(f => ({...f, isReal: false}))];
         filteredTrainers = [...trainers];
         sortTrainers();
         renderTrainers(filteredTrainers);
@@ -499,6 +500,7 @@ function renderTrainers(trainersToRender) {
     trainersToRender.forEach(trainer => {
         const card = document.createElement('article');
         card.className = 'trainer-card';
+        card.setAttribute('data-trainer-id', trainer.id);
         
         const specialtiesHTML = trainer.specialties
             .map(spec => {
@@ -540,7 +542,7 @@ function renderTrainers(trainersToRender) {
                 <p class="trainer-price">
                     A partir de <span class="price-amount">R$ ${trainer.price}</span> / sessão
                 </p>
-                <button class="btn-view-profile" onclick="openModalPerfil(${trainer.id})">Ver Perfil</button>
+                <button class="btn-view-profile">Ver Perfil</button>
             </section>
         `;
         
@@ -602,8 +604,10 @@ function sortTrainers() {
             break;
         case 'relevance':
         default:
-            // Ordenação padrão: Top trainers primeiro, depois por avaliação
+            // Ordenação padrão: Cards reais primeiro, depois top trainers, depois por avaliação
             filteredTrainers.sort((a, b) => {
+                if (a.isReal && !b.isReal) return -1;
+                if (!a.isReal && b.isReal) return 1;
                 if (a.topTrainer && !b.topTrainer) return -1;
                 if (!a.topTrainer && b.topTrainer) return 1;
                 return b.rating - a.rating;
@@ -700,12 +704,11 @@ const closeModalPerfil = document.getElementById('closeModalPerfil');
 const btnModalMessage = document.getElementById('btnModalMessage');
 
 function openModalPerfil(trainerId) {
-    const trainer = trainers.find(t => t.id === trainerId);
+    const trainer = trainers.find(t => t.id == trainerId);
     if (!trainer) return;
     
     currentTrainerId = trainerId;
     window.currentTrainerId = trainerId;
-    window.adestradorSelecionadoId = trainerId;
     
     // Definir adestrador selecionado para o chat
     if (window.setAdestradorSelecionado) {
@@ -760,13 +763,29 @@ const btnModalViewFull = document.getElementById('btnModalViewFull');
 let currentTrainerId = null;
 
 if (btnModalMessage) {
-    btnModalMessage.addEventListener('click', () => {
-        console.log('Botão mensagem clicado, ID:', currentTrainerId);
-        if (currentTrainerId) {
-            if (window.setAdestradorSelecionado) {
-                window.setAdestradorSelecionado(currentTrainerId);
+    btnModalMessage.addEventListener('click', async () => {
+        if (!currentTrainerId) {
+            alert('Erro: Selecione um adestrador primeiro');
+            return;
+        }
+        
+        try {
+            const res = await fetch('/chat/iniciar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idAdestrador: parseInt(currentTrainerId) })
+            });
+            
+            const data = await res.json();
+            
+            if (data.idConversa) {
+                window.location.href = `/mensagenscliente.ejs?adestrador=${currentTrainerId}`;
+            } else {
+                alert('Erro: ' + (data.erro || 'Não foi possível iniciar conversa'));
             }
-            window.location.href = `/mensagenscliente.ejs?adestrador=${currentTrainerId}`;
+        } catch (erro) {
+            console.error('Erro ao iniciar chat:', erro);
+            alert('Erro ao iniciar conversa. Tente novamente.');
         }
     });
 }
@@ -785,9 +804,10 @@ document.addEventListener('click', (e) => {
     if (e.target && e.target.classList.contains('btn-view-profile')) {
         e.preventDefault();
         e.stopPropagation();
-        const trainerId = parseInt(e.target.getAttribute('data-trainer-id'));
-        console.log('Clicou no botão Ver Perfil, ID:', trainerId);
-        if (trainerId) {
+        const card = e.target.closest('.trainer-card');
+        const trainerId = parseInt(card.getAttribute('data-trainer-id'));
+        console.log('Clicou Ver Perfil, ID do card:', trainerId);
+        if (trainerId && !isNaN(trainerId)) {
             openModalPerfil(trainerId);
         }
     }

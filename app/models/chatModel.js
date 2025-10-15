@@ -101,6 +101,25 @@ const chatModel = {
              AND lida = FALSE`,
             [idConversa, idUsuario]
         );
+    },
+
+    // Enviar mensagem
+    async enviarMensagem(idConversa, idRemetente, tipoRemetente, mensagem) {
+        const [result] = await pool.query(
+            `INSERT INTO mensagens (id_conversa, id_remetente, mensagem, lida) 
+             VALUES (?, ?, ?, FALSE)`,
+            [idConversa, idRemetente, mensagem]
+        );
+        
+        // Atualizar ultima_mensagem na conversa
+        await pool.query(
+            `UPDATE conversas 
+             SET ultima_mensagem = NOW() 
+             WHERE id_conversa = ?`,
+            [idConversa]
+        );
+        
+        return result.insertId;
     }
 };
 

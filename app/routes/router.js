@@ -1118,5 +1118,6 @@ router.post('/chat/iniciar', chatController.iniciarConversa);
 router.get('/chat/conversas', chatController.listarConversas);
 router.get('/chat/historico/:idConversa', chatController.buscarHistorico);
 router.post('/chat/marcar-lida/:idConversa', chatController.marcarLida);
+router.post('/chat/enviar', chatController.enviarMensagem);
 
 module.exports = router;

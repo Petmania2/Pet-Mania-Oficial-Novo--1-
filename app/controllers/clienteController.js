@@ -1,4 +1,5 @@
 const ClienteModel = require('../models/clienteModel');
+const emailService = require('../services/emailService');
 
 const clienteController = {
   // Exibir página de cadastro
@@ -30,6 +31,13 @@ const clienteController = {
         nomePet, racaPet, idadePet, tipoCadastro,
         descricao, senha
       });
+
+      // Enviar email de boas-vindas
+      try {
+        await emailService.enviarEmailBoasVindas(email, nome, 'cliente');
+      } catch (emailError) {
+        console.error('Erro ao enviar email de boas-vindas:', emailError);
+      }
 
       res.json({
         sucesso: true,

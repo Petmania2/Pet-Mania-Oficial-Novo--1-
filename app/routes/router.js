@@ -5,6 +5,7 @@ const ClienteModel = require("../models/clienteModel");
 const PetModel = require("../models/petModel");
 const hqController = require("../controllers/hqController");
 const favoritoModel = require("../models/favoritoModel");
+const emailService = require("../services/emailService");
 const mercadopago = require('mercadopago');
 const multer = require('multer');
 const path = require('path');
@@ -463,6 +464,13 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
 
     await AdestradorModel.criar(dadosAdestrador);
     
+    // Enviar email de boas-vindas
+    try {
+      await emailService.enviarEmailBoasVindas(dadosAdestrador.email, dadosAdestrador.nome, 'adestrador');
+    } catch (emailError) {
+      console.error('Erro ao enviar email de boas-vindas:', emailError);
+    }
+    
     res.json({ 
       sucesso: true, 
       mensagem: "Cadastro realizado com sucesso!" 
@@ -542,6 +550,13 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
       } catch (petError) {
         console.log('Aviso: Não foi possível criar pet automaticamente:', petError.message);
       }
+    }
+    
+    // Enviar email de boas-vindas
+    try {
+      await emailService.enviarEmailBoasVindas(email, nome, 'cliente');
+    } catch (emailError) {
+      console.error('Erro ao enviar email de boas-vindas:', emailError);
     }
     
     req.session.usuario = {

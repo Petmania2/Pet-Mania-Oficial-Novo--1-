@@ -32,12 +32,10 @@ const clienteController = {
         descricao, senha
       });
 
-      // Enviar email de boas-vindas
-      try {
-        await emailService.enviarEmailBoasVindas(email, nome, 'cliente');
-      } catch (emailError) {
-        console.error('Erro ao enviar email de boas-vindas:', emailError);
-      }
+      // Enviar email de boas-vindas em background (não bloqueia o cadastro)
+      emailService.enviarEmailBoasVindas(email, nome, 'cliente').catch(err => {
+        console.error('Erro ao enviar email de boas-vindas:', err);
+      });
 
       res.json({
         sucesso: true,

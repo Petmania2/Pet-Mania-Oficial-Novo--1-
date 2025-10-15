@@ -62,14 +62,14 @@
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop" alt="João Silva">
                     </figure>
                     <section class="profile-details">
-                        <h1 class="profile-name">João Silva</h1>
+                        <h1 class="profile-name"><%= cliente.nome || 'Usuário' %></h1>
                         <p class="profile-location">
                             <i class="fas fa-map-marker-alt"></i>
-                            Barueri, São Paulo - SP
+                            <%= cliente.cidade || 'Cidade não informada' %><% if (cliente.estado) { %>, <%= cliente.estado %><% } %>
                         </p>
                         <p class="profile-email">
                             <i class="fas fa-envelope"></i>
-                            joao.silva@email.com
+                            <%= cliente.email || 'Email não informado' %>
                         </p>
                         <section class="profile-actions">
                             <button class="btn btn-primary" id="editProfileBtn">
@@ -91,19 +91,19 @@
                 <section class="info-grid">
                     <article class="info-card">
                         <h3>Telefone</h3>
-                        <p>(11) 98765-4321</p>
+                        <p><%= cliente.telefone || '(00) 00000-0000' %></p>
                     </article>
                     <article class="info-card">
-                        <h3>Data de Nascimento</h3>
-                        <p>15 de Março de 1990</p>
+                        <h3>Cidade</h3>
+                        <p><%= cliente.cidade || 'Não informado' %></p>
                     </article>
                     <article class="info-card">
                         <h3>CPF</h3>
-                        <p>123.456.789-00</p>
+                        <p><%= cliente.cpf && cliente.cpf !== '00000000000' ? cliente.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') : 'Não informado' %></p>
                     </article>
                     <article class="info-card">
-                        <h3>Membro desde</h3>
-                        <p>Janeiro de 2024</p>
+                        <h3>Email</h3>
+                        <p><%= cliente.email || 'Não informado' %></p>
                     </article>
                 </section>
             </section>

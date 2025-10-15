@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     nome: document.getElementById('nome').value.trim(),
                     email: document.getElementById('email').value.trim(),
                     telefone: document.getElementById('telefone').value,
+                    cpf: document.getElementById('cpf').value.replace(/\D/g, ''),
                     cidade: document.getElementById('cidade').value,
                     endereco: document.getElementById('endereco').value.trim(),
                     nomePet: document.getElementById('nomePet').value.trim(),
@@ -96,6 +97,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Formatação de CPF
+    const cpfInput = document.getElementById('cpf');
+    if (cpfInput) {
+        cpfInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                if (value.length > 3) {
+                    value = value.substring(0, 3) + '.' + value.substring(3);
+                }
+                if (value.length > 7) {
+                    value = value.substring(0, 7) + '.' + value.substring(7);
+                }
+                if (value.length > 11) {
+                    value = value.substring(0, 11) + '-' + value.substring(11);
+                }
+                e.target.value = value;
+            }
+        });
+    }
 });
 
 function validateForm() {
@@ -137,6 +158,19 @@ function validateForm() {
     } else {
         telefone.classList.remove('error');
         telefoneError.style.display = 'none';
+    }
+    
+    // CPF validação
+    const cpf = document.getElementById('cpf');
+    const cpfError = document.getElementById('cpfError');
+    const cpfClean = cpf.value.replace(/\D/g, '');
+    if (cpfClean.length !== 11) {
+        cpf.classList.add('error');
+        cpfError.style.display = 'block';
+        isValid = false;
+    } else {
+        cpf.classList.remove('error');
+        cpfError.style.display = 'none';
     }
     
     // Cidade validação

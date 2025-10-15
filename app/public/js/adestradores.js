@@ -1,9 +1,9 @@
 // adestradores.js - JavaScript para página de adestradores
 
-// Dados mockados dos adestradores
-const adestradoresData = [
+// Dados fictícios dos adestradores
+const adestradoresFicticios = [
     {
-        id: 1,
+        id: 'f1',
         nome: "Ricardo Almeida",
         especialidade: "obediencia-basica",
         cidade: "sao-paulo",
@@ -15,10 +15,12 @@ const adestradoresData = [
         imagem: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80",
         badge: "Top Adestrador",
         descricao: "Especialista em obediência básica com 8 anos de experiência",
-        telefone: "(11) 99999-1111"
+        telefone: "(11) 99999-1111",
+        estado: "São Paulo",
+        endereco: "Rua das Flores, 123 - Vila Madalena"
     },
     {
-        id: 2,
+        id: 'f2',
         nome: "Juliana Costa",
         especialidade: "comportamento",
         cidade: "rio-de-janeiro",
@@ -28,12 +30,14 @@ const adestradoresData = [
         experiencia: 10,
         disponibilidade: ["tarde", "noite"],
         imagem: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80",
-        badge: "",
+        badge: "Especialista",
         descricao: "Especialista em comportamento canino",
-        telefone: "(21) 99999-2222"
+        telefone: "(21) 99999-2222",
+        estado: "Rio de Janeiro",
+        endereco: "Av. Copacabana, 456 - Copacabana"
     },
     {
-        id: 3,
+        id: 'f3',
         nome: "Carlos Mendes",
         especialidade: "agressividade",
         cidade: "belo-horizonte",
@@ -45,10 +49,12 @@ const adestradoresData = [
         imagem: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80",
         badge: "Especialista",
         descricao: "Controle de agressividade canina",
-        telefone: "(31) 99999-3333"
+        telefone: "(31) 99999-3333",
+        estado: "Minas Gerais",
+        endereco: "Rua da Liberdade, 789 - Centro"
     },
     {
-        id: 4,
+        id: 'f4',
         nome: "Ana Silva",
         especialidade: "truques",
         cidade: "curitiba",
@@ -60,10 +66,12 @@ const adestradoresData = [
         imagem: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80",
         badge: "",
         descricao: "Truques e comandos avançados",
-        telefone: "(41) 99999-4444"
+        telefone: "(41) 99999-4444",
+        estado: "Paraná",
+        endereco: "Rua XV de Novembro, 321 - Centro"
     },
     {
-        id: 5,
+        id: 'f5',
         nome: "Pedro Santos",
         especialidade: "filhotes",
         cidade: "porto-alegre",
@@ -75,10 +83,12 @@ const adestradoresData = [
         imagem: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80",
         badge: "Certificado",
         descricao: "Adestramento para filhotes",
-        telefone: "(51) 99999-5555"
+        telefone: "(51) 99999-5555",
+        estado: "Rio Grande do Sul",
+        endereco: "Av. Ipiranga, 654 - Cidade Baixa"
     },
     {
-        id: 6,
+        id: 'f6',
         nome: "Mariana Lima",
         especialidade: "socializacao",
         cidade: "brasilia",
@@ -90,10 +100,12 @@ const adestradoresData = [
         imagem: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80",
         badge: "",
         descricao: "Socialização canina",
-        telefone: "(61) 99999-6666"
+        telefone: "(61) 99999-6666",
+        estado: "Distrito Federal",
+        endereco: "SHIS QI 15, Conjunto 3 - Lago Sul"
     },
     {
-        id: 7,
+        id: 'f7',
         nome: "Lucas Ferreira",
         especialidade: "guarda",
         cidade: "salvador",
@@ -105,10 +117,12 @@ const adestradoresData = [
         imagem: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80",
         badge: "Especialista",
         descricao: "Treinamento de cães de guarda",
-        telefone: "(71) 99999-7777"
+        telefone: "(71) 99999-7777",
+        estado: "Bahia",
+        endereco: "Rua da Barra, 987 - Barra"
     },
     {
-        id: 8,
+        id: 'f8',
         nome: "Fernanda Rocha",
         especialidade: "obediencia-basica",
         cidade: "fortaleza",
@@ -120,9 +134,14 @@ const adestradoresData = [
         imagem: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80",
         badge: "",
         descricao: "Obediência básica e socialização",
-        telefone: "(85) 99999-8888"
+        telefone: "(85) 99999-8888",
+        estado: "Ceará",
+        endereco: "Av. Beira Mar, 147 - Meireles"
     }
 ];
+
+// Dados dos adestradores (fictícios + reais do banco)
+let adestradoresData = [];
 
 // Mapeamento de especialidades e cidades para exibição
 const especialidadesMap = {
@@ -175,11 +194,70 @@ const clearFilters = document.getElementById('clearFilters');
 const resetSearch = document.getElementById('resetSearch');
 
 // Inicialização
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     initializeEventListeners();
+    await carregarAdestradores();
     renderAdestradores();
     updateResultsCount();
 });
+
+// Carregar adestradores do banco de dados
+async function carregarAdestradores() {
+    try {
+        showLoading(true);
+        const response = await fetch('/api/adestradores');
+        const dados = await response.json();
+        
+        const adestradoresReais = dados.map(a => ({
+            id: a.id,
+            nome: a.nome,
+            especialidade: mapEspecialidadeIdParaNome(a.especialidade),
+            cidade: normalizarCidade(a.cidade),
+            preco: parseFloat(a.preco) || 100,
+            rating: 5.0,
+            reviews: 0,
+            experiencia: a.anos_experiencia || 0,
+            disponibilidade: ['manha', 'tarde'],
+            imagem: a.ID_PERFIL ? `/imagem/${a.ID_PERFIL}` : '/imagens/default-avatar.png',
+            badge: a.anos_experiencia >= 10 ? 'Especialista' : '',
+            descricao: a.sobre || 'Adestrador profissional',
+            telefone: a.telefone || '(00) 00000-0000',
+            estado: a.estado || '',
+            endereco: `${a.logradouro_adestrador || ''} ${a.num_resid_adestrador || ''}`.trim() || 'Endereço não informado'
+        }));
+        
+        // Mesclar fictícios + reais
+        adestradoresData = [...adestradoresFicticios, ...adestradoresReais];
+        filteredAdestradores = [...adestradoresData];
+        showLoading(false);
+    } catch (error) {
+        console.error('Erro ao carregar adestradores:', error);
+        // Se falhar, usar apenas os fictícios
+        adestradoresData = [...adestradoresFicticios];
+        filteredAdestradores = [...adestradoresData];
+        showLoading(false);
+    }
+}
+
+function mapEspecialidadeIdParaNome(id) {
+    const map = {
+        1: 'obediencia-basica',
+        2: 'comportamento',
+        3: 'truques',
+        4: 'agressividade',
+        5: 'filhotes',
+        6: 'socializacao',
+        7: 'guarda'
+    };
+    return map[id] || 'obediencia-basica';
+}
+
+function normalizarCidade(cidade) {
+    if (!cidade) return 'sao-paulo';
+    return cidade.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, '-');
+}
 
 // Event Listeners
 function initializeEventListeners() {
@@ -611,75 +689,27 @@ function verPerfil(adestradorId) {
 
 
 
-// Dados adicionais dos adestradores (para completar as informações)
-const adestradoresCompletos = {
-    1: {
-        nomeCompleto: "Ricardo Almeida Silva",
-        endereco: "Rua das Flores, 123 - Vila Madalena",
-        estado: "São Paulo",
-        biografia: "Profissional apaixonado por cães com mais de 8 anos de experiência em adestramento. Formado em Medicina Veterinária com especialização em comportamento animal. Trabalho com métodos positivos e personalizados para cada pet, sempre respeitando o bem-estar animal e fortalecendo a relação entre tutor e cão.",
-        especialidadesCompletas: ["Obediência Básica", "Socialização", "Caminhada sem Coleira"]
-    },
-    2: {
-        nomeCompleto: "Juliana Costa Mendes",
-        endereco: "Av. Copacabana, 456 - Copacabana",
-        estado: "Rio de Janeiro",
-        biografia: "Especialista em comportamento canino com 10 anos de experiência. Certificada pelo IBAC (Instituto Brasileiro de Adestramento de Cães). Dedico-me especialmente a casos de ansiedade, medo e comportamentos destrutivos, utilizando técnicas de reforço positivo e dessensibilização.",
-        especialidadesCompletas: ["Problemas de Comportamento", "Ansiedade Canina", "Terapia Comportamental"]
-    },
-    3: {
-        nomeCompleto: "Carlos Mendes Santos",
-        endereco: "Rua da Liberdade, 789 - Centro",
-        estado: "Minas Gerais",
-        biografia: "Especialista em controle de agressividade canina com 12 anos de experiência. Trabalho com casos complexos de reabilitação comportamental, sempre priorizando a segurança de todos os envolvidos. Certificado pela ANAA (Associação Nacional de Adestradores de Animais).",
-        especialidadesCompletas: ["Controle de Agressividade", "Reabilitação Comportamental", "Cães Dominantes"]
-    },
-    4: {
-        nomeCompleto: "Ana Silva Rodrigues",
-        endereco: "Rua XV de Novembro, 321 - Centro",
-        estado: "Paraná",
-        biografia: "Adestradora focada em truques e comandos avançados. Com 6 anos de experiência, transformo o treinamento em momentos divertidos e educativos. Especializada em preparação para competições e shows caninos.",
-        especialidadesCompletas: ["Truques e Comandos", "Preparação para Shows", "Adestramento Lúdico"]
-    },
-    5: {
-        nomeCompleto: "Pedro Santos Lima",
-        endereco: "Av. Ipiranga, 654 - Cidade Baixa",
-        estado: "Rio Grande do Sul",
-        biografia: "Especialista em adestramento para filhotes com 9 anos de experiência. Trabalho com socialização precoce, educação básica e prevenção de problemas comportamentais futuros. Certificado em Psicologia Canina.",
-        especialidadesCompletas: ["Adestramento para Filhotes", "Socialização Precoce", "Educação Básica"]
-    },
-    6: {
-        nomeCompleto: "Mariana Lima Costa",
-        endereco: "SHIS QI 15, Conjunto 3 - Lago Sul",
-        estado: "Distrito Federal",
-        biografia: "Especialista em socialização canina com 7 anos de experiência. Ajudo cães tímidos e medrosos a ganharem confiança e se relacionarem melhor com outros animais e pessoas. Utilizo técnicas de exposição gradual e reforço positivo.",
-        especialidadesCompletas: ["Socialização Canina", "Cães Tímidos", "Integração Social"]
-    },
-    7: {
-        nomeCompleto: "Lucas Ferreira Oliveira",
-        endereco: "Rua da Barra, 987 - Barra",
-        estado: "Bahia",
-        biografia: "Especialista em treinamento de cães de guarda com 11 anos de experiência. Ex-militar com formação em segurança canina. Trabalho com desenvolvimento de instintos protetivos equilibrados e obediência em situações de stress.",
-        especialidadesCompletas: ["Cães de Guarda", "Segurança Canina", "Treinamento Militar"]
-    },
-    8: {
-        nomeCompleto: "Fernanda Rocha Silva",
-        endereco: "Av. Beira Mar, 147 - Meireles",
-        estado: "Ceará",
-        biografia: "Adestradora com 5 anos de experiência em obediência básica e socialização. Formada em Zootecnia com pós-graduação em Comportamento Animal. Trabalho com métodos gentis e eficazes, sempre respeitando o ritmo de cada animal.",
-        especialidadesCompletas: ["Obediência Básica", "Socialização", "Comandos Básicos"]
-    }
-};
+// Função para obter dados completos do adestrador
+function obterDadosCompletos(adestrador) {
+    return {
+        nomeCompleto: adestrador.nome,
+        endereco: adestrador.endereco,
+        estado: adestrador.estado,
+        biografia: adestrador.descricao,
+        especialidadesCompletas: [especialidadesMap[adestrador.especialidade]]
+    };
+}
 
 // Função para mostrar o perfil do adestrador
 function verPerfil(adestradorId) {
     const adestrador = adestradoresData.find(a => a.id === adestradorId);
-    const dadosCompletos = adestradoresCompletos[adestradorId];
     
-    if (!adestrador || !dadosCompletos) {
+    if (!adestrador) {
         alert('Perfil não encontrado!');
         return;
     }
+    
+    const dadosCompletos = obterDadosCompletos(adestrador);
 
     // Preencher dados do modal
     document.getElementById('profileImage').src = adestrador.imagem;
@@ -948,64 +978,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 1000);
 });
 
-// 4. Dados adicionais dos adestradores (caso não estejam definidos)
-if (typeof adestradoresCompletos === 'undefined') {
-    const adestradoresCompletos = {
-        1: {
-            nomeCompleto: "Ricardo Almeida Silva",
-            endereco: "Rua das Flores, 123 - Vila Madalena",
-            estado: "São Paulo",
-            biografia: "Profissional apaixonado por cães com mais de 8 anos de experiência em adestramento. Formado em Medicina Veterinária com especialização em comportamento animal. Trabalho com métodos positivos e personalizados para cada pet, sempre respeitando o bem-estar animal e fortalecendo a relação entre tutor e cão.",
-            especialidadesCompletas: ["Obediência Básica", "Socialização", "Caminhada sem Coleira"]
-        },
-        2: {
-            nomeCompleto: "Juliana Costa Mendes",
-            endereco: "Av. Copacabana, 456 - Copacabana",
-            estado: "Rio de Janeiro",
-            biografia: "Especialista em comportamento canino com 10 anos de experiência. Certificada pelo IBAC (Instituto Brasileiro de Adestramento de Cães). Dedico-me especialmente a casos de ansiedade, medo e comportamentos destrutivos, utilizando técnicas de reforço positivo e dessensibilização.",
-            especialidadesCompletas: ["Problemas de Comportamento", "Ansiedade Canina", "Terapia Comportamental"]
-        },
-        3: {
-            nomeCompleto: "Carlos Mendes Santos",
-            endereco: "Rua da Liberdade, 789 - Centro",
-            estado: "Minas Gerais",
-            biografia: "Especialista em controle de agressividade canina com 12 anos de experiência. Trabalho com casos complexos de reabilitação comportamental, sempre priorizando a segurança de todos os envolvidos. Certificado pela ANAA (Associação Nacional de Adestradores de Animais).",
-            especialidadesCompletas: ["Controle de Agressividade", "Reabilitação Comportamental", "Cães Dominantes"]
-        },
-        4: {
-            nomeCompleto: "Ana Silva Rodrigues",
-            endereco: "Rua XV de Novembro, 321 - Centro",
-            estado: "Paraná",
-            biografia: "Adestradora focada em truques e comandos avançados. Com 6 anos de experiência, transformo o treinamento em momentos divertidos e educativos. Especializada em preparação para competições e shows caninos.",
-            especialidadesCompletas: ["Truques e Comandos", "Preparação para Shows", "Adestramento Lúdico"]
-        },
-        5: {
-            nomeCompleto: "Pedro Santos Lima",
-            endereco: "Av. Ipiranga, 654 - Cidade Baixa",
-            estado: "Rio Grande do Sul",
-            biografia: "Especialista em adestramento para filhotes com 9 anos de experiência. Trabalho com socialização precoce, educação básica e prevenção de problemas comportamentais futuros. Certificado em Psicologia Canina.",
-            especialidadesCompletas: ["Adestramento para Filhotes", "Socialização Precoce", "Educação Básica"]
-        },
-        6: {
-            nomeCompleto: "Mariana Lima Costa",
-            endereco: "SHIS QI 15, Conjunto 3 - Lago Sul",
-            estado: "Distrito Federal",
-            biografia: "Especialista em socialização canina com 7 anos de experiência. Ajudo cães tímidos e medrosos a ganharem confiança e se relacionarem melhor com outros animais e pessoas. Utilizo técnicas de exposição gradual e reforço positivo.",
-            especialidadesCompletas: ["Socialização Canina", "Cães Tímidos", "Integração Social"]
-        },
-        7: {
-            nomeCompleto: "Lucas Ferreira Oliveira",
-            endereco: "Rua da Barra, 987 - Barra",
-            estado: "Bahia",
-            biografia: "Especialista em treinamento de cães de guarda com 11 anos de experiência. Ex-militar com formação em segurança canina. Trabalho com desenvolvimento de instintos protetivos equilibrados e obediência em situações de stress.",
-            especialidadesCompletas: ["Cães de Guarda", "Segurança Canina", "Treinamento Militar"]
-        },
-        8: {
-            nomeCompleto: "Fernanda Rocha Silva",
-            endereco: "Av. Beira Mar, 147 - Meireles",
-            estado: "Ceará",
-            biografia: "Adestradora com 5 anos de experiência em obediência básica e socialização. Formada em Zootecnia com pós-graduação em Comportamento Animal. Trabalho com métodos gentis e eficazes, sempre respeitando o ritmo de cada animal.",
-            especialidadesCompletas: ["Obediência Básica", "Socialização", "Comandos Básicos"]
-        }
-    };
-}
+

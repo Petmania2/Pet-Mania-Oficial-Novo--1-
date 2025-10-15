@@ -1,0 +1,385 @@
+/* ===================================
+   RESPONSIVIDADE GLOBAL - PET MANIA
+   =================================== */
+
+/* Mobile First - Base styles já são mobile */
+
+/* Tablets - 768px e acima */
+@media (max-width: 1024px) {
+    /* Navbar */
+    .navbar-container {
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .nav-menu,
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 280px;
+        height: calc(100vh - 70px);
+        background: white;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        transition: left 0.3s ease;
+        z-index: 999;
+        overflow-y: auto;
+        display: flex !important;
+    }
+    
+    .nav-menu.active,
+    .nav-links.active {
+        left: 0;
+    }
+    
+    .nav-menu li,
+    .nav-links li {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+    
+    .nav-link {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 8px;
+        display: block;
+    }
+    
+    .mobile-toggle,
+    .mobile-menu-btn,
+    #mobileToggle,
+    #menuBtn {
+        display: block !important;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 10px;
+        color: #333;
+        z-index: 1000;
+    }
+    
+    /* Grids */
+    .trainers-grid,
+    .pets-grid,
+    .info-grid,
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+    
+    /* Containers */
+    .container {
+        padding: 0 20px !important;
+    }
+    
+    .main-content {
+        padding: 20px 10px !important;
+        margin-top: 70px !important;
+    }
+    
+    /* Cards */
+    .trainer-card,
+    .pet-card,
+    .info-card {
+        padding: 15px !important;
+    }
+    
+    /* Modals */
+    .modal-content,
+    .modal-perfil-content {
+        width: 95% !important;
+        max-width: 500px !important;
+        margin: 20px auto !important;
+    }
+    
+    /* Filtros */
+    .filters-panel {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        width: 300px;
+        height: calc(100vh - 70px);
+        z-index: 998;
+        transition: left 0.3s ease;
+    }
+    
+    .filters-panel.active {
+        left: 0;
+    }
+    
+    /* Chat/Mensagens */
+    .messages-container,
+    .container-mensagens {
+        grid-template-columns: 1fr !important;
+        height: calc(100vh - 90px) !important;
+    }
+    
+    .conversas-sidebar,
+    .contacts-sidebar {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        width: 300px;
+        height: calc(100vh - 70px);
+        z-index: 998;
+        transition: left 0.3s ease;
+    }
+    
+    .conversas-sidebar.ativo,
+    .contacts-sidebar.active {
+        left: 0;
+    }
+    
+    .chat-container,
+    .chat-area {
+        width: 100% !important;
+    }
+    
+    /* Tabelas */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* Mobile - 768px e abaixo */
+@media (max-width: 768px) {
+    /* Typography */
+    h1 { font-size: 24px !important; }
+    h2 { font-size: 20px !important; }
+    h3 { font-size: 18px !important; }
+    
+    /* Grids - 1 coluna */
+    .trainers-grid,
+    .pets-grid,
+    .info-grid,
+    .stats-grid,
+    .reviews-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Navbar */
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
+    
+    .nav-menu,
+    .nav-links {
+        width: 100%;
+        left: -100%;
+        top: 60px;
+    }
+    
+    .logo-img {
+        height: 35px !important;
+    }
+    
+    .mobile-toggle,
+    .mobile-menu-btn,
+    #mobileToggle,
+    #menuBtn {
+        display: block !important;
+        position: relative;
+        z-index: 1001;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 10px 16px !important;
+        font-size: 14px !important;
+    }
+    
+    .btn-icon {
+        width: 35px !important;
+        height: 35px !important;
+    }
+    
+    /* Profile Header */
+    .profile-header {
+        flex-direction: column !important;
+        text-align: center !important;
+    }
+    
+    .profile-avatar {
+        width: 100px !important;
+        height: 100px !important;
+        margin: 0 auto 15px !important;
+    }
+    
+    .profile-actions {
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+    
+    .profile-actions .btn {
+        width: 100% !important;
+        margin: 5px 0 !important;
+    }
+    
+    /* Cards */
+    .trainer-card,
+    .pet-card {
+        padding: 12px !important;
+    }
+    
+    .trainer-image,
+    .pet-image {
+        height: 180px !important;
+    }
+    
+    /* Modals */
+    .modal-content,
+    .modal-perfil-content {
+        width: 100% !important;
+        height: 100vh !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* Forms */
+    .filter-group,
+    fieldset {
+        margin-bottom: 15px !important;
+    }
+    
+    input,
+    select,
+    textarea {
+        font-size: 16px !important; /* Previne zoom no iOS */
+    }
+    
+    /* Chat */
+    .chat-header {
+        padding: 15px !important;
+    }
+    
+    .chat-messages,
+    .mensagens-area {
+        padding: 15px !important;
+    }
+    
+    .chat-input,
+    .chat-footer {
+        padding: 10px !important;
+        flex-wrap: wrap !important;
+    }
+    
+    .chat-input input {
+        font-size: 16px !important;
+    }
+    
+    /* Filtros */
+    .filters-panel {
+        width: 100% !important;
+    }
+    
+    .mobileFilterBtn,
+    .mobile-filter-btn {
+        display: block !important;
+    }
+    
+    /* Footer */
+    .footer-links {
+        flex-direction: column !important;
+        gap: 10px !important;
+        text-align: center !important;
+    }
+    
+    /* Esconder elementos em mobile */
+    .hide-mobile {
+        display: none !important;
+    }
+}
+
+/* Tablets Landscape - 1024px e abaixo */
+@media (max-width: 1024px) and (orientation: landscape) {
+    .main-content {
+        margin-top: 60px !important;
+    }
+    
+    .messages-container,
+    .container-mensagens {
+        height: calc(100vh - 80px) !important;
+    }
+}
+
+/* Desktop - 1200px e acima */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+    }
+    
+    .trainers-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+
+/* Extra Large - 1400px e acima */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1400px !important;
+    }
+}
+
+/* Utilitários Responsivos */
+.show-mobile { display: none !important; }
+.show-tablet { display: none !important; }
+.show-desktop { display: block !important; }
+
+@media (max-width: 768px) {
+    .show-mobile { display: block !important; }
+    .hide-mobile { display: none !important; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .show-tablet { display: block !important; }
+    .hide-tablet { display: none !important; }
+}
+
+@media (min-width: 1025px) {
+    .show-desktop { display: block !important; }
+    .hide-desktop { display: none !important; }
+}
+
+/* Touch Devices */
+@media (hover: none) and (pointer: coarse) {
+    /* Aumentar área de toque */
+    .btn,
+    .nav-link,
+    button {
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+    
+    /* Remover hover effects */
+    *:hover {
+        transition: none !important;
+    }
+}
+
+/* Print */
+@media print {
+    .navbar,
+    .footer,
+    .btn,
+    .mobile-toggle,
+    .filters-panel {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-top: 0 !important;
+    }
+}

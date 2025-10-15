@@ -1,24 +1,3 @@
-// Mobile Menu Toggle
-const mobileToggle = document.getElementById('mobileToggle');
-const navMenu = document.getElementById('navMenu');
-
-mobileToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-    const icon = mobileToggle.querySelector('i');
-    icon.classList.toggle('fa-bars');
-    icon.classList.toggle('fa-times');
-});
-
-// Close mobile menu when clicking outside
-document.addEventListener('click', (e) => {
-    if (!mobileToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navMenu.classList.remove('active');
-        const icon = mobileToggle.querySelector('i');
-        icon.classList.remove('fa-times');
-        icon.classList.add('fa-bars');
-    }
-});
-
 // Navigation Active State
 const navLinks = document.querySelectorAll('.nav-link');
 

@@ -203,7 +203,9 @@ class AdestradorModel {
                a.cidade_adestrador as cidade, a.uf_adestrador as estado, 
                a.anos_experiencia, a.valor_sessao as preco, a.ativo,
                a.id_esp_adestrador as especialidade,
-               a.sobre_sua_experiencia as sobre
+               a.sobre_sua_experiencia as sobre,
+               a.logradouro_adestrador, a.num_resid_adestrador,
+               a.complemento_adestrador, a.bairro_adestrador, a.cep_ADESTRADOR
         FROM adestradores a
         INNER JOIN USUARIOS u ON a.ID_USUARIO = u.ID_USUARIO
         WHERE a.ativo = 1

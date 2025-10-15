@@ -41,6 +41,12 @@ body {
     font-family: 'Nunito', sans-serif;
 }
 
+.logo-img {
+    height: 160px;
+    width: auto;
+    object-fit: contain;
+}
+
 .nav-menu {
     display: flex;
     list-style: none;

@@ -59,6 +59,12 @@ body {
     transform: translateY(-2px);
 }
 
+.logo-img {
+    height: 160px;
+    width: auto;
+    object-fit: contain;
+}
+
 .nav-menu {
     display: flex;
     list-style: none;

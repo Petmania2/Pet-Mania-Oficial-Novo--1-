@@ -84,6 +84,10 @@ router.get("/", async function (req, res) {
   try {
     const usuarioId = req.session.usuario ? req.session.usuario.id : null;
     let adestradores = await AdestradorModel.buscarTodos();
+    console.log('📊 Adestradores encontrados:', adestradores.length);
+    if (adestradores.length > 0) {
+      console.log('✅ Primeiro adestrador:', adestradores[0]);
+    }
     if (usuarioId) {
       for (let adestrador of adestradores) {
         const favoritos = await favoritoModel.findID(adestrador.id, usuarioId);
@@ -94,7 +98,7 @@ router.get("/", async function (req, res) {
     }
     res.render("pages/index", { adestradores });
   } catch (error) {
-    console.error("Erro ao carregar adestradores:", error);
+    console.error("❌ Erro ao carregar adestradores:", error);
     res.render("pages/index", { adestradores: [] });
   }
 });
@@ -1100,7 +1104,16 @@ router.get('/imagem/:id', async (req, res) => {
     const resultado = await executeQuery(query, [req.params.id]);
     
     if (resultado.length === 0) {
-      return res.status(404).send('Imagem não encontrada');
+      // Retornar imagem padrão SVG
+      const defaultAvatar = `
+        <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#e0e0e0"/>
+          <circle cx="100" cy="80" r="40" fill="#999"/>
+          <path d="M 50 150 Q 100 120 150 150" fill="#999"/>
+        </svg>
+      `;
+      res.setHeader('Content-Type', 'image/svg+xml');
+      return res.send(defaultAvatar);
     }
     
     const imagem = resultado[0];

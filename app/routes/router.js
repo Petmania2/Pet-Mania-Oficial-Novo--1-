@@ -475,12 +475,10 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
 
     await AdestradorModel.criar(dadosAdestrador);
     
-    // Enviar email de boas-vindas
-    try {
-      await emailService.enviarEmailBoasVindas(dadosAdestrador.email, dadosAdestrador.nome, 'adestrador');
-    } catch (emailError) {
-      console.error('Erro ao enviar email de boas-vindas:', emailError);
-    }
+    // Enviar email de boas-vindas em background (não bloqueia o cadastro)
+    emailService.enviarEmailBoasVindas(dadosAdestrador.email, dadosAdestrador.nome, 'adestrador').catch(err => {
+      console.error('Erro ao enviar email de boas-vindas:', err);
+    });
     
     res.json({ 
       sucesso: true, 
@@ -563,12 +561,10 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
       }
     }
     
-    // Enviar email de boas-vindas
-    try {
-      await emailService.enviarEmailBoasVindas(email, nome, 'cliente');
-    } catch (emailError) {
-      console.error('Erro ao enviar email de boas-vindas:', emailError);
-    }
+    // Enviar email de boas-vindas em background (não bloqueia o cadastro)
+    emailService.enviarEmailBoasVindas(email, nome, 'cliente').catch(err => {
+      console.error('Erro ao enviar email de boas-vindas:', err);
+    });
     
     req.session.usuario = {
       id: resultado.idUsuario,

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Chat</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        button { padding: 10px 20px; margin: 10px; cursor: pointer; }
+        #log { background: #f5f5f5; padding: 15px; margin-top: 20px; height: 300px; overflow-y: auto; }
+        input { padding: 10px; width: 300px; }
+    </style>
+</head>
+<body>
+    <section class="container">
+        <h1>🧪 Teste de Chat</h1>
+        
+        <section>
+            <h3>1. Iniciar Conversa</h3>
+            <input type="number" id="idAdestrador" placeholder="ID do Adestrador" value="1">
+            <button onclick="iniciarConversa()">Iniciar Conversa</button>
+        </section>
+
+        <section>
+            <h3>2. Enviar Mensagem</h3>
+            <input type="text" id="mensagem" placeholder="Digite a mensagem">
+            <button onclick="enviarMensagemTeste()">Enviar</button>
+        </section>
+
+        <section>
+            <h3>3. Listar Conversas</h3>
+            <button onclick="listarConversas()">Listar Minhas Conversas</button>
+        </section>
+
+        <section id="log"></section>
+    </section>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        let idConversaAtual = null;
+        let idUsuarioAtual = null;
+
+        function log(msg) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += `<p>[${new Date().toLocaleTimeString()}] ${msg}</p>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // Verificar autenticação
+        fetch('/check-auth')
+            .then(r => r.json())
+            .then(data => {
+                if (data.loggedIn) {
+                    idUsuarioAtual = data.user.id;
+                    log(`✅ Autenticado como: ${data.user.nome} (ID: ${data.user.id}, Tipo: ${data.user.tipo})`);
+                    socket.emit('autenticar', idUsuarioAtual);
+                } else {
+                    log('❌ Não autenticado! Faça login primeiro.');
+                }
+            });
+
+        socket.on('connect', () => {
+            log('✅ Socket.io conectado!');
+        });
+
+        socket.on('nova_mensagem', (msg) => {
+            log(`📩 Nova mensagem recebida: "${msg.mensagem}" de ${msg.nome_remetente}`);
+        });
+
+        async function iniciarConversa() {
+            const idAdestrador = document.getElementById('idAdestrador').value;
+            log(`🔄 Iniciando conversa com adestrador ID ${idAdestrador}...`);
+            
+            try {
+                const res = await fetch('/chat/iniciar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idAdestrador: parseInt(idAdestrador) })
+                });
+                
+                const data = await res.json();
+                
+                if (data.idConversa) {
+                    idConversaAtual = data.idConversa;
+                    socket.emit('entrar_conversa', idConversaAtual);
+                    log(`✅ Conversa criada! ID: ${idConversaAtual}`);
+                } else {
+                    log(`❌ Erro: ${data.erro || 'Erro desconhecido'}`);
+                }
+            } catch (erro) {
+                log(`❌ Erro ao iniciar conversa: ${erro.message}`);
+            }
+        }
+
+        async function enviarMensagemTeste() {
+            const mensagem = document.getElementById('mensagem').value;
+            
+            if (!idConversaAtual) {
+                log('❌ Inicie uma conversa primeiro!');
+                return;
+            }
+            
+            if (!mensagem) {
+                log('❌ Digite uma mensagem!');
+                return;
+            }
+
+            log(`📤 Enviando: "${mensagem}"`);
+            
+            socket.emit('enviar_mensagem', {
+                idConversa: idConversaAtual,
+                idRemetente: idUsuarioAtual,
+                mensagem: mensagem
+            });
+
+            document.getElementById('mensagem').value = '';
+        }
+
+        async function listarConversas() {
+            log('🔄 Buscando conversas...');
+            
+            try {
+                const res = await fetch('/chat/conversas');
+                const data = await res.json();
+                
+                if (data.conversas && data.conversas.length > 0) {
+                    log(`✅ ${data.conversas.length} conversa(s) encontrada(s):`);
+                    data.conversas.forEach(c => {
+                        log(`  - ID ${c.id_conversa}: ${c.nome_outro_usuario} (${c.nao_lidas} não lidas)`);
+                    });
+                } else {
+                    log('ℹ️ Nenhuma conversa encontrada');
+                }
+            } catch (erro) {
+                log(`❌ Erro ao listar: ${erro.message}`);
+            }
+        }
+    </script>
+</body>
+</html>

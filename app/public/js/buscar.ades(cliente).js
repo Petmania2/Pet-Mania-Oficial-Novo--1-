@@ -15,7 +15,7 @@ async function loadTrainers() {
         };
         
         const trainersDB = data.map(a => ({
-            id: a.id + 1000,
+            id: a.id_adestrador,
             name: a.nome,
             city: a.cidade || 'Não informado',
             state: a.estado || 'SP',
@@ -26,8 +26,8 @@ async function loadTrainers() {
             available: a.ativo !== false,
             image: a.ID_PERFIL && a.ID_PERFIL > 0 ? `/imagem/${a.ID_PERFIL}` : 'https://via.placeholder.com/400',
             topTrainer: a.anos_experiencia >= 5,
-            phone: a.telefone,
-            about: a.sobre
+            phone: a.telefone || 'Não informado',
+            about: a.sobre || 'Profissional dedicado ao adestramento canino.'
         }));
         console.log('Adestradores carregados:', trainersDB);
         trainers = [...trainersDB, ...trainersFake];
@@ -692,11 +692,6 @@ document.addEventListener('click', (e) => {
         !mobileToggle.contains(e.target)) {
         navMenu.classList.remove('active');
     }
-    
-    if (e.target.classList.contains('btn-view-profile')) {
-        const trainerId = parseInt(e.target.getAttribute('data-trainer-id'));
-        openModalPerfil(trainerId);
-    }
 });
 
 // Modal Perfil
@@ -709,6 +704,11 @@ function openModalPerfil(trainerId) {
     if (!trainer) return;
     
     currentTrainerId = trainerId;
+    
+    // Definir adestrador selecionado para o chat
+    if (window.setAdestradorSelecionado) {
+        window.setAdestradorSelecionado(trainerId);
+    }
     
     const specNames = {
         obediencia: 'Obediência',
@@ -733,6 +733,12 @@ function openModalPerfil(trainerId) {
         .join('');
     document.getElementById('modalTrainerSpecialties').innerHTML = specialtiesHTML;
     
+    // Atualizar campo sobre
+    const bioElement = document.getElementById('modalTrainerBio');
+    if (bioElement) {
+        bioElement.textContent = trainer.about || 'Profissional dedicado ao adestramento canino.';
+    }
+    
     modalPerfil.classList.add('active');
 }
 
@@ -745,13 +751,6 @@ closeModalPerfil.addEventListener('click', closeModal);
 modalPerfil.addEventListener('click', (e) => {
     if (e.target === modalPerfil) {
         closeModal();
-    }
-});
-
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('btn-view-profile')) {
-        const trainerId = parseInt(e.target.getAttribute('data-trainer-id'));
-        openModalPerfil(trainerId);
     }
 });
 
@@ -770,7 +769,20 @@ btnModalViewFull.addEventListener('click', () => {
     }
 });
 
+// Event delegation para botões de ver perfil
+document.addEventListener('click', (e) => {
+    if (e.target && e.target.classList.contains('btn-view-profile')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const trainerId = parseInt(e.target.getAttribute('data-trainer-id'));
+        console.log('Clicou no botão Ver Perfil, ID:', trainerId);
+        if (trainerId) {
+            openModalPerfil(trainerId);
+        }
+    }
+});
+
 // Inicializar página
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
     loadTrainers();
 });

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Pet Mania</title>
+    <link rel="stylesheet" href="/css/chat.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Chat ao Vivo</h1>
+        
+        <div class="container-chat">
+            <!-- Lista de conversas -->
+            <div class="lista-conversas">
+                <h3 style="padding: 15px;">Conversas</h3>
+                <div id="lista-conversas"></div>
+            </div>
+            
+            <!-- Área do chat -->
+            <div class="area-chat" id="area-chat" style="display: none;">
+                <div class="chat-header">
+                    <h3 id="nome-contato">Selecione uma conversa</h3>
+                </div>
+                
+                <div id="mensagens"></div>
+                
+                <div id="indicador-digitando"></div>
+                
+                <div class="chat-input">
+                    <input 
+                        type="text" 
+                        id="input-mensagem" 
+                        placeholder="Digite sua mensagem..."
+                        autocomplete="off"
+                    >
+                    <button id="btn-enviar" onclick="enviarMensagem()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>

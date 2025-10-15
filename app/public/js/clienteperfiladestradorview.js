@@ -364,18 +364,24 @@ let trainersFake = [
 
 async function loadTrainer(id) {
     try {
-        const realId = id - 1000;
-        const response = await fetch(`/api/adestrador/${realId}`);
+        const response = await fetch(`/api/adestrador/${id}`);
         if (response.ok) {
             const data = await response.json();
+            const especialidadeMap = {
+                1: 'obediencia',
+                2: 'comportamento',
+                3: 'truques',
+                4: 'agressividade',
+                5: 'filhotes'
+            };
             return {
                 id: id,
                 name: data.nome,
                 city: data.cidade || 'Não informado',
                 state: data.estado || 'SP',
-                specialties: [data.especialidade || 'obediencia'],
-                rating: 5.0,
-                reviews: 0,
+                specialties: [especialidadeMap[data.especialidade] || 'obediencia'],
+                rating: data.avaliacao || 5.0,
+                reviews: data.total_avaliacoes || 0,
                 price: parseFloat(data.preco) || 150,
                 phone: data.telefone || 'Não informado',
                 image: data.ID_PERFIL && data.ID_PERFIL > 0 ? `/imagem/${data.ID_PERFIL}` : 'https://via.placeholder.com/400'
@@ -413,17 +419,29 @@ const urlParams = new URLSearchParams(window.location.search);
 const trainerId = parseInt(urlParams.get('id'));
 
 async function displayTrainer() {
+    console.log('Carregando adestrador ID:', trainerId);
     let trainer = null;
     
-    // Se o ID for maior que 1000, é um adestrador real do banco
-    if (trainerId > 1000) {
-        trainer = await loadTrainer(trainerId);
-    } else {
-        // Se não, busca nos fictícios
+    if (!trainerId || isNaN(trainerId)) {
+        console.error('ID inválido:', trainerId);
+        alert('ID do adestrador inválido');
+        window.location.href = '/buscaradestradorcliente.ejs';
+        return;
+    }
+    
+    // Tentar carregar do banco primeiro
+    trainer = await loadTrainer(trainerId);
+    console.log('Resultado do banco:', trainer);
+    
+    // Se não encontrou, busca nos fictícios
+    if (!trainer) {
+        console.log('Buscando nos fictícios...');
         trainer = trainersFake.find(t => t.id === trainerId);
+        console.log('Resultado fictício:', trainer);
     }
     
     if (!trainer) {
+        console.error('Adestrador não encontrado');
         alert('Adestrador não encontrado');
         window.location.href = '/buscaradestradorcliente.ejs';
         return;

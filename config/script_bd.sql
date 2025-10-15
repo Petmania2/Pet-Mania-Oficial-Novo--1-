@@ -198,6 +198,37 @@ CREATE TABLE CERTIFICADO (
     FOREIGN KEY (ID_ADESTRADOR) REFERENCES adestradores (ID_ADESTRADOR) ON DELETE CASCADE
 );
 
+-- 15. CRIAR TABELA DE CONVERSAS (CHAT)
+DROP TABLE IF EXISTS conversas;
+CREATE TABLE conversas (
+    id_conversa INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    id_cliente INT UNSIGNED NOT NULL,
+    id_adestrador INT UNSIGNED NOT NULL,
+    data_inicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ultima_mensagem TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    status ENUM('ativa', 'encerrada') DEFAULT 'ativa',
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente) ON DELETE CASCADE,
+    FOREIGN KEY (id_adestrador) REFERENCES adestradores(id_adestrador) ON DELETE CASCADE,
+    INDEX idx_cliente (id_cliente),
+    INDEX idx_adestrador (id_adestrador),
+    UNIQUE KEY unique_conversa (id_cliente, id_adestrador)
+);
+
+-- 16. CRIAR TABELA DE MENSAGENS (CHAT)
+DROP TABLE IF EXISTS mensagens;
+CREATE TABLE mensagens (
+    id_mensagem INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    id_conversa INT UNSIGNED NOT NULL,
+    id_remetente INT UNSIGNED NOT NULL,
+    mensagem TEXT NOT NULL,
+    data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    lida BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (id_conversa) REFERENCES conversas(id_conversa) ON DELETE CASCADE,
+    FOREIGN KEY (id_remetente) REFERENCES USUARIOS(ID_USUARIO) ON DELETE CASCADE,
+    INDEX idx_conversa (id_conversa),
+    INDEX idx_data (data_envio)
+);
+
 -- ============================================
 -- VERIFICAÇÃO FINAL
 -- ============================================

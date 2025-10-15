@@ -1,8 +1,13 @@
 const express = require("express");
 const session = require('express-session');
 const path = require('path');
-const { closePool } = require('./config/pool_conexoes'); // Importar função de fechamento
+const http = require('http');
+const { Server } = require('socket.io');
+const { closePool } = require('./config/pool_conexoes');
+const { inicializarSocket } = require('./app/services/socketService');
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 require('dotenv').config();
 
 const port = process.env.PORT || process.env.APP_PORT || 3000;
@@ -23,7 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Configurar sessões
-app.use(session({
+const sessionMiddleware = session({
   secret: process.env.SECRET_KEY || 'petmania_secret_change_this',
   resave: false,
   saveUninitialized: false,
@@ -31,7 +36,13 @@ app.use(session({
     secure: false, // true em produção com HTTPS
     maxAge: 24 * 60 * 60 * 1000 // 24 horas
   }
-}));
+});
+app.use(sessionMiddleware);
+
+// Compartilhar sessão com Socket.io
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, {}, next);
+});
 
 // Middleware para disponibilizar usuário em todas as views
 app.use((req, res, next) => {
@@ -46,6 +57,9 @@ app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
   next();
 });
+
+// Inicializar Socket.io
+inicializarSocket(io);
 
 // Rotas
 var rotas = require("./app/routes/router");
@@ -71,10 +85,11 @@ app.use((err, req, res, next) => {
   `);
 });
 
-const server = app.listen(port, () => {
+server.listen(port, () => {
   console.log(`🚀 Servidor Pet Mania iniciado com sucesso!`);
   console.log(`📍 Porta: ${port}`);
   console.log(`🌐 URL: http://localhost:${port}`);
+  console.log(`💬 Socket.io ativado para chat em tempo real`);
   console.log(`⏰ Iniciado em: ${new Date().toISOString()}`);
 });
 

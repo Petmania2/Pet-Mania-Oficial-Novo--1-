@@ -3,10 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Mania - Mensagens do Adestrador</title>
+    <title>Mensagens - Pet Mania</title>
     <link rel="stylesheet" href="/css/style-mensagens.css">
     <link rel="stylesheet" href="/css/style-adestrador.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/chat-mensagens.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .main-content {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 80px auto 0;
+        }
+
+        .messages-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+            height: calc(100vh - 120px);
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        /* Sidebar de Contatos */
+        .contacts-sidebar {
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-box {
+            padding: 20px;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 40px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 35px;
+            top: 35px;
+            color: #adb5bd;
+        }
+
+        .contacts-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+        .contact-item:hover {
+            background: white;
+        }
+
+        .contact-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .contact-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .contact-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .contact-item.active .contact-info h4,
+        .contact-item.active .last-message,
+        .contact-item.active .message-time {
+            color: white;
+        }
+
+        .last-message {
+            font-size: 13px;
+            color: #6c757d;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: #adb5bd;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .status-badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Área do Chat */
+        .chat-area {
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .chat-header {
+            padding: 20px 30px;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header .contact-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-header .contact-avatar {
+            width: 45px;
+            height: 45px;
+        }
+
+        .chat-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .status-indicator.online {
+            background: #51cf66;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .chat-input {
+            padding: 20px 30px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .chat-input input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #f1f3f5;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            color: #495057;
+        }
+
+        .btn-icon:hover {
+            background: #e9ecef;
+            transform: scale(1.1);
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Scrollbar */
+        .contacts-list::-webkit-scrollbar,
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .contacts-list::-webkit-scrollbar-track,
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .contacts-list::-webkit-scrollbar-thumb,
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #dee2e6;
+            border-radius: 10px;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .messages-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .contacts-sidebar {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Navbar -->
@@ -129,155 +409,19 @@
 
                     <!-- Chat Input -->
                     <section class="chat-input">
-                        <button class="btn-icon" id="emojiBtn"><i class="far fa-smile"></i></button>
-                        <button class="btn-icon" id="attachBtn"><i class="fas fa-paperclip"></i></button>
+                        <button class="btn-icon" title="Emoji"><i class="far fa-smile"></i></button>
                         <input type="text" placeholder="Digite sua mensagem..." id="messageInput">
-                        <button class="btn btn-send" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
-                    </section>
-                    
-                    <!-- File Upload Dialog (Hidden by default) -->
-                    <section class="file-upload-dialog" id="fileUploadDialog">
-                        <section class="file-upload-header">
-                            <h4>Anexar Arquivo</h4>
-                            <button class="btn-close" id="closeFileDialog"><i class="fas fa-times"></i></button>
-                        </section>
-                        <section class="file-upload-content">
-                            <section class="file-upload-option">
-                                <i class="fas fa-image"></i>
-                                <span>Imagem</span>
-                            </section>
-                            <section class="file-upload-option">
-                                <i class="fas fa-file-pdf"></i>
-                                <span>Documento</span>
-                            </section>
-                            <section class="file-upload-option">
-                                <i class="fas fa-camera"></i>
-                                <span>Câmera</span>
-                            </section>
-                            <section class="file-upload-option">
-                                <i class="fas fa-file"></i>
-                                <span>Outro arquivo</span>
-                            </section>
-                        </section>
-                    </section>
-                    
-                    <!-- Emoji Picker (Hidden by default) -->
-                    <section class="emoji-picker" id="emojiPicker">
-                        <section class="emoji-header">
-                            <h4>Emojis</h4>
-                            <button class="btn-close" id="closeEmojiPicker"><i class="fas fa-times"></i></button>
-                        </section>
-                        <section class="emoji-categories">
-                            <button class="emoji-category active"><i class="far fa-smile"></i></button>
-                            <button class="emoji-category"><i class="fas fa-paw"></i></button>
-                            <button class="emoji-category"><i class="fas fa-utensils"></i></button>
-                            <button class="emoji-category"><i class="fas fa-football-ball"></i></button>
-                            <button class="emoji-category"><i class="fas fa-lightbulb"></i></button>
-                        </section>
-                        <section class="emoji-list">
-                            <span class="emoji">😀</span>
-                            <span class="emoji">😃</span>
-                            <span class="emoji">😄</span>
-                            <span class="emoji">😁</span>
-                            <span class="emoji">😆</span>
-                            <span class="emoji">😅</span>
-                            <span class="emoji">😂</span>
-                            <span class="emoji">🤣</span>
-                            <span class="emoji">😊</span>
-                            <span class="emoji">😇</span>
-                            <span class="emoji">🙂</span>
-                            <span class="emoji">🙃</span>
-                            <span class="emoji">😉</span>
-                            <span class="emoji">😌</span>
-                            <span class="emoji">😍</span>
-                            <span class="emoji">🥰</span>
-                            <span class="emoji">😘</span>
-                            <span class="emoji">😗</span>
-                            <span class="emoji">😙</span>
-                            <span class="emoji">😚</span>
-                            <span class="emoji">😋</span>
-                            <span class="emoji">😛</span>
-                            <span class="emoji">😝</span>
-                            <span class="emoji">😜</span>
-                            <span class="emoji">🤪</span>
-                            <span class="emoji">🤨</span>
-                            <span class="emoji">🧐</span>
-                            <span class="emoji">🤓</span>
-                            <span class="emoji">😎</span>
-                            <span class="emoji">🤩</span>
-                            <span class="emoji">🥳</span>
-                        </section>
-                    </section>
-                </section>
-                
-                <!-- Contact Info Sidebar (initially hidden) -->
-                <section class="contact-info-sidebar" id="contactInfoSidebar">
-                    <section class="contact-info-header">
-                        <h3>Detalhes do Contato</h3>
-                        <button class="btn-close" id="closeContactInfo"><i class="fas fa-times"></i></button>
-                    </section>
-                    <section class="contact-profile">
-                        <section class="contact-avatar large" style="background-image: url('https://i.pravatar.cc/150?img=5')"></section>
-                        <h3 id="sidebarContactName">Amanda Silva</h3>
-                        <p><span class="status-indicator online"></span> Online</p>
-                    </section>
-                    <section class="contact-details">
-                        <section class="detail-item">
-                            <span class="detail-label">Pet:</span>
-                            <span class="detail-value" id="contactPet">Rex - Golden Retriever, 2 anos</span>
-                        </section>
-                        <section class="detail-item">
-                            <span class="detail-label">Telefone:</span>
-                            <span class="detail-value">(11) 98765-4321</span>
-                        </section>
-                        <section class="detail-item">
-                            <span class="detail-label">Email:</span>
-                            <span class="detail-value">amanda.silva@email.com</span>
-                        </section>
-                        <section class="detail-item">
-                            <span class="detail-label">Endereço:</span>
-                            <span class="detail-value">Rua das Flores, 123 - São Paulo, SP</span>
-                        </section>
-                        <section class="detail-item">
-                            <span class="detail-label">Próxima Sessão:</span>
-                            <span class="detail-value" id="nextSession">29/02/2025 - 09:00</span>
-                        </section>
-                    </section>
-                    <section class="contact-actions">
-                        <button class="btn btn-block"><i class="fas fa-calendar-plus"></i> Agendar Sessão</button>
-                        <button class="btn btn-block btn-secondary"><i class="fas fa-file-alt"></i> Ver Relatórios</button>
-                    </section>
-                    <section class="shared-files">
-                        <h4>Arquivos Compartilhados</h4>
-                        <section class="file-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <section class="file-info">
-                                <p class="file-name">Plano_de_Treinamento.pdf</p>
-                                <p class="file-date">25/02/2025</p>
-                            </section>
-                            <button class="btn-icon small"><i class="fas fa-download"></i></button>
-                        </section>
-                        <section class="file-item">
-                            <i class="fas fa-file-image"></i>
-                            <section class="file-info">
-                                <p class="file-name">Rex_Progresso.jpg</p>
-                                <p class="file-date">20/02/2025</p>
-                            </section>
-                            <button class="btn-icon small"><i class="fas fa-download"></i></button>
-                        </section>
+                        <button class="btn-send" id="sendBtn">
+                            <i class="fas fa-paper-plane"></i> Enviar
+                        </button>
                     </section>
                 </section>
             </section>
         </section>
     </main>
 
-    <!-- Floating Notification Button -->
-    <section class="notification-float">
-        <i class="fas fa-bell"></i>
-        <span class="notif-count">3</span>
-    </section>
-
-    <script src="/js/script-mensagens.js"></script>
-    
+    <!-- Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
 </body>
 </html>

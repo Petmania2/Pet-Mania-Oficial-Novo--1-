@@ -271,7 +271,7 @@
                 </section>
 
                 <section class="modal-perfil-actions">
-                    <button class="btn-modal-message" id="btnModalMessage">
+                    <button class="btn-modal-message" id="btnModalMessage" onclick="iniciarChatComAdestrador()">
                         <i class="fas fa-envelope"></i>
                         Enviar Mensagem
                     </button>
@@ -298,5 +298,43 @@
     </footer>
 
     <script src="/js/buscar.ades(cliente).js"></script>
+    <script>
+        let adestradorSelecionadoId = null;
+        
+        // Função para definir o adestrador selecionado
+        window.setAdestradorSelecionado = function(id) {
+            adestradorSelecionadoId = id;
+            console.log('Adestrador selecionado:', id);
+        };
+        
+        async function iniciarChatComAdestrador() {
+            console.log('Tentando iniciar chat com adestrador:', adestradorSelecionadoId);
+            
+            if (!adestradorSelecionadoId) {
+                alert('Erro: Selecione um adestrador primeiro');
+                return;
+            }
+            
+            try {
+                const res = await fetch('/chat/iniciar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idAdestrador: parseInt(adestradorSelecionadoId) })
+                });
+                
+                const data = await res.json();
+                console.log('Resposta do servidor:', data);
+                
+                if (data.idConversa) {
+                    window.location.href = '/mensagenscliente.ejs';
+                } else {
+                    alert('Erro: ' + (data.erro || 'Não foi possível iniciar conversa'));
+                }
+            } catch (erro) {
+                console.error('Erro ao iniciar chat:', erro);
+                alert('Erro ao iniciar conversa. Tente novamente.');
+            }
+        }
+    </script>
 </body>
 </html>

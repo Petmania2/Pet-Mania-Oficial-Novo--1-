@@ -4,6 +4,7 @@ const AdestradorModel = require("../models/adestradorModel");
 const ClienteModel = require("../models/clienteModel");
 const PetModel = require("../models/petModel");
 const hqController = require("../controllers/hqController");
+const chatController = require("../controllers/chatController");
 const favoritoModel = require("../models/favoritoModel");
 const emailService = require("../services/emailService");
 const mercadopago = require('mercadopago');
@@ -107,6 +108,9 @@ router.get("/clientesadestrador.ejs", function (req, res) {
 });
 
 router.get("/mensagensadestrador.ejs", function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'adestrador') {
+    return res.redirect("/Login.ejs");
+  }
   res.render("pages/mensagensadestrador");    
 });
 
@@ -142,6 +146,9 @@ router.get("/planosadestrador.ejs", function (req, res) {
 });
 
 router.get("/mensagenscliente.ejs", function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect("/Login.ejs");
+  }
   res.render("pages/mensagenscliente");    
 });
 
@@ -270,6 +277,10 @@ router.delete("/pets/:id", async function (req, res) {
 
 router.get("/test-chat.ejs", function (req, res) {
   res.render("pages/test-chat");    
+});
+
+router.get("/teste-chat-simples.ejs", function (req, res) {
+  res.render("pages/teste-chat-simples");    
 });
 
 router.get("/paineladestrador", async function (req, res) {
@@ -1105,5 +1116,11 @@ router.get('/imagem/:id', async (req, res) => {
     res.status(500).send('Erro interno do servidor');
   }
 });
+
+// === ROTAS DE CHAT ===
+router.post('/chat/iniciar', chatController.iniciarConversa);
+router.get('/chat/conversas', chatController.listarConversas);
+router.get('/chat/historico/:idConversa', chatController.buscarHistorico);
+router.post('/chat/marcar-lida/:idConversa', chatController.marcarLida);
 
 module.exports = router;

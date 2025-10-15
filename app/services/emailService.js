@@ -3,7 +3,7 @@ require('dotenv').config();
 
 class EmailService {
   constructor() {
-    this.transporter = nodemailer.createTransporter({
+    this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
@@ -47,7 +47,7 @@ class EmailService {
         <title>Bem-vindo à Pet Mania</title>
     </head>
     <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+        <section style="background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
             <h1 style="color: white; margin: 0; font-size: 28px;">🐾 Pet Mania</h1>
             <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Conectando pets e adestradores</p>
         </section>
@@ -85,7 +85,7 @@ class EmailService {
             
             <section style="text-align: center; margin: 30px 0;">
                 <a href="http://localhost:3000/${isAdestrador ? 'paineladestrador.ejs' : 'painelcliente.ejs'}" 
-                   style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; display: inline-block; font-size: 16px;">
+                   style="background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; display: inline-block; font-size: 16px;">
                     🚀 Acessar Meu Painel
                 </a>
             </section>
@@ -101,9 +101,9 @@ class EmailService {
             <section style="text-align: center; color: #666; font-size: 14px;">
                 <p>Precisa de ajuda? Entre em contato conosco:</p>
                 <p>
-                    📧 <a href="mailto:contato@petmania.com.br" style="color: #667eea;">contato@petmania.com.br</a><br>
+                    📧 <a href="mailto:contato@petmania.com.br" style="color: #FFA500;">contato@petmania.com.br</a><br>
                     📱 (11) 99999-9999<br>
-                    🌐 <a href="http://localhost:3000" style="color: #667eea;">www.petmania.com.br</a>
+                    🌐 <a href="http://localhost:3000" style="color: #FFA500;">www.petmania.com.br</a>
                 </p>
                 
                 <section style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">

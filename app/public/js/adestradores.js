@@ -463,14 +463,9 @@ function createTrainerCard(adestrador) {
                 <span class="price-label">Preço por sessão:</span>
                 <span class="price-value">R$ ${adestrador.preco}</span>
             </section>
-            <section class="trainer-buttons">
-                <button class="btn btn-primary trainer-btn" onclick="agendarSessao(${adestrador.id})">
-                    Agendar Sessão
-                </button>
-                <button class="btn btn-outline trainer-btn" onclick="verPerfil(${adestrador.id})" style="margin-top: 0.5rem;">
-                    Ver Perfil
-                </button>
-            </section>
+            <button class="btn btn-primary" onclick="verPerfil(${adestrador.id})">
+                Ver Perfil
+            </button>
         </section>
     `;
     return card;
@@ -509,10 +504,7 @@ function createTrainerListItem(adestrador) {
                 <span class="price-value">R$ ${adestrador.preco}</span>
                 <span class="price-label">por sessão</span>
             </section>
-            <button class="btn btn-primary" onclick="agendarSessao(${adestrador.id})">
-                Agendar Sessão
-            </button>
-            <button class="btn btn-outline" onclick="verPerfil(${adestrador.id})">
+            <button class="btn btn-primary" onclick="verPerfil(${adestrador.id})">
                 Ver Perfil
             </button>
         </section>

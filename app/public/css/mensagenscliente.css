@@ -630,3 +630,27 @@
         gap: 8px;
     }
 }
+
+
+/* Modal de Pets */
+.modal-pets { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+.modal-pets-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
+.modal-pets-content { position: relative; background: white; border-radius: 20px; max-width: 600px; width: 90%; max-height: 80vh; overflow: hidden; z-index: 10000; }
+.modal-pets-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #e0e0e0; }
+.modal-pets-header h3 { margin: 0; font-size: 1.5rem; color: #333; }
+.modal-pets-close { background: none; border: none; font-size: 2rem; color: #999; cursor: pointer; line-height: 1; }
+.modal-pets-close:hover { color: #FFA500; }
+.modal-pets-body { padding: 20px; max-height: 60vh; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+.pet-card-modal { background: #f8f9fa; border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; }
+.pet-card-modal:hover { transform: translateY(-5px); border-color: #FFA500; box-shadow: 0 5px 15px rgba(255,165,0,0.3); }
+.pet-card-modal img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; }
+.pet-card-modal h4 { margin: 5px 0; font-size: 1rem; color: #333; }
+.pet-card-modal p { margin: 3px 0; font-size: 0.85rem; color: #666; }
+
+/* Pet Card na Mensagem */
+.pet-card-mensagem { background: #f8f9fa; border-radius: 15px; padding: 15px; display: flex; gap: 15px; align-items: center; max-width: 300px; margin-bottom: 5px; }
+.pet-card-mensagem img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
+.pet-card-no-photo { width: 60px; height: 60px; border-radius: 50%; background: #e0e0e0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #999; }
+.pet-card-info h4 { margin: 0 0 5px 0; font-size: 1rem; color: #333; }
+.pet-card-info p { margin: 3px 0; font-size: 0.85rem; color: #666; display: flex; align-items: center; gap: 5px; }
+.pet-card-info i { color: #FFA500; font-size: 0.8rem; }

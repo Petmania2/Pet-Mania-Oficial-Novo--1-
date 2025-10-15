@@ -19,7 +19,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             min-height: 100vh;
         }
 
@@ -65,7 +65,7 @@
 
         .search-box input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #ff6b35;
         }
 
         .search-box i {
@@ -94,7 +94,7 @@
         }
 
         .contact-item.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             color: white;
         }
 
@@ -143,7 +143,7 @@
         }
 
         .status-badge {
-            background: #667eea;
+            background: #ff6b35;
             color: white;
             padding: 4px 10px;
             border-radius: 12px;
@@ -157,6 +157,7 @@
             flex-direction: column;
             background: white;
             height: 100%;
+            overflow: hidden;
         }
 
         .chat-header {
@@ -210,6 +211,7 @@
             display: flex !important;
             align-items: center;
             gap: 12px;
+            flex-shrink: 0;
         }
 
         .chat-input input {
@@ -223,7 +225,7 @@
 
         .chat-input input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #ff6b35;
         }
 
         .btn-icon {
@@ -246,7 +248,7 @@
         }
 
         .btn-send {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             color: white;
             padding: 12px 24px;
             border: none;
@@ -258,7 +260,7 @@
 
         .btn-send:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
         }
 
         /* Scrollbar */
@@ -282,14 +284,15 @@
         .message {
             margin-bottom: 20px;
             display: flex;
+            width: 100%;
         }
 
         .message.enviada {
-            justify-content: flex-end;
+            justify-content: flex-end !important;
         }
 
         .message.recebida {
-            justify-content: flex-start;
+            justify-content: flex-start !important;
         }
 
         .message-content {
@@ -297,10 +300,11 @@
             padding: 12px 18px;
             border-radius: 18px;
             position: relative;
+            word-wrap: break-word;
         }
 
         .message.enviada .message-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             color: white;
             border-bottom-right-radius: 4px;
         }
@@ -323,6 +327,65 @@
             opacity: 0.7;
             margin-top: 4px;
             display: block;
+        }
+
+        /* Pet Card */
+        .pet-card-mensagem {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .message.recebida .pet-card-mensagem {
+            background: #f8f9fa;
+        }
+
+        .pet-card-mensagem img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .pet-card-no-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .message.recebida .pet-card-no-photo {
+            background: #e9ecef;
+            color: #adb5bd;
+        }
+
+        .pet-card-info {
+            flex: 1;
+        }
+
+        .pet-card-info h4 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+        }
+
+        .pet-card-info p {
+            margin: 4px 0;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pet-card-info i {
+            width: 16px;
         }
 
         /* Responsivo */
@@ -380,9 +443,9 @@
                     <!-- Chat Header -->
                     <section class="chat-header">
                         <section class="contact-info">
-                            <section class="contact-avatar" style="background-image: url('https://i.pravatar.cc/150?img=5')"></section>
+                            <section class="contact-avatar" id="chatContactAvatar"></section>
                             <section>
-                                <h3 id="chatContactName">Amanda Silva</h3>
+                                <h3 id="chatContactName">Selecione uma conversa</h3>
                                 <p><span class="status-indicator online"></span> Online</p>
                             </section>
                         </section>
@@ -411,8 +474,6 @@
         </section>
     </main>
 
-    <!-- Socket.io -->
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/chat.js"></script>
+    <script src="/js/mensagensadestrador.js"></script>
 </body>
 </html>

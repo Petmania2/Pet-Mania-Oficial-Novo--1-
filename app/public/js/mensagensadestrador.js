@@ -83,8 +83,12 @@ async function selecionarConversa(conversa) {
     conversaSelecionada = conversa;
     conversa.naoLida = false;
     
-    // Atualizar nome no header
+    // Atualizar nome e avatar no header
     document.getElementById('chatContactName').textContent = conversa.nome;
+    const avatarElement = document.getElementById('chatContactAvatar');
+    if (avatarElement) {
+        avatarElement.style.backgroundImage = `url('${conversa.avatar}')`;
+    }
     
     // Carregar mensagens da conversa
     await carregarMensagensConversa();
@@ -92,31 +96,76 @@ async function selecionarConversa(conversa) {
     // Atualizar UI
     renderizarConversas();
     
-    // Iniciar atualização automática
-    if (window.intervalAtualizacao) {
-        clearInterval(window.intervalAtualizacao);
-    }
-    window.intervalAtualizacao = setInterval(carregarMensagensConversa, 2000);
+    // Remover atualização automática
 }
 
 // Renderizar mensagens
 function renderizarMensagens() {
     const chatMessages = document.getElementById('chatMessages');
+    if (!chatMessages) {
+        console.error('chatMessages não encontrado');
+        return;
+    }
+    
     chatMessages.innerHTML = '';
+    
+    if (!conversaSelecionada || !conversaSelecionada.mensagens) {
+        console.log('Sem mensagens para renderizar');
+        return;
+    }
+    
+    console.log('Renderizando', conversaSelecionada.mensagens.length, 'mensagens');
 
     conversaSelecionada.mensagens.forEach(mensagem => {
+        console.log('Mensagem tipo:', mensagem.tipo, 'ID remetente:', mensagem.id);
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${mensagem.tipo}`;
-        messageDiv.innerHTML = `
-            <div class="message-content">
-                <p>${mensagem.texto}</p>
-                <span class="message-time">${mensagem.hora}</span>
-            </div>
-        `;
+        
+        // Verificar se é um pet card
+        let isPetCard = false;
+        let parsed = null;
+        
+        // Decodificar HTML entities
+        const div = document.createElement('div');
+        div.innerHTML = mensagem.texto;
+        const textoDecodificado = div.textContent || div.innerText;
+        
+        try {
+            parsed = JSON.parse(textoDecodificado);
+            isPetCard = parsed.tipo === 'pet-card';
+        } catch (e) {
+            // Não é JSON, é texto normal
+        }
+        
+        if (isPetCard && parsed) {
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="pet-card-mensagem">
+                        ${parsed.foto ? `<img src="${parsed.foto}" alt="${parsed.nome}">` : '<div class="pet-card-no-photo"><i class="fas fa-dog"></i></div>'}
+                        <div class="pet-card-info">
+                            <h4>${parsed.nome}</h4>
+                            <p><i class="fas fa-paw"></i> ${parsed.raca}</p>
+                            <p><i class="fas fa-calendar"></i> ${parsed.idade}</p>
+                            <p><i class="fas fa-venus-mars"></i> ${parsed.sexo || 'Não informado'}</p>
+                            <p><i class="fas fa-exclamation-circle"></i> ${parsed.problema || 'Não informado'}</p>
+                            <p><i class="fas fa-comment"></i> ${parsed.observacoes || 'Nenhuma'}</p>
+                        </div>
+                    </div>
+                    <span class="message-time">${mensagem.hora}</span>
+                </div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    <p>${textoDecodificado}</p>
+                    <span class="message-time">${mensagem.hora}</span>
+                </div>
+            `;
+        }
+        
         chatMessages.appendChild(messageDiv);
     });
 
-    // Scroll para o final
     setTimeout(() => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }, 50);
@@ -150,25 +199,32 @@ async function enviarMensagem() {
     }
 }
 
-// Event listeners
-document.getElementById('sendBtn').addEventListener('click', enviarMensagem);
-
-document.getElementById('messageInput').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        enviarMensagem();
-    }
-});
-
-// Parar atualização ao sair da página
-window.addEventListener('beforeunload', () => {
-    if (window.intervalAtualizacao) {
-        clearInterval(window.intervalAtualizacao);
-    }
-});
-
 // Inicializar
 document.addEventListener('DOMContentLoaded', async () => {
+    // Event listeners
+    const sendBtn = document.getElementById('sendBtn');
+    const messageInput = document.getElementById('messageInput');
+    
+    if (sendBtn) {
+        sendBtn.addEventListener('click', enviarMensagem);
+    }
+    
+    if (messageInput) {
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                enviarMensagem();
+            }
+        });
+    }
+    
+    // Parar atualização ao sair da página
+    window.addEventListener('beforeunload', () => {
+        if (window.intervalAtualizacao) {
+            clearInterval(window.intervalAtualizacao);
+        }
+    });
+    
     await carregarConversas();
     
     if (conversas.length > 0) {

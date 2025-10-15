@@ -46,6 +46,37 @@ document.addEventListener('DOMContentLoaded', function() {
     <title>Pet Mania - Conectando Adestradores e Donos de Cães</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/ai-chat.css">
+    <style>
+        /* Modal Styles */
+        .trainer-profile-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: none; justify-content: center; align-items: center; padding: 1rem; }
+        .trainer-profile-modal.active { display: flex; animation: fadeIn 0.3s ease; }
+        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); }
+        .modal-content { position: relative; background: white; border-radius: 20px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3); max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; z-index: 1001; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 2rem 2rem 1rem 2rem; border-bottom: 1px solid #e2e8f0; }
+        .modal-header h2 { color: #1a202c; font-size: 1.8rem; font-weight: 700; margin: 0; }
+        .modal-close { background: none; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer; padding: 0.5rem; border-radius: 50%; transition: all 0.3s ease; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+        .modal-close:hover { background: #f1f5f9; color: #e53e3e; }
+        .modal-body { padding: 2rem; }
+        .trainer-profile-card { display: flex; flex-direction: column; gap: 2rem; }
+        .profile-image { position: relative; align-self: center; margin-bottom: 1rem; }
+        .profile-image img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #FFA500; box-shadow: 0 10px 25px rgba(255, 165, 0, 0.3); }
+        .profile-badge { position: absolute; bottom: 10px; right: 0; background: linear-gradient(135deg, #ff6b6b, #ff8e8e); color: white; padding: 0.4rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem; }
+        .profile-section h3 { font-size: 2rem; font-weight: 700; color: #1a202c; margin-bottom: 0.5rem; text-align: center; }
+        .profile-rating { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-bottom: 2rem; }
+        .profile-details { display: flex; flex-direction: column; gap: 1.5rem; }
+        .detail-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: #f8fafc; border-radius: 12px; border-left: 4px solid #FFA500; }
+        .detail-item i { color: #FFA500; font-size: 1.1rem; margin-top: 0.1rem; min-width: 20px; }
+        .detail-item label { font-weight: 600; color: #374151; min-width: 100px; }
+        .detail-item span, .detail-item p { color: #1a202c; font-weight: 500; flex: 1; }
+        .phone-number { display: flex; align-items: center; gap: 0.5rem; }
+        .see-more-btn { background: none; border: none; color: #FFA500; cursor: pointer; font-weight: 600; text-decoration: underline; font-size: 0.9rem; }
+        .specialties-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .specialty-tag { background: linear-gradient(135deg, #FFA500, #ff8c00); color: white; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .price-highlight { font-size: 1.3rem; font-weight: 700; color: #059669; background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 0.5rem 1rem; border-radius: 10px; display: inline-block; }
+        .biography-section { flex-direction: column; align-items: flex-start; }
+        .profile-actions { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e2e8f0; }
+        .profile-actions .btn { flex: 1; max-width: 200px; padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -245,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <span class="price-label">Preço por sessão:</span>
                                         <data class="price-value" value="<%= adestrador.preco %>">R$ <%= parseFloat(adestrador.preco || 0).toFixed(2).replace('.', ',') %></data>
                                     </section>
-                                    <a href="#" class="btn btn-primary trainer-btn" data-telefone="<%= adestrador.telefone %>">Agendar Sessão</a>
+                                    <button class="btn btn-primary" onclick="verPerfil(<%= adestrador.id %>)">Ver Perfil</button>
                                 </section>
                             </article>
                         <% }); %>
@@ -277,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <span class="price-label">Preço por sessão:</span>
                                 <data class="price-value" value="150">R$ 150</data>
                             </section>
-                            <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
+                            <button class="btn btn-primary" onclick="verPerfil('f1')">Ver Perfil</button>
                         </section>
                     </article>
                 
@@ -303,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <span class="price-label">Preço por sessão:</span>
                                 <span class="price-value">R$ 180</span>
                             </section>
-                            <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
+                            <button class="btn btn-primary" onclick="verPerfil('f2')">Ver Perfil</button>
                         </section>
                     </article>
                     
@@ -332,7 +363,62 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <span class="price-label">Preço por sessão:</span>
                                 <span class="price-value">R$ 220</span>
                             </section>
-                            <a href="#" class="btn btn-primary trainer-btn">Agendar Sessão</a>
+                            <button class="btn btn-primary" onclick="verPerfil('f3')">Ver Perfil</button>
+                        </section>
+                    </article>
+
+                    <article class="trainer-card">
+                        <section class="trainer-header">
+                            <section class="trainer-rating">
+                                <i class="fas fa-star"></i> 4.7
+                            </section>
+                        </section>
+                        <section class="trainer-img">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80" alt="Ana Silva">
+                        </section>
+                        <section class="trainer-info">
+                            <h3 class="trainer-name">Ana Silva</h3>
+                            <p class="trainer-specialty"><i class="fas fa-certificate"></i> Truques e Comandos</p>
+                            <p class="trainer-location"><i class="fas fa-map-marker-alt"></i> Curitiba, PR</p>
+                            <p class="trainer-experience"><i class="fas fa-clock"></i> 6 anos de experiência</p>
+                            <section class="trainer-reviews">
+                                <section class="stars">⭐⭐⭐⭐</section>
+                                <span>(31 avaliações)</span>
+                            </section>
+                            <section class="trainer-price-info" style="display: flex; align-items: center; gap: 8px;">
+                                <span class="price-label">Preço por sessão:</span>
+                                <span class="price-value">R$ 160</span>
+                            </section>
+                            <button class="btn btn-primary" onclick="verPerfil('f4')">Ver Perfil</button>
+                        </section>
+                    </article>
+
+                    <article class="trainer-card">
+                        <section class="trainer-header">
+                            <section class="trainer-rating">
+                                <i class="fas fa-star"></i> 4.9
+                            </section>
+                            <section class="trainer-badge">
+                                <i class="fas fa-certificate"></i> Certificado
+                            </section>
+                        </section>
+                        <section class="trainer-img">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80" alt="Pedro Santos">
+                        </section>
+                        <section class="trainer-info">
+                            <h3 class="trainer-name">Pedro Santos</h3>
+                            <p class="trainer-specialty"><i class="fas fa-certificate"></i> Adestramento para Filhotes</p>
+                            <p class="trainer-location"><i class="fas fa-map-marker-alt"></i> Porto Alegre, RS</p>
+                            <p class="trainer-experience"><i class="fas fa-clock"></i> 9 anos de experiência</p>
+                            <section class="trainer-reviews">
+                                <section class="stars">⭐⭐⭐⭐⭐</section>
+                                <span>(64 avaliações)</span>
+                            </section>
+                            <section class="trainer-price-info" style="display: flex; align-items: center; gap: 8px;">
+                                <span class="price-label">Preço por sessão:</span>
+                                <span class="price-value">R$ 140</span>
+                            </section>
+                            <button class="btn btn-primary" onclick="verPerfil('f5')">Ver Perfil</button>
                         </section>
                     </article>
                 </section>
@@ -451,9 +537,9 @@ document.addEventListener('DOMContentLoaded', function() {
     </a>
 
     <!-- Modal de Perfil do Adestrador (igual adestradores.ejs) -->
-<section class="trainer-profile-modal" id="trainerProfileModal" style="display:none;">
-    <section class="modal-overlay" id="modalOverlay"></section>
-    <section class="modal-content">
+<section class="trainer-profile-modal" id="trainerProfileModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
+    <section class="modal-overlay" id="modalOverlay" style="position:absolute; top:0; left:0; width:100%; height:100%;"></section>
+    <section class="modal-content" style="position:relative; background:white; border-radius:20px; max-width:700px; width:90%; max-height:90vh; overflow-y:auto; z-index:10000;">
         <header class="modal-header">
             <h2>Perfil do Adestrador</h2>
             <button class="modal-close" id="modalClose">
@@ -485,11 +571,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <span id="phonePartial"></span>
                                 <button class="see-more-btn" id="seeMorePhone">Ver mais</button>
                             </span>
-                        </section>
-                        <section class="detail-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <label>Endereço:</label>
-                            <span id="profileAddress"></span>
                         </section>
                         <section class="detail-item">
                             <i class="fas fa-city"></i>
@@ -524,8 +605,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     </section>
                     <section class="profile-actions">
                         <button class="btn btn-primary" id="scheduleSessionBtn">
-                            <i class="fas fa-calendar-alt"></i>
-                            Agendar Sessão
+                            <i class="fas fa-envelope"></i>
+                            Enviar Mensagem
                         </button>
                     </section>
                 </section>
@@ -654,9 +735,119 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     </script>
 
+    <script>
+    // Dados dos adestradores para o index.ejs
+    let adestradoresData = [];
+    
+    const especialidadesMap = { 1: 'Obediência Básica', 2: 'Comportamento Canino', 3: 'Truques e Comandos', 4: 'Controle de Agressividade', 5: 'Adestramento para Filhotes', 6: 'Socialização Canina', 7: 'Cães de Guarda' };
+    
+    // Carregar adestradores do banco
+    async function carregarAdestradoresIndex() {
+        try {
+            const response = await fetch('/api/adestradores');
+            const dados = await response.json();
+            
+            const adestradoresReais = dados.map(a => ({
+                id: a.id,
+                nome: a.nome,
+                especialidade: especialidadesMap[a.especialidade] || 'Adestrador Profissional',
+                cidade: a.cidade,
+                estado: a.estado,
+                preco: parseFloat(a.preco) || 100,
+                rating: 5.0,
+                reviews: 0,
+                experiencia: a.anos_experiencia || 0,
+                imagem: a.ID_PERFIL ? `/imagem/${a.ID_PERFIL}` : '/imagens/default-avatar.png',
+                badge: a.anos_experiencia >= 10 ? 'Especialista' : 'Novo',
+                descricao: a.sobre || 'Adestrador profissional',
+                telefone: a.telefone || '(00) 00000-0000',
+                endereco: a.logradouro_adestrador && a.num_resid_adestrador ? `${a.logradouro_adestrador}, ${a.num_resid_adestrador}` : (a.logradouro_adestrador || 'Endereço não informado')
+            }));
+            
+            // Adestradores fictícios
+            const ficticios = [
+                { id: 'f1', nome: 'Ricardo Almeida', especialidade: 'Obediência Básica', cidade: 'São Paulo', estado: 'SP', preco: 150, rating: 5.0, reviews: 57, experiencia: 8, imagem: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80', badge: 'Top Adestrador', descricao: 'Especialista em obediência básica com 8 anos de experiência', telefone: '(11) 99999-1111', endereco: 'Rua das Flores, 123 - Vila Madalena' },
+                { id: 'f2', nome: 'Juliana Costa', especialidade: 'Comportamento Canino', cidade: 'Rio de Janeiro', estado: 'RJ', preco: 180, rating: 4.9, reviews: 43, experiencia: 10, imagem: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80', badge: 'Especialista', descricao: 'Especialista em comportamento canino', telefone: '(21) 99999-2222', endereco: 'Av. Copacabana, 456 - Copacabana' },
+                { id: 'f3', nome: 'Carlos Mendes', especialidade: 'Controle de Agressividade', cidade: 'Belo Horizonte', estado: 'MG', preco: 220, rating: 4.8, reviews: 38, experiencia: 12, imagem: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80', badge: 'Especialista', descricao: 'Controle de agressividade canina', telefone: '(31) 99999-3333', endereco: 'Rua da Liberdade, 789 - Centro' },
+                { id: 'f4', nome: 'Ana Silva', especialidade: 'Truques e Comandos', cidade: 'Curitiba', estado: 'PR', preco: 160, rating: 4.7, reviews: 31, experiencia: 6, imagem: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80', badge: '', descricao: 'Truques e comandos avançados', telefone: '(41) 99999-4444', endereco: 'Rua XV de Novembro, 321 - Centro' },
+                { id: 'f5', nome: 'Pedro Santos', especialidade: 'Adestramento para Filhotes', cidade: 'Porto Alegre', estado: 'RS', preco: 140, rating: 4.9, reviews: 64, experiencia: 9, imagem: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80', badge: 'Certificado', descricao: 'Adestramento para filhotes', telefone: '(51) 99999-5555', endereco: 'Av. Ipiranga, 654 - Cidade Baixa' }
+            ];
+            
+            adestradoresData = [...adestradoresReais, ...ficticios];
+        } catch (error) {
+            console.error('Erro ao carregar adestradores:', error);
+        }
+    }
+    
+    function verPerfil(adestradorId) {
+        const adestrador = adestradoresData.find(a => a.id == adestradorId);
+        
+        if (!adestrador) {
+            alert('Perfil não encontrado!');
+            return;
+        }
+        
+        document.getElementById('profileImage').src = adestrador.imagem;
+        document.getElementById('profileName').textContent = adestrador.nome;
+        document.getElementById('profileStars').innerHTML = '⭐'.repeat(Math.floor(adestrador.rating));
+        document.getElementById('profileReviews').textContent = `(${adestrador.reviews} avaliações)`;
+        
+        const telefoneParcial = adestrador.telefone.substring(0, adestrador.telefone.length - 4) + '...';
+        document.getElementById('phonePartial').textContent = telefoneParcial;
+        document.getElementById('profileCity').textContent = adestrador.cidade;
+        document.getElementById('profileState').textContent = adestrador.estado;
+        document.getElementById('profileExperience').textContent = `${adestrador.experiencia} anos`;
+        document.getElementById('profilePrice').textContent = `R$ ${adestrador.preco}`;
+        document.getElementById('profileBiography').textContent = adestrador.descricao;
+        
+        const specialtiesContainer = document.getElementById('profileSpecialties');
+        specialtiesContainer.innerHTML = `<span class="specialty-tag">${adestrador.especialidade}</span>`;
+        
+        const badgeElement = document.getElementById('profileBadge');
+        if (adestrador.badge) {
+            badgeElement.style.display = 'flex';
+            document.getElementById('badgeText').textContent = adestrador.badge;
+        } else {
+            badgeElement.style.display = 'none';
+        }
+        
+        document.getElementById('seeMorePhone').onclick = () => window.location.href = '/cliente.ejs';
+        document.getElementById('scheduleSessionBtn').onclick = async () => {
+            const authRes = await fetch('/check-auth');
+            const authData = await authRes.json();
+            if (!authData.loggedIn) {
+                window.location.href = '/Login.ejs';
+                return;
+            }
+            const whatsappNumber = adestrador.telefone.replace(/\D/g, '');
+            const whatsappUrl = `https://wa.me/55${whatsappNumber}?text=Olá! Gostaria de agendar uma sessão de adestramento.`;
+            if (confirm(`Entrar em contato com ${adestrador.nome}?\nTelefone: ${adestrador.telefone}\n\nClique OK para abrir WhatsApp`)) {
+                window.open(whatsappUrl, '_blank');
+            }
+            hideModal();
+        };
+        
+        showModal();
+    }
+    
+    function showModal() {
+        const modal = document.getElementById('trainerProfileModal');
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        document.getElementById('modalClose').onclick = hideModal;
+        document.getElementById('modalOverlay').onclick = hideModal;
+    }
+    
+    function hideModal() {
+        const modal = document.getElementById('trainerProfileModal');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    document.addEventListener('DOMContentLoaded', carregarAdestradoresIndex);
+    </script>
     <script src="/js/auth-header.js"></script>
     <script src="/js/javascript.js"></script>
-    <script src="/js/adestradores.js"></script>
     <script src="/js/ai-chat.js"></script>
 </body>
 </html>

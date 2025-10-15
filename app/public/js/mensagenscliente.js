@@ -125,10 +125,53 @@ function renderizarMensagens() {
 
         const messageElement = document.createElement('article');
         messageElement.className = `mensagem ${mensagem.tipo}`;
-        messageElement.innerHTML = `
-            ${mensagem.texto}
-            <time class="mensagem-timestamp">${mensagem.hora}</time>
-        `;
+        
+        // Verificar se é um pet card
+        if (mensagem.petCard) {
+            messageElement.innerHTML = `
+                <div class="pet-card-mensagem">
+                    ${mensagem.petCard.foto ? `<img src="${mensagem.petCard.foto}" alt="${mensagem.petCard.nome}">` : '<div class="pet-card-no-photo"><i class="fas fa-dog"></i></div>'}
+                    <div class="pet-card-info">
+                        <h4>${mensagem.petCard.nome}</h4>
+                        <p><i class="fas fa-paw"></i> ${mensagem.petCard.raca}</p>
+                        <p><i class="fas fa-calendar"></i> ${mensagem.petCard.idade}</p>
+                        <p><i class="fas fa-venus-mars"></i> ${mensagem.petCard.sexo}</p>
+                        <p><i class="fas fa-exclamation-circle"></i> ${mensagem.petCard.problema}</p>
+                        <p><i class="fas fa-comment"></i> ${mensagem.petCard.observacoes}</p>
+                    </div>
+                </div>
+                <time class="mensagem-timestamp">${mensagem.hora}</time>
+            `;
+        } else if (mensagem.texto) {
+            // Tentar parsear se for JSON (pet card salvo no banco)
+            try {
+                const parsed = JSON.parse(mensagem.texto);
+                if (parsed.tipo === 'pet-card') {
+                    messageElement.innerHTML = `
+                        <div class="pet-card-mensagem">
+                            ${parsed.foto ? `<img src="${parsed.foto}" alt="${parsed.nome}">` : '<div class="pet-card-no-photo"><i class="fas fa-dog"></i></div>'}
+                            <div class="pet-card-info">
+                                <h4>${parsed.nome}</h4>
+                                <p><i class="fas fa-paw"></i> ${parsed.raca}</p>
+                                <p><i class="fas fa-calendar"></i> ${parsed.idade}</p>
+                                <p><i class="fas fa-venus-mars"></i> ${parsed.sexo}</p>
+                                <p><i class="fas fa-exclamation-circle"></i> ${parsed.problema}</p>
+                                <p><i class="fas fa-comment"></i> ${parsed.observacoes}</p>
+                            </div>
+                        </div>
+                        <time class="mensagem-timestamp">${mensagem.hora}</time>
+                    `;
+                } else {
+                    throw new Error('Não é pet card');
+                }
+            } catch {
+                // Mensagem de texto normal
+                messageElement.innerHTML = `
+                    ${mensagem.texto}
+                    <time class="mensagem-timestamp">${mensagem.hora}</time>
+                `;
+            }
+        }
 
         messageGroup.appendChild(messageElement);
         mensagensArea.appendChild(messageGroup);
@@ -257,10 +300,125 @@ navMenu.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
-// Botão anexar (simulação)
-document.querySelector('.btn-anexar').addEventListener('click', () => {
-    alert('Funcionalidade de anexar arquivos será implementada em breve!');
+// Botão enviar pet
+const btnAnexarPet = document.getElementById('btnAnexarPet');
+btnAnexarPet.addEventListener('click', async () => {
+    if (!conversaSelecionada) {
+        alert('Selecione uma conversa primeiro!');
+        return;
+    }
+    
+    // Carregar pets do cliente
+    try {
+        const response = await fetch('/api/meus-pets');
+        
+        if (!response.ok) {
+            if (response.status === 401) {
+                alert('Você precisa estar logado!');
+                window.location.href = '/Login.ejs';
+                return;
+            }
+            throw new Error('Erro ao carregar pets');
+        }
+        
+        const pets = await response.json();
+        console.log('Pets carregados:', pets);
+        
+        if (!pets || pets.length === 0) {
+            alert('Você ainda não tem pets cadastrados! Cadastre um pet em "Meus Pets".');
+            return;
+        }
+        
+        mostrarModalPets(pets);
+    } catch (error) {
+        console.error('Erro ao carregar pets:', error);
+        alert('Erro ao carregar seus pets. Tente novamente.');
+    }
 });
+
+// Mostrar modal de seleção de pets
+function mostrarModalPets(pets) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-pets';
+    modal.innerHTML = `
+        <div class="modal-pets-overlay"></div>
+        <div class="modal-pets-content">
+            <div class="modal-pets-header">
+                <h3>Selecione um Pet</h3>
+                <button class="modal-pets-close">&times;</button>
+            </div>
+            <div class="modal-pets-body">
+                ${pets.map(pet => `
+                    <div class="pet-card-modal" data-pet='${JSON.stringify(pet).replace(/'/g, '&apos;')}'>
+                        <img src="${pet.ID_FOTO_PET ? `/imagem/${pet.ID_FOTO_PET}` : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23999"%3E%3Cpath d="M12 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 10c-2.7 0-5.8 1.29-6 2h12c-.22-.72-3.31-2-6-2zM12 4C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 12c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/%3E%3C/svg%3E'}" alt="${pet.NOME_PET}">
+                        <div class="pet-card-info">
+                            <h4>${pet.NOME_PET}</h4>
+                            <p>${pet.RACA_PET || 'Raça não informada'}</p>
+                            <p>${pet.IDADE_PET || 'Idade não informada'}</p>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Fechar modal
+    modal.querySelector('.modal-pets-close').onclick = () => modal.remove();
+    modal.querySelector('.modal-pets-overlay').onclick = () => modal.remove();
+    
+    // Selecionar pet
+    modal.querySelectorAll('.pet-card-modal').forEach(card => {
+        card.onclick = () => {
+            const pet = JSON.parse(card.dataset.pet);
+            enviarPetCard(pet);
+            modal.remove();
+        };
+    });
+}
+
+// Enviar card do pet
+async function enviarPetCard(pet) {
+    const petCard = {
+        tipo: 'pet-card',
+        nome: pet.NOME_PET,
+        raca: pet.RACA_PET || 'Raça não informada',
+        idade: pet.IDADE_PET || 'Idade não informada',
+        sexo: pet.SEXO_PET || 'Não informado',
+        problema: pet.PROBLEMA_COMPORTAMENTO || 'Não informado',
+        observacoes: pet.OBSERVACOES || 'Nenhuma observação',
+        foto: pet.ID_FOTO_PET ? `/imagem/${pet.ID_FOTO_PET}` : null
+    };
+    
+    const agora = new Date();
+    const hora = agora.getHours().toString().padStart(2, '0') + ':' + agora.getMinutes().toString().padStart(2, '0');
+    
+    conversaSelecionada.mensagens.push({
+        id: conversaSelecionada.mensagens.length + 1,
+        tipo: 'enviada',
+        hora: hora,
+        petCard: petCard
+    });
+    
+    renderizarMensagens();
+    
+    // Enviar para o servidor
+    try {
+        const idAdestrador = conversaSelecionada.idAdestrador || conversaSelecionada.id;
+        await fetch('/chat/enviar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                idConversa: conversaSelecionada.idConversa,
+                idAdestrador: idAdestrador,
+                mensagem: JSON.stringify(petCard)
+            })
+        });
+    } catch (error) {
+        console.error('Erro ao enviar pet card:', error);
+    }
+}
 
 // Botão mais opções
 document.querySelector('.btn-icon').addEventListener('click', () => {

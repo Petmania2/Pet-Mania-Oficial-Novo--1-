@@ -194,6 +194,28 @@ router.get("/meuspetscliente.ejs", async function (req, res) {
   }
 });
 
+router.get("/api/meus-pets", async function (req, res) {
+  console.log('=== API MEUS PETS ===');
+  console.log('Usuario:', req.session.usuario);
+  
+  if (!req.session.usuario) {
+    return res.status(401).json([]);
+  }
+  
+  if (req.session.usuario.tipo !== 'cliente') {
+    return res.status(403).json([]);
+  }
+  
+  try {
+    const pets = await PetModel.buscarPorUsuario(req.session.usuario.id);
+    console.log('Pets:', pets);
+    res.json(pets || []);
+  } catch (error) {
+    console.error('ERRO:', error);
+    res.status(500).json([]);
+  }
+});
+
 router.get("/pets/:id", async function (req, res) {
   if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
     return res.status(401).json({ sucesso: false, erro: "Não autorizado" });

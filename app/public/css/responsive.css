@@ -9,13 +9,9 @@
     /* Navbar */
     .navbar-container {
         padding: 0 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
     
-    .nav-menu,
-    .nav-links {
+    .nav-menu {
         position: fixed;
         top: 70px;
         left: -100%;
@@ -28,16 +24,13 @@
         transition: left 0.3s ease;
         z-index: 999;
         overflow-y: auto;
-        display: flex !important;
     }
     
-    .nav-menu.active,
-    .nav-links.active {
+    .nav-menu.active {
         left: 0;
     }
     
-    .nav-menu li,
-    .nav-links li {
+    .nav-menu li {
         width: 100%;
         margin: 0 0 10px 0;
     }
@@ -46,21 +39,10 @@
         width: 100%;
         padding: 12px 15px;
         border-radius: 8px;
-        display: block;
     }
     
-    .mobile-toggle,
-    .mobile-menu-btn,
-    #mobileToggle,
-    #menuBtn {
+    .mobile-toggle {
         display: block !important;
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 10px;
-        color: #333;
-        z-index: 1000;
     }
     
     /* Grids */
@@ -165,32 +147,13 @@
     }
     
     /* Navbar */
-    .navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-    }
-    
-    .nav-menu,
-    .nav-links {
+    .nav-menu {
         width: 100%;
         left: -100%;
-        top: 60px;
     }
     
     .logo-img {
         height: 35px !important;
-    }
-    
-    .mobile-toggle,
-    .mobile-menu-btn,
-    #mobileToggle,
-    #menuBtn {
-        display: block !important;
-        position: relative;
-        z-index: 1001;
     }
     
     /* Buttons */

@@ -1,5 +1,49 @@
-// Dados dos Adestradores (30 adestradores fictícios)
-const trainers = [
+// Dados dos Adestradores - carregados do banco
+let trainers = [];
+
+// Carregar adestradores do banco
+async function loadTrainers() {
+    try {
+        const response = await fetch('/api/adestradores');
+        const data = await response.json();
+        const especialidadeMap = {
+            1: 'obediencia',
+            2: 'comportamento',
+            3: 'truques',
+            4: 'agressividade',
+            5: 'filhotes'
+        };
+        
+        const trainersDB = data.map(a => ({
+            id: a.id + 1000,
+            name: a.nome,
+            city: a.cidade || 'Não informado',
+            state: a.estado || 'SP',
+            specialties: [especialidadeMap[a.especialidade] || 'obediencia'],
+            rating: a.avaliacao || 5.0,
+            reviews: a.total_avaliacoes || 0,
+            price: parseFloat(a.preco) || 150,
+            available: a.ativo !== false,
+            image: a.ID_PERFIL && a.ID_PERFIL > 0 ? `/imagem/${a.ID_PERFIL}` : 'https://via.placeholder.com/400',
+            topTrainer: a.anos_experiencia >= 5,
+            phone: a.telefone,
+            about: a.sobre
+        }));
+        console.log('Adestradores carregados:', trainersDB);
+        trainers = [...trainersDB, ...trainersFake];
+        filteredTrainers = [...trainers];
+        sortTrainers();
+        renderTrainers(filteredTrainers);
+    } catch (error) {
+        console.error('Erro ao carregar adestradores:', error);
+        trainers = [...trainersFake];
+        filteredTrainers = [...trainers];
+        sortTrainers();
+        renderTrainers(filteredTrainers);
+    }
+}
+
+const trainersFake = [
     {
         id: 1,
         name: "Ricardo Almeida",
@@ -393,7 +437,7 @@ const trainers = [
 ];
 
 // Estado da aplicação
-let filteredTrainers = [...trainers];
+let filteredTrainers = [];
 
 // Elementos DOM
 const trainersGrid = document.getElementById('trainersGrid');
@@ -496,7 +540,7 @@ function renderTrainers(trainersToRender) {
                 <p class="trainer-price">
                     A partir de <span class="price-amount">R$ ${trainer.price}</span> / sessão
                 </p>
-                <a href="#perfil-${trainer.id}" class="btn-view-profile">Ver Perfil</a>
+                <button class="btn-view-profile" data-trainer-id="${trainer.id}">Ver Perfil</button>
             </section>
         `;
         
@@ -643,16 +687,90 @@ document.addEventListener('click', (e) => {
         filtersPanel.classList.remove('active');
     }
     
-    // Fechar menu mobile
     if (navMenu.classList.contains('active') &&
         !navMenu.contains(e.target) &&
         !mobileToggle.contains(e.target)) {
         navMenu.classList.remove('active');
     }
+    
+    if (e.target.classList.contains('btn-view-profile')) {
+        const trainerId = parseInt(e.target.getAttribute('data-trainer-id'));
+        openModalPerfil(trainerId);
+    }
+});
+
+// Modal Perfil
+const modalPerfil = document.getElementById('modalPerfil');
+const closeModalPerfil = document.getElementById('closeModalPerfil');
+const btnModalMessage = document.getElementById('btnModalMessage');
+
+function openModalPerfil(trainerId) {
+    const trainer = trainers.find(t => t.id === trainerId);
+    if (!trainer) return;
+    
+    currentTrainerId = trainerId;
+    
+    const specNames = {
+        obediencia: 'Obediência',
+        comportamento: 'Comportamento',
+        socializacao: 'Socialização',
+        filhotes: 'Filhotes',
+        agressividade: 'Agressividade',
+        terapia: 'Terapia',
+        truques: 'Truques',
+        comandos: 'Comandos'
+    };
+    
+    document.getElementById('modalTrainerImage').src = trainer.image;
+    document.getElementById('modalTrainerName').textContent = trainer.name;
+    document.getElementById('modalTrainerLocation').textContent = `${trainer.city}, ${trainer.state}`;
+    document.getElementById('modalTrainerStars').innerHTML = generateStars(trainer.rating);
+    document.getElementById('modalTrainerRating').textContent = `${trainer.rating.toFixed(1)} (${trainer.reviews} avaliações)`;
+    document.getElementById('modalTrainerPrice').textContent = `R$ ${trainer.price},00 por sessão`;
+    
+    const specialtiesHTML = trainer.specialties
+        .map(spec => `<span class="specialty-tag">${specNames[spec]}</span>`)
+        .join('');
+    document.getElementById('modalTrainerSpecialties').innerHTML = specialtiesHTML;
+    
+    modalPerfil.classList.add('active');
+}
+
+function closeModal() {
+    modalPerfil.classList.remove('active');
+}
+
+closeModalPerfil.addEventListener('click', closeModal);
+
+modalPerfil.addEventListener('click', (e) => {
+    if (e.target === modalPerfil) {
+        closeModal();
+    }
+});
+
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-view-profile')) {
+        const trainerId = parseInt(e.target.getAttribute('data-trainer-id'));
+        openModalPerfil(trainerId);
+    }
+});
+
+const btnModalViewFull = document.getElementById('btnModalViewFull');
+let currentTrainerId = null;
+
+btnModalMessage.addEventListener('click', () => {
+    if (currentTrainerId) {
+        window.location.href = `/mensagenscliente.ejs?adestrador=${currentTrainerId}`;
+    }
+});
+
+btnModalViewFull.addEventListener('click', () => {
+    if (currentTrainerId) {
+        window.location.href = `/clienteperfiladestradorview.ejs?id=${currentTrainerId}`;
+    }
 });
 
 // Inicializar página
 document.addEventListener('DOMContentLoaded', () => {
-    sortTrainers();
-    renderTrainers(filteredTrainers);
+    loadTrainers();
 });

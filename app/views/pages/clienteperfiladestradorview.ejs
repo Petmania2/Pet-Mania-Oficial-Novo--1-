@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Adestrador - Pet Mania</title>
+    <link rel="stylesheet" href="/css/clienteperfiladestradorview.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <section class="navbar-container">
+                <a href="/" class="logo">
+                    <i class="fas fa-paw"></i>
+                    <span>Pet Mania</span>
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="/painelcliente.ejs" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Início</span>
+                    </a></li>
+                    <li><a href="/buscaradestradorcliente.ejs" class="nav-link">
+                        <i class="fas fa-search"></i>
+                        <span>Buscar Adestradores</span>
+                    </a></li>
+                    <li><a href="/mensagenscliente.ejs" class="nav-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>Mensagens</span>
+                    </a></li>
+                    <li><a href="/perfilcliente.ejs" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </a></li>
+                    <li><a href="/logout" class="nav-link nav-link-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </a></li>
+                </ul>
+            </section>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="container">
+            <button class="btn-back" onclick="history.back()">
+                <i class="fas fa-arrow-left"></i>
+                Voltar
+            </button>
+
+            <section class="profile-container">
+                <header class="profile-header">
+                    <figure class="profile-avatar">
+                        <img id="trainerImage" src="" alt="Foto do adestrador">
+                    </figure>
+                    <section class="profile-info">
+                        <h1 id="trainerName"></h1>
+                        <p class="profile-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="trainerLocation"></span>
+                        </p>
+                        <section class="profile-rating">
+                            <section class="stars" id="trainerStars"></section>
+                            <span id="trainerRating"></span>
+                        </section>
+                    </section>
+                </header>
+
+                <section class="profile-details">
+                    <article class="detail-card">
+                        <h3><i class="fas fa-graduation-cap"></i> Especialidades</h3>
+                        <section class="specialties-list" id="trainerSpecialties"></section>
+                    </article>
+
+                    <article class="detail-card">
+                        <h3><i class="fas fa-dollar-sign"></i> Preço por Sessão</h3>
+                        <p class="price-value" id="trainerPrice"></p>
+                    </article>
+
+                    <article class="detail-card">
+                        <h3><i class="fas fa-phone"></i> Contato</h3>
+                        <p id="trainerPhone"></p>
+                    </article>
+
+                    <article class="detail-card">
+                        <h3><i class="fas fa-info-circle"></i> Sobre</h3>
+                        <p>Profissional dedicado ao adestramento canino com metodologia baseada em reforço positivo. Experiência comprovada em diversas raças e temperamentos.</p>
+                    </article>
+                </section>
+
+                <section class="media-gallery">
+                    <h2>Trabalhos Realizados</h2>
+                    <section class="media-grid" id="mediaGrid">
+                        <article class="media-item">
+                            <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop" alt="Trabalho">
+                        </article>
+                        <article class="media-item">
+                            <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop" alt="Trabalho">
+                        </article>
+                        <article class="media-item">
+                            <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop" alt="Trabalho">
+                        </article>
+                    </section>
+                </section>
+
+                <section class="action-buttons">
+                    <button class="btn-primary" id="btnMessage">
+                        <i class="fas fa-envelope"></i>
+                        Enviar Mensagem
+                    </button>
+                </section>
+            </section>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <section class="footer-container">
+            <nav class="footer-links">
+                <a href="#sobre">Sobre</a>
+                <a href="#termos">Termos de Uso</a>
+                <a href="#privacidade">Política de Privacidade</a>
+                <a href="#contato">Contato</a>
+            </nav>
+            <p class="footer-copyright">&copy; 2025 Pet Mania. Todos os direitos reservados.</p>
+        </section>
+    </footer>
+
+    <script src="/js/clienteperfiladestradorview.js"></script>
+</body>
+</html>

@@ -65,6 +65,50 @@ class AdestradorModel {
     }
   }
   
+  // Atualizar dados do adestrador
+  static async atualizar(idUsuario, dados) {
+    try {
+      // Atualizar dados na tabela USUARIOS
+      if (dados.nome || dados.email || dados.telefone) {
+        const queryUsuario = `
+          UPDATE USUARIOS 
+          SET NOME_USUARIO = COALESCE(?, NOME_USUARIO),
+              EMAIL_USUARIO = COALESCE(?, EMAIL_USUARIO),
+              CELULAR_USUARIO = COALESCE(?, CELULAR_USUARIO)
+          WHERE ID_USUARIO = ?
+        `;
+        await executeQuery(queryUsuario, [dados.nome, dados.email, dados.telefone, idUsuario]);
+      }
+      
+      // Atualizar dados na tabela adestradores
+      const queryAdestrador = `
+        UPDATE adestradores 
+        SET logradouro_adestrador = COALESCE(?, logradouro_adestrador),
+            num_resid_adestrador = COALESCE(?, num_resid_adestrador),
+            complemento_adestrador = COALESCE(?, complemento_adestrador),
+            bairro_adestrador = COALESCE(?, bairro_adestrador),
+            cidade_adestrador = COALESCE(?, cidade_adestrador),
+            uf_adestrador = COALESCE(?, uf_adestrador),
+            cep_ADESTRADOR = COALESCE(?, cep_ADESTRADOR),
+            anos_experiencia = COALESCE(?, anos_experiencia),
+            valor_sessao = COALESCE(?, valor_sessao),
+            sobre_sua_experiencia = COALESCE(?, sobre_sua_experiencia)
+        WHERE ID_USUARIO = ?
+      `;
+      
+      await executeQuery(queryAdestrador, [
+        dados.logradouro, dados.numero, dados.complemento, dados.bairro,
+        dados.cidade, dados.estado, dados.cep, dados.experiencia,
+        dados.preco, dados.sobre, idUsuario
+      ]);
+      
+      return true;
+    } catch (error) {
+      console.error('Erro ao atualizar adestrador:', error);
+      throw error;
+    }
+  }
+  
   // Buscar adestrador por email (busca através de USUARIOS)
   static async buscarPorEmail(email) {
     try {
@@ -138,16 +182,32 @@ class AdestradorModel {
     return await UsuarioModel.cpfExiste(cpf);
   }
   
+  // Atualizar foto de perfil
+  static async atualizarFotoPerfil(idUsuario, idImagem) {
+    try {
+      const query = `UPDATE USUARIOS SET ID_PERFIL = ? WHERE ID_USUARIO = ?`;
+      await executeQuery(query, [idImagem, idUsuario]);
+      return true;
+    } catch (error) {
+      console.error('Erro ao atualizar foto de perfil:', error);
+      throw error;
+    }
+  }
+  
   // Buscar todos os adestradores
   static async buscarTodos() {
     try {
       const query = `
-        SELECT a.id_adestrador as id, u.NOME_USUARIO as nome, 
+        SELECT a.id_adestrador as id, u.NOME_USUARIO as nome, u.ID_PERFIL,
+               u.CELULAR_USUARIO as telefone,
                a.cidade_adestrador as cidade, a.uf_adestrador as estado, 
-               a.anos_experiencia as experiencia, a.valor_sessao as preco
+               a.anos_experiencia, a.valor_sessao as preco, a.ativo,
+               a.id_esp_adestrador as especialidade,
+               a.sobre_sua_experiencia as sobre
         FROM adestradores a
         INNER JOIN USUARIOS u ON a.ID_USUARIO = u.ID_USUARIO
         WHERE a.ativo = 1
+        ORDER BY a.data_cadastro DESC
       `;
       const rows = await executeQuery(query);
       return rows || [];
@@ -157,17 +217,44 @@ class AdestradorModel {
     }
   }
   
+  // Buscar por ID do adestrador
+  static async buscarPorIdAdestrador(idAdestrador) {
+    try {
+      const query = `
+        SELECT a.id_adestrador as id, u.NOME_USUARIO as nome, u.ID_PERFIL,
+               u.CELULAR_USUARIO as telefone,
+               a.cidade_adestrador as cidade, a.uf_adestrador as estado, 
+               a.anos_experiencia, a.valor_sessao as preco,
+               a.id_esp_adestrador as especialidade,
+               a.sobre_sua_experiencia as sobre
+        FROM adestradores a
+        INNER JOIN USUARIOS u ON a.ID_USUARIO = u.ID_USUARIO
+        WHERE a.id_adestrador = ?
+      `;
+      const rows = await executeQuery(query, [idAdestrador]);
+      return rows[0] || null;
+    } catch (error) {
+      console.error('Erro ao buscar adestrador por ID:', error);
+      return null;
+    }
+  }
+  
   // Buscar por ID
   static async buscarPorId(id) {
     try {
       const query = `
-        SELECT a.id_adestrador as id, u.NOME_USUARIO as nome, u.CPF_USUARIO as cpf,
-               u.EMAIL_USUARIO as email, u.CELULAR_USUARIO as telefone,
-               a.cidade_adestrador as cidade, a.uf_adestrador as estado, 
-               a.anos_experiencia as experiencia, a.valor_sessao as preco,
-               a.logradouro_adestrador as logradouro, a.num_resid_adestrador as numero,
-               a.complemento_adestrador as complemento, a.bairro_adestrador as bairro,
-               a.cep_ADESTRADOR as cep, a.sobre_sua_experiencia as sobre
+        SELECT a.id_adestrador as id, u.NOME_USUARIO, u.CPF_USUARIO, u.EMAIL_USUARIO, 
+               u.CELULAR_USUARIO, u.DATA_NASC_USUARIO, u.ID_PERFIL,
+               a.cidade_adestrador, a.uf_adestrador, a.anos_experiencia, a.valor_sessao,
+               a.logradouro_adestrador, a.num_resid_adestrador, a.complemento_adestrador, 
+               a.bairro_adestrador, a.cep_ADESTRADOR, a.sobre_sua_experiencia,
+               u.NOME_USUARIO as nome, u.CPF_USUARIO as cpf, u.EMAIL_USUARIO as email, 
+               u.CELULAR_USUARIO as telefone, a.cidade_adestrador as cidade, 
+               a.uf_adestrador as estado, a.anos_experiencia as experiencia, 
+               a.valor_sessao as preco, a.logradouro_adestrador as logradouro, 
+               a.num_resid_adestrador as numero, a.complemento_adestrador as complemento, 
+               a.bairro_adestrador as bairro, a.cep_ADESTRADOR as cep, 
+               a.sobre_sua_experiencia as sobre
         FROM adestradores a
         INNER JOIN USUARIOS u ON a.ID_USUARIO = u.ID_USUARIO
         WHERE u.ID_USUARIO = ?

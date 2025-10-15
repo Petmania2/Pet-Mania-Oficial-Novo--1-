@@ -18,20 +18,24 @@
                     <span>Pet Mania</span>
                 </a>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="/painelcliente" class="nav-link" data-page="inicio">
+                    <li><a href="/painelcliente.ejs" class="nav-link" data-page="inicio">
                         <i class="fas fa-home"></i>
                         <span>Início</span>
                     </a></li>
-                    <li><a href="/buscaradestradorcliente" class="nav-link" data-page="buscar">
+                    <li><a href="/buscaradestradorcliente.ejs" class="nav-link" data-page="buscar">
                         <i class="fas fa-search"></i>
                         <span>Buscar Adestradores</span>
                     </a></li>
-                    <li><a href="#mensagens" class="nav-link" data-page="mensagens">
+                    <li><a href="/meuspetscliente.ejs" class="nav-link" data-page="pets">
+                        <i class="fas fa-dog"></i>
+                        <span>Meus Pets</span>
+                    </a></li>
+                    <li><a href="/mensagenscliente.ejs" class="nav-link" data-page="mensagens">
                         <i class="fas fa-envelope"></i>
                         <span>Mensagens</span>
                         <span class="badge">3</span>
                     </a></li>
-                    <li><a href="#perfil" class="nav-link active" data-page="perfil">
+                    <li><a href="/perfilcliente.ejs" class="nav-link active" data-page="perfil">
                         <i class="fas fa-user"></i>
                         <span>Perfil</span>
                     </a></li>
@@ -115,209 +119,156 @@
                 </header>
                 
                 <section class="pets-grid">
-                    <article class="pet-card">
-                        <figure class="pet-image">
-                            <img src="https://images.unsplash.com/photo-1633722715463-d30628319855?w=300&h=300&fit=crop" alt="Rex - Golden Retriever">
-                        </figure>
-                        <section class="pet-info">
-                            <h3 class="pet-name">Rex</h3>
-                            <section class="pet-details">
-                                <div>
-                                    <span class="detail-label">Raça:</span>
-                                    <span class="detail-value">Golden Retriever</span>
-                                </div>
-                                <div>
-                                    <span class="detail-label">Idade:</span>
-                                    <span class="detail-value">3 anos</span>
-                                </div>
-                                <div>
-                                    <span class="detail-label">Tamanho:</span>
-                                    <span class="detail-value">Grande</span>
-                                </div>
-                                <div>
-                                    <span class="detail-label">Gênero:</span>
-                                    <span class="detail-value">Macho</span>
-                                </div>
-                            </section>
-                            <p class="pet-description">Cão dócil e amigável, porém com dificuldade em obedecer comandos básicos.</p>
-                            <section class="pet-actions">
-                                <button class="btn-icon" aria-label="Editar pet">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon danger" aria-label="Remover pet">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </section>
-                        </section>
-                    </article>
-
-                    <article class="pet-card">
-                        <figure class="pet-image">
-                            <img src="https://images.unsplash.com/photo-1587300411107-ec16d7b26c17?w=300&h=300&fit=crop" alt="Luna - Poodle">
-                        </figure>
-                        <section class="pet-info">
-                            <h3 class="pet-name">Luna</h3>
-                            <section class="pet-details">
-                                <div>
-                                    <span class="detail-label">Raça:</span>
-                                    <span class="detail-value">Poodle</span>
-                                </div>
-                                <div>
-                                    <span class="detail-label">Idade:</span>
-                                    <span class="detail-value">2 anos</span>
-                                </div>
-                                <div>
-                                    <span class="detail-label">Tamanho:</span>
-                                    <span class="detail-value">Pequeno</span>
-                                </div>
-                                <div>
-                                    <span class="detail-label">Gênero:</span>
-                                    <span class="detail-value">Fêmea</span>
-                                </div>
-                            </section>
-                            <p class="pet-description">Cadela inteligente e sociável, está aprendendo obediência com prazer.</p>
-                            <section class="pet-actions">
-                                <button class="btn-icon" aria-label="Editar pet">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon danger" aria-label="Remover pet">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </section>
-                        </section>
-                    </article>
+                    <% if (pets && pets.length > 0) { %>
+                        <% pets.forEach(pet => { %>
+                            <article class="pet-card">
+                                <figure class="pet-image">
+                                    <i class="fas fa-dog" style="font-size: 80px; color: #FFA500;"></i>
+                                </figure>
+                                <section class="pet-info">
+                                    <h3 class="pet-name"><%= pet.NOME_PET %></h3>
+                                    <section class="pet-details">
+                                        <div>
+                                            <span class="detail-label">Raça:</span>
+                                            <span class="detail-value"><%= pet.RACA_PET %></span>
+                                        </div>
+                                        <% if (pet.IDADE_PET) { %>
+                                        <div>
+                                            <span class="detail-label">Idade:</span>
+                                            <span class="detail-value"><%= pet.IDADE_PET %></span>
+                                        </div>
+                                        <% } %>
+                                        <% if (pet.SEXO_PET) { %>
+                                        <div>
+                                            <span class="detail-label">Sexo:</span>
+                                            <span class="detail-value"><%= pet.SEXO_PET === 'macho' ? 'Macho' : 'Fêmea' %></span>
+                                        </div>
+                                        <% } %>
+                                    </section>
+                                    <% if (pet.PROBLEMA_COMPORTAMENTO) { %>
+                                    <p class="pet-description"><%= pet.PROBLEMA_COMPORTAMENTO %></p>
+                                    <% } %>
+                                    <section class="pet-actions">
+                                        <button class="btn-icon" onclick="window.location.href='/meuspetscliente.ejs'" aria-label="Editar pet">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </section>
+                                </section>
+                            </article>
+                        <% }); %>
+                    <% } else { %>
+                        <p style="text-align: center; color: #666; padding: 2rem;">Nenhum pet cadastrado ainda.</p>
+                    <% } %>
                 </section>
             </section>
 
-            <!-- Histórico de Sessões -->
-            <section class="profile-section sessions-history">
-                <h2 class="section-title">Histórico de Sessões</h2>
-                <section class="sessions-list">
-                    <article class="session-item">
-                        <section class="session-header">
-                            <h3>Sessão com Ricardo Almeida</h3>
-                            <span class="session-status completed">Concluído</span>
-                        </section>
-                        <section class="session-details">
-                            <p><strong>Pet:</strong> Rex</p>
-                            <p><strong>Serviço:</strong> Obediência Básica</p>
-                            <p><strong>Data:</strong> 10 de Outubro de 2025</p>
-                            <p><strong>Duração:</strong> 1 hora</p>
-                        </section>
-                        <section class="session-footer">
-                            <button class="btn btn-link">Ver Detalhes</button>
-                        </section>
-                    </article>
 
-                    <article class="session-item">
-                        <section class="session-header">
-                            <h3>Sessão com Juliana Costa</h3>
-                            <span class="session-status upcoming">Agendado</span>
-                        </section>
-                        <section class="session-details">
-                            <p><strong>Pet:</strong> Luna</p>
-                            <p><strong>Serviço:</strong> Socialização e Truques</p>
-                            <p><strong>Data:</strong> 15 de Outubro de 2025</p>
-                            <p><strong>Duração:</strong> 1.5 horas</p>
-                        </section>
-                        <section class="session-footer">
-                            <button class="btn btn-link">Cancelar</button>
-                            <button class="btn btn-link">Remarcar</button>
-                        </section>
-                    </article>
-
-                    <article class="session-item">
-                        <section class="session-header">
-                            <h3>Sessão com Carlos Mendes</h3>
-                            <span class="session-status completed">Concluído</span>
-                        </section>
-                        <section class="session-details">
-                            <p><strong>Pet:</strong> Rex</p>
-                            <p><strong>Serviço:</strong> Controle de Agressividade</p>
-                            <p><strong>Data:</strong> 05 de Outubro de 2025</p>
-                            <p><strong>Duração:</strong> 2 horas</p>
-                        </section>
-                        <section class="session-footer">
-                            <button class="btn btn-link">Ver Detalhes</button>
-                        </section>
-                    </article>
-                </section>
-            </section>
 
             <!-- Avaliações Deixadas -->
             <section class="profile-section my-reviews">
-                <h2 class="section-title">Minhas Avaliações</h2>
-                <section class="reviews-list">
-                    <article class="review-item">
-                        <section class="review-header">
-                            <h3>Ricardo Almeida</h3>
-                            <section class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+                <header class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-star"></i>
+                        Minhas Avaliações
+                    </h2>
+                    <span class="section-badge">2 avaliações</span>
+                </header>
+                <section class="reviews-grid">
+                    <article class="review-card">
+                        <header class="review-header">
+                            <figure class="trainer-avatar">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop" alt="Ricardo Almeida">
+                            </figure>
+                            <section class="trainer-info">
+                                <h3>Ricardo Almeida</h3>
+                                <section class="rating">
+                                    <section class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </section>
+                                    <span class="rating-value">5.0</span>
+                                </section>
                             </section>
-                        </section>
-                        <p class="review-date">Avaliado em 10 de Outubro de 2025</p>
-                        <p class="review-text">"Ricardo foi excelente! Conseguiu ensinar ao Rex comandos básicos em poucas semanas. Muito profissional e dedicado. Recomendo!"</p>
+                        </header>
+                        <time class="review-date">10 de Outubro de 2025</time>
+                        <blockquote class="review-text">"Ricardo foi excelente! Conseguiu ensinar ao Rex comandos básicos em poucas semanas. Muito profissional e dedicado. Recomendo!"</blockquote>
+                        <footer class="review-footer">
+                            <span class="service-tag">Obediência Básica</span>
+                            <span class="pet-tag">Rex</span>
+                        </footer>
                     </article>
 
-                    <article class="review-item">
-                        <section class="review-header">
-                            <h3>Carlos Mendes</h3>
-                            <section class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
+                    <article class="review-card">
+                        <header class="review-header">
+                            <figure class="trainer-avatar">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop" alt="Carlos Mendes">
+                            </figure>
+                            <section class="trainer-info">
+                                <h3>Carlos Mendes</h3>
+                                <section class="rating">
+                                    <section class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </section>
+                                    <span class="rating-value">4.5</span>
+                                </section>
                             </section>
-                        </section>
-                        <p class="review-date">Avaliado em 05 de Outubro de 2025</p>
-                        <p class="review-text">"Muito bom! Carlos tem muita experiência com comportamento agressivo. O Rex melhorou significativamente. Estou muito satisfeito."</p>
+                        </header>
+                        <time class="review-date">05 de Outubro de 2025</time>
+                        <blockquote class="review-text">"Muito bom! Carlos tem muita experiência com comportamento agressivo. O Rex melhorou significativamente. Estou muito satisfeito."</blockquote>
+                        <footer class="review-footer">
+                            <span class="service-tag">Controle de Agressividade</span>
+                            <span class="pet-tag">Rex</span>
+                        </footer>
                     </article>
                 </section>
             </section>
 
-            <!-- Preferências -->
-            <section class="profile-section preferences">
-                <h2 class="section-title">Preferências</h2>
-                <section class="preferences-grid">
-                    <article class="preference-card">
-                        <h3>
-                            <i class="fas fa-bell"></i>
-                            Notificações
-                        </h3>
-                        <p>Gerenciar preferências de notificações por email e SMS</p>
-                        <button class="btn btn-link">Configurar</button>
+            <!-- Estatísticas Rápidas -->
+            <section class="profile-section stats-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Estatísticas
+                </h2>
+                <section class="stats-grid">
+                    <article class="stat-card">
+                        <i class="fas fa-calendar-check stat-icon"></i>
+                        <section class="stat-content">
+                            <h3 class="stat-number">12</h3>
+                            <p class="stat-label">Sessões Realizadas</p>
+                        </section>
                     </article>
-                    <article class="preference-card">
-                        <h3>
-                            <i class="fas fa-lock"></i>
-                            Privacidade
-                        </h3>
-                        <p>Controlar quem pode ver seu perfil e histórico</p>
-                        <button class="btn btn-link">Configurar</button>
+                    <article class="stat-card">
+                        <i class="fas fa-paw stat-icon"></i>
+                        <section class="stat-content">
+                            <h3 class="stat-number">2</h3>
+                            <p class="stat-label">Pets Cadastrados</p>
+                        </section>
                     </article>
-                    <article class="preference-card">
-                        <h3>
-                            <i class="fas fa-credit-card"></i>
-                            Pagamento
-                        </h3>
-                        <p>Gerenciar métodos de pagamento e faturamento</p>
-                        <button class="btn btn-link">Configurar</button>
+                    <article class="stat-card">
+                        <i class="fas fa-star stat-icon"></i>
+                        <section class="stat-content">
+                            <h3 class="stat-number">4.8</h3>
+                            <p class="stat-label">Avaliação Média</p>
+                        </section>
                     </article>
-                    <article class="preference-card">
-                        <h3>
-                            <i class="fas fa-user-shield"></i>
-                            Segurança
-                        </h3>
-                        <p>Alterar senha e ativar autenticação de dois fatores</p>
-                        <button class="btn btn-link">Configurar</button>
+                    <article class="stat-card">
+                        <i class="fas fa-trophy stat-icon"></i>
+                        <section class="stat-content">
+                            <h3 class="stat-number">3</h3>
+                            <p class="stat-label">Objetivos Alcançados</p>
+                        </section>
                     </article>
                 </section>
             </section>
+
+
         </section>
     </main>
 

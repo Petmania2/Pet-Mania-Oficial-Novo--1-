@@ -2,9 +2,32 @@ var express = require("express");
 var router = express.Router();
 const AdestradorModel = require("../models/adestradorModel");
 const ClienteModel = require("../models/clienteModel");
+const PetModel = require("../models/petModel");
 const hqController = require("../controllers/hqController");
 const favoritoModel = require("../models/favoritoModel");
 const mercadopago = require('mercadopago');
+const multer = require('multer');
+const path = require('path');
+
+// Configuração do multer para upload de imagens
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Apenas imagens são permitidas (jpeg, jpg, png, gif)'));
+    }
+  }
+});
 
 // Configuração do Mercado Pago versão 1.x
 mercadopago.configure({
@@ -82,10 +105,6 @@ router.get("/clientesadestrador.ejs", function (req, res) {
   res.render("pages/clientesadestrador");    
 });
 
-router.get("/perfilcliente.ejs", function (req, res) {
-  res.render("pages/perfilcliente");    
-});
-
 router.get("/mensagensadestrador.ejs", function (req, res) {
   res.render("pages/mensagensadestrador");    
 });
@@ -94,8 +113,27 @@ router.get("/agendamentoadestrador.ejs", function (req, res) {
   res.render("pages/agendamentoadestrador");    
 });
 
-router.get("/perfiladestrador.ejs", function (req, res) {
-  res.render("pages/perfiladestrador");    
+router.get("/perfiladestrador.ejs", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'adestrador') {
+    return res.redirect("/Login.ejs");
+  }
+  try {
+    let adestrador = await AdestradorModel.buscarPorId(req.session.usuario.id);
+    if (!adestrador) {
+      return res.redirect("/Login.ejs");
+    }
+    
+    adestrador = {
+      ...adestrador,
+      experiencia: adestrador.experiencia || 0,
+      sobre: adestrador.sobre || 'Sem informações adicionais'
+    };
+    
+    res.render("pages/perfiladestrador", { adestrador });
+  } catch (err) {
+    console.error('Erro ao carregar perfil adestrador:', err);
+    res.redirect("/Login.ejs");
+  }
 });
 
 router.get("/planosadestrador.ejs", function (req, res) {
@@ -124,6 +162,109 @@ router.get("/adestradores.ejs", function (req, res) {
 
 router.get("/buscaradestradorcliente.ejs", function (req, res) {
   res.render("pages/buscaradestradorcliente");    
+});
+
+router.get("/clienteperfiladestradorview.ejs", function (req, res) {
+  res.render("pages/clienteperfiladestradorview");    
+});
+
+router.get("/meuspetscliente.ejs", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect("/Login.ejs");
+  }
+  
+  try {
+    const pets = await PetModel.buscarPorUsuario(req.session.usuario.id);
+    res.render("pages/meuspetscliente", { pets: pets || [] });
+  } catch (error) {
+    console.error('Erro ao carregar pets:', error);
+    res.render("pages/meuspetscliente", { pets: [] });
+  }
+});
+
+router.get("/pets/:id", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.status(401).json({ sucesso: false, erro: "Não autorizado" });
+  }
+  
+  try {
+    const pets = await PetModel.buscarPorUsuario(req.session.usuario.id);
+    const pet = pets.find(p => p.ID_PET == req.params.id);
+    
+    if (!pet) {
+      return res.status(404).json({ sucesso: false, erro: "Pet não encontrado" });
+    }
+    
+    res.json(pet);
+  } catch (error) {
+    console.error('Erro ao buscar pet:', error);
+    res.status(500).json({ sucesso: false, erro: "Erro ao buscar pet" });
+  }
+});
+
+router.post("/pets/criar", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.status(401).json({ sucesso: false, erro: "Não autorizado" });
+  }
+  
+  try {
+    const cliente = await ClienteModel.buscarPorId(req.session.usuario.id);
+    
+    const dadosPet = {
+      idCliente: cliente.id,
+      idUsuario: req.session.usuario.id,
+      nomePet: req.body.nomePet,
+      racaPet: req.body.racaPet,
+      idadePet: req.body.idadePet || null,
+      sexoPet: req.body.sexoPet || null,
+      tipoAdestramento: null,
+      problemaComportamento: req.body.problemaComportamento || null,
+      observacoes: req.body.observacoes || null
+    };
+    
+    const idPet = await PetModel.criar(dadosPet);
+    res.json({ sucesso: true, idPet });
+  } catch (error) {
+    console.error('Erro ao criar pet:', error);
+    res.status(500).json({ sucesso: false, erro: "Erro ao criar pet" });
+  }
+});
+
+router.put("/pets/:id", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.status(401).json({ sucesso: false, erro: "Não autorizado" });
+  }
+  
+  try {
+    const dadosPet = {
+      nomePet: req.body.nomePet,
+      racaPet: req.body.racaPet,
+      idadePet: req.body.idadePet || null,
+      sexoPet: req.body.sexoPet || null,
+      tipoAdestramento: null,
+      problemaComportamento: req.body.problemaComportamento || null,
+      observacoes: req.body.observacoes || null
+    };
+    await PetModel.atualizar(req.params.id, dadosPet);
+    res.json({ sucesso: true });
+  } catch (error) {
+    console.error('Erro ao atualizar pet:', error);
+    res.status(500).json({ sucesso: false, erro: "Erro ao atualizar pet" });
+  }
+});
+
+router.delete("/pets/:id", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.status(401).json({ sucesso: false, erro: "Não autorizado" });
+  }
+  
+  try {
+    await PetModel.deletar(req.params.id);
+    res.json({ sucesso: true });
+  } catch (error) {
+    console.error('Erro ao deletar pet:', error);
+    res.status(500).json({ sucesso: false, erro: "Erro ao deletar pet" });
+  }
 });
 
 router.get("/test-chat.ejs", function (req, res) {
@@ -259,20 +400,18 @@ router.get("/agendamentos.ejs", async function (req, res) {
 });
 
 router.get("/perfilcliente.ejs", async function (req, res) {
-  const clienteTemp = {
-    nome: 'João Silva',
-    email: 'joao@email.com',
-    telefone: '(11) 99999-9999',
-    cidade: 'São Paulo',
-    endereco: 'Rua das Flores, 123',
-    numero: '123',
-    complemento: 'Apto 45',
-    bairro: 'Centro',
-    estado: 'SP',
-    cep: '01234-567'
-  };
+  if (!req.session.usuario || req.session.usuario.tipo !== 'cliente') {
+    return res.redirect("/Login.ejs");
+  }
   
-  res.render("pages/perfilcliente", { cliente: clienteTemp });
+  try {
+    const cliente = await ClienteModel.buscarPorId(req.session.usuario.id);
+    const pets = await PetModel.buscarPorUsuario(req.session.usuario.id);
+    res.render("pages/perfilcliente", { cliente: cliente || {}, pets: pets || [] });
+  } catch (error) {
+    console.error('Erro ao carregar perfil:', error);
+    res.render("pages/perfilcliente", { cliente: {}, pets: [] });
+  }
 });
 
 // === ROTAS POST ===
@@ -300,6 +439,9 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
       });
     }
 
+    const especialidadeNome = Array.isArray(specialty) ? specialty[0] : specialty;
+    const especialidadeId = mapEspecialidades[especialidadeNome] || 1;
+    
     const dadosAdestrador = {
       nome: name.trim(),
       cpf: cpf.trim(),
@@ -308,7 +450,7 @@ router.post("/cadastrar-adestrador", rateLimit, async function (req, res) {
       cidade: city?.trim() || '',
       estado: state || '',
       experiencia: parseInt(experience) || 0,
-      especialidade: Array.isArray(specialty) ? specialty[0] : (specialty || 1),
+      especialidade: especialidadeId,
       preco: precoConvertido,
       sobre: about?.trim() || '',
       senha: password,
@@ -381,6 +523,26 @@ router.post("/cadastrar-cliente", rateLimit, async function (req, res) {
     };
     
     const resultado = await ClienteModel.criar(dadosCliente);
+    
+    // Criar pet automaticamente se informações foram fornecidas
+    if (req.body.nomePet && req.body.racaPet) {
+      try {
+        const dadosPet = {
+          idCliente: resultado.idCliente,
+          idUsuario: resultado.idUsuario,
+          nomePet: req.body.nomePet,
+          racaPet: req.body.racaPet,
+          idadePet: req.body.idadePet ? req.body.idadePet + ' anos' : null,
+          sexoPet: req.body.sexoPet || null,
+          tipoAdestramento: req.body.tipoCadastro || null,
+          problemaComportamento: req.body.descricao || null
+        };
+        
+        await PetModel.criar(dadosPet);
+      } catch (petError) {
+        console.log('Aviso: Não foi possível criar pet automaticamente:', petError.message);
+      }
+    }
     
     req.session.usuario = {
       id: resultado.idUsuario,
@@ -577,6 +739,31 @@ router.post("/atualizar-cliente", async function (req, res) {
   }
 });
 
+router.post("/atualizar-adestrador", async function (req, res) {
+  if (!req.session.usuario || req.session.usuario.tipo !== 'adestrador') {
+    return res.status(401).json({ sucesso: false, erro: "Não autorizado" });
+  }
+  
+  try {
+    const dados = req.body;
+    
+    await AdestradorModel.atualizar(req.session.usuario.id, dados);
+    
+    // Atualizar dados da sessão se necessário
+    if (dados.nome) req.session.usuario.nome = dados.nome.trim();
+    if (dados.email) req.session.usuario.email = dados.email.toLowerCase().trim();
+    
+    res.json({ sucesso: true, mensagem: "Perfil atualizado com sucesso!" });
+    
+  } catch (error) {
+    console.error("Erro ao atualizar adestrador:", error);
+    res.status(500).json({ 
+      sucesso: false, 
+      erro: "Erro interno. Tente novamente mais tarde." 
+    });
+  }
+});
+
 router.post('/criar-preferencia', async (req, res) => {
   try {
     const { title, price, quantity = 1 } = req.body;
@@ -756,6 +943,29 @@ router.get('/teste-mp', async (req, res) => {
   }
 });
 
+router.get('/api/adestradores', async (req, res) => {
+  try {
+    const adestradores = await AdestradorModel.buscarTodos();
+    res.json(adestradores);
+  } catch (error) {
+    console.error('Erro ao buscar adestradores:', error);
+    res.status(500).json([]);
+  }
+});
+
+router.get('/api/adestrador/:id', async (req, res) => {
+  try {
+    const adestrador = await AdestradorModel.buscarPorIdAdestrador(req.params.id);
+    if (!adestrador) {
+      return res.status(404).json({ erro: 'Adestrador não encontrado' });
+    }
+    res.json(adestrador);
+  } catch (error) {
+    console.error('Erro ao buscar adestrador:', error);
+    res.status(500).json({ erro: 'Erro ao buscar adestrador' });
+  }
+});
+
 router.get('/check-auth', (req, res) => {
   try {
     res.json({ 
@@ -825,6 +1035,60 @@ router.use((error, req, res, next) => {
 
 router.get('/tipodeusuario.ejs', (req, res) => {
   res.render('pages/tipodeusuario');
+});
+
+// Upload de foto de perfil
+router.post('/upload-foto-perfil', upload.single('foto'), async (req, res) => {
+  if (!req.session.usuario) {
+    return res.status(401).json({ sucesso: false, erro: 'Não autorizado' });
+  }
+  
+  if (!req.file) {
+    return res.status(400).json({ sucesso: false, erro: 'Nenhuma imagem enviada' });
+  }
+  
+  try {
+    const { executeQuery } = require('../../config/pool_conexoes');
+    
+    // Inserir imagem no banco
+    const queryImagem = `INSERT INTO IMAGENS (NOME_IMAGEM, IMAGEM_BLOB) VALUES (?, ?)`;
+    const resultadoImagem = await executeQuery(queryImagem, [req.file.originalname, req.file.buffer]);
+    
+    // Atualizar ID_PERFIL do usuário
+    if (req.session.usuario.tipo === 'adestrador') {
+      await AdestradorModel.atualizarFotoPerfil(req.session.usuario.id, resultadoImagem.insertId);
+    } else {
+      const queryUsuario = `UPDATE USUARIOS SET ID_PERFIL = ? WHERE ID_USUARIO = ?`;
+      await executeQuery(queryUsuario, [resultadoImagem.insertId, req.session.usuario.id]);
+    }
+    
+    res.json({ sucesso: true, mensagem: 'Foto atualizada com sucesso!' });
+    
+  } catch (error) {
+    console.error('Erro ao fazer upload da foto:', error);
+    res.status(500).json({ sucesso: false, erro: 'Erro interno do servidor' });
+  }
+});
+
+// Servir imagens do banco
+router.get('/imagem/:id', async (req, res) => {
+  try {
+    const { executeQuery } = require('../../config/pool_conexoes');
+    const query = `SELECT NOME_IMAGEM, IMAGEM_BLOB FROM IMAGENS WHERE ID_IMAGEM = ?`;
+    const resultado = await executeQuery(query, [req.params.id]);
+    
+    if (resultado.length === 0) {
+      return res.status(404).send('Imagem não encontrada');
+    }
+    
+    const imagem = resultado[0];
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(imagem.IMAGEM_BLOB);
+    
+  } catch (error) {
+    console.error('Erro ao buscar imagem:', error);
+    res.status(500).send('Erro interno do servidor');
+  }
 });
 
 module.exports = router;

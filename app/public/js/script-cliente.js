@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     nomePet: document.getElementById('nomePet').value.trim(),
                     racaPet: document.getElementById('racaPet').value.trim(),
                     idadePet: document.getElementById('idadePet').value,
+                    sexoPet: document.getElementById('sexoPet').value,
                     tipoCadastro: document.getElementById('tipoCadastro').value,
                     descricao: document.getElementById('descricao').value.trim(),
                     senha: document.getElementById('senha').value,

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Pets - Pet Mania</title>
+    <link rel="stylesheet" href="/css/meuspetscliente.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <section class="navbar-container">
+                <a href="/" class="logo">
+                    <i class="fas fa-paw"></i>
+                    <span>Pet Mania</span>
+                </a>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/painelcliente.ejs" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Início</span>
+                    </a></li>
+                    <li><a href="/buscaradestradorcliente.ejs" class="nav-link">
+                        <i class="fas fa-search"></i>
+                        <span>Buscar Adestradores</span>
+                    </a></li>
+                    <li><a href="/meuspetscliente.ejs" class="nav-link active">
+                        <i class="fas fa-dog"></i>
+                        <span>Meus Pets</span>
+                    </a></li>
+                    <li><a href="/mensagenscliente.ejs" class="nav-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>Mensagens</span>
+                    </a></li>
+                    <li><a href="/perfilcliente.ejs" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </a></li>
+                    <li><a href="/logout" class="nav-link nav-link-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </a></li>
+                </ul>
+                <button class="mobile-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </section>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="container">
+            <header class="page-header">
+                <h1>Meus Pets</h1>
+                <p>Gerencie as informações dos seus pets</p>
+            </header>
+
+            <section class="info-banner">
+                <figure class="info-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </figure>
+                <section class="info-content">
+                    <h3>Como funciona?</h3>
+                    <p>Crie um perfil para cada pet com informações sobre raça, idade e problemas de comportamento. Ao enviar mensagens para adestradores, você pode compartilhar o perfil do seu pet, agilizando o atendimento. Assim, o adestrador já conhece os detalhes e necessidades do seu pet antes mesmo da primeira conversa!</p>
+                </section>
+            </section>
+
+            <section class="pets-grid" id="petsGrid">
+                <% if (pets && pets.length > 0) { %>
+                    <% pets.forEach(pet => { %>
+                        <article class="pet-card">
+                            <figure class="pet-photo">
+                                <i class="fas fa-dog" style="font-size: 80px; color: #FFA500; display: flex; align-items: center; justify-content: center; height: 100%;"></i>
+                            </figure>
+                            <section class="pet-info">
+                                <h3><%= pet.NOME_PET %></h3>
+                                <section class="pet-details">
+                                    <span class="pet-detail">
+                                        <i class="fas fa-paw"></i>
+                                        <%= pet.RACA_PET %>
+                                    </span>
+                                    <span class="pet-detail">
+                                        <i class="fas fa-calendar"></i>
+                                        <%= pet.IDADE_PET %>
+                                    </span>
+                                    <% if (pet.SEXO_PET) { %>
+                                    <span class="pet-detail">
+                                        <i class="fas fa-venus-mars"></i>
+                                        <%= pet.SEXO_PET === 'macho' ? 'Macho' : 'Fêmea' %>
+                                    </span>
+                                    <% } %>
+                                </section>
+                                <% if (pet.PROBLEMA_COMPORTAMENTO) { %>
+                                <section class="pet-problema">
+                                    <h4><i class="fas fa-exclamation-circle"></i> Problema de Comportamento</h4>
+                                    <p><%= pet.PROBLEMA_COMPORTAMENTO %></p>
+                                </section>
+                                <% } %>
+                                <% if (pet.OBSERVACOES) { %>
+                                <section class="pet-problema" style="background: #f0f8ff; border-left-color: #3498db;">
+                                    <h4 style="color: #3498db;"><i class="fas fa-info-circle"></i> Observações</h4>
+                                    <p><%= pet.OBSERVACOES %></p>
+                                </section>
+                                <% } %>
+                                <section class="pet-actions">
+                                    <button class="btn-edit" onclick="editPetDB(<%= pet.ID_PET %>)">
+                                        <i class="fas fa-edit"></i>
+                                        Editar
+                                    </button>
+                                    <button class="btn-delete" onclick="deletePetDB(<%= pet.ID_PET %>)">
+                                        <i class="fas fa-trash"></i>
+                                        Excluir
+                                    </button>
+                                </section>
+                            </section>
+                        </article>
+                    <% }); %>
+                <% } %>
+                <article class="pet-card add-pet-card">
+                    <button class="btn-add-pet" id="btnAddPet">
+                        <i class="fas fa-plus"></i>
+                        <span>Adicionar Pet</span>
+                    </button>
+                </article>
+            </section>
+        </section>
+    </main>
+
+    <section class="modal" id="petModal">
+        <section class="modal-content">
+            <header class="modal-header">
+                <h2 id="modalTitle">Adicionar Pet</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </header>
+            <section class="modal-body">
+                <form id="petForm">
+                    <section class="form-group">
+                        <label for="petFoto">
+                            <i class="fas fa-camera"></i>
+                            Foto do Pet
+                        </label>
+                        <section class="upload-area" id="uploadArea">
+                            <figure class="preview-image" id="previewImage">
+                                <i class="fas fa-dog"></i>
+                            </figure>
+                            <input type="file" id="petFoto" accept="image/*" hidden>
+                            <p>Clique para adicionar foto</p>
+                        </section>
+                    </section>
+
+                    <section class="form-row">
+                        <section class="form-group">
+                            <label for="petNome">
+                                <i class="fas fa-tag"></i>
+                                Nome do Pet *
+                            </label>
+                            <input type="text" id="petNome" required placeholder="Ex: Rex">
+                        </section>
+
+                        <section class="form-group">
+                            <label for="petRaca">
+                                <i class="fas fa-paw"></i>
+                                Raça *
+                            </label>
+                            <input type="text" id="petRaca" required placeholder="Ex: Golden Retriever">
+                        </section>
+                    </section>
+
+                    <section class="form-row">
+                        <section class="form-group">
+                            <label for="petIdade">
+                                <i class="fas fa-calendar"></i>
+                                Idade (anos) *
+                            </label>
+                            <input type="number" id="petIdade" required placeholder="Ex: 2" min="0" max="30">
+                        </section>
+
+                        <section class="form-group">
+                            <label for="petSexo">
+                                <i class="fas fa-venus-mars"></i>
+                                Sexo *
+                            </label>
+                            <select id="petSexo" required>
+                                <option value="">Selecione</option>
+                                <option value="macho">Macho</option>
+                                <option value="femea">Fêmea</option>
+                            </select>
+                        </section>
+                    </section>
+
+                    <section class="form-group">
+                        <label for="petProblema">
+                            <i class="fas fa-exclamation-circle"></i>
+                            Problema de Comportamento
+                        </label>
+                        <textarea id="petProblema" rows="4" placeholder="Descreva os problemas de comportamento do seu pet..."></textarea>
+                    </section>
+
+                    <section class="form-group">
+                        <label for="petObservacoes">
+                            <i class="fas fa-info-circle"></i>
+                            Observações Adicionais
+                        </label>
+                        <textarea id="petObservacoes" rows="3" placeholder="Outras informações relevantes sobre seu pet..."></textarea>
+                    </section>
+
+                    <section class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="btnCancel">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar Pet</button>
+                    </section>
+                </form>
+            </section>
+        </section>
+    </section>
+
+    <footer class="footer">
+        <section class="footer-container">
+            <nav class="footer-links">
+                <a href="#sobre">Sobre</a>
+                <a href="#termos">Termos de Uso</a>
+                <a href="#privacidade">Política de Privacidade</a>
+                <a href="#contato">Contato</a>
+            </nav>
+            <p class="footer-copyright">&copy; 2025 Pet Mania. Todos os direitos reservados.</p>
+        </section>
+    </footer>
+
+    <script src="/js/meuspetscliente.js"></script>
+</body>
+</html>

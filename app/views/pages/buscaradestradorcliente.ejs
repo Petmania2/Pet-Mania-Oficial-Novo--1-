@@ -26,12 +26,16 @@
                         <i class="fas fa-search"></i>
                         <span>Buscar Adestradores</span>
                     </a></li>
-                    <li><a href="#mensagens" class="nav-link">
+                    <li><a href="/meuspetscliente.ejs" class="nav-link">
+                        <i class="fas fa-dog"></i>
+                        <span>Meus Pets</span>
+                    </a></li>
+                    <li><a href="/mensagenscliente.ejs" class="nav-link">
                         <i class="fas fa-envelope"></i>
                         <span>Mensagens</span>
                         <span class="badge">3</span>
                     </a></li>
-                    <li><a href="#perfil" class="nav-link">
+                    <li><a href="/perfilcliente.ejs" class="nav-link">
                         <i class="fas fa-user"></i>
                         <span>Perfil</span>
                     </a></li>
@@ -226,6 +230,59 @@
             </section>
         </section>
     </main>
+
+    <!-- Modal Perfil Adestrador -->
+    <section class="modal-perfil" id="modalPerfil">
+        <section class="modal-perfil-content">
+            <button class="modal-perfil-close" id="closeModalPerfil">&times;</button>
+            <section class="modal-perfil-body">
+                <header class="modal-perfil-header">
+                    <figure class="modal-perfil-avatar">
+                        <img id="modalTrainerImage" src="" alt="Foto do adestrador">
+                    </figure>
+                    <section class="modal-perfil-info">
+                        <h2 id="modalTrainerName"></h2>
+                        <p class="modal-perfil-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="modalTrainerLocation"></span>
+                        </p>
+                        <section class="modal-perfil-rating">
+                            <section class="stars" id="modalTrainerStars"></section>
+                            <span id="modalTrainerRating"></span>
+                        </section>
+                    </section>
+                </header>
+
+                <section class="modal-perfil-details">
+                    <article class="modal-perfil-section">
+                        <h3><i class="fas fa-graduation-cap"></i> Especialidades</h3>
+                        <section class="modal-perfil-specialties" id="modalTrainerSpecialties"></section>
+                    </article>
+
+                    <article class="modal-perfil-section">
+                        <h3><i class="fas fa-dollar-sign"></i> Preço por Sessão</h3>
+                        <p class="modal-perfil-price" id="modalTrainerPrice"></p>
+                    </article>
+
+                    <article class="modal-perfil-section">
+                        <h3><i class="fas fa-info-circle"></i> Sobre</h3>
+                        <p id="modalTrainerBio">Profissional dedicado ao adestramento canino com metodologia baseada em reforço positivo. Experiência comprovada em diversas raças e temperamentos.</p>
+                    </article>
+                </section>
+
+                <section class="modal-perfil-actions">
+                    <button class="btn-modal-message" id="btnModalMessage">
+                        <i class="fas fa-envelope"></i>
+                        Enviar Mensagem
+                    </button>
+                    <button class="btn-modal-schedule" id="btnModalViewFull">
+                        <i class="fas fa-user"></i>
+                        Ver Perfil Completo
+                    </button>
+                </section>
+            </section>
+        </section>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">

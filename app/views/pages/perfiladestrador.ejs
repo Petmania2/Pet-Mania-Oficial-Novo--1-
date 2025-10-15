@@ -7,7 +7,7 @@
    Pet Mania - Meu Perfil
   </title>
   <link href="/css/style-adestrador.css" rel="stylesheet"/>
-  <link href="/css/style-perfil.css" rel="stylesheet"/>
+  <link href="/css/style-perfil-novo.css" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
  </head>
  <body>
@@ -79,103 +79,127 @@
   <!-- Main Content -->
   <main class="main-content">
    <section class="container">
-    <section class="welcome-section">
-     <h1>
-      Meu Perfil
-     </h1>
-     <p class="current-date">
-      Sexta-feira, 28 de Fevereiro de 2025
-     </p>
-    </section>
-    <section class="profile-grid">
-     <!-- Profile Info Section -->
-     <section class="card profile-info-section">
-      <section class="profile-header">
-       <section class="profile-avatar">
-        <section class="avatar-placeholder">
-         <i class="fas fa-user">
-         </i>
+    <section class="profile-container">
+     <header class="profile-header-new">
+      <figure class="profile-avatar-new">
+       <% if (adestrador && adestrador.ID_PERFIL && adestrador.ID_PERFIL > 0) { %>
+         <img src="/imagem/<%= adestrador.ID_PERFIL %>" alt="Foto de perfil">
+       <% } else { %>
+         <section class="avatar-placeholder-new">
+          <i class="fas fa-user"></i>
+         </section>
+       <% } %>
+       <button class="change-avatar-btn-new">
+        <i class="fas fa-camera"></i>
+       </button>
+      </figure>
+      
+      <section class="profile-info-new">
+       <h1><%= adestrador && adestrador.NOME_USUARIO ? adestrador.NOME_USUARIO : 'Nome não informado' %></h1>
+       <p class="profile-location-new">
+        <i class="fas fa-map-marker-alt"></i>
+        <%= adestrador && adestrador.cidade_adestrador ? adestrador.cidade_adestrador : 'Cidade' %>, <%= adestrador && adestrador.uf_adestrador ? adestrador.uf_adestrador : 'UF' %>
+       </p>
+       <section class="profile-rating-new">
+        <section class="stars">
+         <i class="fas fa-star"></i>
+         <i class="fas fa-star"></i>
+         <i class="fas fa-star"></i>
+         <i class="fas fa-star"></i>
+         <i class="fas fa-star-half-alt"></i>
         </section>
-        <button class="change-avatar-btn">
-         <i class="fas fa-camera">
-         </i>
-        </button>
+        <span>4.8 (38 avaliações)</span>
        </section>
-       <section class="profile-name">
-        <h2>
-         <%= adestrador && adestrador.NOME_USUARIO ? adestrador.NOME_USUARIO : 'Nome não informado' %>
-        </h2>
-        <p class="profile-type">
-         Adestrador Profissional
-        </p>
-        <section class="profile-rating">
-         <i class="fas fa-star">
-         </i>
-         <i class="fas fa-star">
-         </i>
-         <i class="fas fa-star">
-         </i>
-         <i class="fas fa-star">
-         </i>
-         <i class="fas fa-star-half-alt">
-         </i>
-         <span>
-          4.8 (38 avaliações)
-         </span>
-        </section>
-       </section>
-       <section class="profile-actions">
-        <button class="btn btn-primary">
-         <i class="fas fa-eye">
-         </i>
-         Ver como cliente
-        </button>
-       </section>
-      </section>
-      <section class="profile-tabs">
-       <button class="tab-btn active" data-tab="personal">
-        Dados Pessoais
-       </button>
-       <button class="tab-btn" data-tab="professional">
-        Perfil Profissional
-       </button>
-       <button class="tab-btn" data-tab="services">
-        Serviços
-       </button>
-       <button class="tab-btn" data-tab="security">
-        Segurança
+       <button class="btn-edit-profile-new" id="editProfileBtn">
+        <i class="fas fa-edit"></i>
+        Editar Perfil
        </button>
       </section>
+     </header>
+     
+     <!-- Add Media Section -->
+     <section class="add-media-section">
+      <button class="btn-add-media" id="addMediaBtn">
+       <i class="fas fa-plus"></i>
+       Adicionar Foto ou Vídeo
+      </button>
+     </section>
+     
+     <!-- Media Gallery -->
+     <section class="media-gallery">
+      <h2>Meus Trabalhos</h2>
+      <section class="media-grid" id="mediaGrid">
+       <!-- Media items will be added here -->
+       <section class="media-placeholder">
+        <i class="fas fa-camera"></i>
+        <p>Adicione fotos e vídeos dos seus adestramentos</p>
+       </section>
+      </section>
+     </section>
+     
+     <!-- Profile Edit Modal -->
+     <section class="modal" id="profileEditModal">
+      <section class="modal-content profile-modal">
+       <header class="modal-header">
+        <section class="modal-title">
+         <i class="fas fa-user-edit"></i>
+         <h2>Editar Meu Perfil</h2>
+        </section>
+        <button class="modal-close" id="closeProfileModal">
+         <i class="fas fa-times"></i>
+        </button>
+       </header>
+       <section class="modal-body">
+        <section class="profile-tabs">
+         <button class="tab-btn active" data-tab="personal">
+          <i class="fas fa-user"></i>
+          <span>Dados Pessoais</span>
+         </button>
+         <button class="tab-btn" data-tab="professional">
+          <i class="fas fa-briefcase"></i>
+          <span>Perfil Profissional</span>
+         </button>
+         <button class="tab-btn" data-tab="services">
+          <i class="fas fa-cogs"></i>
+          <span>Serviços</span>
+         </button>
+        </section>
       <section class="profile-tab-content active" id="personal-tab">
-       <form class="profile-form">
-        <section class="form-row">
-         <section class="form-group">
-          <label for="name">
-           Nome Completo
-          </label>
-          <input id="name" type="text" value="<%= adestrador && adestrador.NOME_USUARIO ? adestrador.NOME_USUARIO : '' %>"/>
+       <section class="form-section">
+        <h3><i class="fas fa-id-card"></i> Informações Básicas</h3>
+        <form class="profile-form">
+         <section class="form-row">
+          <section class="form-group">
+           <label for="name">
+            <i class="fas fa-user"></i>
+            Nome Completo *
+           </label>
+           <input id="name" type="text" placeholder="Digite seu nome completo" value="<%= adestrador && adestrador.NOME_USUARIO ? adestrador.NOME_USUARIO : '' %>"/>
+          </section>
+          <section class="form-group">
+           <label for="cpf">
+            <i class="fas fa-id-badge"></i>
+            CPF (não editável)
+           </label>
+           <input disabled="" id="cpf" type="text" value="<%= adestrador && adestrador.CPF_USUARIO ? adestrador.CPF_USUARIO : 'Não informado' %>"/>
+          </section>
          </section>
-         <section class="form-group">
-          <label for="cpf">
-           CPF
-          </label>
-          <input disabled="" id="cpf" type="text" value="<%= adestrador && adestrador.CPF_USUARIO ? adestrador.CPF_USUARIO : 'Não informado' %>"/>
-        </section>
-        </section>
-        <section class="form-row">
-         <section class="form-group">
-          <label for="email">
-           E-mail
-          </label>
-          <input id="email" type="email" value="<%= adestrador && adestrador.EMAIL_USUARIO ? adestrador.EMAIL_USUARIO : '' %>"/>
+         <section class="form-row">
+          <section class="form-group">
+           <label for="email">
+            <i class="fas fa-envelope"></i>
+            E-mail *
+           </label>
+           <input id="email" type="email" placeholder="seu@email.com" value="<%= adestrador && adestrador.EMAIL_USUARIO ? adestrador.EMAIL_USUARIO : '' %>"/>
+          </section>
+          <section class="form-group">
+           <label for="phone">
+            <i class="fas fa-phone"></i>
+            Telefone/WhatsApp *
+           </label>
+           <input id="phone" type="text" placeholder="(11) 99999-9999" value="<%= adestrador && adestrador.CELULAR_USUARIO ? adestrador.CELULAR_USUARIO : '' %>"/>
+          </section>
          </section>
-         <section class="form-group">
-          <label for="phone">
-           Telefone/WhatsApp
-          </label>
-          <input id="phone" type="text" value="<%= adestrador && adestrador.CELULAR_USUARIO ? adestrador.CELULAR_USUARIO : '' %>"/>
-         </section>
-        </section>
         <section class="form-row">
          <section class="form-group">
           <label for="birth">
@@ -203,12 +227,19 @@
           </select>
          </section>
         </section>
-        <section class="form-group">
-         <label for="address">
-          Logradouro
-         </label>
-         <input id="address" type="text" value="<%= adestrador && adestrador.logradouro_adestrador ? adestrador.logradouro_adestrador : '' %>"/>
-        </section>
+        </form>
+       </section>
+       
+       <section class="form-section">
+        <h3><i class="fas fa-map-marker-alt"></i> Endereço</h3>
+        <form class="profile-form">
+         <section class="form-group">
+          <label for="address">
+           <i class="fas fa-road"></i>
+           Logradouro
+          </label>
+          <input id="address" type="text" placeholder="Rua, Avenida, etc." value="<%= adestrador && adestrador.logradouro_adestrador ? adestrador.logradouro_adestrador : '' %>"/>
+         </section>
         <section class="form-row">
          <section class="form-group">
           <label for="number">
@@ -275,30 +306,43 @@
           <label for="cep">
            CEP
           </label>
-          <input id="cep" type="text" value="<%= adestrador && adestrador.cep_adestrador ? adestrador.cep_adestrador : '' %>"/>
+          <input id="cep" type="text" value="<%= adestrador && adestrador.cep_ADESTRADOR ? adestrador.cep_ADESTRADOR : '' %>"/>
          </section>
         </section>
-        <section class="form-actions">
-         <button class="btn btn-primary btn-save" type="button">
-          Salvar Alterações
-         </button>
-        </section>
-       </form>
+        </form>
+       </section>
+       
+       <section class="form-actions-bottom">
+        <button class="btn btn-secondary" type="button" onclick="document.getElementById('profileEditModal').style.display='none'">
+         <i class="fas fa-times"></i>
+         Cancelar
+        </button>
+        <button class="btn btn-primary btn-save" type="button">
+         <i class="fas fa-save"></i>
+         Salvar Alterações
+        </button>
+       </section>
       </section>
       <section class="profile-tab-content" id="professional-tab">
-       <form class="profile-form">
-        <section class="form-group">
-         <label for="prof-title">
-          Título Profissional
-         </label>
-         <input id="prof-title" type="text" value="<%= adestrador && adestrador.tituloProfissional ? adestrador.tituloProfissional : 'Adestrador Canino Profissional' %>"/>
-        </section>
-        <section class="form-group">
-         <label for="experience">
-          Anos de Experiência
-         </label>
-         <input id="experience" type="number" value="<%= adestrador && adestrador.anos_experiencia ? adestrador.anos_experiencia : '' %>"/>
-        </section>
+       <section class="form-section">
+        <h3><i class="fas fa-briefcase"></i> Informações Profissionais</h3>
+        <form class="profile-form">
+         <section class="form-row">
+          <section class="form-group">
+           <label for="prof-title">
+            <i class="fas fa-award"></i>
+            Título Profissional
+           </label>
+           <input id="prof-title" type="text" placeholder="Ex: Adestrador Canino Certificado" value="<%= adestrador && adestrador.tituloProfissional ? adestrador.tituloProfissional : 'Adestrador Canino Profissional' %>"/>
+          </section>
+          <section class="form-group">
+           <label for="experience">
+            <i class="fas fa-calendar-alt"></i>
+            Anos de Experiência
+           </label>
+           <input id="experience" type="number" min="0" max="50" placeholder="Ex: 5" value="<%= adestrador && adestrador.anos_experiencia ? adestrador.anos_experiencia : '' %>"/>
+          </section>
+         </section>
         <section class="form-group">
          <label for="bio">
           Biografia/Sobre Você
@@ -311,12 +355,13 @@
          </label>
          <textarea id="certifications" rows="3"><%= adestrador && adestrador.certificacoes ? adestrador.certificacoes : 'Adicione suas certificações e formações...' %></textarea>
         </section>
-        <section class="form-group">
-         <label for="price">
-          Preço por Sessão (R$)
-         </label>
-         <input id="price" type="number" step="0.01" value="<%= adestrador && adestrador.valor_sessao ? adestrador.valor_sessao : '' %>"/>
-        </section>
+         <section class="form-group">
+          <label for="price">
+           <i class="fas fa-dollar-sign"></i>
+           Preço por Sessão (R$) *
+          </label>
+          <input id="price" type="number" step="0.01" min="50" placeholder="120.00" value="<%= adestrador && adestrador.valor_sessao ? adestrador.valor_sessao : '' %>"/>
+         </section>
         
         <section class="form-group">
           <label>
@@ -361,283 +406,69 @@
            <% }); %>
           </section>
          </section>
-        <section class="form-actions">
-         <button class="btn btn-primary btn-save" type="button">
-          Salvar Alterações
-         </button>
-        </section>
-       </form>
-      </section>
-      <section class="profile-tab-content" id="services-tab">
-       <section class="services-list">
-        <section class="service-item">
-         <section class="service-header">
-          <h3>
-           Sessão de Obediência Básica
-          </h3>
-          <section class="service-price">
-           R$ <%= adestrador && adestrador.valor_sessao ? parseFloat(adestrador.valor_sessao).toFixed(2).replace('.', ',') : '120,00' %>
-          </section>
-         </section>
-         <p>
-          Treinamento de comandos básicos como sentar, deitar, ficar e vir. Ideal para cães de todas as idades.
-         </p>
-         <section class="service-details">
-          <span>
-           <i class="fas fa-clock">
-           </i>
-           1h30min
-          </span>
-          <span>
-           <i class="fas fa-map-marker-alt">
-           </i>
-           Residência ou Parque
-          </span>
-         </section>
-         <section class="service-actions">
-          <button class="btn btn-small btn-outline">
-           <i class="fas fa-edit">
-           </i>
-           Editar
-          </button>
-          <button class="btn btn-small btn-danger">
-           <i class="fas fa-trash">
-           </i>
-          </button>
-         </section>
-        </section>
-        <section class="service-item">
-         <section class="service-header">
-          <h3>
-           Pacote de Socialização
-          </h3>
-          <section class="service-price">
-           R$ <%= adestrador && adestrador.valor_sessao ? (parseFloat(adestrador.valor_sessao) * 3.5).toFixed(2).replace('.', ',') : '450,00' %>
-          </section>
-         </section>
-         <p>
-          Pacote com 4 sessões focadas na socialização do cão com outros animais e pessoas. Reduz problemas de agressividade e medo.
-         </p>
-         <section class="service-details">
-          <span>
-           <i class="fas fa-clock">
-           </i>
-           1h30min por sessão
-          </span>
-          <span>
-           <i class="fas fa-map-marker-alt">
-           </i>
-           Parques e áreas públicas
-          </span>
-         </section>
-         <section class="service-actions">
-          <button class="btn btn-small btn-outline">
-           <i class="fas fa-edit">
-           </i>
-           Editar
-          </button>
-          <button class="btn btn-small btn-danger">
-           <i class="fas fa-trash">
-           </i>
-          </button>
-         </section>
-        </section>
-        <section class="service-item">
-         <section class="service-header">
-          <h3>
-           Consultoria Comportamental
-          </h3>
-          <section class="service-price">
-           R$ <%= adestrador && adestrador.valor_sessao ? (parseFloat(adestrador.valor_sessao) * 1.25).toFixed(2).replace('.', ',') : '150,00' %>
-          </section>
-         </section>
-         <p>
-          Avaliação e diagnóstico de problemas comportamentais, com plano personalizado de treinamento.
-         </p>
-         <section class="service-details">
-          <span>
-           <i class="fas fa-clock">
-           </i>
-           2h
-          </span>
-          <span>
-           <i class="fas fa-map-marker-alt">
-           </i>
-           Residência do cliente
-          </span>
-         </section>
-         <section class="service-actions">
-          <button class="btn btn-small btn-outline">
-           <i class="fas fa-edit">
-           </i>
-           Editar
-          </button>
-          <button class="btn btn-small btn-danger">
-           <i class="fas fa-trash">
-           </i>
-          </button>
-         </section>
-        </section>
-        <button class="btn btn-add-service">
-         <i class="fas fa-plus">
-         </i>
-         Adicionar Serviço
+        </form>
+       </section>
+       
+       <section class="form-actions-bottom">
+        <button class="btn btn-secondary" type="button" onclick="document.getElementById('profileEditModal').style.display='none'">
+         <i class="fas fa-times"></i>
+         Cancelar
+        </button>
+        <button class="btn btn-primary btn-save" type="button">
+         <i class="fas fa-save"></i>
+         Salvar Alterações
         </button>
        </section>
       </section>
-      <section class="profile-tab-content" id="security-tab">
-       <form class="profile-form">
-        <section class="form-group">
-         <label for="current-password">
-          Senha Atual
-         </label>
-         <input id="current-password" type="password"/>
-        </section>
-        <section class="form-group">
-         <label for="new-password">
-          Nova Senha
-         </label>
-         <input id="new-password" type="password"/>
-        </section>
-        <section class="form-group">
-         <label for="confirm-password">
-          Confirmar Nova Senha
-         </label>
-         <input id="confirm-password" type="password"/>
-        </section>
-        <section class="password-strength">
-         <p>
-          Força da senha:
-         </p>
-         <section class="strength-meter">
-          <section class="strength-segment">
-          </section>
-          <section class="strength-segment">
-          </section>
-          <section class="strength-segment">
-          </section>
-          <section class="strength-segment">
+      
+      <section class="profile-tab-content" id="services-tab">
+       <section class="form-section">
+        <h3><i class="fas fa-cogs"></i> Gerenciar Serviços</h3>
+        <section class="services-manager">
+         <section class="services-list-modal" id="servicesListModal">
+          <section class="service-placeholder-modal">
+           <i class="fas fa-briefcase"></i>
+           <p>Nenhum serviço cadastrado</p>
+           <button class="btn-add-service-modal" id="addServiceModalBtn">
+            <i class="fas fa-plus"></i>
+            Adicionar Primeiro Serviço
+           </button>
           </section>
          </section>
-         <p class="strength-text">
-          Digite uma nova senha
-         </p>
         </section>
-        <section class="form-group">
-         <label>
-          Autenticação de Dois Fatores
-         </label>
-         <section class="toggle-switch">
-          <input id="two-factor" type="checkbox"/>
-          <label for="two-factor">
-          </label>
-          <span class="toggle-label">
-           Desativado
-          </span>
-         </section>
-        </section>
-        <section class="form-actions">
-         <button class="btn btn-primary btn-save" type="button">
-          Salvar Alterações
-         </button>
-        </section>
-       </form>
+       </section>
+       
+       <section class="form-actions-bottom">
+        <button class="btn btn-secondary" type="button" onclick="document.getElementById('profileEditModal').style.display='none'">
+         <i class="fas fa-times"></i>
+         Cancelar
+        </button>
+       </section>
+      </section>
       </section>
      </section>
-     <!-- Sidebar Sections -->
-     <section class="profile-sidebar">
-      <section class="card profile-stats-section">
-       <h3>
-        <i class="fas fa-chart-pie">
-        </i>
-        Estatísticas do Perfil
-       </h3>
-       <section class="stat-item">
-        <section class="stat-label">
-         Visualizações do Perfil
-        </section>
-        <section class="stat-value">
-         432
-        </section>
-        <section class="stat-period">
-         Últimos 30 dias
-        </section>
-       </section>
-       <section class="stat-item">
-        <section class="stat-label">
-         Taxa de Resposta
-        </section>
-        <section class="stat-value">
-         98%
-        </section>
-        <section class="stat-period">
-         Tempo médio: 1h12min
-        </section>
-       </section>
-       <section class="stat-item">
-        <section class="stat-label">
-         Taxa de Conversão
-        </section>
-        <section class="stat-value">
-         76%
-        </section>
-        <section class="stat-period">
-         Contatos → Clientes
-        </section>
-       </section>
-      </section>
-      <section class="card profile-completion-section">
-       <h3>
-        <i class="fas fa-tasks">
-        </i>
-        Completude do Perfil
-       </h3>
-       <section class="completion-progress">
-        <section class="progress-bar">
-         <section class="progress-fill" style="width: 85%;">
-         </section>
-        </section>
-        <section class="progress-text">
-         85% Completo
-        </section>
-       </section>
-       <section class="completion-tasks">
-        <section class="task-item completed">
-         <i class="fas fa-check-circle">
-         </i>
-         <span>
-          Informações básicas
-         </span>
-        </section>
-        <section class="task-item completed">
-         <i class="fas fa-check-circle">
-         </i>
-         <span>
-          Serviços oferecidos
-         </span>
-        </section>
-        <section class="task-item completed">
-         <i class="fas fa-check-circle">
-         </i>
-         <span>
-          Biografia profissional
-         </span>
-        </section>
-        <section class="task-item">
-         <i class="fas fa-circle">
-         </i>
-         <span>
-          Adicionar foto de perfil
-         </span>
-        </section>
-        <section class="task-item">
-         <i class="fas fa-circle">
-         </i>
-         <span>
-          Verificar telefone
-         </span>
-        </section>
-       </section>
+     
+
+     
+     <!-- Statistics Section -->
+     <section class="profile-stats">
+      <h2>Estatísticas</h2>
+      <section class="stats-grid">
+       <article class="stat-card">
+        <i class="fas fa-eye"></i>
+        <h3>432</h3>
+        <p>Visualizações</p>
+       </article>
+       <article class="stat-card">
+        <i class="fas fa-heart"></i>
+        <h3>98%</h3>
+        <p>Taxa de Resposta</p>
+       </article>
+       <article class="stat-card">
+        <i class="fas fa-users"></i>
+        <h3>76%</h3>
+        <p>Conversão</p>
+       </article>
       </section>
      </section>
     </section>
@@ -651,10 +482,315 @@
     3
    </span>
   </section>
-  <script src="/js/script-adestrador.js">
-  </script>
-  <script src="/js/script-perfil.js">
+  <!-- Media Upload Modal -->
+  <section class="modal" id="mediaModal">
+   <section class="modal-content">
+    <header class="modal-header">
+     <h2>Adicionar Mídia</h2>
+     <button class="modal-close" id="closeModal">&times;</button>
+    </header>
+    <section class="modal-body">
+     <form id="mediaUploadForm">
+      <section class="upload-area">
+       <i class="fas fa-cloud-upload-alt"></i>
+       <p>Arraste arquivos aqui ou clique para selecionar</p>
+       <input type="file" id="mediaInput" accept="image/*,video/*" multiple>
+      </section>
+      <section class="form-group">
+       <label for="mediaDescription">Descrição</label>
+       <textarea id="mediaDescription" placeholder="Descreva este trabalho..."></textarea>
+      </section>
+      <section class="modal-actions">
+       <button type="button" class="btn btn-secondary" id="cancelUpload">Cancelar</button>
+       <button type="submit" class="btn btn-primary">Adicionar</button>
+      </section>
+     </form>
+    </section>
+   </section>
+  </section>
+  
+  <!-- Service Modal -->
+  <section class="modal" id="serviceModal">
+   <section class="modal-content">
+    <header class="modal-header">
+     <h2>Adicionar Serviço</h2>
+     <button class="modal-close" id="closeServiceModal">&times;</button>
+    </header>
+    <section class="modal-body">
+     <form id="serviceForm">
+      <section class="form-group">
+       <label for="serviceName">Nome do Serviço</label>
+       <input type="text" id="serviceName" placeholder="Ex: Adestramento Básico" required>
+      </section>
+      <section class="form-group">
+       <label for="servicePrice">Preço (R$)</label>
+       <input type="number" id="servicePrice" step="0.01" placeholder="120.00" required>
+      </section>
+      <section class="form-group">
+       <label for="serviceDuration">Duração</label>
+       <input type="text" id="serviceDuration" placeholder="1h30min" required>
+      </section>
+      <section class="form-group">
+       <label for="serviceDescription">Descrição</label>
+       <textarea id="serviceDescription" placeholder="Descreva o que está incluído neste serviço..." required></textarea>
+      </section>
+      <section class="modal-actions">
+       <button type="button" class="btn btn-secondary" id="cancelService">Cancelar</button>
+       <button type="submit" class="btn btn-primary">Adicionar Serviço</button>
+      </section>
+     </form>
+    </section>
+   </section>
+  </section>
+  
+  <script src="/js/script-adestrador.js"></script>
+  <script src="/js/script-perfil.js"></script>
+  <script>
+   // Profile edit modal
+   const editProfileBtn = document.getElementById('editProfileBtn');
+   const profileModal = document.getElementById('profileEditModal');
+   const closeProfileModal = document.getElementById('closeProfileModal');
    
+   editProfileBtn.addEventListener('click', () => {
+    profileModal.style.display = 'flex';
+   });
+   
+   closeProfileModal.addEventListener('click', () => {
+    profileModal.style.display = 'none';
+   });
+   
+   profileModal.addEventListener('click', (e) => {
+    if (e.target === profileModal) {
+     profileModal.style.display = 'none';
+    }
+   });
+   
+   // Tab functionality
+   document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+     const targetTab = btn.getAttribute('data-tab');
+     
+     // Remove active class from all tabs and contents
+     document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+     document.querySelectorAll('.profile-tab-content').forEach(c => c.classList.remove('active'));
+     
+     // Add active class to clicked tab and corresponding content
+     btn.classList.add('active');
+     document.getElementById(targetTab + '-tab').classList.add('active');
+    });
+   });
+   
+   // Upload de foto de perfil
+   const changeAvatarBtn = document.querySelector('.change-avatar-btn-new');
+   if (changeAvatarBtn) {
+   changeAvatarBtn.addEventListener('click', function() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function(e) {
+     const file = e.target.files[0];
+     if (file) {
+      const formData = new FormData();
+      formData.append('foto', file);
+      
+      fetch('/upload-foto-perfil', {
+       method: 'POST',
+       body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+       if (data.sucesso) {
+        location.reload();
+       } else {
+        alert('Erro: ' + data.erro);
+       }
+      })
+      .catch(error => {
+       console.error('Erro:', error);
+       alert('Erro ao fazer upload da foto');
+      });
+     }
+    };
+    input.click();
+   });
+   }
+   
+   // Media modal
+   const addMediaBtn = document.getElementById('addMediaBtn');
+   const mediaModal = document.getElementById('mediaModal');
+   const closeModal = document.getElementById('closeModal');
+   const cancelUpload = document.getElementById('cancelUpload');
+   
+   addMediaBtn.addEventListener('click', () => {
+    mediaModal.style.display = 'flex';
+   });
+   
+   [closeModal, cancelUpload].forEach(btn => {
+    btn.addEventListener('click', () => {
+     mediaModal.style.display = 'none';
+    });
+   });
+   
+   // File upload handling
+   const mediaInput = document.getElementById('mediaInput');
+   const uploadArea = document.querySelector('.upload-area');
+   
+   uploadArea.addEventListener('click', () => mediaInput.click());
+   
+   uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+   });
+   
+   uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('dragover');
+   });
+   
+   uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    handleFiles(files);
+   });
+   
+   mediaInput.addEventListener('change', (e) => {
+    handleFiles(e.target.files);
+   });
+   
+   function handleFiles(files) {
+    const mediaGrid = document.getElementById('mediaGrid');
+    const placeholder = mediaGrid.querySelector('.media-placeholder');
+    
+    Array.from(files).forEach(file => {
+     if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+       const mediaItem = document.createElement('article');
+       mediaItem.className = 'media-item';
+       
+       if (file.type.startsWith('image/')) {
+        mediaItem.innerHTML = `
+         <img src="${e.target.result}" alt="Trabalho">
+         <section class="media-overlay">
+          <button class="btn-delete"><i class="fas fa-trash"></i></button>
+         </section>
+        `;
+       } else {
+        mediaItem.innerHTML = `
+         <video src="${e.target.result}" controls></video>
+         <section class="media-overlay">
+          <button class="btn-delete"><i class="fas fa-trash"></i></button>
+         </section>
+        `;
+       }
+       
+       if (placeholder) {
+        mediaGrid.removeChild(placeholder);
+       }
+       mediaGrid.appendChild(mediaItem);
+      };
+      reader.readAsDataURL(file);
+     }
+    });
+    
+    mediaModal.style.display = 'none';
+   }
+   
+   // Delete media item
+   document.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-delete')) {
+     const mediaItem = e.target.closest('.media-item');
+     if (confirm('Deseja remover esta mídia?')) {
+      mediaItem.remove();
+     }
+    }
+   });
+   
+   // Service modal
+   const addServiceBtn = document.getElementById('addServiceBtn');
+   const addServiceModalBtn = document.getElementById('addServiceModalBtn');
+   const addServiceFromModal = document.getElementById('addServiceFromModal');
+   const serviceModal = document.getElementById('serviceModal');
+   const closeServiceModal = document.getElementById('closeServiceModal');
+   const cancelService = document.getElementById('cancelService');
+   const serviceForm = document.getElementById('serviceForm');
+   
+   [addServiceBtn, addServiceModalBtn, addServiceFromModal].forEach(btn => {
+    if (btn) {
+     btn.addEventListener('click', () => {
+      serviceModal.style.display = 'flex';
+     });
+    }
+   });
+   
+   [closeServiceModal, cancelService].forEach(btn => {
+    btn.addEventListener('click', () => {
+     serviceModal.style.display = 'none';
+     serviceForm.reset();
+    });
+   });
+   
+   serviceForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('serviceName').value;
+    const price = document.getElementById('servicePrice').value;
+    const duration = document.getElementById('serviceDuration').value;
+    const description = document.getElementById('serviceDescription').value;
+    
+    const servicesGrid = document.getElementById('servicesGrid');
+    const placeholder = servicesGrid.querySelector('.service-placeholder');
+    
+    const serviceItem = document.createElement('article');
+    serviceItem.className = 'service-card';
+    serviceItem.innerHTML = `
+     <section class="service-header">
+      <h3>${name}</h3>
+      <section class="service-price">R$ ${parseFloat(price).toFixed(2).replace('.', ',')}</section>
+     </section>
+     <p>${description}</p>
+     <section class="service-details">
+      <span><i class="fas fa-clock"></i> ${duration}</span>
+     </section>
+     <section class="service-actions">
+      <button class="btn-edit-service"><i class="fas fa-edit"></i></button>
+      <button class="btn-delete-service"><i class="fas fa-trash"></i></button>
+     </section>
+    `;
+    
+    if (placeholder && servicesGrid.children.length === 1) {
+     servicesGrid.removeChild(placeholder);
+    }
+    
+    servicesGrid.appendChild(serviceItem);
+    serviceModal.style.display = 'none';
+    serviceForm.reset();
+   });
+   
+   // Delete service
+   document.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-delete-service')) {
+     const serviceCard = e.target.closest('.service-card');
+     if (confirm('Deseja remover este serviço?')) {
+      serviceCard.remove();
+      
+      const servicesGrid = document.getElementById('servicesGrid');
+      if (servicesGrid.children.length === 0) {
+       const placeholder = document.createElement('section');
+       placeholder.className = 'service-placeholder';
+       placeholder.innerHTML = `
+        <i class="fas fa-plus"></i>
+        <p>Adicione seus serviços personalizados</p>
+        <button class="btn-add-service" id="addServiceBtn">
+         <i class="fas fa-plus"></i>
+         Adicionar Serviço
+        </button>
+       `;
+       servicesGrid.appendChild(placeholder);
+      }
+     }
+    }
+   });
   </script>
 
 

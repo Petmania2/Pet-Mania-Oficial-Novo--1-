@@ -1,5 +1,5 @@
 // Dados simulados de conversas
-const conversas = [
+let conversas = [
     {
         id: 1,
         nome: 'Ricardo Almeida',
@@ -343,8 +343,102 @@ document.addEventListener('DOMContentLoaded', () => {
     renderizarConversas();
     atualizarBadge();
 
-    // Carregar primeira conversa automaticamente em desktop
-    if (window.innerWidth > 768) {
+    // Verificar se há um adestrador na URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const adestradorId = parseInt(urlParams.get('adestrador'));
+    
+    if (adestradorId) {
+        let conversa = conversas.find(c => c.id === adestradorId);
+        
+        if (!conversa) {
+            // Se ID > 1000, buscar do banco
+            if (adestradorId > 1000) {
+                fetch(`/api/adestrador/${adestradorId - 1000}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const agora = new Date();
+                        const hora = agora.getHours().toString().padStart(2, '0') + ':' + agora.getMinutes().toString().padStart(2, '0');
+                        
+                        const novaConversa = {
+                            id: adestradorId,
+                            nome: data.nome,
+                            avatar: data.ID_PERFIL && data.ID_PERFIL > 0 ? `/imagem/${data.ID_PERFIL}` : 'https://via.placeholder.com/100',
+                            status: 'online',
+                            ultimaMensagem: 'Inicie uma conversa',
+                            hora: hora,
+                            naoLida: false,
+                            mensagens: []
+                        };
+                        
+                        conversas.unshift(novaConversa);
+                        renderizarConversas();
+                        selecionarConversa(novaConversa);
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar adestrador:', error);
+                    });
+                return;
+            }
+            
+            const trainers = [
+                { id: 1, name: "Ricardo Almeida", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop" },
+                { id: 2, name: "Juliana Costa", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" },
+                { id: 3, name: "Carlos Mendes", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" },
+                { id: 4, name: "Ana Silva", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" },
+                { id: 5, name: "Fernando Santos", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" },
+                { id: 6, name: "Patricia Lima", image: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop" },
+                { id: 7, name: "Roberto Ferreira", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" },
+                { id: 8, name: "Mariana Oliveira", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop" },
+                { id: 9, name: "Lucas Rodrigues", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop" },
+                { id: 10, name: "Camila Souza", image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop" },
+                { id: 11, name: "Thiago Araújo", image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=100&h=100&fit=crop" },
+                { id: 12, name: "Gabriela Martins", image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop" },
+                { id: 13, name: "Daniel Costa", image: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=100&h=100&fit=crop" },
+                { id: 14, name: "Renata Alves", image: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=100&h=100&fit=crop" },
+                { id: 15, name: "Marcelo Pereira", image: "https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?w=100&h=100&fit=crop" },
+                { id: 16, name: "Beatriz Ribeiro", image: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=100&h=100&fit=crop" },
+                { id: 17, name: "Rafael Silva", image: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=100&h=100&fit=crop" },
+                { id: 18, name: "Amanda Carvalho", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop" },
+                { id: 19, name: "Bruno Nascimento", image: "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=100&h=100&fit=crop" },
+                { id: 20, name: "Larissa Gomes", image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100&h=100&fit=crop" },
+                { id: 21, name: "Eduardo Santos", image: "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?w=100&h=100&fit=crop" },
+                { id: 22, name: "Fernanda Lima", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop" },
+                { id: 23, name: "Paulo Henrique", image: "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=100&h=100&fit=crop" },
+                { id: 24, name: "Juliane Rocha", image: "https://images.unsplash.com/photo-1505033575518-a36ea2ef75ae?w=100&h=100&fit=crop" },
+                { id: 25, name: "André Moreira", image: "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=100&h=100&fit=crop" },
+                { id: 26, name: "Bianca Teixeira", image: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=100&h=100&fit=crop" },
+                { id: 27, name: "Rodrigo Fernandes", image: "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=100&h=100&fit=crop" },
+                { id: 28, name: "Vanessa Dias", image: "https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?w=100&h=100&fit=crop" },
+                { id: 29, name: "Guilherme Barros", image: "https://images.unsplash.com/photo-1509305717900-84f40e786d82?w=100&h=100&fit=crop" },
+                { id: 30, name: "Carolina Mendes", image: "https://images.unsplash.com/photo-1507114845806-0bf8f8f0e3f0?w=100&h=100&fit=crop" }
+            ];
+            
+            const trainer = trainers.find(t => t.id === adestradorId);
+            
+            if (trainer) {
+                const agora = new Date();
+                const hora = agora.getHours().toString().padStart(2, '0') + ':' + agora.getMinutes().toString().padStart(2, '0');
+                
+                conversa = {
+                    id: adestradorId,
+                    nome: trainer.name,
+                    avatar: trainer.image,
+                    status: 'online',
+                    ultimaMensagem: 'Inicie uma conversa',
+                    hora: hora,
+                    naoLida: false,
+                    mensagens: []
+                };
+                
+                conversas.unshift(conversa);
+                renderizarConversas();
+            }
+        }
+        
+        if (conversa) {
+            selecionarConversa(conversa);
+        }
+    } else if (window.innerWidth > 768 && conversas.length > 0) {
         selecionarConversa(conversas[0]);
     }
 });

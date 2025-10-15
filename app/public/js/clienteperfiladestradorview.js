@@ -364,9 +364,12 @@ let trainersFake = [
 
 async function loadTrainer(id) {
     try {
+        console.log('Buscando adestrador ID:', id);
         const response = await fetch(`/api/adestrador/${id}`);
+        console.log('Response status:', response.status);
         if (response.ok) {
             const data = await response.json();
+            console.log('Dados recebidos:', data);
             const especialidadeMap = {
                 1: 'obediencia',
                 2: 'comportamento',
@@ -375,7 +378,7 @@ async function loadTrainer(id) {
                 5: 'filhotes'
             };
             return {
-                id: id,
+                id: data.id_adestrador || id,
                 name: data.nome,
                 city: data.cidade || 'Não informado',
                 state: data.estado || 'SP',
@@ -417,17 +420,11 @@ function generateStars(rating) {
 
 const urlParams = new URLSearchParams(window.location.search);
 const trainerId = parseInt(urlParams.get('id'));
+console.log('TrainerId da URL:', trainerId);
 
 async function displayTrainer() {
     console.log('Carregando adestrador ID:', trainerId);
     let trainer = null;
-    
-    if (!trainerId || isNaN(trainerId)) {
-        console.error('ID inválido:', trainerId);
-        alert('ID do adestrador inválido');
-        window.location.href = '/buscaradestradorcliente.ejs';
-        return;
-    }
     
     // Tentar carregar do banco primeiro
     trainer = await loadTrainer(trainerId);
@@ -485,8 +482,27 @@ async function displayTrainer() {
 
 displayTrainer();
 
-document.getElementById('btnMessage').addEventListener('click', () => {
+document.getElementById('btnMessage').addEventListener('click', async () => {
+    console.log('Botão mensagem clicado, trainerId:', trainerId);
     if (trainerId) {
-        window.location.href = `/mensagenscliente.ejs?adestrador=${trainerId}`;
+        try {
+            const res = await fetch('/chat/iniciar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idAdestrador: parseInt(trainerId) })
+            });
+            
+            const data = await res.json();
+            console.log('Resposta do servidor:', data);
+            
+            if (data.idConversa) {
+                window.location.href = '/mensagenscliente.ejs';
+            } else {
+                alert('Erro: ' + (data.erro || 'Não foi possível iniciar conversa'));
+            }
+        } catch (erro) {
+            console.error('Erro ao iniciar chat:', erro);
+            alert('Erro ao iniciar conversa. Tente novamente.');
+        }
     }
 });

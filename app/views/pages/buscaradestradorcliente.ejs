@@ -270,11 +270,11 @@
                 </section>
 
                 <section class="modal-perfil-actions">
-                    <button class="btn-modal-message" id="btnModalMessage" onclick="iniciarChatComAdestrador()">
+                    <button class="btn-modal-message" onclick="iniciarChatComAdestrador()">
                         <i class="fas fa-envelope"></i>
                         Enviar Mensagem
                     </button>
-                    <button class="btn-modal-schedule" id="btnModalViewFull">
+                    <button class="btn-modal-schedule" onclick="window.location.href='/clienteperfiladestradorview.ejs?id='+window.currentTrainerId">
                         <i class="fas fa-user"></i>
                         Ver Perfil Completo
                     </button>
@@ -307,12 +307,15 @@
         };
         
         async function iniciarChatComAdestrador() {
-            console.log('Tentando iniciar chat com adestrador:', adestradorSelecionadoId);
+            const idAdestrador = window.adestradorSelecionadoId || window.currentTrainerId;
+            console.log('Tentando iniciar chat com adestrador:', idAdestrador);
             
-            if (!adestradorSelecionadoId) {
+            if (!idAdestrador) {
                 alert('Erro: Selecione um adestrador primeiro');
                 return;
             }
+            
+            adestradorSelecionadoId = idAdestrador;
             
             try {
                 const res = await fetch('/chat/iniciar', {

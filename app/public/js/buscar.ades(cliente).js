@@ -25,11 +25,11 @@ async function loadTrainers() {
             price: parseFloat(a.preco) || 150,
             available: a.ativo !== false,
             image: a.ID_PERFIL && a.ID_PERFIL > 0 ? `/imagem/${a.ID_PERFIL}` : 'https://via.placeholder.com/400',
-            topTrainer: a.anos_experiencia >= 5,
+            topTrainer: a.experiencia >= 5,
             phone: a.telefone || 'Não informado',
             about: a.sobre || 'Profissional dedicado ao adestramento canino.'
         }));
-        console.log('Adestradores carregados:', trainersDB);
+        console.log('Adestradores carregados do banco:', trainersDB);
         trainers = [...trainersDB, ...trainersFake];
         filteredTrainers = [...trainers];
         sortTrainers();
@@ -540,7 +540,7 @@ function renderTrainers(trainersToRender) {
                 <p class="trainer-price">
                     A partir de <span class="price-amount">R$ ${trainer.price}</span> / sessão
                 </p>
-                <button class="btn-view-profile" data-trainer-id="${trainer.id}">Ver Perfil</button>
+                <button class="btn-view-profile" onclick="openModalPerfil(${trainer.id})">Ver Perfil</button>
             </section>
         `;
         
@@ -704,6 +704,8 @@ function openModalPerfil(trainerId) {
     if (!trainer) return;
     
     currentTrainerId = trainerId;
+    window.currentTrainerId = trainerId;
+    window.adestradorSelecionadoId = trainerId;
     
     // Definir adestrador selecionado para o chat
     if (window.setAdestradorSelecionado) {
@@ -757,17 +759,26 @@ modalPerfil.addEventListener('click', (e) => {
 const btnModalViewFull = document.getElementById('btnModalViewFull');
 let currentTrainerId = null;
 
-btnModalMessage.addEventListener('click', () => {
-    if (currentTrainerId) {
-        window.location.href = `/mensagenscliente.ejs?adestrador=${currentTrainerId}`;
-    }
-});
+if (btnModalMessage) {
+    btnModalMessage.addEventListener('click', () => {
+        console.log('Botão mensagem clicado, ID:', currentTrainerId);
+        if (currentTrainerId) {
+            if (window.setAdestradorSelecionado) {
+                window.setAdestradorSelecionado(currentTrainerId);
+            }
+            window.location.href = `/mensagenscliente.ejs?adestrador=${currentTrainerId}`;
+        }
+    });
+}
 
-btnModalViewFull.addEventListener('click', () => {
-    if (currentTrainerId) {
-        window.location.href = `/clienteperfiladestradorview.ejs?id=${currentTrainerId}`;
-    }
-});
+if (btnModalViewFull) {
+    btnModalViewFull.addEventListener('click', () => {
+        console.log('Botão ver perfil completo clicado, ID:', currentTrainerId);
+        if (currentTrainerId) {
+            window.location.href = `/clienteperfiladestradorview.ejs?id=${currentTrainerId}`;
+        }
+    });
+}
 
 // Event delegation para botões de ver perfil
 document.addEventListener('click', (e) => {

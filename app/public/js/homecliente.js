@@ -174,29 +174,16 @@ viewProfileBtns.forEach(btn => {
     });
 });
 
-// Update user name dynamically
-function updateUserName(name) {
-    const userNameElement = document.querySelector('.user-name');
-    if (userNameElement) {
-        userNameElement.textContent = name;
-    }
-}
-
 // Load user data on page load
 window.addEventListener('DOMContentLoaded', () => {
-    // Simulate fetching user data
-    // Em produção, isso seria uma chamada de API
+    // Update dashboard numbers
     const userData = {
-        name: 'João Silva',
         nearbyTrainers: 12,
         newMessages: 3,
         scheduledSessions: 2,
         pendingReviews: 1
     };
     
-    updateUserName(userData.name);
-    
-    // Update dashboard numbers
     const cardNumbers = document.querySelectorAll('.card-number');
     if (cardNumbers.length >= 4) {
         cardNumbers[0].textContent = userData.nearbyTrainers;
